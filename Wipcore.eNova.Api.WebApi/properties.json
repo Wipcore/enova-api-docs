@@ -1,0 +1,5 @@
+{
+  "properties": {
+    "product": "identifier,name,descriptionlong,price"
+  }
+}
