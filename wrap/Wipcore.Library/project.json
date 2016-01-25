@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "dnx451": {
+      "bin": {
+        "assembly": "../../lib/dnx451/Wipcore.Library.dll"
+      }
+    },
+    "net451": {
+      "bin": {
+        "assembly": "../../lib/net451/Wipcore.Library.dll"
+      }
+    }
+  }
+}

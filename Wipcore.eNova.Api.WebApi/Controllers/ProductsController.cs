@@ -7,6 +7,8 @@ using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.eNova.Api.WebApi.Models;
 using Wipcore.eNova.Api.WebApi.Services;
+using Wipcore.eNova.Api.Interfaces;
+using Wipcore.Enova.Core;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,26 +18,22 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IObjectService _objectService;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IObjectService objectService)
         {
             _productService = productService;
+            _objectService = objectService;
         }
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<IDictionary<string, object>> Get(string properties, int page, int size, string sort)
+        public IEnumerable<IDictionary<string, object>> Get(string properties = null, int page = 0, int size = 20, string sort = null, string filter = null)
         {
-            HttpContext.Response.Headers.Add("X-Paging-PageNo", page.ToString());
-            HttpContext.Response.Headers.Add("X-Paging-PageSize", size.ToString());
-            HttpContext.Response.Headers.Add("X-Paging-PageCount", "");
-            HttpContext.Response.Headers.Add("X-Paging-TotalRecordCount", "");
-            string prevPage = UrlHelper.GetRequestUrl(HttpContext).Replace("page=" + page.ToString(), "page=" + (page - 1).ToString());
-            HttpContext.Response.Headers.Add("X-Paging-PreviousPage", prevPage);
-            string nextPage = UrlHelper.GetRequestUrl(HttpContext).Replace("page=" + page.ToString(), "page=" + (page + 1).ToString());
-            HttpContext.Response.Headers.Add("X-Paging-NextPage", nextPage);
+            
 
-            return _productService.GetProducts(properties, page, size, sort);
+            //return _productService.GetProducts(properties, page, size, sort);
+            return _objectService.Get<EnovaBaseProduct>(properties: properties, filter: filter, pageNumber: page, pageSize: size, sort: sort);
         }
         
         [HttpGet("{identifier}")]

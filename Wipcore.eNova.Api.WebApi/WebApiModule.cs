@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Caching;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.eNova.Api.WebApi.Services;
 
@@ -17,6 +18,8 @@ namespace Wipcore.eNova.Api.WebApi
         
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterInstance(new MemoryCache("ApiCache")).AsSelf().As<ObjectCache>();
+
             IEnumerable<Type> mapperTypes = ReflectionHelper.GetAllAvailableTypes().Where(x => x.Name.EndsWith("Mapper"));
             foreach (Type type in mapperTypes)
             {

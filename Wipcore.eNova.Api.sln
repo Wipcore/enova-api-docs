@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.eNova.Api.WebApi", "Wipcore.eNova.Api.WebApi\Wipcore.eNova.Api.WebApi.xproj", "{FC13CD2A-431D-4E01-8439-F0A51B42B96E}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Interfaces", "Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj", "{D8AB7EF1-C695-4106-859A-536C6351EC3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FC13CD2A-431D-4E01-8439-F0A51B42B96E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC13CD2A-431D-4E01-8439-F0A51B42B96E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC13CD2A-431D-4E01-8439-F0A51B42B96E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8AB7EF1-C695-4106-859A-536C6351EC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8AB7EF1-C695-4106-859A-536C6351EC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8AB7EF1-C695-4106-859A-536C6351EC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8AB7EF1-C695-4106-859A-536C6351EC3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
