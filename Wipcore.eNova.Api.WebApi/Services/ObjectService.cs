@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Fasterflect;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Generics;
 using Wipcore.Enova.Api.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNet.Http;
+using Wipcore.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Services
 {
@@ -50,10 +53,13 @@ namespace Wipcore.eNova.Api.WebApi.Services
                 var configPageSize = ReadParameter(configuration, "pageSize");
                 pageSize = configPageSize != null ? Convert.ToInt32(configPageSize) : pageSize;
             }
-            
 
             var context = EnovaContextProvider.GetCurrentContext();
-            var objectList = context.GetAllObjects(typeof(T)); //TODO as usual propblem with items not in memory
+            var memoryObject = IsMemoryObject<T>();
+            
+            //if memoryobject, get whats in memory. otherwise search the database
+            var objectList = memoryObject ? context.GetAllObjects(typeof(T)) :
+                             context.Search(filter ?? "ID > 0", typeof (T), null, 0, null, false);
             
             objectList = _sortService.Sort(objectList, sort);
             objectList = _filterService.Filter(objectList, filter);
@@ -72,7 +78,16 @@ namespace Wipcore.eNova.Api.WebApi.Services
         }
 
 
+        private bool IsMemoryObject<T>()
+        {
+            var cmoClass = typeof(T).GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType", 
+                            BindingFlags.Instance |
+                            BindingFlags.NonPublic |
+                            BindingFlags.Public) as Type;
+            var loadOnDemand = cmoClass?.GetCustomAttribute<LoadOnDemandAttribute>(inherit: true);
 
+            return loadOnDemand == null;
+        }
 
 
 
