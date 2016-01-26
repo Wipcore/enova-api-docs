@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.eNova.Api.WebApi.Mappers;
-using Wipcore.eNova.Api.WebApi.Models;
 using Wipcore.eNova.Api.WebApi.Services;
-using Wipcore.eNova.Api.Interfaces;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Api.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,21 +22,17 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _productService = productService;
             _objectService = objectService;
         }
-
-        // GET: api/values
-        [HttpGet]
-        public IEnumerable<IDictionary<string, object>> Get(string properties = null, int page = 0, int size = 20, string sort = null, string filter = null)
-        {
-            
-
-            //return _productService.GetProducts(properties, page, size, sort);
-            return _objectService.Get<EnovaBaseProduct>(properties: properties, filter: filter, pageNumber: page, pageSize: size, sort: sort);
-        }
         
-        [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(string identifier, string properties)
+        [HttpGet(/*"{location}"*/)]
+        public IEnumerable<IDictionary<string, object>> Get(string location = "default", string properties = null, int page = 0, int size = 20, string sort = null, string filter = null)
         {
-            return _productService.GetProduct(identifier, properties);
+            return _objectService.Get<EnovaBaseProduct>(location: location, properties: properties, filter: filter, pageNumber: page, pageSize: size, sort: sort);
+        }
+
+        [HttpGet("{identifier}")]
+        public IDictionary<string, object> Get(string identifier, string properties = null)
+        {
+            return _objectService.Get<EnovaBaseProduct>(identifier, properties);
         }
 
         // GET api/values/5

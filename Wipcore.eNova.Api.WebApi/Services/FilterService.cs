@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Generics;
-using Wipcore.eNova.Api.Interfaces;
+using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.eNova.Api.WebApi.Services
 {
