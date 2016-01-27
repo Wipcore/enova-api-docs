@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 
-namespace Wipcore.eNova.Api.Interfaces
+namespace Wipcore.Enova.Api.Interfaces
 {
     public interface IMappingService
     {
