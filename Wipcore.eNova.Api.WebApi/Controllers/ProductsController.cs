@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Filters;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
+using System.Web.Http;
+using Wipcore.eNova.Api.WebApi.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Wipcore.eNova.Api.WebApi.Controllers
 {
+    [Route("api/{market}/[controller]")]
     [Route("api/[controller]")]
-    public class ProductsController : Controller
+    public class ProductsController : ApiController
     {
-        private readonly IProductService _productService;
         private readonly IObjectService _objectService;
 
-        public ProductsController(IProductService productService, IObjectService objectService)
+        public ProductsController( IObjectService objectService)
         {
-            _productService = productService;
             _objectService = objectService;
         }
         
         [HttpGet(/*"{location}"*/)]
-        public IEnumerable<IDictionary<string, object>> Get(string location = "default", string properties = null, int page = 0, int size = 20, string sort = null, string filter = null)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
-            return _objectService.Get<EnovaBaseProduct>(location: location, properties: properties, filter: filter, pageNumber: page, pageSize: size, sort: sort);
+            return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters);
         }
 
         [HttpGet("{identifier}")]
@@ -60,11 +62,11 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         {
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        public IEnumerable<IDictionary<string, object>> GetFilteredProducts(string properties, string filter, int page, int size)
-        {
-            return _productService.GetFilteredProducts(properties, filter, page, size);
-        }
+        //[HttpGet]
+        //[Route("[action]")]
+        //public IEnumerable<IDictionary<string, object>> GetFilteredProducts(string properties, string filter, int page, int size)
+        //{
+        //    return _productService.GetFilteredProducts(properties, filter, page, size);
+        //}
     }
 }

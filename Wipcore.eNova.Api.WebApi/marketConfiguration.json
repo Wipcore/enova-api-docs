@@ -1,0 +1,10 @@
+{
+  "sv": {
+    "language": "sv",
+    "currency": "sek"
+  },
+  "eu": {
+    "language": "en",
+    "currency": "euro"
+  }
+}

@@ -9,7 +9,7 @@ namespace Wipcore.Enova.Api.Interfaces
 {
     public interface IObjectService
     {
-        IEnumerable<IDictionary<string, object>> Get<T>(string location, int pageNumber, int pageSize, string properties, string sort, string filter) where T : BaseObject;
+        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters) where T : BaseObject;
 
         IDictionary<string, object> Get<T>(string identifier, string properties = null) where T : BaseObject;
     }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNet.Mvc;
+using Wipcore.eNova.Api.WebApi.Models;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
@@ -19,10 +21,10 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
-        [HttpGet(/*"{location}"*/)]
-        public IEnumerable<IDictionary<string, object>> Get(string location = "default", string properties = null, int page = 0, int size = 20, string sort = null, string filter = null)
+        
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
-            return _objectService.Get<EnovaOrder>(location: location, properties: properties, filter: filter, pageNumber: page, pageSize: size, sort: sort);
+            return _objectService.Get<EnovaOrder>(requestContext, getParameters);
         }
 
         [HttpGet("{identifier}")]

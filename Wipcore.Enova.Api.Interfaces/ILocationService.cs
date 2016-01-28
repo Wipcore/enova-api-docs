@@ -7,13 +7,6 @@ namespace Wipcore.Enova.Api.Interfaces
 {
     public interface ILocationService
     {
-        IDictionary<string, string> GetParametersFromLocationConfiguration(string type, string location);
+        IGetParametersModel GetParametersFromLocationConfiguration(string type, IGetParametersModel parameters);
     }
-
-    //public class LocationConfiguration
-    //{
-    //    string Name { get; set; }
-
-
-    //}
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wipcore.eNova.Api.WebApi.Models;
 using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.eNova.Api.WebApi.Services
@@ -16,22 +17,23 @@ namespace Wipcore.eNova.Api.WebApi.Services
             _configuration = configuration;            
         }
 
-        public IDictionary<string, string> GetParametersFromLocationConfiguration(string type, string location)
+        public IGetParametersModel GetParametersFromLocationConfiguration(string type, IGetParametersModel parameters)
         {
-            var config = _configuration.GetSection(type)?.GetSection(location);
-            //var locationConfig = typeConfig[location];
-
+            var config = _configuration.GetSection(type)?.GetSection(parameters.Location);
+            
             if (config == null)
                 return null;
 
-            var configDictionary = new Dictionary<string, string>();
-            foreach(var setting in config.GetChildren())
-            {
-                configDictionary.Add(setting.Key, setting.Value);
-            }
+            var settings = config.GetChildren().ToList();
 
-
-            return configDictionary;
+            //if the parameter is not already set, retrive it from the settings
+            parameters.Filter = parameters.Filter ?? settings.FirstOrDefault(x => x.Key == "filter")?.Value;
+            parameters.Properties = parameters.Properties ?? settings.FirstOrDefault(x => x.Key == "properties")?.Value;
+            parameters.Sort = parameters.Sort ?? settings.FirstOrDefault(x => x.Key == "sort")?.Value;
+            parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "0");
+            parameters.Size = parameters.Size ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "size")?.Value ?? "20");
+            
+            return parameters;
         }
     }
 }
