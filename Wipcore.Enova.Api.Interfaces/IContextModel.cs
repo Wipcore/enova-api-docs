@@ -5,6 +5,8 @@
         string Market { get; set; }
         string Language { get; set; }
         string Currency { get; set; }
-        string User { get; set; }
+        string Customer { get; set; }
+        string Admin { get; set; }
+        string Pass { get; set; }
     }
 }

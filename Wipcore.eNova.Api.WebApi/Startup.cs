@@ -27,6 +27,7 @@ namespace Wipcore.eNova.Api.WebApi
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile("locationConfiguration.json")
+                .AddJsonFile("marketConfiguration.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
 
