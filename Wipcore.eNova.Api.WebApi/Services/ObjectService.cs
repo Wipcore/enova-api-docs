@@ -38,12 +38,13 @@ namespace Wipcore.eNova.Api.WebApi.Services
             _contextService = contextService;
         }
 
-        public IDictionary<string, object> Get<T>(string identifier, string properties) where T : BaseObject
+        public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
         {
-            var context = EnovaContextProvider.GetCurrentContext();//TODO config here too?
-            var obj = context.FindObject<T>(identifier);
+            var context = _contextService.GetContext();
+            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T).Name, getParameters);
 
-            return _mappingService.GetProperties(obj, properties);
+            var obj = context.FindObject<T>(identifier);
+            return _mappingService.GetProperties(obj, getParameters.Properties);
         }
 
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters) where T : BaseObject

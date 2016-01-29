@@ -14,8 +14,8 @@ using Wipcore.eNova.Api.WebApi.Models;
 
 namespace Wipcore.eNova.Api.WebApi.Controllers
 {
-    [Route("api/{market}/[controller]")]
     [Route("api/[controller]")]
+    [Route("api/{market}/[controller]")]
     public class ProductsController : ApiController
     {
         private readonly IObjectService _objectService;
@@ -32,9 +32,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         }
 
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(string identifier, string properties = null)
+        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
-            return _objectService.Get<EnovaBaseProduct>(identifier, properties);
+            return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, identifier);
         }
 
         // GET api/values/5

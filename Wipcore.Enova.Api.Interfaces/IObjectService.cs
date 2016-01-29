@@ -11,6 +11,6 @@ namespace Wipcore.Enova.Api.Interfaces
     {
         IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters) where T : BaseObject;
 
-        IDictionary<string, object> Get<T>(string identifier, string properties = null) where T : BaseObject;
+        IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject;
     }
 }
