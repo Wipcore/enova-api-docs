@@ -12,5 +12,8 @@ namespace Wipcore.Enova.Api.Interfaces
         IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters) where T : BaseObject;
 
         IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject;
+
+        //TODO different interface for save?
+        IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject; 
     }
 }

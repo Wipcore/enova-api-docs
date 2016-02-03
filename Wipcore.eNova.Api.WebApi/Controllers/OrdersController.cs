@@ -22,16 +22,22 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
-        
+        [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
             return _objectService.Get<EnovaOrder>(requestContext, getParameters);
         }
 
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
         {
             return _objectService.Get<EnovaOrder>(requestContext, getParameters, identifier);
+        }
+
+        [HttpPut()]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaOrder>(requestContext, values);
         }
     }
 }

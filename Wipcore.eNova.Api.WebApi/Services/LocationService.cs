@@ -19,6 +19,8 @@ namespace Wipcore.eNova.Api.WebApi.Services
 
         public IGetParametersModel GetParametersFromLocationConfiguration(string type, IGetParametersModel parameters)
         {
+            parameters = parameters ?? new GetParametersModel();
+
             var config = _configuration.GetSection(type)?.GetSection(parameters.Location);
             
             if (config == null)

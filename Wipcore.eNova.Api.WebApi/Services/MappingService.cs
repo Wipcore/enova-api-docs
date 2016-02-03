@@ -10,7 +10,7 @@ using System.Runtime.Caching;
 
 namespace Wipcore.eNova.Api.WebApi.Services
 {
-    public class MappingService : IMappingService
+    public class MappingService : IMappingFromService, IMappingToService
     {
         private readonly IConfigurationRoot _configuration;
         private readonly IEnumerable<IPropertyMapper> _mappers;
@@ -23,40 +23,55 @@ namespace Wipcore.eNova.Api.WebApi.Services
             _cache = cache;
         }
 
-        public IEnumerable<IDictionary<string, object>> GetProperties(BaseObjectList objects, string properties)
+        public IEnumerable<IDictionary<string, object>> MapFrom(BaseObjectList objects, string properties)
         {
             foreach (BaseObject obj in objects)//TODO parallel
             {
-                var dynamicObject = GetProperties(obj, properties);
+                var dynamicObject = MapFrom(obj, properties);
                 yield return dynamicObject;
             }
         }
 
-        public IDictionary<string, object> GetProperties(BaseObject obj, string properties)
+        public IDictionary<string, object> MapFrom(BaseObject obj, string properties)
         {
+            if (properties == null)
+                properties = "identifier";
+
             var dynamicObject = new Dictionary<string, Object>();
-
-            if (String.IsNullOrEmpty(properties))
-            {
-                // Get properties from configuration
-                properties = _configuration["properties:product"] ?? "Identifier"; //TODO not just products
-            }
-
+            
             foreach (var property in properties.Split(','))
             {
-                var mapper = GetMapper(obj.GetType(), property);
-                var value = mapper != null ? mapper.Map(obj) : obj.GetProperty(property);
+                var mapper = GetMapper(obj.GetType(), property, MapType.MapFrom);
+                var value = mapper != null ? mapper.MapFrom(obj) : obj.GetProperty(property);
                 dynamicObject.Add(property, value);
             }
             return dynamicObject;
         }
 
-        private IPropertyMapper GetMapper(Type type, string propertyName)
+        public IDictionary<string, object> MapTo(BaseObject obj, IDictionary<string, object> values)
+        {
+            foreach (var property in values)
+            {
+                var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
+                if (mapper != null)
+                {
+                    var mappedValue = mapper.MapTo(obj);
+                    values[property.Key] = mappedValue;
+                }
+                else
+                    obj.SetProperty(property.Key, property.Value);
+            }
+
+            return values;
+        }
+
+        private IPropertyMapper GetMapper(Type type, string propertyName, MapType mapType)
         {
             var key = type.FullName + propertyName;
 
             var lazyMapper = new Lazy<IPropertyMapper>(() => {
                 return  _mappers.
+                Where(x => x.MapType == MapType.MapAll || x.MapType == mapType).
                 Where(x => x.Name == propertyName.ToLower()).
                 Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
                 OrderBy(x => x.Priority).FirstOrDefault();                
@@ -66,5 +81,7 @@ namespace Wipcore.eNova.Api.WebApi.Services
 
             return (cachedMapper ?? lazyMapper).Value;            
         }
+
+        
     }
 }
