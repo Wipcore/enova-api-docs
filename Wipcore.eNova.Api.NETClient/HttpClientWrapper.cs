@@ -18,7 +18,7 @@ namespace Wipcore.eNova.Api.NETClient
             _settings = settings;
             _client = new HttpClient();
             _client.BaseAddress = new Uri(_settings.Url);
-            if (_settings.Timeout != null)
+            if (_settings.Timeout != TimeSpan.Zero)
                 _client.Timeout = _settings.Timeout;
         }
 
