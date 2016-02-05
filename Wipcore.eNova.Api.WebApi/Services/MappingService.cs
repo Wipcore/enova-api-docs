@@ -37,7 +37,7 @@ namespace Wipcore.eNova.Api.WebApi.Services
             if (properties == null)
                 properties = "identifier";
 
-            var dynamicObject = new Dictionary<string, Object>();
+            var dynamicObject = new Dictionary<string, Object>(); //TODO map nested objects somehow
             
             foreach (var property in properties.Split(','))
             {

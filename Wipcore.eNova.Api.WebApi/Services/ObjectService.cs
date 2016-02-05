@@ -20,7 +20,6 @@ namespace Wipcore.eNova.Api.WebApi.Services
 {
     public class ObjectService : IObjectService
     {
-        private readonly IConfigurationRoot _configuration;
         private readonly IPagingService _pagingService;
         private readonly ISortService _sortService;
         private readonly IFilterService _filterService;
@@ -30,10 +29,9 @@ namespace Wipcore.eNova.Api.WebApi.Services
         private readonly IContextService _contextService;
 
 
-        public ObjectService(IConfigurationRoot configuration, IPagingService pagingService, ISortService sortService, IFilterService filterService, 
-            IMappingFromService mappingFromService, IMappingToService mappingToService, ILocationService locationService, IContextService contextService)
+        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromService mappingFromService,
+            IMappingToService mappingToService, ILocationService locationService, IContextService contextService)
         {
-            _configuration = configuration;
             _pagingService = pagingService;
             _sortService = sortService;
             _filterService = filterService;
@@ -98,14 +96,9 @@ namespace Wipcore.eNova.Api.WebApi.Services
             }
 
             if (obj == null)
-            {
-                var type = typeof (T).GetMostDerivedType();
-                obj = Activator.CreateInstance(type, context) as T;
-            }
+                obj = EnovaObjectCreationHelper.CreateNew<T>(context);
             else
-            {
                 obj.Edit();
-            }
 
             var resultingObject = _mappingToService.MapTo(obj, values);
             obj.Save();
