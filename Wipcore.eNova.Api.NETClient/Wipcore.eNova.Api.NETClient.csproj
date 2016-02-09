@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="HttpClientSettings.cs" />
     <Compile Include="HttpClientWrapper.cs" />
+    <Compile Include="ListModel.cs" />
     <Compile Include="ProductClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

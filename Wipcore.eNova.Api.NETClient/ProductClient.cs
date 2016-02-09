@@ -16,25 +16,34 @@ namespace Wipcore.eNova.Api.NETClient
             _clientWrapper = new HttpClientWrapper(clientSettings);
         }
 
-        public IDictionary<string, object> GetProduct(string id)
+        public async Task<IDictionary<string, object>> GetProduct(string id)
         {
-            return _clientWrapper.Execute<IDictionary<string, object>>("api/products/" + id).Result;
+            return await _clientWrapper.Execute<IDictionary<string, object>>("api/products/" + id);
         }
 
-        public IEnumerable<IDictionary<string, object>> ListProducts(int pageSize, int page, out int pageCount, out string prevPageLink, out string nextPageLink)
+        public async Task<ListModel> ListProducts(int pageSize, int page)
         {
-            var response = _clientWrapper.Execute("api/products?size=" + pageSize.ToString() + "&page=" + page.ToString());
-            string json = response.Result.Content.ReadAsStringAsync().Result;
+            var response = await _clientWrapper.Execute("api/products?size=" + pageSize.ToString() + "&page=" + page.ToString());
+            var json = response.Content.ReadAsStringAsync();
 
-            string pagesCount = response.Result.Headers.GetValues("X-Paging-PageCount").FirstOrDefault();
+            var model = new ListModel();
+
+            model.Objects = JsonConvert.DeserializeObject<IEnumerable<IDictionary<string, object>>>(json.Result);
+
+            int pageCount, recordCount;
+            string pagesCount = response.Headers.GetValues("X-Paging-PageCount").FirstOrDefault();
             Int32.TryParse(pagesCount, out pageCount);
-            string currentPageSize = response.Result.Headers.GetValues("X-Paging-PageSize").FirstOrDefault();
-            string objCount = response.Result.Headers.GetValues("X-Paging-TotalRecordCount").FirstOrDefault();
-            string currentPage = response.Result.Headers.GetValues("X-Paging-PageNo").FirstOrDefault();
-            prevPageLink = response.Result.Headers.GetValues("X-Paging-PreviousPage").FirstOrDefault();
-            nextPageLink = response.Result.Headers.GetValues("X-Paging-NextPage").FirstOrDefault();
+            string recordsCount = response.Headers.GetValues("X-Paging-TotalRecordCount").FirstOrDefault();
+            Int32.TryParse(recordsCount, out recordCount);
 
-            return JsonConvert.DeserializeObject<IEnumerable<IDictionary<string, object>>>(json);
+            model.PageCount = pageCount;
+            model.RecordCount = recordCount;
+            model.PageSize = pageSize;
+            model.CurrentPageIndex = page;
+            model.PreviousPage = response.Headers.GetValues("X-Paging-PreviousPage").FirstOrDefault();
+            model.NextPage = response.Headers.GetValues("X-Paging-NextPage").FirstOrDefault();
+
+            return model;
         }
     }
 }
