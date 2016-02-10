@@ -8,15 +8,16 @@ namespace Wipcore.eNova.Api.WebApi.Models
 {
     public class CartModel : ICartModel //TODO handle promos, discounted prices and such stuff. Also shipping 
     {
-        public CartModel(IEnumerable<CartRow> cartRows)
+        public CartModel(IEnumerable<RowModel> rows)
         {
-            CartRows = cartRows;
+            Rows = rows;
         }
 
-        public IEnumerable<ICartRow> CartRows { get; set; }
+        public IEnumerable<IRowModel> Rows { get; set; }
         public string Name { get; set; }
 
         public string Identifier { get; set; }
+        public string Customer { get; set; }
 
         public bool Persist { get; set; }
 
@@ -26,7 +27,7 @@ namespace Wipcore.eNova.Api.WebApi.Models
         public IDictionary<string, object> AdditionalValues { get; set; }
     }
 
-    public class CartRow : ICartRow
+    public class RowModel : IRowModel
     {
         public string Product { get; set; }
         public double Quantity { get; set; }

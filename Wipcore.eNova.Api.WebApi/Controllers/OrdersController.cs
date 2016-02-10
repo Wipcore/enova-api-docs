@@ -16,10 +16,12 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
     public class OrdersController : ApiController
     {
         private readonly IObjectService _objectService;
+        private readonly IOrderService _orderService;
 
-        public OrdersController(IObjectService objectService)
-        {            
+        public OrdersController(IObjectService objectService, IOrderService orderService)
+        {
             _objectService = objectService;
+            _orderService = orderService;
         }
 
         [HttpGet()]
@@ -38,6 +40,14 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
             return _objectService.Save<EnovaOrder>(requestContext, values);
+        }
+
+        [HttpPost()]
+        public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
+        {
+            if (String.IsNullOrEmpty(cart.Customer))
+                cart.Customer = requestContext.Customer;
+            return _orderService.CreateOrder(cart);
         }
     }
 }

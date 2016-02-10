@@ -36,19 +36,21 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         [HttpGet("{identifier}")]
         public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
-            return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaCart>(requestContext, getParameters, identifier);
         }
 
         [HttpPut()]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
-            return _objectService.Save<EnovaBaseProduct>(requestContext, values);
+            return _objectService.Save<EnovaCart>(requestContext, values);
         }
 
         [HttpPost()]
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {
-            return _cartService.CalculateCart(cart, requestContext.Customer);
+            if (String.IsNullOrEmpty(cart.Customer))
+                cart.Customer = requestContext.Customer;
+            return _cartService.CalculateCart(cart);
         }
     }
 }

@@ -9,11 +9,12 @@ namespace Wipcore.eNova.Api.WebApi.Helpers
     public static class EnovaObjectCreationHelper
     {
 
-        public static T CreateNew<T>(Context context) where T : BaseObject
+        public static T CreateNew<T>(Context context, params object[] args) where T : BaseObject
         {
             var type = typeof (T).GetMostDerivedType();
-            var item = (T)Activator.CreateInstance(type, context);
-
+            var allArgs = new[] {context}.Union(args).ToArray();
+            var item = (T)Activator.CreateInstance(type, allArgs);
+            //var item = (T)Activator.CreateInstance(type, context);
             return item;
         }
     }

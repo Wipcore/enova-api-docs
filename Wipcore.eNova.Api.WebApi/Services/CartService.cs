@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.eNova.Api.WebApi.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
@@ -17,28 +18,24 @@ namespace Wipcore.eNova.Api.WebApi.Services
         private readonly IContextService _contextService;
         private readonly IMappingToService _mappingToService;
 
+
         public CartService(IContextService contextService, IMappingToService mappingToService)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
         }
 
-        public ICartModel CalculateCart(ICartModel currentCart, string customerIdentifier)
+        public ICartModel CalculateCart(ICartModel currentCart)
         {
             if (currentCart == null)
-                return new CartModel(new List<CartRow>());
+                return new CartModel(new List<RowModel>());
+            if (currentCart.Rows == null)
+                currentCart.Rows = new List<RowModel>();
 
             var context = _contextService.GetContext();
 
             var enovaCart = context.FindObject<EnovaCart>(currentCart.Identifier ?? "") ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
             enovaCart.Edit();
-
-            if (currentCart.CartRows == null)
-                currentCart.CartRows = new List<CartRow>();
-
-            var customer = !String.IsNullOrEmpty(customerIdentifier) ? EnovaCustomer.Find(context, customerIdentifier) : null;
-            if (customer != null)
-                enovaCart.Customer = customer;
 
             MapCart(context, enovaCart, currentCart);//make sure all rows match
 
@@ -47,7 +44,7 @@ namespace Wipcore.eNova.Api.WebApi.Services
                 enovaCart.Save();
 
             var enovaCartItems = enovaCart.GetCartItems<EnovaProductCartItem>().ToList();
-            foreach (var cartRow in currentCart.CartRows) //fill in price information
+            foreach (var cartRow in currentCart.Rows) //fill in price information
             {
                 var item = enovaCartItems.First(x => x.Product.Identifier == cartRow.Product);
                 cartRow.PriceExclTax = item.GetPriceExclTax();
@@ -65,10 +62,17 @@ namespace Wipcore.eNova.Api.WebApi.Services
             return currentCart;
         }
 
-        private void MapCart(Context context, EnovaCart enovaCart, ICartModel currentCart)
+        public void MapCart(Context context, EnovaCart enovaCart, ICartModel currentCart)
         {
             enovaCart.Identifier = currentCart.Identifier ?? enovaCart.Identifier;
+            var customer = !String.IsNullOrEmpty(currentCart.Customer) ? EnovaCustomer.Find(context, currentCart.Customer) : null;
+            if (customer != null)
+                enovaCart.Customer = customer;
+            else
+                currentCart.Customer = enovaCart.Customer?.Identifier;
+
             enovaCart.Name = currentCart.Name ?? enovaCart.Name;
+            currentCart.Name = enovaCart.Name;
 
             if (currentCart.AdditionalValues != null)
             {
@@ -76,14 +80,14 @@ namespace Wipcore.eNova.Api.WebApi.Services
             }
 
             //if no rows in given cart, make sure no rows in enova cart
-            if (currentCart.CartRows == null || !currentCart.CartRows.Any())
+            if (currentCart.Rows == null || !currentCart.Rows.Any())
             {
                 enovaCart.DeleteCartItems(typeof(EnovaProductCartItem));
             }
             else
             {
                 //go through all rows and make sure they match
-                foreach (var cartItem in currentCart.CartRows)
+                foreach (var cartItem in currentCart.Rows)
                 {
                     var product = EnovaBaseProduct.Find(context, cartItem.Product);
                     var enovaCartItem = enovaCart.FindCartItem(product);
@@ -107,6 +111,5 @@ namespace Wipcore.eNova.Api.WebApi.Services
                 }
             }
         }
-
     }
 }
