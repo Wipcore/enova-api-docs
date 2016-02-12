@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Generics;
 using Wipcore.Enova.Api.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.Caching;
+using Fasterflect;
 
 namespace Wipcore.eNova.Api.WebApi.Services
 {
@@ -42,7 +44,7 @@ namespace Wipcore.eNova.Api.WebApi.Services
             foreach (var property in properties.Split(','))
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFrom);
-                var value = mapper != null ? mapper.MapFrom(obj) : obj.GetProperty(property);
+                var value = mapper != null ? mapper.MapFrom(obj) : MapProperty(property.Split('.'), obj);
                 dynamicObject.Add(property, value);
             }
             return dynamicObject;
@@ -63,6 +65,20 @@ namespace Wipcore.eNova.Api.WebApi.Services
             }
 
             return values;
+        }
+
+        private object MapProperty(string[] propertyNames, BaseObject obj)
+        {
+            for (var i = 0; i < propertyNames.Length; i++)
+            {
+                if (i == propertyNames.Length - 1)
+                    return obj.GetProperty(propertyNames[i]);
+                obj = obj.GetPropertyValue(propertyNames[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
+
+                if (obj == null)
+                    break;
+            }
+            return null;
         }
 
         private IPropertyMapper GetMapper(Type type, string propertyName, MapType mapType)
