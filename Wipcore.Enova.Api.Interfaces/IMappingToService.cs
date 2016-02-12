@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Wipcore.Core.SessionObjects;
+
+namespace Wipcore.Enova.Api.Interfaces
+{
+    public interface IMappingToService
+    {
+        //IEnumerable<IDictionary<string, object>> MapTo(IEnumerable<BaseObject> objects, IDictionary<string, object> values);
+
+        IDictionary<string, object> MapTo(BaseObject obj, IDictionary<string, object> values);
+    }
+}

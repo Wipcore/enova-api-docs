@@ -13,6 +13,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public bool InheritMapper => true;
 
         public int Priority => 0;
+        public MapType MapType => MapType.MapFrom;
 
         public string Name => "priceincltax";
 
@@ -20,11 +21,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public Type Type => typeof(EnovaBaseProduct);
         
 
-        public object Map(BaseObject obj)
+        public object MapFrom(BaseObject obj)
         {
             var product = (EnovaBaseProduct)obj;
             var price = product.GetPrice(includeTax:false);
             return price;
+        }
+
+        public object MapTo(BaseObject obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

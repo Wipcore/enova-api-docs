@@ -37,36 +37,10 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, identifier);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPut()]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
-            return "value";
+            return _objectService.Save<EnovaBaseProduct>(requestContext, values);
         }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        //[HttpGet]
-        //[Route("[action]")]
-        //public IEnumerable<IDictionary<string, object>> GetFilteredProducts(string properties, string filter, int page, int size)
-        //{
-        //    return _productService.GetFilteredProducts(properties, filter, page, size);
-        //}
     }
 }
