@@ -13,10 +13,10 @@ using Wipcore.Enova.Api.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNet.Http;
 using Wipcore.Core;
-using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api.WebApi.Models;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class ObjectService : IObjectService
     {

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Caching;
-using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.eNova.Api.WebApi.Services;
+using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api.WebApi.Services;
 
-namespace Wipcore.eNova.Api.WebApi
+namespace Wipcore.Enova.Api.WebApi
 {
     public class WebApiModule : Autofac.Module
     {

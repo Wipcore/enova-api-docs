@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 
-namespace Wipcore.eNova.Api.WebApi.Helpers
+namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class EnovaObjectCreationHelper
     {

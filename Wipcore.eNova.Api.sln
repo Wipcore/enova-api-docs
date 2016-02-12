@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.eNova.Api.WebApi", "Wipcore.eNova.Api.WebApi\Wipcore.eNova.Api.WebApi.xproj", "{FC13CD2A-431D-4E01-8439-F0A51B42B96E}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.WebApi", "Wipcore.eNova.Api.WebApi\Wipcore.Enova.Api.WebApi.xproj", "{FC13CD2A-431D-4E01-8439-F0A51B42B96E}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Interfaces", "Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj", "{D8AB7EF1-C695-4106-859A-536C6351EC3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wipcore.eNova.Api.NETClient", "Wipcore.eNova.Api.NETClient\Wipcore.eNova.Api.NETClient.csproj", "{112986C5-1E0F-46E8-9254-A9AB9270A396}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wipcore.Enova.Api.NETClient", "Wipcore.eNova.Api.NETClient\Wipcore.Enova.Api.NETClient.csproj", "{112986C5-1E0F-46E8-9254-A9AB9270A396}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Models", "Wipcore.eNova.Api.Models\Wipcore.Enova.Api.Models.xproj", "{07E32DFC-D04D-4768-B592-99BBA448FE1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{112986C5-1E0F-46E8-9254-A9AB9270A396}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{112986C5-1E0F-46E8-9254-A9AB9270A396}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{112986C5-1E0F-46E8-9254-A9AB9270A396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07E32DFC-D04D-4768-B592-99BBA448FE1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07E32DFC-D04D-4768-B592-99BBA448FE1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07E32DFC-D04D-4768-B592-99BBA448FE1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07E32DFC-D04D-4768-B592-99BBA448FE1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

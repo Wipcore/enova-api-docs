@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System.Runtime.Caching;
 using Fasterflect;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class MappingService : IMappingFromService, IMappingToService
     {

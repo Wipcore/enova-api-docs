@@ -7,10 +7,10 @@ using Wipcore.Core.SessionObjects;
 using Fasterflect;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
-using Wipcore.eNova.Api.WebApi.Models;
-using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Helpers;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.Enova.Api.WebApi.Mappers
 {
     public abstract class LanguageMapper<TEnova, TModel> : BaseMapper<TEnova, TModel>
         where TEnova : BaseObject

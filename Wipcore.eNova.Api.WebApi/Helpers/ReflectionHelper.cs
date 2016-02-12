@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace Wipcore.eNova.Api.WebApi.Helpers
+namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class ReflectionHelper
     {

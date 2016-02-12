@@ -8,10 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Fasterflect;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Core;
-using Wipcore.eNova.Api.WebApi.Mappers;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Mappers;
+using Wipcore.Enova.Api.WebApi.Models;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class ProductService : IProductService
     {

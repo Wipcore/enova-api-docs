@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
-using Wipcore.eNova.Api.WebApi.Models;
-using Wipcore.eNova.Api.WebApi.Services;
+using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
 
-namespace Wipcore.eNova.Api.WebApi.Controllers
+namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [Route("api/{market}/[controller]")]

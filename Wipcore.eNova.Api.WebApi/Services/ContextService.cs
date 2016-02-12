@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     
 
@@ -105,7 +105,7 @@ namespace Wipcore.eNova.Api.WebApi.Services
         //{
         //    if (String.IsNullOrEmpty(username))
         //    {
-        //        var config = _configuration.GetSection("eNova").GetChildren().ToList();
+        //        var config = _configuration.GetSection("Enova").GetChildren().ToList();
         //        username = config.First(x => x.Key == "Username").Value;
         //        password = config.First(x => x.Key == "Password").Value;
         //    }
@@ -118,7 +118,7 @@ namespace Wipcore.eNova.Api.WebApi.Services
 
         private void LoginDefaultAdmin(Context enovaContext)
         {
-            var config = _configuration.GetSection("eNova").GetChildren().ToList();
+            var config = _configuration.GetSection("Enova").GetChildren().ToList();
             var username = config.First(x => x.Key == "Username").Value;
             var pass = config.First(x => x.Key == "Password").Value;
 

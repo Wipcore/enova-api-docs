@@ -10,11 +10,11 @@ using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Wipcore.eNova.Api;
-using Wipcore.eNova.Api.WebApi.Models;
-using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api;
+using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Helpers;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.Enova.Api.WebApi.Mappers
 {
     public abstract class BaseMapper<TEnova, TModel>
         where TEnova : BaseObject

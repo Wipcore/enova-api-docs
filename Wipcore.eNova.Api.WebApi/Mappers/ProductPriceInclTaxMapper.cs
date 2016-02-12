@@ -6,7 +6,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.Enova.Api.WebApi.Mappers
 {
     public class ProductPriceInclTaxMapper : IPropertyMapper
     {

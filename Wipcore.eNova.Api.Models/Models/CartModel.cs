@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Enova.Api.Interfaces;
 
-namespace Wipcore.eNova.Api.WebApi.Models
+namespace Wipcore.Enova.Api.WebApi.Models
 {
     public class CartModel : ICartModel //TODO handle promos, discounted prices and such stuff. Also shipping 
     {

@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Models;
 using Wipcore.Enova.Api.Interfaces;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class LocationService : ILocationService
     {

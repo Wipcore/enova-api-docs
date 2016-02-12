@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
-using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.eNova.Api.WebApi.Mappers;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api.WebApi.Mappers;
+using Wipcore.Enova.Api.WebApi.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 using static System.String;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class CartService : ICartService
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NETClient
 {
     public class ProductClient
     {

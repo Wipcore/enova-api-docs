@@ -6,7 +6,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Generics;
 using Wipcore.Enova.Api.Interfaces;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class FilterService : IFilterService
     {

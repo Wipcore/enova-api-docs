@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
-using Wipcore.eNova.Api.WebApi.Services;
+using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Interfaces;
 
-namespace Wipcore.eNova.Api.WebApi.Controllers
+namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     public abstract class ApiController : Controller
     {

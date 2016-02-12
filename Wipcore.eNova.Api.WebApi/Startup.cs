@@ -13,11 +13,11 @@ using Microsoft.AspNet.Diagnostics;
 using Wipcore.Enova.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Connectivity;
-using Wipcore.eNova.Api.WebApi.Services;
-using Wipcore.eNova.Api.WebApi.Mappers;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Services;
+using Wipcore.Enova.Api.WebApi.Mappers;
+using Wipcore.Enova.Api.WebApi.Models;
 
-namespace Wipcore.eNova.Api.WebApi
+namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
@@ -41,14 +41,14 @@ namespace Wipcore.eNova.Api.WebApi
             EnovaSystemFacade.Current.LoadAllAssemblies();
 
             var settings = new InMemoryConnectionSettings();
-            settings.DatabaseConnection = Configuration.Get<String>("eNova:ConnectionString");
-            settings.HistoryDatabaseConnection = Configuration.Get<String>("eNova:RevisionConnectionString");
-            settings.CertificateKey = Configuration.Get<String>("eNova:CertificateKey");
-            settings.CertificatePassword = Configuration.Get<String>("eNova:CertificatePassword");
-            settings.UserName = Configuration.Get<String>("eNova:Username");
-            settings.Password = Configuration.Get<String>("eNova:Password");
-            settings.LogPath = Configuration.Get<String>("eNova:LogPath");
-            settings.LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel)Convert.ToInt32(Configuration.Get<String>("eNova:LogLevel"));
+            settings.DatabaseConnection = Configuration.Get<String>("Enova:ConnectionString");
+            settings.HistoryDatabaseConnection = Configuration.Get<String>("Enova:RevisionConnectionString");
+            settings.CertificateKey = Configuration.Get<String>("Enova:CertificateKey");
+            settings.CertificatePassword = Configuration.Get<String>("Enova:CertificatePassword");
+            settings.UserName = Configuration.Get<String>("Enova:Username");
+            settings.Password = Configuration.Get<String>("Enova:Password");
+            settings.LogPath = Configuration.Get<String>("Enova:LogPath");
+            settings.LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel)Convert.ToInt32(Configuration.Get<String>("Enova:LogLevel"));
 
             EnovaSystemFacade.Current.Settings = settings;
 

@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
-using Wipcore.eNova.Api.WebApi.Services;
+using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
 using System.Web.Http;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Wipcore.eNova.Api.WebApi.Controllers
+namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [Route("api/{market}/[controller]")]

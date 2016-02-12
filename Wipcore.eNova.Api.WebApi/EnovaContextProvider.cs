@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Http;
 using Wipcore.Core.SessionObjects;
 
-namespace Wipcore.eNova.Api.WebApi
+namespace Wipcore.Enova.Api.WebApi
 {
     public static class EnovaContextProvider
     {

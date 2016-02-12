@@ -7,8 +7,8 @@
     <ProjectGuid>{112986C5-1E0F-46E8-9254-A9AB9270A396}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wipcore.eNova.Api.NETClient</RootNamespace>
-    <AssemblyName>Wipcore.eNova.Api.NETClient</AssemblyName>
+    <RootNamespace>Wipcore.Enova.Api.NETClient</RootNamespace>
+    <AssemblyName>Wipcore.Enova.Api.NETClient</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

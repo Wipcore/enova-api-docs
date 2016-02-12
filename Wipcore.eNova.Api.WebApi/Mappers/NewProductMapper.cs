@@ -7,9 +7,9 @@ using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
-using Wipcore.eNova.Api.WebApi.Models;
+using Wipcore.Enova.Api.WebApi.Models;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.Enova.Api.WebApi.Mappers
 {
     public class NewProductMapper
     {

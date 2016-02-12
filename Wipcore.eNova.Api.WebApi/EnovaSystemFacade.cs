@@ -6,7 +6,7 @@ using System.Linq;
 using Wipcore.Core;
 using Wipcore.Enova.Connectivity;
 
-namespace Wipcore.eNova.Api.WebApi
+namespace Wipcore.Enova.Api.WebApi
 {
     /// <summary>
     /// Provides an easy way to start up an Enova system.
@@ -99,7 +99,7 @@ namespace Wipcore.eNova.Api.WebApi
 
         
         /// <summary>
-        /// Starts a local Wipcore eNova system.
+        /// Starts a local Wipcore Enova system.
         /// </summary>
         private InMemoryConnection StartSystemInMemory()
         {

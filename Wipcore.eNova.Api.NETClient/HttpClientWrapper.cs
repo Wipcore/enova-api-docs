@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NETClient
 {
     public class HttpClientWrapper
     {

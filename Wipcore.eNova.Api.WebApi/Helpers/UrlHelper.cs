@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Http;
 
-namespace Wipcore.eNova.Api.WebApi.Helpers
+namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class UrlHelper
     {

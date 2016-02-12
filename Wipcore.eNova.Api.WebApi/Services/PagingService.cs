@@ -8,9 +8,9 @@ using Wipcore.Enova.Api.Interfaces;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using System.Web;
-using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api.WebApi.Helpers;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class PagingService : IPagingService
     {
