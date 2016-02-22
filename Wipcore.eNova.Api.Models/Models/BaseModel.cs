@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Wipcore.Enova.Api.WebApi.Models
+namespace Wipcore.Enova.Api.Models
 {
     public class BaseModel
     {

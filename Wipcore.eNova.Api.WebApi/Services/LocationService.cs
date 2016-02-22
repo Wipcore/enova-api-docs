@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Services

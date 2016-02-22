@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+  "description": "Wipcore.eNova.Api.NetClient Class Library",
+  "authors": [ "fredrik.astrand" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "net451": {}
+  },
+  "dependencies": {
+    "Newtonsoft.Json": "6.0.6",
+    "Wipcore.eNova.Api.Models": "1.0.0-*",
+	"System.Net.Http": "4.0.1-beta-23516"
+  }
+}

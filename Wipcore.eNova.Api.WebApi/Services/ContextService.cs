@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;

@@ -11,7 +11,7 @@ using Wipcore.Enova.Generics;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Wipcore.Enova.Api;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers

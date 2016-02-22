@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class ProductClient
     {
@@ -18,12 +18,12 @@ namespace Wipcore.Enova.Api.NETClient
 
         public async Task<IDictionary<string, object>> GetProduct(string id)
         {
-            return await _clientWrapper.Execute<IDictionary<string, object>>("api/products/" + id);
+            return await _clientWrapper.Get<IDictionary<string, object>>("api/products/" + id);
         }
 
         public async Task<ListModel> ListProducts(int pageSize, int page)
         {
-            var response = await _clientWrapper.Execute("api/products?size=" + pageSize.ToString() + "&page=" + page.ToString());
+            var response = await _clientWrapper.Get("api/products?size=" + pageSize.ToString() + "&page=" + page.ToString());
             var json = response.Content.ReadAsStringAsync();
 
             var model = new ListModel();

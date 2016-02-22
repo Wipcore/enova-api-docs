@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNet.Http;
 using Wipcore.Core;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class HttpClientSettings
     {

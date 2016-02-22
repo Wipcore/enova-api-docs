@@ -9,7 +9,7 @@ using Fasterflect;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.WebApi.Mappers;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
