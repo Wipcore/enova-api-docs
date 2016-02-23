@@ -9,7 +9,7 @@
     "net451": {}
   },
   "dependencies": {
-    "Newtonsoft.Json": "6.0.6",
+    "Newtonsoft.Json": "8.0.2",
     "Wipcore.eNova.Api.Models": "1.0.0-*",
 	"System.Net.Http": "4.0.1-beta-23516"
   }
