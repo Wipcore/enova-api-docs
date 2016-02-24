@@ -83,11 +83,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
             else
                 currentCart.Customer = enovaOrder.Customer?.Identifier;
             
-            if (currentCart.AdditionalValues != null)
-            {
-                currentCart.AdditionalValues = _mappingToService.MapTo(enovaOrder, currentCart.AdditionalValues);
-            }
-
+            currentCart.AdditionalValues = _mappingToService.MapTo(enovaOrder, currentCart.AdditionalValues);
+            
             //if no rows in given cart, make sure no rows in enova cart
             if (currentCart.Rows == null || !currentCart.Rows.Any())
             {
@@ -112,14 +109,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
                         enovaOrderItem.OrderedQuantity = quantity;
                         enovaOrder.AddOrderItem(enovaOrderItem);
                     }
-
-                    if (cartItem.AdditionalValues != null)
-                    {
-                        cartItem.AdditionalValues = _mappingToService.MapTo(enovaOrderItem, cartItem.AdditionalValues);
-                    }
+                    
+                    cartItem.AdditionalValues = _mappingToService.MapTo(enovaOrderItem, cartItem.AdditionalValues);
+                    
                 }
             }
         
-    }
+        }
     }
 }

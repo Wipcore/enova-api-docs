@@ -52,6 +52,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         public IDictionary<string, object> MapTo(BaseObject obj, IDictionary<string, object> values)
         {
+            if (values == null)
+                return values;
+
             foreach (var property in values)
             {
                 var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
