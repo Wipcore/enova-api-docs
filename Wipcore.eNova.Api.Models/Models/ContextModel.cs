@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Enova.Api.Interfaces;
 
-namespace Wipcore.Enova.Api.WebApi.Models
+namespace Wipcore.Enova.Api.Models
 {
     public class ContextModel : IContextModel
     {

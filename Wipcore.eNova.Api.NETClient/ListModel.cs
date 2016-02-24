@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class ListModel
     {

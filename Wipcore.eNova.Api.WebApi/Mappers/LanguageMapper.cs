@@ -7,7 +7,7 @@ using Wipcore.Core.SessionObjects;
 using Fasterflect;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers

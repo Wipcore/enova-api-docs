@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Text;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class HttpClientWrapper
     {
@@ -22,15 +20,27 @@ namespace Wipcore.Enova.Api.NETClient
                 _client.Timeout = _settings.Timeout;
         }
 
-        public async Task<T> Execute<T>(string route)
+        public async Task<T> Get<T>(string route)
         {
             var json = await _client.GetStringAsync(_settings.Url + '/' + route.TrimStart('/'));
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public async Task<HttpResponseMessage> Execute(string route)
+        public async Task<HttpResponseMessage> Get(string route)
         {
             return await _client.GetAsync(_settings.Url + '/' + route.TrimStart('/'));
+        }
+
+        public async Task<HttpResponseMessage> Post(string route, string content)
+        {
+            var stringContent = new System.Net.Http.StringContent(content, new UTF8Encoding(), "application/json");
+            return await _client.PostAsync(_settings.Url + '/' + route.TrimStart('/'), stringContent);
+        }
+
+        public async Task<HttpResponseMessage> Put(string route, string content)
+        {
+            var stringContent = new System.Net.Http.StringContent(content, new UTF8Encoding(), "application/json");
+            return await _client.PutAsync(_settings.Url + '/' + route.TrimStart('/'), stringContent);
         }
     }
 }

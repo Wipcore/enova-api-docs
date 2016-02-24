@@ -8,7 +8,7 @@ using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
 using System.Web.Http;
-using Wipcore.Enova.Api.WebApi.Models;
+using Wipcore.Enova.Api.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
