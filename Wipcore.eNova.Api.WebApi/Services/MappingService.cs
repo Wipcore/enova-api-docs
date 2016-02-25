@@ -44,7 +44,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             foreach (var property in properties.Split(','))
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFrom);
-                var value = mapper != null ? mapper.MapFrom(obj) : MapProperty(property.Split('.'), obj);
+                var value = mapper != null ? mapper.MapFrom(obj, property) : MapProperty(property.Split('.'), obj);
                 dynamicObject.Add(property, value);
             }
             return dynamicObject;
@@ -60,7 +60,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
                 if (mapper != null)
                 {
-                    var mappedValue = mapper.MapTo(obj);
+                    var mappedValue = mapper.MapTo(obj, property.Key);
                     values[property.Key] = mappedValue;
                 }
                 else
@@ -91,7 +91,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var lazyMapper = new Lazy<IPropertyMapper>(() => {
                 return  _mappers.
                 Where(x => x.MapType == MapType.MapAll || x.MapType == mapType).
-                Where(x => x.Name == propertyName.ToLower()).
+                Where(x => x.Names.Contains(propertyName, StringComparer.InvariantCultureIgnoreCase)).
                 Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
                 OrderBy(x => x.Priority).FirstOrDefault();                
             });

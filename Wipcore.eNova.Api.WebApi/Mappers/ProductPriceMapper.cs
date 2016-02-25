@@ -8,27 +8,28 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers
 {
-    public class ProductPriceInclTaxMapper : IPropertyMapper
+    public class ProductPriceExclTaxMapper : IPropertyMapper
     {
         public bool InheritMapper => true;
 
         public int Priority => 0;
         public MapType MapType => MapType.MapFrom;
 
-        public string Name => "priceincltax";
+        public List<string> Names => new List<string>(){"PriceExclTax", "PriceInclTax"};
 
 
         public Type Type => typeof(EnovaBaseProduct);
         
 
-        public object MapFrom(BaseObject obj)
+        public object MapFrom(BaseObject obj, string propertyName)
         {
+            var includeTax = String.Equals(propertyName, "PriceInclTax", StringComparison.InvariantCultureIgnoreCase);
             var product = (EnovaBaseProduct)obj;
-            var price = product.GetPrice(includeTax:false);
+            var price = product.GetPrice(includeTax);
             return price;
         }
 
-        public object MapTo(BaseObject obj)
+        public object MapTo(BaseObject obj, string propertyName)
         {
             throw new NotImplementedException();
         }
