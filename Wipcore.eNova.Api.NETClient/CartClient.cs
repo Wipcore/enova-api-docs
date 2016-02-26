@@ -17,10 +17,27 @@ namespace Wipcore.Enova.Api.NetClient
             _clientWrapper = new HttpClientWrapper(clientSettings);
         }
 
-        public async Task<ResponseModel> SaveCart(CartModel cart)
+        public async Task<ResponseModel> GetCart(string identifier, ContextModel context = null)
+        {
+            var response = await _clientWrapper.Get("api/cartss/" + identifier + ContextHelper.GetContextParameters(context));
+            var json = await response.Content.ReadAsStringAsync();
+
+            var model = new ResponseModel();
+            model.StatusCode = response.StatusCode;
+            if (response.IsSuccessStatusCode)
+            {
+                // TODO: change to CartModel
+                //model.Object = JsonConvert.DeserializeObject<CartModel>(json);
+                model.Object = JsonConvert.DeserializeObject<IDictionary<string, object>>(json);
+            }
+
+            return model;
+        }
+
+        public async Task<ResponseModel> SaveCart(CartModel cart, ContextModel context = null)
         {
             // TODO: better errorhandling
-            var response = await _clientWrapper.Put("api/carts/", JsonConvert.SerializeObject(cart));
+            var response = await _clientWrapper.Put("api/carts/" + ContextHelper.GetContextParameters(context), JsonConvert.SerializeObject(cart));
             var json = await response.Content.ReadAsStringAsync();
 
             var model = new ResponseModel();
@@ -33,11 +50,11 @@ namespace Wipcore.Enova.Api.NetClient
             return model;
         }
 
-        public async Task<ResponseModel> RecalculatePrices(CartModel cart)
+        public async Task<ResponseModel> RecalculatePrices(CartModel cart, ContextModel context = null)
         {
             // TODO: better errorhandling
             string jsonRequest = JsonConvert.SerializeObject(cart);
-            var response = await _clientWrapper.Post("api/carts/", jsonRequest);
+            var response = await _clientWrapper.Post("api/carts/" + ContextHelper.GetContextParameters(context), jsonRequest);
             var json = await response.Content.ReadAsStringAsync();
 
             var model = new ResponseModel();

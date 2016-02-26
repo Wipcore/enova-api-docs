@@ -179,8 +179,8 @@
   "projectFileDependencyGroups": {
     "": [
       "Newtonsoft.Json >= 8.0.2",
-      "Wipcore.eNova.Api.Models >= 1.0.0-*",
-      "System.Net.Http >= 4.0.1-beta-23516"
+      "System.Net.Http >= 4.0.1-beta-23516",
+      "Wipcore.eNova.Api.Models >= 1.0.0-*"
     ],
     ".NETFramework,Version=v4.5.1": []
   }
