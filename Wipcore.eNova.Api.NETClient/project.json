@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "Newtonsoft.Json": "8.0.2",
-	"System.Net.Http": "4.0.1-beta-23516",
+    "System.Net.Http": "4.0.0",
     "Wipcore.eNova.Api.Models": "1.0.0-*"
   }
 }
