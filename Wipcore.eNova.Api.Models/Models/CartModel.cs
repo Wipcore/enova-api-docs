@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Wipcore.Enova.Api.Interfaces;
+﻿using System.Collections.Generic;
+using Wipcore.Enova.Api.Models.Interfaces;
 
-namespace Wipcore.Enova.Api.Models
+namespace Wipcore.Enova.Api.Models.Models
 {
-    public class CartModel : ICartModel //TODO handle promos, discounted prices and such stuff. Also shipping 
+    public class CartModel : ICartModel
     {
         public CartModel(IEnumerable<RowModel> rows)
         {
@@ -29,7 +26,10 @@ namespace Wipcore.Enova.Api.Models
 
     public class RowModel : IRowModel
     {
-        public string Product { get; set; }
+        public string Type { get; set; }
+        public string Identifier { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
         public double Quantity { get; set; }
         public decimal PriceInclTax { get; set; }
         public decimal PriceExclTax { get; set; }

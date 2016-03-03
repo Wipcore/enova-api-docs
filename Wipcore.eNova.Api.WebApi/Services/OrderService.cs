@@ -7,6 +7,7 @@ using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -43,7 +44,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var dummyCart = EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
                 _cartService.MapCart(context, dummyCart, cartModel);
                 enovaOrder = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, dummyCart);
-                enovaOrder.Identifier = cartModel.Identifier = identifier;
+                enovaOrder.Identifier = cartModel.Identifier = identifier; //TODO generate order identifier if empty
             }
             else
                 enovaOrder.Edit();
@@ -57,7 +58,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var enovaOrderItems = enovaOrder.GetOrderItems<EnovaProductOrderItem>().ToList();
             foreach (var row in cartModel.Rows) //fill in price information
             {
-                var item = enovaOrderItems.First(x => x.Product.Identifier == row.Product);
+                var item = enovaOrderItems.First(x => x.Product.Identifier == row.Identifier);
                 row.PriceExclTax = item.GetPrice(false);
                 row.PriceInclTax = item.GetPrice(true);
             }
@@ -92,29 +93,62 @@ namespace Wipcore.Enova.Api.WebApi.Services
             }
             else
             {
-                //go through all rows and make sure they match
-                foreach (var cartItem in currentCart.Rows)
+                //TODO specify what else (if anything) can be updated on an existing order
+                //go through all product rows and fix quantity if different
+                foreach (var cartItem in currentCart.Rows.Where(x => x.Type == null || 
+                    String.Equals(x.Type, "product", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     var enovaOrderItem = enovaOrder.GetOrderItems<EnovaProductOrderItem>()
-                            .FirstOrDefault(x => x.ProductIdentifier == cartItem.Product);
+                            .FirstOrDefault(x => x.ProductIdentifier == cartItem.Identifier);
                     var quantity = cartItem.Quantity > 0 ? cartItem.Quantity : 1;
-                    if (enovaOrderItem != null && enovaOrderItem.OrderedQuantity != quantity)
+
+                    if(enovaOrderItem == null)
+                        continue;
+
+                    if (enovaOrderItem.OrderedQuantity != quantity)
                     {
                         enovaOrderItem.OrderedQuantity = quantity;
-                    }
-                    else if (enovaOrderItem == null)
-                    {
-                        enovaOrderItem = EnovaObjectCreationHelper.CreateNew<EnovaProductOrderItem>(context);
-                        enovaOrderItem.Product = EnovaBaseProduct.Find(context, cartItem.Product);
-                        enovaOrderItem.OrderedQuantity = quantity;
-                        enovaOrder.AddOrderItem(enovaOrderItem);
                     }
                     
                     cartItem.AdditionalValues = _mappingToService.MapTo(enovaOrderItem, cartItem.AdditionalValues);
                     
+                    cartItem.PriceExclTax = enovaOrderItem.GetPrice(false);
+                    cartItem.PriceInclTax = enovaOrderItem.GetPrice(true);
                 }
+
+                AddPromoRows(context, enovaOrder, currentCart);
             }
+
+            
         
+        }
+
+        private void AddPromoRows(Context context, EnovaOrder enovaOrder, ICartModel currentCart)
+        {
+            enovaOrder.Recalculate();
+            var promoRows = enovaOrder.GetOrderItems<EnovaPromoOrderItem>();
+            var rows = currentCart.Rows.ToList();
+            foreach (var enovaPromoOrderItem in promoRows)
+            {
+                var newRow = false;
+                var orderItem = currentCart.Rows.FirstOrDefault(x => x.Password == enovaPromoOrderItem.Promo?.Password);
+                if (orderItem == null)
+                {
+                    orderItem = new RowModel();
+                    newRow = true;
+                }
+                orderItem.Type = "promo";
+                orderItem.Identifier = enovaPromoOrderItem.Identifier;
+                orderItem.Quantity = 1;
+                orderItem.Name = enovaPromoOrderItem.Name;
+                orderItem.PriceExclTax = enovaPromoOrderItem.GetPrice(includeTax: false);
+                orderItem.PriceInclTax = enovaPromoOrderItem.GetPrice(includeTax: true);
+
+                if (newRow)
+                    rows.Add(orderItem);
+            }
+
+            currentCart.Rows = rows;
         }
     }
 }

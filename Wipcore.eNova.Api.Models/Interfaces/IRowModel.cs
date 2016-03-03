@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Wipcore.Enova.Api.Interfaces
+namespace Wipcore.Enova.Api.Models.Interfaces
 {
     public interface IRowModel
     {
-        string Product { get; set; }
+        string Type { get; set; } //shipping, product, payment, promo
+
+        string Identifier { get; set; }
+
+        string Name { get; set; }
+
+        string Password { get; set; }
 
         double Quantity { get; set; }
 

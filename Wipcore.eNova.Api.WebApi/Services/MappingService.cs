@@ -39,12 +39,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
             if (properties == null)
                 properties = "identifier";
 
-            var dynamicObject = new Dictionary<string, Object>(); //TODO map nested objects somehow
+            var dynamicObject = new Dictionary<string, Object>();
             
             foreach (var property in properties.Split(','))
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFrom);
-                var value = mapper != null ? mapper.MapFrom(obj, property) : MapProperty(property.Split('.'), obj);
+                var value = mapper != null ? mapper.MapFrom(obj, property) : MapProperty(property, obj);
                 dynamicObject.Add(property, value);
             }
             return dynamicObject;
@@ -70,13 +70,16 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return values;
         }
 
-        private object MapProperty(string[] propertyNames, BaseObject obj)
+        private object MapProperty(string property, BaseObject obj)
         {
-            for (var i = 0; i < propertyNames.Length; i++)
+            var properties = property.Split('.'); //splitting ex. Manufacturer.Identifier into its parts
+            for (var i = 0; i < properties.Length; i++)
             {
-                if (i == propertyNames.Length - 1)
-                    return obj.GetProperty(propertyNames[i]);
-                obj = obj.GetPropertyValue(propertyNames[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
+                if (i == properties.Length - 1) //the last name (Identifier in example above) is returned directly
+                    return obj.GetProperty(properties[i]);
+
+                //nested properties are retrived from the object. In example obj is set to Manufacturer
+                obj = obj.GetPropertyValue(properties[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
 
                 if (obj == null)
                     break;
