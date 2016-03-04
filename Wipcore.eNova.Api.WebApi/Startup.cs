@@ -26,6 +26,7 @@ namespace Wipcore.Enova.Api.WebApi
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile("localappsettings.json", true)
                 .AddJsonFile("locationConfiguration.json")
                 .AddJsonFile("marketConfiguration.json")
                 .AddEnvironmentVariables();

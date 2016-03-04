@@ -19,7 +19,7 @@ namespace Wipcore.Enova.Api.NetClient
 
         public async Task<ResponseModel> GetCart(string identifier, ContextModel context = null)
         {
-            var response = await _clientWrapper.Get("api/cartss/" + identifier + ContextHelper.GetContextParameters(context));
+            var response = await _clientWrapper.Get("api/carts/" + identifier + ContextHelper.GetContextParameters(context));
             var json = await response.Content.ReadAsStringAsync();
 
             var model = new ResponseModel();
