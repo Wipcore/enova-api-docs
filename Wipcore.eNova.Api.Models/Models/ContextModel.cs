@@ -17,6 +17,7 @@ namespace Wipcore.Enova.Api.Models
         public string Customer { get; set; }
 
         public string Admin { get; set; }
+
         public string Pass { get; set; }
     }
 }
