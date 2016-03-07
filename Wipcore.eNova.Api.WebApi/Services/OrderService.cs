@@ -55,23 +55,15 @@ namespace Wipcore.Enova.Api.WebApi.Services
             enovaOrder.Recalculate();
             if (cartModel.Persist)
                 enovaOrder.Save();
-
-            var enovaOrderItems = enovaOrder.GetOrderItems<EnovaProductOrderItem>().ToList();
-            foreach (var row in cartModel.Rows) //fill in price information
-            {
-                var item = enovaOrderItems.First(x => x.Product.Identifier == row.Identifier);
-                row.PriceExclTax = item.GetPrice(false);
-                row.PriceInclTax = item.GetPrice(true);
-            }
-
+            
             var currency = context.CurrentCurrency;
             decimal taxAmount;
             int decimals;
             double roundingFactor;
             var totalPrice = enovaOrder.GetSum(out taxAmount, out decimals, ref currency, out roundingFactor);
 
-            cartModel.TotalPriceExclTax = totalPrice;
-            cartModel.TotalPriceInclTax = totalPrice + taxAmount;
+            cartModel.TotalPriceExclTax = totalPrice - taxAmount;
+            cartModel.TotalPriceInclTax = totalPrice;
 
             return cartModel;
         }
