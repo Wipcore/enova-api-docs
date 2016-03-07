@@ -6,7 +6,10 @@
         "assembly": "../../lib/dnx451/Wipcore.Enova.Connectivity.dll"
       },
       "dependencies": {
-        "Wipcore": "1.0.0-*"
+        "Wipcore": "1.0.0-*",
+        "Wipcore.Enova.Core": "1.0.0-*",
+        "Wipcore.Enova.KernelPlugin": "1.0.0-*",
+        "Wipcore.Library": "1.0.0-*"
       }
     }
   }

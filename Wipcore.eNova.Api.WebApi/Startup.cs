@@ -41,15 +41,17 @@ namespace Wipcore.Enova.Api.WebApi
         {
             EnovaSystemFacade.Current.LoadAllAssemblies();
 
-            var settings = new InMemoryConnectionSettings();
-            settings.DatabaseConnection = Configuration.Get<String>("Enova:ConnectionString");
-            settings.HistoryDatabaseConnection = Configuration.Get<String>("Enova:RevisionConnectionString");
-            settings.CertificateKey = Configuration.Get<String>("Enova:CertificateKey");
-            settings.CertificatePassword = Configuration.Get<String>("Enova:CertificatePassword");
-            settings.UserName = Configuration.Get<String>("Enova:Username");
-            settings.Password = Configuration.Get<String>("Enova:Password");
-            settings.LogPath = Configuration.Get<String>("Enova:LogPath");
-            settings.LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel)Convert.ToInt32(Configuration.Get<String>("Enova:LogLevel"));
+            var settings = new InMemoryConnectionSettings
+            {
+                DatabaseConnection = Configuration.Get<String>("Enova:ConnectionString"),
+                HistoryDatabaseConnection = Configuration.Get<String>("Enova:RevisionConnectionString"),
+                CertificateKey = Configuration.Get<String>("Enova:CertificateKey"),
+                CertificatePassword = Configuration.Get<String>("Enova:CertificatePassword"),
+                UserName = Configuration.Get<String>("Enova:Username"),
+                Password = Configuration.Get<String>("Enova:Password"),
+                LogPath = Configuration.Get<String>("Enova:LogPath"),
+                LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel) Convert.ToInt32(Configuration.Get<String>("Enova:LogLevel"))
+            };
 
             EnovaSystemFacade.Current.Settings = settings;
 
@@ -73,7 +75,8 @@ namespace Wipcore.Enova.Api.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseDeveloperExceptionPage();
+            if(env.IsDevelopment())
+                app.UseDeveloperExceptionPage();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -81,6 +84,7 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseIISPlatformHandler();
 
             app.UseStaticFiles();
+            app.UseStatusCodePages();
 
             app.UseMvc();
         }

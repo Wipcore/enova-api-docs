@@ -11,6 +11,7 @@
         "Fasterflect": "1.0.0-*",
         "Wipcore": "1.0.0-*",
         "Wipcore.Enova.Core": "1.0.0-*",
+        "Wipcore.Enova.Generics": "1.0.0-*",
         "Wipcore.Library": "1.0.0-*"
       }
     }
