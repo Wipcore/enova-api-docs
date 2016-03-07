@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Wipcore.Enova.Api.Models.Interfaces;
 
-namespace Wipcore.Enova.Api.Models.Models
+namespace Wipcore.Enova.Api.Models
 {
     public class CartModel : ICartModel
     {
