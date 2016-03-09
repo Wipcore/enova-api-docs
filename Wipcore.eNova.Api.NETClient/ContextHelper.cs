@@ -15,16 +15,20 @@ namespace Wipcore.Enova.Api.NetClient
             if (context == null)
                 return String.Empty;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("&");
-            foreach (var p in typeof(ContextModel).GetFields())
+            foreach (var p in typeof(ContextModel).GetProperties())
             {
+                var value = p.GetValue(context);
+                if (value == null)
+                    continue;
+
                 sb.Append(p.Name);
                 sb.Append("=");
-                sb.Append(p.GetValue(context).ToString());
+                sb.Append(value);
                 sb.Append("&");
             }
-            sb.Remove(sb.Length, 1);
+            sb.Remove(sb.Length - 1, 1);
 
             return sb.ToString();
         }

@@ -2,12 +2,9 @@
   "enovabaseproduct": { //TODO somehow replace class name with just "product"?
     "default": {
       "properties": "Identifier,Name,DescriptionLong,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
-    },
-    "myconfig": {
-      "properties": "identifier,name,price",
-      "sort": "name desc",
-      "filter": "price>50",
-      "size": "5"
+    },    
+    "price": {
+      "properties": "identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"
     }
   },
   "enovaorder": {
