@@ -77,7 +77,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<ResponseModel> CreateOrder(CartModel cart, ContextModel context = null)
         {
             // TODO: better errorhandling
-            var response = await _clientWrapper.Post("api/orders/" + ContextHelper.GetContextParameters(context), JsonConvert.SerializeObject(cart));
+            var response = await _clientWrapper.Post("api/orders?" + ContextHelper.GetContextParameters(context), JsonConvert.SerializeObject(cart));
             var json = await response.Content.ReadAsStringAsync();
 
             var model = new ResponseModel();
