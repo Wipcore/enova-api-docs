@@ -21,6 +21,7 @@ namespace Wipcore.Enova.Api.Models
         public decimal TotalPriceInclTax { get; set; }
 
         public decimal TotalPriceExclTax { get; set; }
+        public string Status { get; set; }
         public IDictionary<string, object> AdditionalValues { get; set; }
     }
 

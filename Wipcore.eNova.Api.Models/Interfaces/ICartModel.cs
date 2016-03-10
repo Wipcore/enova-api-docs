@@ -18,6 +18,8 @@ namespace Wipcore.Enova.Api.Models.Interfaces
 
         decimal TotalPriceExclTax { get; set; }
 
+        string Status { get; set; }
+
         IDictionary<string, object> AdditionalValues { get; set; }
     }
     

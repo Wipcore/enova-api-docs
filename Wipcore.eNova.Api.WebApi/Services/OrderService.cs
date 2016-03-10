@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.WebApi.Mappers;
@@ -19,12 +20,19 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IContextService _contextService;
         private readonly IMappingToService _mappingToService;
         private readonly ICartService _cartService;
+        private readonly string _newOrderStatus = null;
+        private readonly string _defaultWarehouse = null;
 
-        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService)
+        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
             _cartService = cartService;
+            _newOrderStatus = configuration.GetSection("EnovaSettings")?.GetChildren()?.FirstOrDefault(x => x.Key == "NewShippingStatus")?.Value;
+
+            var context = contextService.GetContext();
+            var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
+            _defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
         }
 
         public ICartModel CreateOrder(ICartModel cartModel)
@@ -46,10 +54,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 _cartService.MapCart(context, dummyCart, cartModel);
                 enovaOrder = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, dummyCart);
                 enovaOrder.Identifier = cartModel.Identifier = identifier; //TODO generate order identifier if empty
+                enovaOrder.Warehouse = EnovaWarehouse.Find(context, _defaultWarehouse);
             }
-            else
-                enovaOrder.Edit();
-
+            
             Map(context, enovaOrder, cartModel);
             
             enovaOrder.Recalculate();
@@ -70,13 +77,32 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         private void Map(Context context, EnovaOrder enovaOrder, ICartModel currentCart)
         {
+            if (enovaOrder.ShippingStatus == null)//if none, set to given status or default new
+            {
+                enovaOrder.Edit();
+                var newShippingIdentifier = currentCart.Status ?? _newOrderStatus ?? "NEW_INTERNET";
+                var shippingStatus = EnovaShippingStatus.Find(context, newShippingIdentifier);
+                enovaOrder.ShippingStatus = shippingStatus;
+            }
+            else if (!String.IsNullOrEmpty(currentCart.Status))//if status specified that's different from current, then change it
+            {
+                var currentStatus = enovaOrder.ShippingStatus?.Identifier;
+                if (!String.Equals(currentStatus, currentCart.Status, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    enovaOrder.ChangeShippingStatus(EnovaShippingStatus.Find(context, currentCart.Status), null);
+                }
+            }
+
+            enovaOrder.Edit();
             enovaOrder.Identifier = currentCart.Identifier ?? enovaOrder.Identifier;
             var customer = !String.IsNullOrEmpty(currentCart.Customer) ? EnovaCustomer.Find(context, currentCart.Customer) : null;
             if (customer != null)
                 enovaOrder.Customer = customer;
             else
                 currentCart.Customer = enovaOrder.Customer?.Identifier;
+
             
+            currentCart.Status = enovaOrder.ShippingStatus?.Identifier;
             currentCart.AdditionalValues = _mappingToService.MapTo(enovaOrder, currentCart.AdditionalValues);
             
             //if no rows in given cart, make sure no rows in enova cart
@@ -111,9 +137,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
                 AddPromoRows(context, enovaOrder, currentCart);
             }
-
-            
-        
         }
 
         private void AddPromoRows(Context context, EnovaOrder enovaOrder, ICartModel currentCart)

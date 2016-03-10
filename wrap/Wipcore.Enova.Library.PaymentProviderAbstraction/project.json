@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "dnx451": {
+      "bin": {
+        "assembly": "../../lib/dnx451/Wipcore.Enova.Library.PaymentProviderAbstraction.dll"
+      },
+      "dependencies": {
+        "Wipcore": "1.0.0-*"
+      }
+    }
+  }
+}

@@ -33,8 +33,11 @@
         "Wipcore": "1.0.0-*",
         "Wipcore.Enova.Connectivity": "1.0.0-*",
         "Wipcore.Enova.Core": "1.0.0-*",
+        "Wipcore.Enova.ExternalInvoicingLib": "1.0.0-*",
         "Wipcore.Enova.Generics": "1.0.0-*",
         "Wipcore.Enova.KernelPlugin": "1.0.0-*",
+        "Wipcore.Enova.Library.CreditCard": "1.0.0-*",
+        "Wipcore.Enova.Library.PaymentProviderAbstraction": "1.0.0-*",
         "Wipcore.Library": "1.0.0-*"
       },
       "frameworkAssemblies": {

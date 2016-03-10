@@ -1704,6 +1704,13 @@
           "Wipcore": "1.0.0"
         }
       },
+      "Wipcore.Enova.ExternalInvoicingLib/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
+        }
+      },
       "Wipcore.Enova.Generics/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -1718,6 +1725,20 @@
         "dependencies": {
           "Wipcore": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0"
+        }
+      },
+      "Wipcore.Enova.Library.CreditCard/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
+        }
+      },
+      "Wipcore.Enova.Library.PaymentProviderAbstraction/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
         }
       },
       "Wipcore.Library/1.0.0": {
@@ -3430,6 +3451,13 @@
           "Wipcore": "1.0.0"
         }
       },
+      "Wipcore.Enova.ExternalInvoicingLib/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
+        }
+      },
       "Wipcore.Enova.Generics/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -3444,6 +3472,20 @@
         "dependencies": {
           "Wipcore": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0"
+        }
+      },
+      "Wipcore.Enova.Library.CreditCard/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
+        }
+      },
+      "Wipcore.Enova.Library.PaymentProviderAbstraction/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
         }
       },
       "Wipcore.Library/1.0.0": {
@@ -5156,6 +5198,13 @@
           "Wipcore": "1.0.0"
         }
       },
+      "Wipcore.Enova.ExternalInvoicingLib/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
+        }
+      },
       "Wipcore.Enova.Generics/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -5170,6 +5219,20 @@
         "dependencies": {
           "Wipcore": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0"
+        }
+      },
+      "Wipcore.Enova.Library.CreditCard/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
+        }
+      },
+      "Wipcore.Enova.Library.PaymentProviderAbstraction/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Wipcore": "1.0.0"
         }
       },
       "Wipcore.Library/1.0.0": {
@@ -5203,6 +5266,10 @@
       "type": "project",
       "path": "../wrap/Wipcore.Enova.Core/project.json"
     },
+    "Wipcore.Enova.ExternalInvoicingLib/1.0.0": {
+      "type": "project",
+      "path": "../wrap/Wipcore.Enova.ExternalInvoicingLib/project.json"
+    },
     "Wipcore.Enova.Generics/1.0.0": {
       "type": "project",
       "path": "../wrap/Wipcore.Enova.Generics/project.json"
@@ -5210,6 +5277,14 @@
     "Wipcore.Enova.KernelPlugin/1.0.0": {
       "type": "project",
       "path": "../wrap/Wipcore.Enova.KernelPlugin/project.json"
+    },
+    "Wipcore.Enova.Library.CreditCard/1.0.0": {
+      "type": "project",
+      "path": "../wrap/Wipcore.Enova.Library.CreditCard/project.json"
+    },
+    "Wipcore.Enova.Library.PaymentProviderAbstraction/1.0.0": {
+      "type": "project",
+      "path": "../wrap/Wipcore.Enova.Library.PaymentProviderAbstraction/project.json"
     },
     "Wipcore.Library/1.0.0": {
       "type": "project",
@@ -7155,8 +7230,11 @@
       "Wipcore >= 1.0.0-*",
       "Wipcore.Enova.Connectivity >= 1.0.0-*",
       "Wipcore.Enova.Core >= 1.0.0-*",
+      "Wipcore.Enova.ExternalInvoicingLib >= 1.0.0-*",
       "Wipcore.Enova.Generics >= 1.0.0-*",
       "Wipcore.Enova.KernelPlugin >= 1.0.0-*",
+      "Wipcore.Enova.Library.CreditCard >= 1.0.0-*",
+      "Wipcore.Enova.Library.PaymentProviderAbstraction >= 1.0.0-*",
       "Wipcore.Library >= 1.0.0-*",
       "fx/System.Runtime.Caching >= 4.0.0"
     ]
