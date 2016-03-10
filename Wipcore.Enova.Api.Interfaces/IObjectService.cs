@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.Interfaces
 {

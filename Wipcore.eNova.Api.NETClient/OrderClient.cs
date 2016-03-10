@@ -9,7 +9,7 @@ namespace Wipcore.Enova.Api.NetClient
 {
     public class OrderClient
     {
-        HttpClientWrapper _clientWrapper;
+        private readonly HttpClientWrapper _clientWrapper;
 
         public OrderClient(HttpClientSettings clientSettings)
         {

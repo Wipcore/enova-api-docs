@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {

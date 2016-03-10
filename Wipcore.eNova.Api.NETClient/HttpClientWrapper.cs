@@ -8,8 +8,8 @@ namespace Wipcore.Enova.Api.NetClient
 {
     public class HttpClientWrapper
     {
-        private HttpClientSettings _settings;
-        private HttpClient _client;
+        private readonly HttpClientSettings _settings;
+        private readonly HttpClient _client;
 
         public HttpClientWrapper(HttpClientSettings settings)
         {

@@ -7,7 +7,6 @@ using Microsoft.AspNet.Mvc;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Models;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Models.Interfaces;
 using ApiController = Wipcore.Enova.Api.WebApi.Controllers.ApiController;

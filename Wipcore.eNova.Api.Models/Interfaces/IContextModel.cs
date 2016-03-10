@@ -1,4 +1,4 @@
-﻿namespace Wipcore.Enova.Api.Interfaces
+﻿namespace Wipcore.Enova.Api.Models.Interfaces
 {
     public interface IContextModel
     {

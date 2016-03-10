@@ -11,7 +11,7 @@ namespace Wipcore.Enova.Api.NetClient
 {
     public class ProductClient
     {
-        HttpClientWrapper _clientWrapper;
+        private readonly HttpClientWrapper _clientWrapper;
 
         ContextModel Context { get; set; }
 

@@ -10,7 +10,7 @@ namespace Wipcore.Enova.Api.NetClient
 {
     public class CartClient
     {
-        HttpClientWrapper _clientWrapper;
+        private readonly HttpClientWrapper _clientWrapper;
 
         public CartClient(HttpClientSettings clientSettings)
         {

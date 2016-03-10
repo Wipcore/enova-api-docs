@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Wipcore.Enova.Api.Models.Interfaces;
 
-namespace Wipcore.Enova.Api.Models.Models
+namespace Wipcore.Enova.Api.Models
 {
     public class PaymentModel : IPaymentModel
     {
