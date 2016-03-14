@@ -26,7 +26,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IConfigurationRoot _configuration;
         private readonly ObjectCache _cache;
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-        //private readonly ConcurrentDictionary<string, bool> _adminLogins = new ConcurrentDictionary<string, Context>();
 
 
         public ContextService(IHttpContextAccessor httpAccessor, IConfigurationRoot configuration, ObjectCache cache)
@@ -100,22 +99,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             return enovaContext;
         }
-
-        //public Context GetAdminContext(string username = null, string password = null)
-        //{
-        //    if (String.IsNullOrEmpty(username))
-        //    {
-        //        var config = _configuration.GetSection("Enova").GetChildren().ToList();
-        //        username = config.First(x => x.Key == "Username").Value;
-        //        password = config.First(x => x.Key == "Password").Value;
-        //    }
-
-        //    var previouslyLoggedIn = _cache.Contains(username);
-
-
-        //    return adminContext;
-        //}
-
+        
         private void LoginDefaultAdmin(Context enovaContext)
         {
             var config = _configuration.GetSection("Enova").GetChildren().ToList();

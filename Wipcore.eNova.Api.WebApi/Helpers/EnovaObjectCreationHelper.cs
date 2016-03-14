@@ -14,7 +14,6 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
             var type = typeof (T).GetMostDerivedType();
             var allArgs = new[] {context}.Union(args).ToArray();
             var item = (T)Activator.CreateInstance(type, allArgs);
-            //var item = (T)Activator.CreateInstance(type, context);
             return item;
         }
     }
