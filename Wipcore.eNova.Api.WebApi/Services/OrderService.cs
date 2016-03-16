@@ -34,6 +34,23 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
         }
 
+        public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
+        {
+            var context = _contextService.GetContext();
+            var customer = EnovaCustomer.Find(context, customerIdentifier);
+
+            var shippingFilter = String.Empty;
+            if (!String.IsNullOrEmpty(shippingStatus))
+            {
+                var status = EnovaShippingStatus.Find(context, shippingStatus);
+                shippingFilter = " AND ShippingStatusID = " + status.ID;
+            }
+
+            var type = typeof (EnovaOrder).GetMostDerivedType();
+            var orders = context.Search("CustomerID = " + customer.ID + shippingFilter, type, null, 0, null, false);
+            return orders;
+        }
+
         public ICartModel CreateOrder(ICartModel cartModel)
         {
             if (cartModel == null)
