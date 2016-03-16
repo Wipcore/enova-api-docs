@@ -1,7 +1,7 @@
 {
   "enovabaseproduct": { //TODO somehow replace class name with just "product"?
     "default": {
-      "properties": "Identifier,Name,DescriptionLong,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
+      "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
     },    
     "price": {
       "properties": "identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"

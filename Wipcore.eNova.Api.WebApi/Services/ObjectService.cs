@@ -51,16 +51,16 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return _mappingFromService.MapFrom(obj, getParameters.Properties);
         }
 
-        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters) where T : BaseObject
+        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
         {
             getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T).Name, getParameters);
 
             var context = _contextService.GetContext();
             var memoryObject = IsMemoryObject<T>();
 
-            //if memoryobject, get whats in memory. otherwise search the database
-            var objectList = memoryObject ? context.GetAllObjects(typeof(T)) :
-                             context.Search(getParameters.Filter ?? "ID > 0", typeof(T), null, 0, null, false);
+            //return from the candidates, or if memoryobject, get whats in memory. otherwise search the database
+            var objectList = candidates ?? (memoryObject ? context.GetAllObjects(typeof(T)) :
+                             context.Search(getParameters.Filter ?? "ID > 0", typeof(T), null, 0, null, false));
 
             objectList = _sortService.Sort(objectList, getParameters.Sort);
             objectList = _filterService.Filter(objectList, getParameters.Filter);
