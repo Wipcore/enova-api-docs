@@ -3,6 +3,21 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.5.1": {
+      "Autofac/4.0.0-rc1-177": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net45/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Autofac.dll": {}
+        }
+      },
       "Fasterflect/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
@@ -40,6 +55,21 @@
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x86": {
+      "Autofac/4.0.0-rc1-177": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net45/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Autofac.dll": {}
+        }
+      },
       "Fasterflect/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
@@ -77,6 +107,21 @@
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x64": {
+      "Autofac/4.0.0-rc1-177": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net45/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Autofac.dll": {}
+        }
+      },
       "Fasterflect/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
@@ -138,10 +183,28 @@
     "Wipcore.Library/1.0.0": {
       "type": "project",
       "path": "../wrap/Wipcore.Library/project.json"
+    },
+    "Autofac/4.0.0-rc1-177": {
+      "type": "package",
+      "sha512": "cTSfTca0qWl3Zd68iMl2bH8e4RyGL/Q7EUT0PmAzCSoitSlrHu4zmByhP/f+KGGSuRqWHFYoMEEOanvTviEr4g==",
+      "files": [
+        "Autofac.4.0.0-rc1-177.nupkg",
+        "Autofac.4.0.0-rc1-177.nupkg.sha512",
+        "Autofac.nuspec",
+        "lib/dnxcore50/Autofac.dll",
+        "lib/dnxcore50/Autofac.xml",
+        "lib/dotnet5.2/Autofac.dll",
+        "lib/dotnet5.2/Autofac.xml",
+        "lib/net45/Autofac.dll",
+        "lib/net45/Autofac.xml",
+        "lib/win/Autofac.dll",
+        "lib/win/Autofac.xml"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "": [
+      "Autofac >= 4.0.0-rc1-177",
       "Wipcore.eNova.Api.Models >= 1.0.0-*"
     ],
     ".NETFramework,Version=v4.5.1": [

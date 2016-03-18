@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,13 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNet.Diagnostics;
-using Wipcore.Enova.Core;
-using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
-using Wipcore.Enova.Api.WebApi.Services;
-using Wipcore.Enova.Api.WebApi.Mappers;
-using Wipcore.Enova.Api.Models;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -61,13 +57,20 @@ namespace Wipcore.Enova.Api.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc();
-            
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule<WebApiModule>();
             containerBuilder.RegisterInstance<IConfigurationRoot>(Configuration);
+
+            var apiAssemblies = new List<Assembly>() {Assembly.GetExecutingAssembly()};
+            var autofacModules = new List<IEnovaApiModule>() {new WebApiModule()};
+            LoadAddinAssemblies(apiAssemblies, autofacModules);
+
+            autofacModules.OrderBy(x => x.Priority).ToList().ForEach(x => containerBuilder.RegisterModule(x));
+
+            // Add framework services.
+            services.AddMvc().AddControllersAsServices(apiAssemblies);
+
             containerBuilder.Populate(services);
+
             var container = containerBuilder.Build();
             return container.Resolve<IServiceProvider>();
         }
@@ -87,6 +90,43 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseStatusCodePages();
 
             app.UseMvc();
+        }
+        
+        private void LoadAddinAssemblies(List<Assembly> assemblies, List<IEnovaApiModule> autofacModules)
+        {
+            /* Load all dlls/assemblies from the addin folder, where external mappers/services/controllers can be added. */
+            var addinPath = Configuration.Get<String>("ApiSettings:PathToAddins");
+            if(String.IsNullOrEmpty(addinPath))
+                addinPath = Path.Combine(Environment.CurrentDirectory, @"..\addin");
+
+            if (!Directory.Exists(addinPath))
+                return;
+
+            var dllPaths = Directory.GetFiles(addinPath, "*.dll");
+            foreach (var dllPath in dllPaths)
+            {
+                try
+                {
+                    /* Load by byte assembly since load by name might not work if
+                       the assembly has been loaded before */
+                    using (Stream stream = File.OpenRead(dllPath))
+                    {
+                        var assemblyData = new Byte[stream.Length];
+                        stream.Read(assemblyData, 0, assemblyData.Length);
+                        var assembly = Assembly.Load(assemblyData);
+                        assemblies.Add(assembly);
+
+                        //extract module types and add them to be registered
+                        var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x));
+                        autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule)Activator.CreateInstance(x)));
+                    }
+                }
+                catch (Exception)
+                {
+                    //TODO log
+                }
+                
+            }
         }
 
         // Entry point for the application.
