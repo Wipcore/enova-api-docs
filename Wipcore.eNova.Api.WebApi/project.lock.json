@@ -1677,6 +1677,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Fasterflect": "1.0.0",
+          "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
           "Wipcore": "1.0.0",
           "Wipcore.eNova.Api.Models": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0",
@@ -3425,6 +3426,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Fasterflect": "1.0.0",
+          "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
           "Wipcore": "1.0.0",
           "Wipcore.eNova.Api.Models": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0",
@@ -5173,6 +5175,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Fasterflect": "1.0.0",
+          "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
           "Wipcore": "1.0.0",
           "Wipcore.eNova.Api.Models": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0",
