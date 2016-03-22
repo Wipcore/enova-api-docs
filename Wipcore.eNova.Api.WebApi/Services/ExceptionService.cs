@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.Enova.Api.Interfaces;
 
@@ -14,10 +15,12 @@ namespace Wipcore.eNova.Api.WebApi.Services
     public class ExceptionService : IExceptionService
     {
         private readonly IHostingEnvironment _environment;
+        private readonly ILogger _log;
 
-        public ExceptionService(IHostingEnvironment environment)
+        public ExceptionService(IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
             _environment = environment;
+            _log = loggerFactory.CreateLogger(GetType().Namespace);
         }
 
 
@@ -26,11 +29,16 @@ namespace Wipcore.eNova.Api.WebApi.Services
             if (context.Exception == null || context.ExceptionHandled)
                 return;
 
-            var isDevelopment = _environment.IsDevelopment();
-            if (isDevelopment) //if in development, full error page should be shown
-                return;
-
             var statusCode = GetStatusCodeForException(context.Exception);
+            var isDevelopment = _environment.IsDevelopment();
+            if (isDevelopment) //if in development, only set status code, as full error page is shown by default
+            {
+                context.HttpContext.Response.StatusCode = (int)statusCode;
+                return;
+            }
+                
+
+            _log.LogError(context.Exception.ToString());
 
             context.ExceptionHandled = true;
             context.Result = new ContentResult() {Content = $"{context.Exception.GetType().Name}\n{context.Exception.Message}",

@@ -18,6 +18,8 @@
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+    "NLog": "4.4.0-beta2",
+    "NLog.Extensions.Logging": "1.0.0-rc1-final-2016-03-11",
     "Wipcore.Enova.Api.Interfaces": "1.0.0-*",
     "Wipcore.eNova.Api.Models": "1.0.0-*"
   },

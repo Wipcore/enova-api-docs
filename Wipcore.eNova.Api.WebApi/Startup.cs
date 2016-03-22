@@ -12,6 +12,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
+using NLog.Extensions.Logging;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -78,11 +79,14 @@ namespace Wipcore.Enova.Api.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+            }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            ConfigureNlog(env,loggerFactory);
 
             app.UseIISPlatformHandler();
 
@@ -90,6 +94,20 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseStatusCodePages();
 
             app.UseMvc();
+        }
+
+        private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddNLog();
+            if (File.Exists("NLog.config"))
+            {
+                env.ConfigureNLog("NLog.config");
+            }
+            else
+            {
+                //temp until nlog is found correctly in root
+                env.ConfigureNLog(@"approot\packages\Wipcore.eNova.Api.WebApi\1.0.0\root\NLog.config");
+            }
         }
         
         private void LoadAddinAssemblies(List<Assembly> assemblies, List<IEnovaApiModule> autofacModules)
@@ -105,27 +123,19 @@ namespace Wipcore.Enova.Api.WebApi
             var dllPaths = Directory.GetFiles(addinPath, "*.dll");
             foreach (var dllPath in dllPaths)
             {
-                try
-                {
-                    /* Load by byte assembly since load by name might not work if
+                /* Load by byte assembly since load by name might not work if
                        the assembly has been loaded before */
-                    using (Stream stream = File.OpenRead(dllPath))
-                    {
-                        var assemblyData = new Byte[stream.Length];
-                        stream.Read(assemblyData, 0, assemblyData.Length);
-                        var assembly = Assembly.Load(assemblyData);
-                        assemblies.Add(assembly);
-
-                        //extract module types and add them to be registered
-                        var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x));
-                        autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule)Activator.CreateInstance(x)));
-                    }
-                }
-                catch (Exception)
+                using (Stream stream = File.OpenRead(dllPath))
                 {
-                    //TODO log
+                    var assemblyData = new Byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    var assembly = Assembly.Load(assemblyData);
+                    assemblies.Add(assembly);
+
+                    //extract module types and add them to be registered
+                    var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x));
+                    autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule) Activator.CreateInstance(x)));
                 }
-                
             }
         }
 

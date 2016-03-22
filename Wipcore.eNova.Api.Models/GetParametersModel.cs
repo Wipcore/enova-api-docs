@@ -15,6 +15,10 @@ namespace Wipcore.Enova.Api.Models
         public string Sort { get; set; } 
 
         public string Filter { get; set; }
-        
+
+        public override string ToString()
+        {
+            return $"GetParametersModel: (Location: {Location}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
+        }
     }
 }

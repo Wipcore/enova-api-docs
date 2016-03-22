@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
-using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces;
@@ -28,6 +20,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 
             if (requestContext is IContextModel)
                 context.HttpContext.Items[ContextService.ContextModelKey] = requestContext;
+
+
         }
         
         public override void OnActionExecuted(ActionExecutedContext context)
