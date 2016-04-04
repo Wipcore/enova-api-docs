@@ -115,17 +115,17 @@ namespace Wipcore.Enova.Api.WebApi
             /* Load all dlls/assemblies from the addin folder, where external mappers/services/controllers can be added. */
             var addinPath = Configuration.Get<String>("ApiSettings:PathToAddins");
             if(String.IsNullOrEmpty(addinPath))
-                addinPath = Path.Combine(Environment.CurrentDirectory, @"..\addin");
+                addinPath = Path.Combine(Environment.CurrentDirectory, @"..\AddIn");
 
             if (!Directory.Exists(addinPath))
                 return;
 
-            var dllPaths = Directory.GetFiles(addinPath, "*.dll");
-            foreach (var dllPath in dllPaths)
+            var dllFiles = Directory.GetFiles(addinPath, "*.dll", SearchOption.AllDirectories);
+            foreach (var dllFile in dllFiles)
             {
                 /* Load by byte assembly since load by name might not work if
                        the assembly has been loaded before */
-                using (Stream stream = File.OpenRead(dllPath))
+                using (Stream stream = File.OpenRead(dllFile))
                 {
                     var assemblyData = new Byte[stream.Length];
                     stream.Read(assemblyData, 0, assemblyData.Length);
