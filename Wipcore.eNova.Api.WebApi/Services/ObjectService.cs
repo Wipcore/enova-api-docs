@@ -45,7 +45,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
         {
             var context = _contextService.GetContext();
-            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T).Name, getParameters);
+            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T), getParameters);
 
             var obj = context.FindObject(identifier, typeof (T), throwExceptionIfNotFound: true);
             return _mappingFromService.MapFrom(obj, getParameters.Properties);
@@ -53,7 +53,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
         {
-            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T).Name, getParameters);
+            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T), getParameters);
 
             var context = _contextService.GetContext();
             var memoryObject = IsMemoryObject<T>();

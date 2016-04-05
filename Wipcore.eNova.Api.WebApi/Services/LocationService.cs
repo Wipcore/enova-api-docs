@@ -18,12 +18,18 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _configuration = configuration;            
         }
 
-        public IGetParametersModel GetParametersFromLocationConfiguration(string type, IGetParametersModel parameters)
+        public IGetParametersModel GetParametersFromLocationConfiguration(Type type, IGetParametersModel parameters)
         {
             parameters = parameters ?? new GetParametersModel();
 
-            var config = _configuration.GetSection(type)?.GetSection(parameters.Location);
-            
+            IConfigurationSection config = null;
+            while ((config == null || !config.GetChildren().Any()) && type != typeof (object))
+            {
+                config = _configuration.GetSection(type.Name)?.GetSection(parameters.Location);
+
+                type = type.BaseType;
+            }
+
             if (config == null)
                 return null;
 

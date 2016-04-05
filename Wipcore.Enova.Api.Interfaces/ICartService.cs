@@ -13,5 +13,7 @@ namespace Wipcore.Enova.Api.Interfaces
         ICartModel CalculateCart(ICartModel currentCart);
 
         void MapCart(Context context, EnovaCart enovaCart, ICartModel currentCart);
+
+        BaseObjectList GetCartsByCustomer(string customerIdentifier);
     }
 }

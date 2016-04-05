@@ -1,15 +1,30 @@
 {
-  "enovabaseproduct": { //TODO somehow replace class name with just "product"?
+  "enovabaseproduct": {
     "default": {
       "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
-    },    
+    },
     "price": {
       "properties": "identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"
     }
   },
   "enovaorder": {
     "default": {
-      "properties": "identifier,firstname,lastname"
+      "properties": "identifier,firstname,lastname,customer.identifier,SumInclTax"
     }
-  }  
+  },
+  "enovacart": {
+    "default": {
+      "properties": "identifier,customercomment,customer.identifier,SumInclTax"
+    }
+  },
+  "enovabaseproductsection": {
+    "default": {
+      "properties": "Identifier,name"
+    }
+  },
+  "enovapayment": {
+    "default": {
+      "properties": "Identifier,name,amount,paymentdate,relatedorderidentifier,Status,TypeOfPayment"
+    }
+  }
 }

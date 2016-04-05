@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces;
@@ -114,6 +113,16 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
                 itemsToRemove.ForEach(enovaCart.DeleteCartItem);
             }
+        }
+
+        public BaseObjectList GetCartsByCustomer(string customerIdentifier)
+        {
+            var context = _contextService.GetContext();
+            var customer = EnovaCustomer.Find(context, customerIdentifier);
+            
+            var type = typeof(EnovaCart).GetMostDerivedType();
+            var carts = context.Search("CustomerID = " + customer.ID, type, null, 0, null, false);
+            return carts;
         }
 
         private PaymentTypeCartItem MapPaymentItem(Context context, EnovaCart enovaCart, IRowModel cartItem)
