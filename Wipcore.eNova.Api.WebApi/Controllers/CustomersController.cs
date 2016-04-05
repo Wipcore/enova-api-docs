@@ -18,11 +18,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     {
         private readonly IObjectService _objectService;
         private readonly IOrderService _orderService;
+        private readonly ICartService _cartService;
 
-        public CustomersController(IObjectService objectService, IOrderService orderService)
+        public CustomersController(IObjectService objectService, IOrderService orderService, ICartService cartService)
         {
             _objectService = objectService;
             _orderService = orderService;
+            _cartService = cartService;
         }
 
         [HttpGet()]
@@ -42,6 +44,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             var orders = _orderService.GetOrdersByCustomer(identifier, shippingStatus);
             return _objectService.Get<EnovaOrder>(requestContext, getParameters, orders);
+        }
+
+        [HttpGet("{identifier}/carts")]
+        public IEnumerable<IDictionary<string, object>> GetCarts([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier)
+        {
+            var carts = _cartService.GetCartsByCustomer(identifier);
+            return _objectService.Get<EnovaCart>(requestContext, getParameters, carts);
         }
 
         [HttpPut()]

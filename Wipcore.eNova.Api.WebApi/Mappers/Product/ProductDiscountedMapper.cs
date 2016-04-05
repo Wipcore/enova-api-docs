@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 using MapType = Wipcore.Enova.Api.Interfaces.MapType;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
     public class ProductDiscountedMapper : IPropertyMapper
     {
