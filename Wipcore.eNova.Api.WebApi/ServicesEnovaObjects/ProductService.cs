@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Wipcore.Core.SessionObjects;
+﻿using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
-using Wipcore.Enova.Generics;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
 {
     public class ProductService : IProductService
     {

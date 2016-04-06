@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
-using static System.String;
 
-namespace Wipcore.Enova.Api.WebApi.Services
+namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
 {
     public class CartService : ICartService
     {
@@ -105,11 +103,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var identifiers = currentCart.Rows.Select(x => x.Identifier).ToList();
                 var itemsToRemove = new List<CartItem>();
                 itemsToRemove.AddRange(enovaCart.GetCartItems<EnovaProductCartItem>().Where(x => 
-                    !identifiers.Contains(x.Product?.Identifier ?? Empty, StringComparer.InvariantCultureIgnoreCase)));
+                    !identifiers.Contains(x.Product?.Identifier ?? String.Empty, StringComparer.InvariantCultureIgnoreCase)));
                 itemsToRemove.AddRange(enovaCart.GetCartItems<EnovaShippingTypeCartItem>().Where(x => 
-                    !identifiers.Contains(x.ShippingType?.Identifier ?? Empty, StringComparer.InvariantCultureIgnoreCase)));
+                    !identifiers.Contains(x.ShippingType?.Identifier ?? String.Empty, StringComparer.InvariantCultureIgnoreCase)));
                 itemsToRemove.AddRange(enovaCart.GetCartItems<EnovaPaymentTypeCartItem>().Where(x => 
-                    !identifiers.Contains(x.PaymentType?.Identifier ?? Empty, StringComparer.InvariantCultureIgnoreCase)));
+                    !identifiers.Contains(x.PaymentType?.Identifier ?? String.Empty, StringComparer.InvariantCultureIgnoreCase)));
 
                 itemsToRemove.ForEach(enovaCart.DeleteCartItem);
             }

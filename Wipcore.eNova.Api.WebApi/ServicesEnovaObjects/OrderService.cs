@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
-namespace Wipcore.Enova.Api.WebApi.Services
+namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
 {
     public class OrderService : IOrderService
     {

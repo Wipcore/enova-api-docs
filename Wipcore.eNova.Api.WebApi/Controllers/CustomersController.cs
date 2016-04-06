@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
@@ -19,12 +20,14 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IObjectService _objectService;
         private readonly IOrderService _orderService;
         private readonly ICartService _cartService;
+        private readonly ICustomerService _customerService;
 
-        public CustomersController(IObjectService objectService, IOrderService orderService, ICartService cartService)
+        public CustomersController(IObjectService objectService, IOrderService orderService, ICartService cartService, ICustomerService customerService)
         {
             _objectService = objectService;
             _orderService = orderService;
             _cartService = cartService;
+            _customerService = customerService;
         }
 
         [HttpGet()]
@@ -51,6 +54,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             var carts = _cartService.GetCartsByCustomer(identifier);
             return _objectService.Get<EnovaCart>(requestContext, getParameters, carts);
+        }
+
+        [HttpGet("{identifier}/addresses")]
+        public IEnumerable<IDictionary<string, object>> GetAddresses([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier, EnovaCustomerAddress.AddressTypeEnum? addressType = null)
+        {
+            var addresses = _customerService.GetAddresses(identifier, addressType);
+            return _objectService.Get<EnovaCustomerAddress>(requestContext, getParameters, addresses);
         }
 
         [HttpPut()]

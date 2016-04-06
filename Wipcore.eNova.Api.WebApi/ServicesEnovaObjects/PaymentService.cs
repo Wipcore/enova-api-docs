@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
@@ -10,7 +8,7 @@ using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
-namespace Wipcore.eNova.Api.WebApi.Services
+namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
 {
     public class PaymentService : IPaymentService
     {
