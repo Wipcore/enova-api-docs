@@ -1,6 +1,5 @@
 {
   //TODO make configurable from webadmin or similar
-
   "enovabaseproduct": {
     "default": {
       "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
@@ -12,6 +11,12 @@
   "enovaorder": {
     "default": {
       "properties": "identifier,firstname,lastname,customer.identifier,SumInclTax"
+
+    }
+  },
+  "enovacustomer": {
+    "default": {
+      "properties": "identifier,firstname,lastname"
     }
   },
   "enovacart": {
@@ -21,12 +26,12 @@
   },
   "enovabaseproductsection": {
     "default": {
-      "properties": "Identifier,name"
+      "properties": "identifier,name"
     }
   },
   "enovapayment": {
     "default": {
-      "properties": "Identifier,name,amount,paymentdate,relatedorderidentifier,Status,TypeOfPayment"
+      "properties": "identifier,name,amount,paymentdate,relatedorderidentifier,Status,TypeOfPayment"
     }
   },
   "enovacustomeraddress": {
