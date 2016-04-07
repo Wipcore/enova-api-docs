@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Wipcore.Enova.Api.Models;
@@ -8,22 +9,22 @@ using static System.String;
 
 namespace Wipcore.Enova.Api.NetClient
 {
-    public class ProductClient
+    public class AsyncProductClient
     {
-        private readonly HttpClientWrapper _clientWrapper;
+        private readonly AsyncHttpClientWrapper _clientWrapper;
 
         ContextModel Context { get; set; }
 
-        public ProductClient(HttpClientSettings clientSettings)
+        public AsyncProductClient(HttpClientSettings clientSettings)
         {
-            _clientWrapper = new HttpClientWrapper(clientSettings);
+            _clientWrapper = new AsyncHttpClientWrapper(clientSettings);
         }
 
-        public ResponseModel GetProduct(string identifier, ContextModel context = null)
+        public async Task<ResponseModel> GetProduct(string identifier, ContextModel context = null)
         {
-            var response = _clientWrapper.Get("api/products/" + identifier + ContextHelper.GetContextParameters(context));
-            var json = response.Content.ReadAsStringAsync().Result;
-            
+            var response = await _clientWrapper.Get("api/products/" + identifier + ContextHelper.GetContextParameters(context));
+            var json = await response.Content.ReadAsStringAsync();
+
             var model = new ResponseModel();
             model.StatusCode = response.StatusCode;
             if (response.IsSuccessStatusCode)
@@ -32,9 +33,9 @@ namespace Wipcore.Enova.Api.NetClient
             }
 
             return model;
-        }
+        } 
 
-        public ResponseModel ListProducts(int pageSize, int page, string sort = "", string filter = "", string properties = "", ContextModel context = null)
+        public async Task<ResponseModel> ListProducts(int pageSize, int page, string sort = "", string filter = "", string properties = "", ContextModel context = null)
         {
             string optionalParams = Empty;
             if (!IsNullOrEmpty(sort))
@@ -44,16 +45,16 @@ namespace Wipcore.Enova.Api.NetClient
             if (!IsNullOrEmpty(properties))
                 optionalParams += "&properties=" + properties;
 
-            var response = _clientWrapper.Get("api/products?size=" + pageSize.ToString() + "&page=" + page.ToString() + optionalParams + ContextHelper.GetContextParameters(context));
-            var json = response.Content.ReadAsStringAsync().Result;
-
+            var response = await _clientWrapper.Get("api/products?size=" + pageSize.ToString() + "&page=" + page.ToString() + optionalParams + ContextHelper.GetContextParameters(context));
+            var json = response.Content.ReadAsStringAsync();
+            
             var model = new ResponseModel();
             model.StatusCode = response.StatusCode;
             if (response.IsSuccessStatusCode)
             {
                 var list = new ListModel();
 
-                list.Objects = JsonConvert.DeserializeObject<IEnumerable<IDictionary<string, object>>>(json);
+                list.Objects = JsonConvert.DeserializeObject<IEnumerable<IDictionary<string, object>>>(json.Result);
 
                 int pageCount, recordCount;
                 string pagesCount = response.Headers.GetValues("X-Paging-PageCount").FirstOrDefault();
@@ -74,9 +75,9 @@ namespace Wipcore.Enova.Api.NetClient
             return model;
         }
 
-        public ResponseModel GetPrice(string identifier, ContextModel context = null)
+        public async Task<ResponseModel> GetPrice(string identifier, ContextModel context = null)
         {
-            var response = this.GetPrices(new[] { identifier }, 1, 1, context);
+            var response = await this.GetPrices(new[] {identifier}, 1, 1, context);
 
             if (response.List?.Objects == null)
                 return response;
@@ -87,16 +88,16 @@ namespace Wipcore.Enova.Api.NetClient
             return response;
         }
 
-        public ResponseModel GetPrices(IEnumerable<string> identifiers, int pageSize, int page, ContextModel context = null)
+        public async Task<ResponseModel> GetPrices(IEnumerable<string> identifiers, int pageSize, int page, ContextModel context = null)
         {
             const string location = "price";
             var filter = Join(" or ", identifiers.Where(x => !IsNullOrEmpty(x)).Select(x => "identifier =" + x));
 
-            var response = _clientWrapper.Get("api/products?filter=" + filter + "&location=" + location + "&size=" + pageSize +
+            var response = await _clientWrapper.Get("api/products?filter="+filter+"&location=" + location + "&size=" + pageSize + 
                 " &page = " + page + ContextHelper.GetContextParameters(context));
-            var json = response.Content.ReadAsStringAsync().Result;
+            var json = response.Content.ReadAsStringAsync();
 
-            var model = new ResponseModel { StatusCode = response.StatusCode };
+            var model = new ResponseModel {StatusCode = response.StatusCode};
             if (!response.IsSuccessStatusCode)
                 return model;
 
@@ -108,7 +109,7 @@ namespace Wipcore.Enova.Api.NetClient
 
             model.List = new ListModel
             {
-                Objects = JsonConvert.DeserializeObject<IEnumerable<IDictionary<string, object>>>(json),
+                Objects = JsonConvert.DeserializeObject<IEnumerable<IDictionary<string, object>>>(json.Result),
                 PageCount = pageCount,
                 RecordCount = recordCount,
                 PageSize = pageSize,

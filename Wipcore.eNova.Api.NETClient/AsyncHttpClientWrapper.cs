@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 using System.Text;
 
 namespace Wipcore.Enova.Api.NetClient
 {
-    public class HttpClientWrapper
+    public class AsyncHttpClientWrapper
     {
         private readonly HttpClientSettings _settings;
         private readonly HttpClient _client;
 
-        public HttpClientWrapper(HttpClientSettings settings)
+        public AsyncHttpClientWrapper(HttpClientSettings settings)
         {
             _settings = settings;
             _client = new HttpClient();
@@ -20,27 +20,27 @@ namespace Wipcore.Enova.Api.NetClient
                 _client.Timeout = _settings.Timeout;
         }
 
-        public T Get<T>(string route)
+        public async Task<T> Get<T>(string route)
         {
-            var json = _client.GetStringAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/')).Result;
+            var json = await _client.GetStringAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/'));
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public HttpResponseMessage Get(string route)
+        public async Task<HttpResponseMessage> Get(string route)
         {
-            return _client.GetAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/')).Result;
+            return await _client.GetAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/'));
         }
 
-        public HttpResponseMessage Post(string route, string content)
+        public async Task<HttpResponseMessage> Post(string route, string content)
         {
             var stringContent = new System.Net.Http.StringContent(content, new UTF8Encoding(), "application/json");
-            return _client.PostAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/'), stringContent).Result;
+            return await _client.PostAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/'), stringContent);
         }
 
-        public HttpResponseMessage Put(string route, string content)
+        public async Task<HttpResponseMessage> Put(string route, string content)
         {
             var stringContent = new System.Net.Http.StringContent(content, new UTF8Encoding(), "application/json");
-            return _client.PutAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/'), stringContent).Result;
+            return await _client.PutAsync(_settings.Url.TrimEnd('/') + '/' + route.TrimStart('/'), stringContent);
         }
     }
 }
