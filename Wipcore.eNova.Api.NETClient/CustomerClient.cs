@@ -32,7 +32,7 @@ namespace Wipcore.eNova.Api.NetClient
             return model;
         }
 
-        public async Task<ResponseModel> RegisterCustomer(CustomerModel customerModel, ContextModel context = null)
+        public async Task<ResponseModel> SaveCustomer(CustomerModel customerModel, ContextModel context = null)
         {
             string jsonRequest = JsonConvert.SerializeObject(customerModel);
             var response = await _clientWrapper.Put("api/customers?" + ContextHelper.GetContextParameters(context), jsonRequest);
