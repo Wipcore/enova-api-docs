@@ -1,5 +1,6 @@
 {
-  "enovabaseproduct": { //TODO somehow replace class name with just "product"?
+  //TODO make configurable from webadmin or similar
+  "enovabaseproduct": {
     "default": {
       "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
     },
@@ -31,6 +32,11 @@
   "enovapayment": {
     "default": {
       "properties": "identifier,name,amount,paymentdate,relatedorderidentifier,Status,TypeOfPayment"
+    }
+  },
+  "enovacustomeraddress": {
+    "default": {
+      "properties": "Identifier,FirstName,LastName,City,CountryName,AddressType"
     }
   }
 }

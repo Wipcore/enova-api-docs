@@ -106,7 +106,7 @@ namespace Wipcore.Enova.Api.WebApi
             else
             {
                 //temp until nlog is found correctly in root
-                env.ConfigureNLog(@"NLog.config");
+                env.ConfigureNLog(@"approot\packages\Wipcore.eNova.Api.WebApi\1.0.0\root\NLog.config");
             }
         }
         
