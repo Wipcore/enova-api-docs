@@ -18,6 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
         {
             var context = _contextService.GetContext();
             var product = EnovaBaseProduct.Find(context, identifier);
+
             var family = product.GetVariantFamily(true, true);
             var members = family?.GetObjects(typeof (EnovaBaseProduct), true);
             var owner = family?.Owner;

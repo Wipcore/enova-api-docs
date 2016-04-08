@@ -21,5 +21,8 @@ namespace Wipcore.Enova.Api.Models.Interfaces
         string RegistrationNumber { get; set; }
         string CoAddress { get; set; }
         string CompanyName { get; set; }
+        string Password { get; set; }
+
+        IDictionary<string, object> AdditionalValues { get; set; }
     }
 }

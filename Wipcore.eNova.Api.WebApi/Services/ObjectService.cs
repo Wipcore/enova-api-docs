@@ -76,10 +76,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
             T obj = null;
 
             //find object by id or identifier, and create new if nothing is found
-            object idValue;
-            values.TryGetValue("id", out idValue);
+            var idValue = values.FirstOrDefault(x => x.Key.ToLower() == "id");
 
-            if (idValue != null)
+            if (idValue.Value != null)
             {
                 var id = Convert.ToInt32(idValue);
                 obj = context.FindObject<T>(id);
@@ -89,11 +88,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
             }
             else
             {
-                object identifier;
-                values.TryGetValue("identifier", out identifier);
-
-                if(identifier != null)
-                    obj = context.FindObject<T>(identifier.ToString());
+                var identifier = values.FirstOrDefault(x => x.Key.ToLower() == "identifier" && x.Value != null);
+                
+                if(identifier.Value != null)
+                    obj = context.FindObject<T>(identifier.Value.ToString());
             }
 
             if (obj == null)

@@ -18,7 +18,6 @@ namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
         private readonly IMappingToService _mappingToService;
         private readonly ICartService _cartService;
         private readonly string _newOrderStatus = null;
-        private readonly string _defaultWarehouse = null;
 
         public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration)
         {
@@ -26,10 +25,6 @@ namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
             _mappingToService = mappingToService;
             _cartService = cartService;
             _newOrderStatus = configuration.GetSection("EnovaSettings")?.GetChildren()?.FirstOrDefault(x => x.Key == "NewShippingStatus")?.Value;
-
-            var context = contextService.GetContext();
-            var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
-            _defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
         }
 
         public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
@@ -64,11 +59,16 @@ namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
             {
                 var identifier = cartModel.Identifier;
                 cartModel.Identifier = null;
+
                 var dummyCart = EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
                 _cartService.MapCart(context, dummyCart, cartModel);
+
                 enovaOrder = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, dummyCart);
                 enovaOrder.Identifier = cartModel.Identifier = identifier; //TODO generate order identifier if empty
-                enovaOrder.Warehouse = EnovaWarehouse.Find(context, _defaultWarehouse);
+
+                var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
+                var defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
+                enovaOrder.Warehouse = EnovaWarehouse.Find(context, defaultWarehouse);
             }
             
             Map(context, enovaOrder, cartModel);

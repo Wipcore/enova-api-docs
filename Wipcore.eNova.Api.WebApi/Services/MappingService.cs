@@ -9,6 +9,8 @@ using Wipcore.Enova.Api.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.Caching;
 using Fasterflect;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
@@ -62,6 +64,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 {
                     var mappedValue = mapper.MapTo(obj, property.Key);
                     values[property.Key] = mappedValue;
+                }
+                    //if it is a sub dictionary with additional values, from a dezerialized model for example, then map them the same way
+                else if (property.Key.ToLower() == "additionalvalues" && property.Value is JObject)
+                {
+                    var subValues = ((JObject)property.Value).ToObject<Dictionary<string, object>>();
+                    this.MapTo(obj, subValues);
                 }
                 else
                     obj.SetProperty(property.Key, property.Value);
