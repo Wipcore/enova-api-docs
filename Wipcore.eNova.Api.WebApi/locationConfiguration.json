@@ -38,5 +38,15 @@
     "default": {
       "properties": "Identifier,FirstName,LastName,City,CountryName,AddressType"
     }
+  },
+  "enovawarehousecompartment": {
+    "default": {
+      "properties": "Identifier,Warehouse.Name,Name,Stock,Reserved"
+    }
+  },
+  "enovaattributevalue": {
+    "default": {
+      "properties": "identifier,name,valuecode,attributetype.identifier,attributetype.name"
+    }
   }
 }

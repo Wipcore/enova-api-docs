@@ -21,11 +21,15 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     {
         private readonly IObjectService _objectService;
         private readonly IProductService _productService;
+        private readonly IWarehoseService _warehoseService;
+        private readonly IAttributeService _attributeService;
 
-        public ProductsController( IObjectService objectService, IProductService productService)
+        public ProductsController( IObjectService objectService, IProductService productService, IWarehoseService warehoseService, IAttributeService attributeService)
         {
             _objectService = objectService;
             _productService = productService;
+            _warehoseService = warehoseService;
+            _attributeService = attributeService;
         }
 
         [HttpGet(/*"{location}"*/)]
@@ -45,6 +49,20 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             var members = _productService.GetVariants(identifier);
             return members == null ? null : _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, members);
+        }
+
+        [HttpGet("{identifier}/stock")]
+        public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, GetParametersModel getParameters, string identifier, string warehouse = null)
+        {
+            var compartments = _warehoseService.GetWarehoseCompartments(identifier, warehouse);
+            return compartments == null ? null : _objectService.Get<EnovaWarehouseCompartment>(requestContext, getParameters, compartments);
+        }
+
+        [HttpGet("{identifier}/attributes")]
+        public IEnumerable<IDictionary<string, object>> GetAttributes(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        {
+            var attributes = _attributeService.GetAttributes<EnovaBaseProduct>(identifier);
+            return attributes == null ? null : _objectService.Get<EnovaAttributeValue>(requestContext, getParameters, attributes);
         }
 
 
