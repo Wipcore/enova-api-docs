@@ -36,13 +36,26 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var settings = config.GetChildren().ToList();
 
             //if the parameter is not already set, retrive it from the settings
-            parameters.Filter = parameters.Filter ?? settings.FirstOrDefault(x => x.Key == "filter")?.Value;
-            parameters.Properties = parameters.Properties ?? settings.FirstOrDefault(x => x.Key == "properties")?.Value;
-            parameters.Sort = parameters.Sort ?? settings.FirstOrDefault(x => x.Key == "sort")?.Value;
             parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "0");
             parameters.Size = parameters.Size ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "size")?.Value ?? "20");
-            
+
+            parameters.Sort = SetValue(parameters.Sort, settings, "sort");
+            parameters.Filter = SetValue(parameters.Filter, settings, "filter");  
+            parameters.Properties = SetValue(parameters.Properties, settings, "properties");
+
             return parameters;
+        }
+
+        private string SetValue(string parameterValue, List<IConfigurationSection> settings, string settingName)
+        {
+            var settingValue = settings.FirstOrDefault(x => x.Key == settingName)?.Value;
+            if(parameterValue == null)
+                return settingValue;
+            //combine given parameter with setting. + or space as +  can be modelbinded to space
+            if (parameterValue.StartsWith("+") || parameterValue.StartsWith(" "))
+                return parameterValue.Substring(1) + ","+ settingValue;
+
+            return parameterValue;
         }
     }
 }
