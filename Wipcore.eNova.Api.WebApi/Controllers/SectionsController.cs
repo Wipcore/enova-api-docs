@@ -23,7 +23,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _contextService = contextService;
         }
 
-        [HttpGet(/*"{location}"*/)]
+        [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
             return _objectService.Get<EnovaBaseProductSection>(requestContext, getParameters);

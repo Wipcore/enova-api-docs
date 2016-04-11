@@ -12,11 +12,11 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [Route("api/{market}/[controller]")]
-    public class PricesController : ApiController
+    public class SuppliersController : ApiController
     {
         private readonly IObjectService _objectService;
 
-        public PricesController(IObjectService objectService)
+        public SuppliersController(IObjectService objectService)
         {
             _objectService = objectService;
         }
@@ -24,13 +24,13 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
-            return _objectService.Get<EnovaPriceList>(requestContext, getParameters);
+            return _objectService.Get<EnovaSupplier>(requestContext, getParameters);
         }
 
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
-            return _objectService.Get<EnovaPriceList>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaSupplier>(requestContext, getParameters, identifier);
         }
     }
 }

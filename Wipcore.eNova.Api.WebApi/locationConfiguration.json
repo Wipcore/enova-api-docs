@@ -5,33 +5,33 @@
       "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
     },
     "price": {
-      "properties": "identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"
+      "properties": "Identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"
     }
   },
   "enovaorder": {
     "default": {
-      "properties": "identifier,firstname,lastname,customer.identifier,SumInclTax"
+      "properties": "Identifier,FirstName,LastName,Customer.Identifier,SumInclTax"
 
     }
   },
   "enovacustomer": {
     "default": {
-      "properties": "identifier,firstname,lastname,Alias,City,CountryName,Street"
+      "properties": "Identifier,FirstName,LastName,Alias,City,CountryName,Street"
     }
   },
   "enovacart": {
     "default": {
-      "properties": "identifier,customercomment,customer.identifier,SumInclTax"
+      "properties": "Identifier,CustomerComment,Customer.Identifier,SumInclTax"
     }
   },
   "enovabaseproductsection": {
     "default": {
-      "properties": "identifier,name"
+      "properties": "Identifier,Name"
     }
   },
   "enovapayment": {
     "default": {
-      "properties": "identifier,name,amount,paymentdate,relatedorderidentifier,Status,TypeOfPayment"
+      "properties": "Identifier,Name,Amount,PaymentDate,RelatedOrderIdentifier,Status,TypeOfPayment"
     }
   },
   "enovacustomeraddress": {
@@ -46,7 +46,87 @@
   },
   "enovaattributevalue": {
     "default": {
-      "properties": "identifier,name,valuecode,attributetype.identifier,attributetype.name"
+      "properties": "Identifier,Name,CalueCode,AttributeType.Identifier,AttributeType.Name"
     }
-  }
+  },
+  "enovacountry": {
+    "default": {
+      "properties": "Identifier,Name,SortOrder"
+    }
+  },
+  "enovacurrency": {
+    "default": {
+      "properties": "Identifier,Name,Prefix,Suffix,IsoCode,SortOrder"
+    }
+  },
+  "enovalanguage": {
+    "default": {
+      "properties": "Identifier,Name,IsoCode"
+    }
+  },
+  "enovamanufacturer": {
+    "default": {
+      "properties": "Identifier,Name,Street,PostalAddress,PostalCode,City,State,CountryName,Phone,Mobile,Email,Url,RegistratioNnumber,DescriptionLong,CoAddress"
+    }
+  },
+  "enovapaymenttype": {
+    "default": {
+      "properties": "Identifier,Name,Tax.Identifier,Description"
+    }
+  },
+  "enovapromo": {
+    "default": {
+      "properties": "Identifier,Name,RepeatTime,RepeatInterval,MaxUse,MaxUsePerOrder,MaxUseTotal,StartAt,EndAt"
+    }
+  },
+  "enovashippingstatus": {
+    "default": {
+      "properties": "Identifier,Name,InactiveOrder"
+    }
+  },
+  "enovashippingtype": {
+    "default": {
+      "properties": "Identifier,Name"
+    }
+  },
+  "enovataxationrule": {
+    "default": {
+      "properties": "Identifier,Name"
+    }
+  },
+  "enovatax": {
+    "default": {
+      "properties": "Identifier,Name,Rate"
+    }
+  },
+  "enovacompany": {
+    "default": {
+      "properties": "Identifier,Name,Street,PostalAddress,PostalCode,City,State,CountryName,Phone,CoAddress"
+    }
+  },
+  "enovashippingtypecost": {
+    "default": {
+      "properties": "Identifier,Name,ShippingType.Identifier,Price,Currency.Identifier"
+    }
+  },
+  "enovacustomergroup": {
+    "default": {
+      "properties": "Identifier,Name"
+    }
+  },
+  "enovasupplier": {
+    "default": {
+      "properties": "Identifier,Name,Street,PostalAddress,PostalCode,City,State,CountryName,Phone,Mobile,Email,Url,RegistratioNnumber,CoAddress"
+    }
+  },
+  "enovasystemtext": {
+    "default": {
+      "properties": "Identifier,Name"
+    }
+  },
+  "enovawarehouse": {
+    "default": {
+      "properties": "Identifier,Name,Street,PostalAddress,PostalCode,City,State,CountryName,Phone,Mobile,Email,Url,OrgNumber,CoAddress"
+    }
+  } 
 }
