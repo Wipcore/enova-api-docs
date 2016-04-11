@@ -25,8 +25,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
             _paymentService = paymentService;
         }
-
-
+        
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
@@ -39,7 +38,6 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaPayment>(requestContext, getParameters, identifier);
         }
        
-
         [HttpPost()]
         public IPaymentModel Post([FromUri] ContextModel requestContext, [FromBody]PaymentModel payment)
         {

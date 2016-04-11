@@ -9,7 +9,6 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     public abstract class ApiController : Controller
     {
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
@@ -20,8 +19,6 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 
             if (requestContext is IContextModel)
                 context.HttpContext.Items[ContextService.ContextModelKey] = requestContext;
-
-
         }
         
         public override void OnActionExecuted(ActionExecutedContext context)
