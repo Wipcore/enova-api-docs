@@ -15,8 +15,6 @@ using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
-    
-
     public class ContextService : IContextService
     {
         public const string ContextModelKey = "requestContext";

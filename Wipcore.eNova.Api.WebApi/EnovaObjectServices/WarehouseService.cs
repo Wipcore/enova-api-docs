@@ -6,18 +6,18 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
+namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 {
-    public class WarehoseService : IWarehoseService
+    public class WarehouseService : IWarehouseService
     {
         private readonly IContextService _contextService;
 
-        public WarehoseService(IContextService contextService)
+        public WarehouseService(IContextService contextService)
         {
             _contextService = contextService;
         }
 
-        public BaseObjectList GetWarehoseCompartments(string productIdentifier, string warehouseIdentifier = null)
+        public BaseObjectList GetWarehouseCompartments(string productIdentifier, string warehouseIdentifier = null)
         {
             var context = _contextService.GetContext();
             var product = EnovaBaseProduct.Find(context, productIdentifier);

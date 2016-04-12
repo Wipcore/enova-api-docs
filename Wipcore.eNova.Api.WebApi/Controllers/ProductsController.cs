@@ -21,14 +21,14 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     {
         private readonly IObjectService _objectService;
         private readonly IProductService _productService;
-        private readonly IWarehoseService _warehoseService;
+        private readonly IWarehouseService _warehouseService;
         private readonly IAttributeService _attributeService;
 
-        public ProductsController( IObjectService objectService, IProductService productService, IWarehoseService warehoseService, IAttributeService attributeService)
+        public ProductsController( IObjectService objectService, IProductService productService, IWarehouseService warehouseService, IAttributeService attributeService)
         {
             _objectService = objectService;
             _productService = productService;
-            _warehoseService = warehoseService;
+            _warehouseService = warehouseService;
             _attributeService = attributeService;
         }
 
@@ -54,7 +54,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [HttpGet("{identifier}/stock")]
         public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, GetParametersModel getParameters, string identifier, string warehouse = null)
         {
-            var compartments = _warehoseService.GetWarehoseCompartments(identifier, warehouse);
+            var compartments = _warehouseService.GetWarehouseCompartments(identifier, warehouse);
             return compartments == null ? null : _objectService.Get<EnovaWarehouseCompartment>(requestContext, getParameters, compartments);
         }
 
@@ -64,8 +64,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             var attributes = _attributeService.GetAttributes<EnovaBaseProduct>(identifier);
             return attributes == null ? null : _objectService.Get<EnovaAttributeValue>(requestContext, getParameters, attributes);
         }
-
-
+        
         [HttpPut()]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {

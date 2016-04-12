@@ -111,7 +111,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             return (cachedMapper ?? lazyMapper).Value;            
         }
-
         
     }
 }

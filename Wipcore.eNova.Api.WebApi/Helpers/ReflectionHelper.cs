@@ -18,7 +18,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         }
 
         /// <summary>
-        /// get most derived type from all available types
+        /// Get most derived type from all available types
         /// </summary>
         public static Type GetMostDerivedType(this Type type)
         {
@@ -26,7 +26,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         }
 
         /// <summary>
-        /// get most derived type in list types
+        /// Get most derived type in list types
         /// </summary>
         public static Type GetMostDerivedType(this Type type, IEnumerable<Type> types)
         {
@@ -35,7 +35,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 
         /// <summary>
         /// Checks if a type is nullable
-        /// WARNING will only work with typeof(int) not o.GetType() read morehttp://msdn.microsoft.com/en-us/library/ms366789.aspx
+        /// WARNING will only work with typeof(int) not o.GetType() read more at http://msdn.microsoft.com/en-us/library/ms366789.aspx
         /// </summary>
         public static bool IsNullable(this Type type)
         {
@@ -49,7 +49,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         }
 
         /// <summary>
-        /// Get most derived types in list types. i.e. if 2 classes ingherits the same class.
+        /// Get most derived types in list types. i.e. if two classes inherits the same class.
         /// </summary>
         public static IEnumerable<Type> GetMostDerivedTypes(this Type type, IEnumerable<Type> types)
         {
