@@ -46,7 +46,12 @@
   },
   "enovaattributevalue": {
     "default": {
-      "properties": "Identifier,Name,CalueCode,AttributeType.Identifier,AttributeType.Name"
+      "properties": "Identifier,Name,ValueCode,AttributeType.Identifier,AttributeType.Name"
+    }
+  },
+  "enovaattributetype": {
+    "default": {
+      "properties": "Identifier,Name,TypeDescription,IsContinuous"
     }
   },
   "enovacountry": {
@@ -128,5 +133,5 @@
     "default": {
       "properties": "Identifier,Name,Street,PostalAddress,PostalCode,City,State,CountryName,Phone,Mobile,Email,Url,OrgNumber,CoAddress"
     }
-  } 
+  }
 }
