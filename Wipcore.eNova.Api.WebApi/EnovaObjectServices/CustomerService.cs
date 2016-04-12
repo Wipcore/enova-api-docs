@@ -8,7 +8,7 @@ using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
-namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
+namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 {
     public class CustomerService : ICustomerService
     {

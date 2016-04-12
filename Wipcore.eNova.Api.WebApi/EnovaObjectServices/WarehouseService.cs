@@ -6,7 +6,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.ServicesEnovaObjects
+namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 {
     public class WarehouseService : IWarehouseService
     {
