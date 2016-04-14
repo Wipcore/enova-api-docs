@@ -102,7 +102,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var lazyMapper = new Lazy<IPropertyMapper>(() => {
                 return  _mappers.
                 Where(x => x.MapType == MapType.MapAll || x.MapType == mapType).
-                Where(x => x.Names.Contains(propertyName, StringComparer.InvariantCultureIgnoreCase)).
+                Where(x => x.Names.Any(n => n.Equals(propertyName, StringComparison.CurrentCultureIgnoreCase))).
                 Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
                 OrderBy(x => x.Priority).FirstOrDefault();                
             });

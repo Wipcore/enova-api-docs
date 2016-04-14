@@ -23,12 +23,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
 
         public object MapFrom(BaseObject obj, string propertyName)
         {
-            var order = (EnovaCart) obj;
+            var cart = (EnovaCart) obj;
             decimal taxAmount;
             int decimals;
             var currency = obj.GetContext().CurrentCurrency;
             decimal rounding;
-            var sum = order.GetPrice(out taxAmount, out rounding, out decimals, ref currency);
+            var sum = cart.GetPrice(out taxAmount, out rounding, out decimals, ref currency);
 
             if (String.Equals(propertyName, "SumExclTax", StringComparison.InvariantCultureIgnoreCase))
                 return sum - taxAmount;
