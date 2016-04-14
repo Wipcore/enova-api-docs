@@ -8,6 +8,6 @@ namespace Wipcore.Enova.Api.Interfaces
 {
     public interface IMappingToService
     {
-        IDictionary<string, object> MapTo(BaseObject obj, IDictionary<string, object> values);
+        IDictionary<string, object> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values);
     }
 }

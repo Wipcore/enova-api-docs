@@ -27,16 +27,16 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _cache = cache;
         }
 
-        public IEnumerable<IDictionary<string, object>> MapFrom(BaseObjectList objects, string properties)
+        public IEnumerable<IDictionary<string, object>> MapFromEnovaObject(BaseObjectList objects, string properties)
         {
             foreach (BaseObject obj in objects)//TODO parallel
             {
-                var dynamicObject = MapFrom(obj, properties);
+                var dynamicObject = MapFromEnovaObject(obj, properties);
                 yield return dynamicObject;
             }
         }
 
-        public IDictionary<string, object> MapFrom(BaseObject obj, string properties)
+        public IDictionary<string, object> MapFromEnovaObject(BaseObject obj, string properties)
         {
             if (properties == null)
                 properties = "identifier";
@@ -46,13 +46,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
             foreach (var property in properties.Split(','))
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFrom);
-                var value = mapper != null ? mapper.MapFrom(obj, property) : MapProperty(property, obj);
+                var value = mapper != null ? mapper.MapFromEnovaProperty(obj, property) : MapProperty(property, obj);
                 dynamicObject.Add(property, value);
             }
             return dynamicObject;
         }
 
-        public IDictionary<string, object> MapTo(BaseObject obj, IDictionary<string, object> values)
+        public IDictionary<string, object> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values)
         {
             if (values == null)
                 return values;
@@ -62,14 +62,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
                 if (mapper != null)
                 {
-                    var mappedValue = mapper.MapTo(obj, property.Key);
+                    var mappedValue = mapper.MapToEnovaProperty(obj, property.Key);
                     values[property.Key] = mappedValue;
                 }
                     //if it is a sub dictionary with additional values, from a dezerialized model for example, then map them the same way
                 else if (property.Key.ToLower() == "additionalvalues" && property.Value is JObject)
                 {
                     var subValues = ((JObject)property.Value).ToObject<Dictionary<string, object>>();
-                    this.MapTo(obj, subValues);
+                    this.MapToEnovaObject(obj, subValues);
                 }
                 else
                     obj.SetProperty(property.Key, property.Value);
@@ -86,7 +86,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 if (i == properties.Length - 1) //the last name (Identifier in example above) is returned directly
                     return obj.GetProperty(properties[i]);
 
-                //nested properties are retrived from the object. In example obj is set to Manufacturer
+                //nested properties are retrieved from the object. In example obj is set to Manufacturer
                 obj = obj.GetPropertyValue(properties[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
 
                 if (obj == null)

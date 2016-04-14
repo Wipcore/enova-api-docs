@@ -20,7 +20,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public MapType MapType => MapType.MapFrom;
 
         
-        public object MapFrom(BaseObject obj, string propertyName)
+        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
         {
             var context = obj.GetContext();
             var currentCurrencyId = context.CurrentCurrency?.ID ?? -1;
@@ -40,7 +40,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
             return defaultPrice;
         }
 
-        public object MapTo(BaseObject obj, string propertyName)
+        public object MapToEnovaProperty(BaseObject obj, string propertyName)
         {
             throw new NotImplementedException();
         }

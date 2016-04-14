@@ -8,8 +8,8 @@ namespace Wipcore.Enova.Api.Interfaces
 {
     public interface IMappingFromService
     {
-        IEnumerable<IDictionary<string, object>> MapFrom(BaseObjectList objects, string properties);
+        IEnumerable<IDictionary<string, object>> MapFromEnovaObject(BaseObjectList objects, string properties);
 
-        IDictionary<string, object> MapFrom(BaseObject obj, string properties);
+        IDictionary<string, object> MapFromEnovaObject(BaseObject obj, string properties);
     }
 }

@@ -14,9 +14,9 @@ namespace Wipcore.Enova.Api.Interfaces
 
         bool InheritMapper { get; } //true if a derived class can use this mapper to map its property. Usually true.
 
-        object MapFrom(BaseObject obj, string propertyName);
+        object MapFromEnovaProperty(BaseObject obj, string propertyName);
 
-        object MapTo(BaseObject obj, string propertyName);
+        object MapToEnovaProperty(BaseObject obj, string propertyName);
 
         int Priority { get; } //higher number, higher priority
 
