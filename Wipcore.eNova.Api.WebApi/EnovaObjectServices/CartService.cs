@@ -64,7 +64,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             enovaCart.Name = currentCart.Name ?? enovaCart.Name;
             currentCart.Name = enovaCart.Name;
             
-            currentCart.AdditionalValues = _mappingToService.MapTo(enovaCart, currentCart.AdditionalValues);
+            currentCart.AdditionalValues = _mappingToService.MapToEnovaObject(enovaCart, currentCart.AdditionalValues);
             
             //if no rows in given cart, make sure no rows in enova cart
             if (currentCart.Rows == null || !currentCart.Rows.Any())
@@ -94,7 +94,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                             break;
                     }
 
-                    cartItem.AdditionalValues = _mappingToService.MapTo(enovaCartItem, cartItem.AdditionalValues);
+                    cartItem.AdditionalValues = _mappingToService.MapToEnovaObject(enovaCartItem, cartItem.AdditionalValues);
                 }
                 
                 AddPromoRows(context, enovaCart, currentCart);//promos are added automatically depending on other cartitems

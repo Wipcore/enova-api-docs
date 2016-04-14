@@ -19,7 +19,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public Type Type => typeof(EnovaBaseProduct);
         
 
-        public object MapFrom(BaseObject obj, string propertyName)
+        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
         {
             var includeTax = String.Equals(propertyName, "PriceInclTax", StringComparison.InvariantCultureIgnoreCase);
             var product = (EnovaBaseProduct)obj;
@@ -27,7 +27,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
             return price;
         }
 
-        public object MapTo(BaseObject obj, string propertyName)
+        public object MapToEnovaProperty(BaseObject obj, string propertyName)
         {
             throw new NotImplementedException();
         }
