@@ -83,7 +83,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             enovaPayment.RelatedOrderIdentifier = payment.Order ?? String.Empty;
 
-            payment.AdditionalValues = _mappingToService.MapTo(enovaPayment, payment.AdditionalValues);
+            payment.AdditionalValues = _mappingToService.MapToEnovaObject(enovaPayment, payment.AdditionalValues);
             
             enovaPayment.Save();
 

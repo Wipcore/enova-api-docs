@@ -117,7 +117,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             
             currentCart.Status = enovaOrder.ShippingStatus?.Identifier;
-            currentCart.AdditionalValues = _mappingToService.MapTo(enovaOrder, currentCart.AdditionalValues);
+            currentCart.AdditionalValues = _mappingToService.MapToEnovaObject(enovaOrder, currentCart.AdditionalValues);
             
             //if no rows in given cart, make sure no rows in enova cart
             if (currentCart.Rows == null || !currentCart.Rows.Any())
@@ -143,7 +143,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                         enovaOrderItem.OrderedQuantity = quantity;
                     }
                     
-                    cartItem.AdditionalValues = _mappingToService.MapTo(enovaOrderItem, cartItem.AdditionalValues);
+                    cartItem.AdditionalValues = _mappingToService.MapToEnovaObject(enovaOrderItem, cartItem.AdditionalValues);
                     
                     cartItem.PriceExclTax = enovaOrderItem.GetPrice(false);
                     cartItem.PriceInclTax = enovaOrderItem.GetPrice(true);

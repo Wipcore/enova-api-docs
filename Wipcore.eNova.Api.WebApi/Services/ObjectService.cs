@@ -48,7 +48,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T), getParameters);
 
             var obj = context.FindObject(identifier, typeof (T), throwExceptionIfNotFound: true);
-            return _mappingFromService.MapFrom(obj, getParameters.Properties);
+            return _mappingFromService.MapFromEnovaObject(obj, getParameters.Properties);
         }
 
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
@@ -65,7 +65,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             objectList = _sortService.Sort(objectList, getParameters.Sort);
             objectList = _filterService.Filter(objectList, getParameters.Filter);
             objectList = _pagingService.Page(objectList, getParameters.Page.Value, getParameters.Size.Value);
-            var objects = _mappingFromService.MapFrom(objectList, getParameters.Properties);
+            var objects = _mappingFromService.MapFromEnovaObject(objectList, getParameters.Properties);
 
             return objects.ToList();
         }
@@ -99,7 +99,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             else
                 obj.Edit();
 
-            var resultingObject = _mappingToService.MapTo(obj, values);
+            var resultingObject = _mappingToService.MapToEnovaObject(obj, values);
             obj.Save();
 
             return resultingObject;

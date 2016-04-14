@@ -15,12 +15,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public int Priority => 0;
         public MapType MapType => MapType.MapFrom;
 
-        public object MapTo(BaseObject obj, string propertyName)
+        public object MapToEnovaProperty(BaseObject obj, string propertyName)
         {
             throw new NotImplementedException();
         }
 
-        public object MapFrom(BaseObject obj, string propertyName)
+        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
         {
             var product = (EnovaBaseProduct)obj;
             var promos = product.GetPromos(typeof (EnovaPromo)).Cast<EnovaPromo>().ToList();
