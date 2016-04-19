@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
+using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
@@ -9,9 +11,19 @@ using MapType = Wipcore.Enova.Api.Interfaces.MapType;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
-    public class ProductDiscountedMapper : IPropertyMapper
+    public class ProductDiscountedMapper : IPropertyMapper, ICmoProperty
     {
+        private readonly ObjectCache _cache;
+        private readonly IContextService _contextService;
+
+        public ProductDiscountedMapper(ObjectCache cache, IContextService contextService)
+        {
+            _cache = cache;
+            _contextService = contextService;
+        }
+
         public List<string> Names  => new List<string>() {"IsDiscounted", "ListPriceExclTax", "ListPriceInclTax"};
+        public Type CmoType => typeof (CmoEnovaBaseProduct);
         public Type Type => typeof (EnovaBaseProduct);
         public bool InheritMapper => true;
         
@@ -22,13 +34,11 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         
         public object MapFromEnovaProperty(BaseObject obj, string propertyName)
         {
-            var context = obj.GetContext();
-            var currentCurrencyId = context.CurrentCurrency?.ID ?? -1;
-            var defaultPriceList = context.Search<EnovaPriceList>("IsDefault = true AND CurrencyID = "+currentCurrencyId).FirstOrDefault();
+            var defaultPriceList = GetDefaultPriceList();
             var product = (EnovaBaseProduct)obj;
 
             if (defaultPriceList == null || !defaultPriceList.HasProduct(product))
-                return null;
+                return false;
 
             var includeTax = String.Equals(propertyName, "ListPriceInclTax", StringComparison.InvariantCultureIgnoreCase);
             var currentPrice = product.GetPrice(includeTax);
@@ -40,9 +50,54 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
             return defaultPrice;
         }
 
+        
+
+        public object GetProperty(CmoDbObject obj, CmoContext context, string propertyName, CmoLanguage language)
+        {
+            var product = (CmoEnovaBaseProduct)obj;
+            var defaultPriceList = GetDefaultPriceList().ActiveCmoObject as CmoEnovaPriceList;
+            var returnIsDiscounted = String.Equals(propertyName, "IsDiscounted", StringComparison.InvariantCultureIgnoreCase);
+
+            if (defaultPriceList == null || !defaultPriceList.HasProduct(context, product))
+                return returnIsDiscounted ? (object)false : 0m;
+
+            if (context == null)
+                context = _contextService.GetContext().GetCmoContext();
+
+            int decimals;
+            bool quantityIsValid;
+            CmoCurrency currency = null;
+            var includeTax = String.Equals(propertyName, "ListPriceInclTax", StringComparison.InvariantCultureIgnoreCase);
+            var currentWipPrice = product.GetPrice(context, 1, out decimals, null, includeTax, true, DateTime.Now);
+            var currentPrice = includeTax ? currentWipPrice.Amount + currentWipPrice.CalculateTaxAmount() : currentWipPrice.Amount; 
+            var defaultPrice = product.GetPrice(context, defaultPriceList, 1, includeTax, ref currency, out quantityIsValid);
+
+            if (returnIsDiscounted)
+                return currentPrice < defaultPrice;
+
+            return defaultPrice;
+        }
+
         public object MapToEnovaProperty(BaseObject obj, string propertyName)
         {
             throw new NotImplementedException();
+        }
+
+        private EnovaPriceList GetDefaultPriceList()
+        {
+            const string key = "api_defaultpricelist";
+            var value = _cache.Get(key);
+
+            if (value != null)
+                return value as EnovaPriceList;
+
+            var context = _contextService.GetContext();
+            var currentCurrencyId = context.CurrentCurrency?.ID ?? -1;
+            var defaultPriceList =
+                context.Search<EnovaPriceList>("IsDefault = true AND CurrencyID = " + currentCurrencyId).FirstOrDefault();
+
+            _cache.Add(key, (object)defaultPriceList ?? "", DateTime.Now.AddMinutes(10));
+            return defaultPriceList;
         }
     }
 }
