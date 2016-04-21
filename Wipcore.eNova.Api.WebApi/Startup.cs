@@ -13,6 +13,7 @@ using Autofac.Extensions.DependencyInjection;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
+using Wipcore.Library;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -21,13 +22,16 @@ namespace Wipcore.Enova.Api.WebApi
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile("localappsettings.json", true)
-                .AddJsonFile("locationConfiguration.json")
-                .AddJsonFile("marketConfiguration.json")
-                .AddEnvironmentVariables();
+            //key = filename, value = optional or not
+            var jsonConfigs = new Dictionary<string, bool>() { { "appsettings.json" , false}, { "localappsettings.json", true },
+                { "locationConfiguration.json" , false}, { "marketConfiguration.json", false} };
+            
+            var builder = new ConfigurationBuilder();
+            jsonConfigs.ForEach(x => builder.AddJsonFile(x.Key, x.Value));
+            builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
+            jsonConfigs.ForEach(x => Configuration.ReloadOnChanged(x.Key));//monitor changes on all files
 
             StartEnova();
         }

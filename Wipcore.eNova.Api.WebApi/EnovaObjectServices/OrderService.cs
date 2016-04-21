@@ -17,14 +17,14 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         private readonly IContextService _contextService;
         private readonly IMappingToService _mappingToService;
         private readonly ICartService _cartService;
-        private readonly string _newOrderStatus = null;
+        private readonly IConfigurationRoot _configuration;
 
         public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
             _cartService = cartService;
-            _newOrderStatus = configuration.GetSection("EnovaSettings")?.GetChildren()?.FirstOrDefault(x => x.Key == "NewShippingStatus")?.Value;
+            _configuration = configuration;
         }
 
         public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
@@ -94,7 +94,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             if (enovaOrder.ShippingStatus == null)//if none, set to given status or default new
             {
                 enovaOrder.Edit();
-                var newShippingIdentifier = currentCart.Status ?? _newOrderStatus ?? "NEW_INTERNET";
+                var newShippingIdentifier = currentCart.Status ?? _configuration["EnovaSettings:NewShippingStatus"] ?? "NEW_INTERNET";
                 var shippingStatus = EnovaShippingStatus.Find(context, newShippingIdentifier);
                 enovaOrder.ShippingStatus = shippingStatus;
             }
