@@ -14,6 +14,7 @@ using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
 using Wipcore.Library;
+using Wipcore.Core;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -73,10 +74,15 @@ namespace Wipcore.Enova.Api.WebApi
 
             // Add framework services.
             services.AddMvc().AddControllersAsServices(apiAssemblies);
-
+            
             containerBuilder.Populate(services);
 
             var container = containerBuilder.Build();
+
+            // add cmo properties
+            var cmoProperties = container.Resolve<IEnumerable<ICmoProperty>>();
+            EnovaSystemFacade.Current.Connection.Kernel.AddCmoProperties(cmoProperties);
+
             return container.Resolve<IServiceProvider>();
         }
 
