@@ -36,9 +36,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         {
             var defaultPriceList = GetDefaultPriceList();
             var product = (EnovaBaseProduct)obj;
+            var returnIsDiscounted = String.Equals(propertyName, "IsDiscounted", StringComparison.InvariantCultureIgnoreCase);
 
             if (defaultPriceList == null || !defaultPriceList.HasProduct(product))
-                return false;
+                return returnIsDiscounted ? (object)false : 0m;
 
             var includeTax = String.Equals(propertyName, "ListPriceInclTax", StringComparison.InvariantCultureIgnoreCase);
             var currentPrice = product.GetPrice(includeTax);
