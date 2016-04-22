@@ -224,6 +224,27 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                     rows.Add(cartItem);
             }
 
+            var promoProductRows = enovaCart.GetCartItems<EnovaPromoProductCartItem>();
+            foreach (var enovaPromoCartItem in promoProductRows)
+            {
+                var newRow = false;
+                var cartItem = currentCart.Rows.FirstOrDefault(x => x.Password == enovaPromoCartItem.Promo?.Password);
+                if (cartItem == null)
+                {
+                    cartItem = new RowModel();
+                    newRow = true;
+                }
+                cartItem.Type = "promo";
+                cartItem.Identifier = enovaPromoCartItem.Identifier;
+                cartItem.Quantity = 1;
+                cartItem.Name = enovaPromoCartItem.Name;
+                cartItem.PriceExclTax = enovaPromoCartItem.GetPrice(includeTax: false);
+                cartItem.PriceInclTax = enovaPromoCartItem.GetPrice(includeTax: true);
+
+                if (newRow)
+                    rows.Add(cartItem);
+            }
+
             currentCart.Rows = rows;
         }
     }
