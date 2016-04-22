@@ -32,7 +32,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             var context = _contextService.GetContext();
 
-            var enovaCart = context.FindObject<EnovaCart>(currentCart.Identifier ?? "") ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
+            var enovaCart = context.FindObject<EnovaCart>(currentCart.Identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
             enovaCart.Edit();
 
             MapCart(context, enovaCart, currentCart);//make sure all rows match
