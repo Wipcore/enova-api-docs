@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.PlatformAbstractions;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
@@ -20,23 +21,31 @@ namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
+        private readonly string _configFolderPath;
+        private readonly string _addInFolderPath;
+
         public Startup(IHostingEnvironment env)
         {
-            // Set up configuration sources.
-            //key = filename, value = optional or not
+            _configFolderPath = Path.GetFullPath(Path.Combine(env.WebRootPath, @"..\Configs"));
+
+            // Set up configuration sources. Key = filename, Value = optional or not
             var jsonConfigs = new Dictionary<string, bool>() { { "appsettings.json" , false}, { "localappsettings.json", true },
-                { "locationConfiguration.json" , false}, { "marketConfiguration.json", false} };
+                { "locationConfiguration.json" , false}, { "marketConfiguration.json", false}, { "customsettings.json", true} };
             
             var builder = new ConfigurationBuilder();
-            jsonConfigs.ForEach(x => builder.AddJsonFile(x.Key, x.Value));
+            jsonConfigs.ForEach(x => builder.AddJsonFile(Path.Combine(_configFolderPath, x.Key), x.Value));
             builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
-            jsonConfigs.ForEach(x => Configuration.ReloadOnChanged(x.Key));//monitor changes on all files
+            jsonConfigs.ForEach(x => Configuration.ReloadOnChanged(_configFolderPath, x.Key));//monitor changes on all files
+
+            _addInFolderPath = Configuration.Get<String>("ApiSettings:PathToAddins");
+            if (String.IsNullOrEmpty(_addInFolderPath))
+                _addInFolderPath = Path.GetFullPath(Path.Combine(env.WebRootPath, @"..\AddIn"));
 
             StartEnova();
         }
-
+        
         public IConfigurationRoot Configuration { get; set; }
 
         private void StartEnova()
@@ -52,7 +61,9 @@ namespace Wipcore.Enova.Api.WebApi
                 UserName = Configuration.Get<String>("Enova:Username"),
                 Password = Configuration.Get<String>("Enova:Password"),
                 LogPath = Configuration.Get<String>("Enova:LogPath"),
-                LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel) Convert.ToInt32(Configuration.Get<String>("Enova:LogLevel"))
+                LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel) Convert.ToInt32(Configuration.Get<String>("Enova:LogLevel")),
+                PathToConfigurationFiles = _configFolderPath,
+                PathToAddinDlls = _addInFolderPath
             };
 
             EnovaSystemFacade.Current.Settings = settings;
@@ -109,28 +120,21 @@ namespace Wipcore.Enova.Api.WebApi
         private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();
-            if (File.Exists("NLog.config"))
-            {
-                env.ConfigureNLog("NLog.config");
-            }
-            else
-            {
-                //temp until nlog is found correctly in root
-                env.ConfigureNLog(@"approot\packages\Wipcore.eNova.Api.WebApi\1.0.0\root\NLog.config");
-            }
+            env.ConfigureNLog(Path.Combine(_configFolderPath, "NLog.config"));
+
+            //print some useful information, ensuring it's setup correctly
+            var logger = loggerFactory.CreateLogger("Startup folders");
+            logger.LogInformation("Reading configuration files from: {0}", _configFolderPath);
+            logger.LogInformation("Reading addin files from: {0}", _addInFolderPath);
         }
         
         private void LoadAddinAssemblies(List<Assembly> assemblies, List<IEnovaApiModule> autofacModules)
         {
             /* Load all dlls/assemblies from the addin folder, where external mappers/services/controllers can be added. */
-            var addinPath = Configuration.Get<String>("ApiSettings:PathToAddins");
-            if(String.IsNullOrEmpty(addinPath))
-                addinPath = Path.Combine(Environment.CurrentDirectory, @"..\AddIn");
-
-            if (!Directory.Exists(addinPath))
+            if (!Directory.Exists(_addInFolderPath))
                 return;
 
-            var dllFiles = Directory.GetFiles(addinPath, "*.dll", SearchOption.AllDirectories);
+            var dllFiles = Directory.GetFiles(_addInFolderPath, "*.dll", SearchOption.AllDirectories);
             foreach (var dllFile in dllFiles)
             {
                 /* Load by byte assembly since load by name might not work if
