@@ -44,6 +44,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, identifier);
         }
 
+        /// <summary>
+        /// Get all variants of the product specified by identifier.
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="getParameters"></param>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         [HttpGet("{identifier}/variants")]
         public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
@@ -51,6 +58,14 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return members == null ? null : _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, members);
         }
 
+        /// <summary>
+        /// Get all stock information for the product specified by identifier.
+        /// </summary>
+        /// <param name="requestContext">Context stuff</param>
+        /// <param name="getParameters"></param>
+        /// <param name="identifier"></param>
+        /// <param name="warehouse"></param>
+        /// <returns></returns>
         [HttpGet("{identifier}/stock")]
         public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, GetParametersModel getParameters, string identifier, string warehouse = null)
         {
@@ -70,5 +85,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             return _objectService.Save<EnovaBaseProduct>(requestContext, values);
         }
+
+
     }
 }

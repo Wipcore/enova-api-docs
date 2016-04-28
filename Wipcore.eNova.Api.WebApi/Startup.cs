@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,15 +14,23 @@ using Autofac.Extensions.DependencyInjection;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
+using Swashbuckle.SwaggerGen;
 using Wipcore.Library;
 using Wipcore.Core;
+using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.WebApi.Controllers;
 
 namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; private set; }
+        public IHostingEnvironment Env { get; private set; }
+
         public Startup(IHostingEnvironment env)
         {
+            Env = env;
             // Set up configuration sources.
             //key = filename, value = optional or not
             var jsonConfigs = new Dictionary<string, bool>() { { "appsettings.json" , false}, { "localappsettings.json", true },
@@ -36,9 +45,7 @@ namespace Wipcore.Enova.Api.WebApi
 
             StartEnova();
         }
-
-        public IConfigurationRoot Configuration { get; set; }
-
+        
         private void StartEnova()
         {
             EnovaSystemFacade.Current.LoadAllAssemblies();
@@ -74,9 +81,11 @@ namespace Wipcore.Enova.Api.WebApi
 
             // Add framework services.
             services.AddMvc().AddControllersAsServices(apiAssemblies);
-            
-            containerBuilder.Populate(services);
 
+            if(Configuration.Get<bool>("ApiSettings:UseSwagger", true))
+                ConfigureSwagger(services);
+
+            containerBuilder.Populate(services);
             var container = containerBuilder.Build();
 
             // add cmo properties
@@ -85,7 +94,7 @@ namespace Wipcore.Enova.Api.WebApi
 
             return container.Resolve<IServiceProvider>();
         }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -104,8 +113,52 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseStatusCodePages();
 
             app.UseMvc();
+
+            if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
+            {
+                app.UseSwaggerGen();
+                app.UseSwaggerUi();
+            }
         }
 
+        private void ConfigureSwagger(IServiceCollection services)
+        {
+            var pathToDocsDirectory = Configuration.Get("ApiSettings:PathToSwaggerDocs", Path.GetFullPath(Env.WebRootPath + @"\..\SwaggerDocs"));
+            var docFilePaths = Directory.Exists(pathToDocsDirectory) ? Directory.GetFiles(pathToDocsDirectory, "*.xml").ToList() : new List<string>();
+            
+            if(!docFilePaths.Any())
+            {
+                //if no files found, add default path to xml for just this assembly. Path depends on if this is deployed or not
+                var defaultPath = Env.IsDevelopment() ? Path.GetFullPath(Env.WebRootPath + @"\..\..\artifacts\bin\Wipcore.eNova.Api.WebApi\Debug\dnx451\Wipcore.eNova.Api.WebApi.xml")
+                    : Path.GetFullPath(Env.WebRootPath + @"\..\approot\packages\Wipcore.eNova.Api.WebApi\1.0.0\lib\dnx451\Wipcore.eNova.Api.WebApi.xml");//TODO versioning
+                docFilePaths.Add(defaultPath);
+            }
+
+            services.AddSwaggerGen();
+            services.ConfigureSwaggerDocument(options =>
+            {
+                options.SingleApiVersion(new Info
+                {
+                    Version = "v1",//TODO global setting
+                    Title = "Enova API",
+                    Description = "",
+                    TermsOfService = ""
+                });
+                docFilePaths.ForEach(x => options.OperationFilter(new Swashbuckle.SwaggerGen.XmlComments.ApplyXmlActionComments(x)));
+                if (Directory.Exists(pathToDocsDirectory))
+                {
+                    options.OperationFilter(new ComplexModelFilter(pathToDocsDirectory));
+                }
+                    
+            });
+
+            services.ConfigureSwaggerSchema(options =>
+            {
+                options.DescribeAllEnumsAsStrings = true;
+                docFilePaths.ForEach(x => options.ModelFilter(new Swashbuckle.SwaggerGen.XmlComments.ApplyXmlTypeComments(x)));
+            });
+        }
+        
         private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();

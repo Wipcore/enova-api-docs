@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wipcore.eNova.Api.Models</name>
+    </assembly>
+    <members>
+        <member name="P:Wipcore.Enova.Api.Models.CartModel.Persist">
+            <summary>
+            Set true to save the cart in the database.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Market">
+            <summary>
+            Identifier of pre-defined market.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Language">
+            <summary>
+            Identifier of language to use.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Currency">
+            <summary>
+            Identifier of currency to use.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Customer">
+            <summary>
+            Identifier of any customer for whom the request shall be processed.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Admin">
+            <summary>
+            Identifier of an admin. Required to access certain elements.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Pass">
+            <summary>
+            Password of the admin.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Location">
+            <summary>
+            Identifier of pre-specified settings for request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Properties">
+            <summary>
+            Comma-seperated list of the properties to map.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Page">
+            <summary>
+            Pagination. Index of page to retrieve. 
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Size">
+            <summary>
+            Size of the page; the number of items to retrieve.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Sort">
+            <summary>
+            Sort order. Example: Identifier,Name Desc
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Filter">
+            <summary>
+            Filter the response. Example: Identifier=123 OR Name=pizza*
+            </summary>
+        </member>
+    </members>
+</doc>

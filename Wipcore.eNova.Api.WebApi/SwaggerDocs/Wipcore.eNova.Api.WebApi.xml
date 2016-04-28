@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wipcore.eNova.Api.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:Wipcore.Enova.Api.WebApi.EnovaSystemFacade">
+            <summary>
+            Provides an easy way to start up an Enova system.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.Connection">
+            <summary>
+            The Enova connection
+            Use the set only in unit tests
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.Current">
+            <summary>
+            Get the singleton instance of the Enova system facade. You can use this
+            property in cases where you cannot use constructor injection.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.Start">
+            <summary>
+            Starts the Enova system using the settings found in web.config.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.StartSystemInMemory">
+            <summary>
+            Starts a local Wipcore Enova system.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.LoadAllAssemblies">
+            <summary>
+            Loads all assemblies so webpaymentprovuders etc can find them
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetVariants(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+            <summary>
+            Get all variants of the product specified by identifier.
+            </summary>
+            <param name="requestContext"></param>
+            <param name="getParameters"></param>
+            <param name="identifier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetStock(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String,System.String)">
+            <summary>
+            Get all stock information for the product specified by identifier.
+            </summary>
+            <param name="requestContext">Context stuff</param>
+            <param name="getParameters"></param>
+            <param name="identifier"></param>
+            <param name="warehouse"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Controllers.Snore">
+            <summary>
+            Orka?
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.WebApi.Controllers.Snore.SnoreFest">
+            <summary>
+            ZZZZZZZZZZZZZZZZZZZZ
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.WebApi.Controllers.Snore.NothingIsFunOrEasy">
+            <summary>
+            FFS
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetAllAvailableTypes">
+            <summary>
+            Get all types in appdomain
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetMostDerivedType(System.Type)">
+            <summary>
+            Get most derived type from all available types
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetMostDerivedType(System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Get most derived type in list types
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.IsNullable(System.Type)">
+            <summary>
+            Checks if a type is nullable
+            WARNING will only work with typeof(int) not o.GetType() read more at http://msdn.microsoft.com/en-us/library/ms366789.aspx
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetMostDerivedTypes(System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Get most derived types in list types. i.e. if two classes inherits the same class.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.DerivedSteps(System.Type,System.Type)">
+            <summary>
+            Get number of inheritances to the basetype
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -18,6 +18,9 @@ namespace Wipcore.Enova.Api.Models
         public string Identifier { get; set; }
         public string Customer { get; set; }
 
+        /// <summary>
+        /// Set true to save the cart in the database.
+        /// </summary>
         public bool Persist { get; set; }
 
         public decimal TotalPriceInclTax { get; set; }
