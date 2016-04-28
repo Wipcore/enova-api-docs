@@ -55,21 +55,6 @@
             <param name="warehouse"></param>
             <returns></returns>
         </member>
-        <member name="T:Wipcore.Enova.Api.WebApi.Controllers.Snore">
-            <summary>
-            Orka?
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.WebApi.Controllers.Snore.SnoreFest">
-            <summary>
-            ZZZZZZZZZZZZZZZZZZZZ
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.WebApi.Controllers.Snore.NothingIsFunOrEasy">
-            <summary>
-            FFS
-            </summary>
-        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetAllAvailableTypes">
             <summary>
             Get all types in appdomain
@@ -99,6 +84,12 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.DerivedSteps(System.Type,System.Type)">
             <summary>
             Get number of inheritances to the basetype
+            </summary>
+        </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Helpers.ComplexModelFilter">
+            <summary>
+            This class is used to iterate parameters in api calls and setting descriptions for them in swagger. 
+            Descriptions are taken from .xml documents. In a perfect world this should work automatically, but in the current version of swagger it does not.
             </summary>
         </member>
     </members>
