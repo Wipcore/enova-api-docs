@@ -6,13 +6,14 @@ using System.Web.Http;
 using Microsoft.AspNet.Mvc;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.WebApi.Controllers;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [Route("api/{market}/[controller]")]
-    public class AttributeTypesController : ApiController
+    public class AttributeTypesController : EnovaApiController
     {
         private readonly IObjectService _objectService;
 

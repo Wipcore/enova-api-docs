@@ -17,7 +17,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [Route("api/{market}/[controller]")]
-    public class ProductsController : ApiController
+    public class ProductsController : EnovaApiController
     {
         private readonly IObjectService _objectService;
         private readonly IProductService _productService;

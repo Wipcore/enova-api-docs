@@ -9,13 +9,13 @@ using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Models.Interfaces;
-using ApiController = Wipcore.Enova.Api.WebApi.Controllers.ApiController;
+using Wipcore.Enova.Api.WebApi.Controllers;
 
 namespace Wipcore.eNova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [Route("api/{market}/[controller]")]
-    public class PaymentsController : ApiController
+    public class PaymentsController : EnovaApiController
     {
         private readonly IObjectService _objectService;
         private readonly IPaymentService _paymentService;

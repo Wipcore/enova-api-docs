@@ -7,7 +7,7 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
-    public abstract class ApiController : Controller
+    public abstract class EnovaApiController : Controller
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
