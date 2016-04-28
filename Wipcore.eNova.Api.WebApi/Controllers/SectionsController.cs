@@ -15,12 +15,12 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
     public class SectionsController : ApiController
     {
         private readonly IObjectService _objectService;
-        private readonly IContextService _contextService;
+        private readonly ISectionService _sectionService;
 
-        public SectionsController(IObjectService objectService, IContextService contextService)
+        public SectionsController(IObjectService objectService, ISectionService sectionService)
         {
             _objectService = objectService;
-            _contextService = contextService;
+            _sectionService = sectionService;
         }
 
         [HttpGet()]
@@ -35,12 +35,17 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaBaseProductSection>(requestContext, getParameters, identifier);
         }
 
+        [HttpGet("{identifier}/children")]
+        public IEnumerable<IDictionary<string, object>> GetSubSections(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        {
+            var children = _sectionService.GetSubSections(identifier);
+            return _objectService.Get<EnovaBaseProductSection>(requestContext, getParameters, children);
+        }
+
         [HttpGet("{identifier}/products")]
         public IEnumerable<IDictionary<string, object>> GetProducts(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
-            var context = _contextService.GetContext();
-            var section = EnovaBaseProductSection.Find(context, identifier);
-            var items = section.GetItems(typeof (EnovaBaseProduct));
+            var items = _sectionService.GetProducts(identifier);
             return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, items);
         }
     }

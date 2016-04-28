@@ -26,7 +26,7 @@
   },
   "enovabaseproductsection": {
     "default": {
-      "properties": "Identifier,Name"
+      "properties": "Identifier,Name,Parent.Identifier"
     }
   },
   "enovapayment": {
