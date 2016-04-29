@@ -41,6 +41,7 @@ namespace Wipcore.eNova.Api.WebApi.Helpers
                 var xmlSummary = xml.XPathEvaluate($"string(/doc/members/member[@name='{fullPropertyName}']/summary)").ToString().Trim();
 
                 operation.Parameters[i].Description = xmlSummary;
+                operation.Parameters[i].In = "query";
             }
         }
     }
