@@ -16,7 +16,7 @@
   },
   "enovacustomer": {
     "default": {
-      "properties": "Identifier,FirstName,LastName,Alias,City,CountryName,Street"
+      "properties": "Identifier,FirstName,LastName,Alias,City,CountryName,Street,Email"
     }
   },
   "enovacart": {
