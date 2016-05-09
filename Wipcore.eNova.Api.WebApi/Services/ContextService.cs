@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -23,7 +24,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IConfigurationRoot _configuration;
         private readonly ObjectCache _cache;
-        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
 
         public ContextService(IHttpContextAccessor httpAccessor, IConfigurationRoot configuration, ObjectCache cache)

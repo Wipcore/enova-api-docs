@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0-*",
+  "description": "Wipcore.Enova.Api.OAuth Class Library",
+  "authors": [ "henrik.eliasson" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+    "IdentityServer4": "1.0.0-beta1-update1"
+  },
+
+  "frameworks": {
+    "net451": {
+      "dependencies": {
+        "Autofac": "3.5.2"
+      }
+    },
+    "dotnet5.4": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Runtime": "4.0.21-beta-23516",
+        "System.Threading": "4.0.11-beta-23516"
+      }
+    }
+  }
+}

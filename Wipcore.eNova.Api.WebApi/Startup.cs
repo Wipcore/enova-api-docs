@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
+using IdentityServer4.Core.Configuration;
+using Microsoft.AspNet.Authentication.Cookies;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
@@ -19,8 +21,7 @@ using Swashbuckle.SwaggerGen;
 using Wipcore.Library;
 using Wipcore.Core;
 using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.WebApi.Controllers;
+using Wipcore.Enova.Api.OAuth;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -84,7 +85,7 @@ namespace Wipcore.Enova.Api.WebApi
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterInstance<IConfigurationRoot>(Configuration);
 
-            var apiAssemblies = new List<Assembly>() {Assembly.GetExecutingAssembly()};
+            var apiAssemblies = new List<Assembly>() {Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(AccountController))};
             var autofacModules = new List<IEnovaApiModule>() {new WebApiModule()};
             LoadAddinAssemblies(apiAssemblies, autofacModules);
 
@@ -92,8 +93,10 @@ namespace Wipcore.Enova.Api.WebApi
 
             // Add framework services.
             services.AddMvc().AddControllersAsServices(apiAssemblies);
+            
+            ConfigureIdentityServer(services);
 
-            if(Configuration.Get<bool>("ApiSettings:UseSwagger", true))
+            if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
                 ConfigureSwagger(services);
 
             containerBuilder.Populate(services);
@@ -106,6 +109,7 @@ namespace Wipcore.Enova.Api.WebApi
             return container.Resolve<IServiceProvider>();
         }
         
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -122,8 +126,31 @@ namespace Wipcore.Enova.Api.WebApi
 
             app.UseStaticFiles();
             app.UseStatusCodePages();
+            
+            app.UseIdentityServer();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "cookies",
+                AutomaticAuthenticate = true,
+                //AutomaticChallenge = true,
+                AccessDeniedPath = "/ost"
+            });
 
             app.UseMvc();
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //app.UseIdentityServerAuthentication(options =>
+            //{
+            //    options.Authority = "http://localhost:5000/";
+            //    options.ScopeName = "customer";
+            //    options.ScopeSecret = "customersecret";
+
+            //    options.AutomaticAuthenticate = true;
+            //    options.AutomaticChallenge = true;
+            //});
+            //app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            //{
+
+            //});
 
             if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
             {
@@ -169,7 +196,20 @@ namespace Wipcore.Enova.Api.WebApi
                 docFilePaths.ForEach(x => options.ModelFilter(new Swashbuckle.SwaggerGen.XmlComments.ApplyXmlTypeComments(x)));
             });
         }
-        
+
+        private void ConfigureIdentityServer(IServiceCollection services)
+        {
+            var identityServerOptions = new IdentityServerOptions()
+            {
+                SigningCertificate = new X509Certificate2(Path.Combine(_configFolderPath, @"testcert.pfx"), "awesome"),
+                RequireSsl = false //TODO variable, should be true in prod
+            };
+            var identityBuilder = services.AddIdentityServer(identityServerOptions);
+            identityBuilder.AddInMemoryClients(InMemoryManager.GetClients());
+            identityBuilder.AddInMemoryScopes(InMemoryManager.GetScopes());
+            identityBuilder.AddInMemoryUsers(InMemoryManager.GetUsers());
+        }
+
         private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();

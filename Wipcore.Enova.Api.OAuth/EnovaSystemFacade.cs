@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Linq;
-using Wipcore.Core;
 using Wipcore.Enova.Connectivity;
 
-namespace Wipcore.Enova.Api.WebApi
+namespace Wipcore.Enova.Api.OAuth
 {
     /// <summary>
     /// Provides an easy way to start up an Enova system.
