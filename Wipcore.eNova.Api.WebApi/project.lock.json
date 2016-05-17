@@ -1929,7 +1929,10 @@
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+        }
       },
       "Wipcore.Enova.Api.OAuth/1.0.0": {
         "type": "project",
@@ -1940,6 +1943,7 @@
           "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+          "Wipcore.Enova.Api.Interfaces": "1.0.0",
           "Wipcore.Enova.Connectivity": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0"
         }
@@ -3933,7 +3937,10 @@
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+        }
       },
       "Wipcore.Enova.Api.OAuth/1.0.0": {
         "type": "project",
@@ -3944,6 +3951,7 @@
           "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+          "Wipcore.Enova.Api.Interfaces": "1.0.0",
           "Wipcore.Enova.Connectivity": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0"
         }
@@ -5937,7 +5945,10 @@
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+        }
       },
       "Wipcore.Enova.Api.OAuth/1.0.0": {
         "type": "project",
@@ -5948,6 +5959,7 @@
           "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
           "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+          "Wipcore.Enova.Api.Interfaces": "1.0.0",
           "Wipcore.Enova.Connectivity": "1.0.0",
           "Wipcore.Enova.Core": "1.0.0"
         }

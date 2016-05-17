@@ -24,7 +24,7 @@
     "Swashbuckle": "6.0.0-rc1-final",
     "Wipcore.Enova.Api.Interfaces": "1.0.0-*",
     "Wipcore.eNova.Api.Models": "1.0.0-*",
-    "Wipcore.Enova.Api.OAuth": "1.0.0-*"
+    "Wipcore.Enova.Api.OAuth": "1.0.0-*"   
   },
 
   "commands": {

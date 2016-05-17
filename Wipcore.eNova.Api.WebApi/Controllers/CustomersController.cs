@@ -27,81 +27,60 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IOrderService _orderService;
         private readonly ICartService _cartService;
         private readonly ICustomerService _customerService;
+        private readonly IAuthService _authService;
 
-        public CustomersController(IObjectService objectService, IOrderService orderService, ICartService cartService, ICustomerService customerService)
+        public CustomersController(IObjectService objectService, IOrderService orderService, ICartService cartService, ICustomerService customerService, IAuthService authService)
         {
             _objectService = objectService;
             _orderService = orderService;
             _cartService = cartService;
             _customerService = customerService;
+            _authService = authService;
         }
 
-        [HttpGet()]
-        [Authorize(Roles = "admin")]
+        [HttpGet]
+        [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
             return _objectService.Get<EnovaCustomer>(requestContext, getParameters);
         }
 
         [HttpGet("{identifier}")]
-        [Authorize()]
-        public /*IDictionary<string, object>*/ ActionResult Get([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier)
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier)
         {
-            if (!ValidateAuthorization(identifier))
-                return HttpUnauthorized();
-
-            return Ok(_objectService.Get<EnovaCustomer>(requestContext, getParameters, identifier));
+            return _objectService.Get<EnovaCustomer>(requestContext, getParameters, identifier);
         }
 
         [HttpGet("{identifier}/orders")]
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
         public IEnumerable<IDictionary<string, object>> GetOrders([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier, string shippingStatus = null)
         {
-            if (!ValidateAuthorization(identifier))
-                return null;
-
             var orders = _orderService.GetOrdersByCustomer(identifier, shippingStatus);
             return _objectService.Get<EnovaOrder>(requestContext, getParameters, orders);
         }
 
         [HttpGet("{identifier}/carts")]
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
         public IEnumerable<IDictionary<string, object>> GetCarts([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier)
         {
-            if (!ValidateAuthorization(identifier))
-                return null;
-
             var carts = _cartService.GetCartsByCustomer(identifier);
             return _objectService.Get<EnovaCart>(requestContext, getParameters, carts);
         }
 
         [HttpGet("{identifier}/addresses")]
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
         public IEnumerable<IDictionary<string, object>> GetAddresses([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier, EnovaCustomerAddress.AddressTypeEnum? addressType = null)
         {
-            if (!ValidateAuthorization(identifier))
-                return null;
-
             var addresses = _customerService.GetAddresses(identifier, addressType);
             return _objectService.Get<EnovaCustomerAddress>(requestContext, getParameters, addresses);
         }
 
         [HttpPut()]
+        [Authorize(Policy = CustomerBodyIdentifierPolicy.Name)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
-            //TODO can only update existing user if validated as it
             return _objectService.Save<EnovaCustomer>(requestContext, values);
         }
-
-        private bool ValidateAuthorization(string identifier)
-        {
-            var username = User.FindFirst(AuthConstants.IdentifierClaim).Value;
-            var role = User.FindFirst(JwtClaimTypes.Role).Value;
-
-            //if the customer is not asking for its own information, and its not an admin asking, then deny
-            if (username == identifier || role == AuthConstants.AdminRole)
-                return true;
-
-            //Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            return false;
-        }
-
     }
 }

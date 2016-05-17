@@ -30,8 +30,8 @@ namespace Wipcore.Enova.Api.WebApi
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
-        public IConfigurationRoot Configuration { get; private set; }
-        public IHostingEnvironment Env { get; private set; }
+        public IConfigurationRoot Configuration { get; }
+        public IHostingEnvironment Env { get; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -94,7 +94,7 @@ namespace Wipcore.Enova.Api.WebApi
             // Add framework services.
             services.AddMvc().AddControllersAsServices(apiAssemblies);
             
-            ConfigureIdentityServer(services);
+            ConfigureSecurity(services);
 
             if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
                 ConfigureSwagger(services);
@@ -126,32 +126,17 @@ namespace Wipcore.Enova.Api.WebApi
 
             app.UseStaticFiles();
             app.UseStatusCodePages();
-            
-            app.UseIdentityServer();
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationScheme = "cookies",
                 AutomaticAuthenticate = true,
-                //AutomaticChallenge = true,
-                AccessDeniedPath = "/ost"
             });
 
+            app.UseIdentityServer();
+
             app.UseMvc();
-            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            //app.UseIdentityServerAuthentication(options =>
-            //{
-            //    options.Authority = "http://localhost:5000/";
-            //    options.ScopeName = "customer";
-            //    options.ScopeSecret = "customersecret";
-
-            //    options.AutomaticAuthenticate = true;
-            //    options.AutomaticChallenge = true;
-            //});
-            //app.UseJwtBearerAuthentication(new JwtBearerOptions()
-            //{
-
-            //});
-
+            
             if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
             {
                 app.UseSwaggerGen();
@@ -197,17 +182,20 @@ namespace Wipcore.Enova.Api.WebApi
             });
         }
 
-        private void ConfigureIdentityServer(IServiceCollection services)
+        private void ConfigureSecurity(IServiceCollection services)
         {
-            var identityServerOptions = new IdentityServerOptions()
+            services.ConfigureDataProtection(configure =>
             {
-                SigningCertificate = new X509Certificate2(Path.Combine(_configFolderPath, @"testcert.pfx"), "awesome"),
-                RequireSsl = false //TODO variable, should be true in prod
-            };
-            var identityBuilder = services.AddIdentityServer(identityServerOptions);
-            identityBuilder.AddInMemoryClients(InMemoryManager.GetClients());
-            identityBuilder.AddInMemoryScopes(InMemoryManager.GetScopes());
-            identityBuilder.AddInMemoryUsers(InMemoryManager.GetUsers());
+                //points out the path to the key used to encrypt cookies. Key access depends on user running the process (Windows DPAPI).
+                configure.PersistKeysToFileSystem(new DirectoryInfo(_configFolderPath));
+                configure.ProtectKeysWithDpapi();
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
+                options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
+            });
+            services.AddIdentityServer();
         }
 
         private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)

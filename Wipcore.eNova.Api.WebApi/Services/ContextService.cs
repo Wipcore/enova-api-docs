@@ -2,15 +2,20 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
+using Fasterflect;
+using IdentityModel;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Configuration;
+using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.OAuth;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -23,19 +28,19 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IConfigurationRoot _configuration;
-        private readonly ObjectCache _cache;
+        private readonly IAuthService _authService;
+        private readonly MethodInfo _loginMethod = typeof(CmoContext).GetMethod("AdministratorLogin", BindingFlags.NonPublic | BindingFlags.Instance);
 
 
-        public ContextService(IHttpContextAccessor httpAccessor, IConfigurationRoot configuration, ObjectCache cache)
+        public ContextService(IHttpContextAccessor httpAccessor, IConfigurationRoot configuration, IAuthService authService)
         {
             _httpAccessor = httpAccessor;
             _configuration = configuration;
-            _cache = cache;
+            _authService = authService;
         }
 
         public Context GetContext()
         {
-            //TODO threat safety
             var enovaContext = _httpAccessor.HttpContext.Items[EnovaContextKey] as Context;
             if (enovaContext != null)
                 return enovaContext;
@@ -45,7 +50,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             var requestContext = _httpAccessor.HttpContext.Items[ContextModelKey] as ContextModel;
             if (requestContext == null)
-                return enovaContext;//TODO default values if non specified?
+                return enovaContext;
 
             //first read any values from market configuration
             if (!String.IsNullOrEmpty(requestContext.Market))
@@ -59,38 +64,36 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     SetCurrency(enovaContext, settings.FirstOrDefault(x => x.Key == "currency")?.Value);
                 }
             }
-
-            //then login admin
-            if (!String.IsNullOrEmpty(requestContext.Admin))
+            
+            //then login admin or customer
+            if (_authService.IsLoggedInAsAdmin())
             {
-                var previouslyLoggedIn = _cache.Contains(requestContext.Admin +"_loggedin");
-                var admin = enovaContext.Login(requestContext.Admin, requestContext.Pass, updateLastLoginDate: !previouslyLoggedIn);
-                _cache.Add(requestContext.Admin + "_loggedin", true, DateTimeOffset.Now.AddDays(1));
-                //if the admin has specified values, clear other values
-                ClearSpecifiedContextValues(enovaContext, admin);
+                var alias = _authService.GetLoggedInAlias();
+                var hash = _authService.GetPasswordHash();
+                var cmoAdmin = _loginMethod.Invoke(enovaContext.GetCmoContext(), new object[]{alias, hash, null, CmoAdministrator.AdministratorRole.Any, null, null, false});
+                var admin = EnovaObjectCreationHelper.CreateNew<EnovaAdministrator>(enovaContext, cmoAdmin);
+                ClearSpecifiedContextValues(enovaContext, admin);//if the admin has specified values, clear other values
             }
-
-            //then login customer
-            if (!String.IsNullOrEmpty(requestContext.Customer))
+            else if (_authService.IsLoggedInAsCustomer())
             {
                 var adminAlreadyLoggedIn = enovaContext.IsLoggedIn();
                 try
                 {
-                    if(!adminAlreadyLoggedIn)
+                    if (!adminAlreadyLoggedIn)
                         LoginDefaultAdmin(enovaContext);
 
-                    var customer = EnovaCustomer.Find(enovaContext, requestContext.Customer);
+                    var identifier = _authService.GetLoggedInIdentifier();
+                    var customer = EnovaCustomer.Find(enovaContext, identifier);
                     enovaContext.CustomerLogin(customer.ID);
-                    //if the customer has specified values, clear other values
-                    ClearSpecifiedContextValues(enovaContext, customer);
+                    ClearSpecifiedContextValues(enovaContext, customer);//if the customer has specified values, clear other values
                 }
-                finally 
+                finally
                 {
-                    if(!adminAlreadyLoggedIn)
+                    if (!adminAlreadyLoggedIn)
                         enovaContext.Logout();
                 }
             }
-
+            
             //then override by url specified values
             SetLanguage(enovaContext, requestContext.Language);
             SetCurrency(enovaContext, requestContext.Currency);

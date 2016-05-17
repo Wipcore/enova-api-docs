@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
@@ -14,19 +16,26 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
     {
         private readonly IContextService _contextService;
         private readonly IMappingToService _mappingToService;
+        private readonly IAuthService _authService;
 
 
-        public PaymentService(IContextService contextService, IMappingToService mappingToService)
+        public PaymentService(IContextService contextService, IMappingToService mappingToService, IAuthService authService)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
+            _authService = authService;
         }
 
         public IPaymentModel SetPayment(IPaymentModel payment)
         {
             var context = _contextService.GetContext();
-            var enovaPayment = context.FindObject<EnovaPayment>(payment.Identifier ?? String.Empty)
-                               ?? EnovaObjectCreationHelper.CreateNew<EnovaPayment>(context);
+            var enovaPayment = context.FindObject<EnovaPayment>(payment.Identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaPayment>(context);
+
+            var specifiedOrder = context.FindObject<EnovaOrder>(String.IsNullOrEmpty(payment.Order) ? null : payment.Order);
+            var orderOnPayment = context.FindObject<EnovaOrder>(String.IsNullOrEmpty(enovaPayment.RelatedOrderIdentifier) ? null : enovaPayment.RelatedOrderIdentifier);
+            
+            if (!_authService.AuthorizeUpdate(orderOnPayment?.Customer?.Identifier, specifiedOrder?.Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "A customer can only update it's own payment.");
 
             enovaPayment.Edit();
             enovaPayment.Identifier = payment.Identifier ?? String.Empty;
@@ -89,13 +98,15 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             if (!String.IsNullOrEmpty(payment.Order))
             {
-                
-                var order = EnovaOrder.Find(context, payment.Order); //if no paymentorderitem with this payment, create
-                if(order.GetOrderItems<EnovaPaymentTypeOrderItem>().All(x => x.PaymentId != enovaPayment.ID))
+                if(specifiedOrder == null)
+                    throw new ObjectNotFoundException(payment.Order);
+
+                //if no paymentorderitem with this payment, create
+                if (specifiedOrder.GetOrderItems<EnovaPaymentTypeOrderItem>().All(x => x.PaymentId != enovaPayment.ID))
                 {
                     var paymentOrderItem = EnovaObjectCreationHelper.CreateNew<EnovaPaymentTypeOrderItem>(context);
                     paymentOrderItem.PaymentId = enovaPayment.ID;
-                    order.AddOrderItem(paymentOrderItem);
+                    specifiedOrder.AddOrderItem(paymentOrderItem);
                 }
             }
             else

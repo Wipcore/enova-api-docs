@@ -6,19 +6,28 @@ using System.Web.Http;
 using IdentityModel;
 using IdentityServer4.Core;
 using Microsoft.AspNet.Mvc;
+using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Models;
 
 namespace Wipcore.Enova.Api.OAuth
 {
+    /// <summary>
+    /// This controller is used to login customers and admins into Enova. It should put a cookie in the response, which should be sent back by the client on subsequent requests. 
+    /// </summary>
     [Route("[controller]")]
     public class AccountController : Controller
     {
-        private readonly LoginService _loginService;
+        private readonly IAuthService _loginService;
 
-        public AccountController(LoginService loginService)
+        public AccountController(IAuthService loginService)
         {
             _loginService = loginService;
         }
 
+        /// <summary>
+        /// Logout from Enova.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
@@ -26,37 +35,66 @@ namespace Wipcore.Enova.Api.OAuth
             return Ok("Successful logout.");
         }
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody]LoginModel model)
+        /// <summary>
+        /// Login as an administrator.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("LoginAdmin")]
+        public async Task<IActionResult> LoginAdmin([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
                 return HttpBadRequest("Username and password required.");
 
-            var user = _loginService.Login(model);
+            var claimsPrincipal = _loginService.Login(model, admin:true);
 
-            if (user == null)
+            if (claimsPrincipal == null)
                 return HttpBadRequest("Invalid username or password.");
 
-            var claims = new Claim[] {
-                new Claim(JwtClaimTypes.Subject, user.Alias),
-                new Claim(JwtClaimTypes.Name, user.FirstNameLastName),
-                new Claim(JwtClaimTypes.IdentityProvider, "idsvr"),
-                new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString()),
-                new Claim(JwtClaimTypes.Id, user.ID.ToString()), 
-                new Claim(AuthConstants.IdentifierClaim, user.Identifier), 
-                new Claim(JwtClaimTypes.Role, model.IsAdmin ? AuthConstants.AdminRole : AuthConstants.CustomerRole), 
-            };
-            var ci = new ClaimsIdentity(claims, "password", JwtClaimTypes.Name, JwtClaimTypes.Role);
-            var cp = new ClaimsPrincipal(ci);
-
-            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, cp);
+            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, claimsPrincipal);
             
-            //if (model.SignInId != null)
-            //{
-            //    return new SignInResult(model.SignInId);
-            //}
+            return Ok("Successful login.");
+        }
 
-            //return Redirect("~/");
+        /// <summary>
+        /// Login as a customer.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("LoginCustomer")]
+        public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
+        {
+            if (!ModelState.IsValid)
+                return HttpBadRequest("Username and password required.");
+
+            var claimsPrincipal = _loginService.Login(model, admin: false);
+
+            if (claimsPrincipal == null)
+                return HttpBadRequest("Invalid username or password.");
+
+            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, claimsPrincipal);
+
+            return Ok("Successful login.");
+        }
+
+        /// <summary>
+        /// Login as a customer by providing a customer identifier, and the username and password of an administrator.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("LoginCustomerWithAdminCredentials")]
+        public async Task<IActionResult> LoginCustomerWithAdminCredentials([FromBody]LoginCustomerWithAdminCredentialsModel model)
+        {
+            if (!ModelState.IsValid)
+                return HttpBadRequest("Username and password required.");
+
+            var claimsPrincipal = _loginService.LoginCustomerAsAdmin(model);
+
+            if (claimsPrincipal == null)
+                return HttpBadRequest("Invalid username or password.");
+
+            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, claimsPrincipal);
+
             return Ok("Successful login.");
         }
     }

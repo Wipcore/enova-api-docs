@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
@@ -18,13 +20,15 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         private readonly IMappingToService _mappingToService;
         private readonly ICartService _cartService;
         private readonly IConfigurationRoot _configuration;
+        private readonly IAuthService _authService;
 
-        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration)
+        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration, IAuthService authService)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
             _cartService = cartService;
             _configuration = configuration;
+            _authService = authService;
         }
 
         public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
@@ -51,26 +55,33 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             if (cartModel.Rows == null)
                 cartModel.Rows = new List<RowModel>();
 
+            if (cartModel.Identifier == String.Empty)
+                cartModel.Identifier = null;
+
             var context = _contextService.GetContext();
             
             //if new then make a cart from it first, if old then edit old order
-            var enovaOrder = context.FindObject<EnovaOrder>(cartModel.Identifier ?? "");
+            var enovaOrder = context.FindObject<EnovaOrder>(cartModel.Identifier);
+
+            if (!_authService.AuthorizeUpdate(enovaOrder?.Customer?.Identifier, cartModel.Customer))
+                throw new HttpException(HttpStatusCode.Unauthorized, "A customer can only update it's own order.");
+
             if (enovaOrder == null)
             {
                 var identifier = cartModel.Identifier;
                 cartModel.Identifier = null;
-
+                
                 var dummyCart = EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
                 _cartService.MapCart(context, dummyCart, cartModel);
 
                 enovaOrder = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, dummyCart);
-                enovaOrder.Identifier = cartModel.Identifier = identifier; //TODO generate order identifier if empty
+                enovaOrder.Identifier = cartModel.Identifier = identifier; 
 
                 var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
                 var defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
                 enovaOrder.Warehouse = EnovaWarehouse.Find(context, defaultWarehouse);
             }
-            
+
             Map(context, enovaOrder, cartModel);
             
             enovaOrder.Recalculate();

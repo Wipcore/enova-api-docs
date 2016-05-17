@@ -21,25 +21,9 @@ namespace Wipcore.Enova.Api.Models
         /// </summary>
         public string Currency { get; set; }
 
-        /// <summary>
-        /// Identifier of any customer for whom the request shall be processed.
-        /// </summary>
-        public string Customer { get; set; }
-
-        /// <summary>
-        /// Identifier of an admin. Required to access certain elements.
-        /// </summary>
-        public string Admin { get; set; }
-
-        /// <summary>
-        /// Password of the admin.
-        /// </summary>
-        public string Pass { get; set; }
-
         public override string ToString()
         {
-            var pass = Pass == null ? null : "****";
-            return $"ContextModel: (Market: {Market}, Language: {Language}, Currency: {Currency}, Customer: {Customer}, Admin: {Admin}, Pass: {pass})";
+            return $"ContextModel: (Market: {Market}, Language: {Language}, Currency: {Currency})";
         }
     }
 }

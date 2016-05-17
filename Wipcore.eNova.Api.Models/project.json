@@ -6,6 +6,11 @@
   "projectUrl": "",
   "licenseUrl": "",
 
+  "dependencies": {
+
+    "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+  },
+
   "frameworks": {
     "net451": { }
   }
