@@ -36,7 +36,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var settings = config.GetChildren().ToList();
 
             //if the parameter is not already set, retrive it from the settings
-            parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "0");
+            parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "1");
             parameters.Size = parameters.Size ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "size")?.Value ?? "20");
 
             parameters.Sort = SetValue(parameters.Sort, settings, "sort");

@@ -58,8 +58,6 @@ namespace Wipcore.Enova.Api.WebApi
 
         private void StartEnova()
         {
-            EnovaSystemFacade.Current.LoadAllAssemblies();
-
             var settings = new InMemoryConnectionSettings
             {
                 DatabaseConnection = Configuration.Get<String>("Enova:ConnectionString"),
