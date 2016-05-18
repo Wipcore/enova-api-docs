@@ -108,7 +108,8 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             {
                 var newOrder = enovaOrder.ID == default(int);
                 enovaOrder.Save();
-                _logger.LogInformation("{0} cart with Identifier {1}, Type: {2} and Values: {3}", newOrder ? "Created" : "Updated", enovaOrder.Identifier, enovaOrder.GetType().Name, cartModel.ToString());
+                _logger.LogInformation("{0} {1} order with Identifier {2}, Type: {3} and Values: {4}", 
+                    _authService.LogUser(), newOrder ? "Created" : "Updated", enovaOrder.Identifier, enovaOrder.GetType().Name, cartModel.ToString());
             }
 
             return cartModel;

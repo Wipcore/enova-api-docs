@@ -121,6 +121,16 @@ namespace Wipcore.Enova.Api.OAuth
             return user.FindFirst(claimName)?.Value;
         }
 
+        public string LogUser()
+        {
+            if (IsLoggedInAsAdmin())
+                return "Admin with identifier: " + GetLoggedInIdentifier();
+            if(IsLoggedInAsCustomer())
+                return "Customer with identifier: " + GetLoggedInIdentifier();
+
+            return "Anonymous user";
+        }
+
         /// <summary>
         /// Returns true if the logged in user is an administrator, or if enovaObjectOwnedByIdentifier is the same as the logged in user.
         /// 

@@ -99,7 +99,8 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             var newPayment = enovaPayment.ID == default(int);
             enovaPayment.Save();
-            _logger.LogInformation("{0} cart with Identifier {1}, Type: {2} and Values: {3}", newPayment ? "Created" : "Updated", enovaPayment.Identifier, enovaPayment.GetType().Name, payment.ToString());
+            _logger.LogInformation("{0} {1} payment with Identifier {2}, Type: {3} and Values: {4}", _authService.LogUser(),
+                newPayment ? "Created" : "Updated", enovaPayment.Identifier, enovaPayment.GetType().Name, payment.ToString());
 
             if (!String.IsNullOrEmpty(payment.Order))
             {

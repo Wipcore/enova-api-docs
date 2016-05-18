@@ -16,6 +16,7 @@ namespace Wipcore.Enova.Api.Interfaces
         bool IsLoggedInAsCustomer();
         string GetClaim(string claimName);
         string GetPasswordHash();
+        string LogUser();
         bool AuthorizeAccess(string enovaObjectOwnedByIdentifier);
         bool AuthorizeUpdate(string enovaObjectOwnedByIdentifier, string specifiedOwner);
     }

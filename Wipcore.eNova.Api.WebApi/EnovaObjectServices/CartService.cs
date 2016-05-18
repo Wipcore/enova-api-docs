@@ -64,7 +64,8 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             {
                 var newCart = enovaCart.ID == default(int);
                 enovaCart.Save();
-                _logger.LogInformation("{0} cart with Identifier {1}, Type: {2} and Values: {3}", newCart ? "Created" : "Updated", enovaCart.Identifier, enovaCart.GetType().Name, currentCart.ToString());
+                _logger.LogInformation("{0} {1} cart with Identifier {2}, Type: {3} and Values: {4}", 
+                    _authService.LogUser(), newCart ? "Created" : "Updated", enovaCart.Identifier, enovaCart.GetType().Name, currentCart.ToString());
             }
 
             return currentCart;

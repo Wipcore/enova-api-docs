@@ -30,11 +30,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IMappingToService _mappingToService;
         private readonly ILocationService _locationService;
         private readonly IContextService _contextService;
+        private readonly IAuthService _authService;
         private readonly ILogger _logger;
 
 
         public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromService mappingFromService,
-            IMappingToService mappingToService, ILocationService locationService, IContextService contextService, ILoggerFactory loggerFactory)
+            IMappingToService mappingToService, ILocationService locationService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
         {
             _pagingService = pagingService;
             _sortService = sortService;
@@ -43,6 +44,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _mappingToService = mappingToService;
             _locationService = locationService;
             _contextService = contextService;
+            _authService = authService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
@@ -100,7 +102,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var resultingObject = _mappingToService.MapToEnovaObject(obj, values);
             obj.Save();
 
-            _logger.LogInformation("{0} object with Identifier: {1} of Type: {2} with Values: {3}", newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
+            _logger.LogInformation("{0} {1} object with Identifier: {2} of Type: {3} with Values: {4}", _authService.LogUser(), newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
 
             return resultingObject;
         }
