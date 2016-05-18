@@ -71,6 +71,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                 var identifier = cartModel.Identifier;
                 cartModel.Identifier = null;
                 
+                if (String.IsNullOrEmpty(identifier))
+                    identifier = EnovaCommonFunctions.GetSequenceNumber(context, SystemRunningMode.Remote, SequenceType.OrderIdentifier);
+
                 var dummyCart = EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
                 _cartService.MapCart(context, dummyCart, cartModel);
 
@@ -120,12 +123,13 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             enovaOrder.Edit();
             enovaOrder.Identifier = currentCart.Identifier ?? enovaOrder.Identifier;
-            var customer = !String.IsNullOrEmpty(currentCart.Customer) ? EnovaCustomer.Find(context, currentCart.Customer) : null;
+
+            //set customer
+            var customerIdentifier = !String.IsNullOrEmpty(currentCart.Customer) ? currentCart.Customer : _authService.GetLoggedInIdentifier();
+            var customer = context.FindObject<EnovaCustomer>(customerIdentifier);
             if (customer != null)
                 enovaOrder.Customer = customer;
-            else
-                currentCart.Customer = enovaOrder.Customer?.Identifier;
-
+            currentCart.Customer = enovaOrder.Customer?.Identifier;
             
             currentCart.Status = enovaOrder.ShippingStatus?.Identifier;
             currentCart.AdditionalValues = _mappingToService.MapToEnovaObject(enovaOrder, currentCart.AdditionalValues);

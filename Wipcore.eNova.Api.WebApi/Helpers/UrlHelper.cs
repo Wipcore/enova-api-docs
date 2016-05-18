@@ -19,5 +19,10 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
                         context.Request.QueryString.ToUriComponent());
             return absoluteUri;
         }
+
+        public static bool RequestHasParameters(HttpContext context)
+        {
+            return context.Request.QueryString.HasValue;
+        }
     }
 }
