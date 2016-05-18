@@ -13,6 +13,7 @@ using Wipcore.Enova.Api.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNet.Http;
 using Wipcore.Core;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
@@ -47,7 +48,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var context = _contextService.GetContext();
             getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T), getParameters);
 
-            var obj = context.FindObject(identifier, typeof (T), throwExceptionIfNotFound: true);
+            var obj = context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: true);
             return _mappingFromService.MapFromEnovaObject(obj, getParameters.Properties);
         }
 
@@ -73,26 +74,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject
         {
             var context = _contextService.GetContext();
-            T obj = null;
 
-            //find object by id or identifier, and create new if nothing is found
-            var idValue = values.FirstOrDefault(x => x.Key.ToLower() == "id");
+            var identifier = values.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.CurrentCultureIgnoreCase)).Value?.ToString();
 
-            if (idValue.Value != null)
-            {
-                var id = Convert.ToInt32(idValue);
-                obj = context.FindObject<T>(id);
-                if(obj == null)
-                    throw new HttpResponseException(new HttpResponseMessage() {StatusCode = HttpStatusCode.NotFound,
-                        ReasonPhrase = String.Format("Object with id {0} does not exist to be updated.", id)});
-            }
-            else
-            {
-                var identifier = values.FirstOrDefault(x => x.Key.ToLower() == "identifier" && x.Value != null);
-                
-                if(identifier.Value != null)
-                    obj = context.FindObject<T>(identifier.Value.ToString());
-            }
+            if(String.IsNullOrEmpty(identifier))
+                throw new HttpException(HttpStatusCode.BadRequest, "Cannot save item without identifier.") ;
+            
+            var obj = context.FindObject<T>(identifier);
 
             if (obj == null)
                 obj = EnovaObjectCreationHelper.CreateNew<T>(context);
@@ -107,7 +95,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         private bool IsMemoryObject<T>()
         {
-            var cmoClass = typeof(T).GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType", 
+            var cmoClass = typeof(T).GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",
                             BindingFlags.Instance |
                             BindingFlags.NonPublic |
                             BindingFlags.Public) as Type;
@@ -115,7 +103,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             return loadOnDemand == null;
         }
-        
+
     }
-    
+
 }

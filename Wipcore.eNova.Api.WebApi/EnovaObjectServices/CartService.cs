@@ -65,11 +65,13 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         public void MapCart(Context context, EnovaCart enovaCart, ICartModel currentCart)
         {
             enovaCart.Identifier = currentCart.Identifier ?? enovaCart.Identifier;
-            var customer = !String.IsNullOrEmpty(currentCart.Customer) ? EnovaCustomer.Find(context, currentCart.Customer) : null;
+            
+            //set customer
+            var customerIdentifier = !String.IsNullOrEmpty(currentCart.Customer) ? currentCart.Customer : _authService.GetLoggedInIdentifier();
+            var customer = context.FindObject<EnovaCustomer>(customerIdentifier);
             if (customer != null)
                 enovaCart.Customer = customer;
-            else
-                currentCart.Customer = enovaCart.Customer?.Identifier;
+            currentCart.Customer = enovaCart.Customer?.Identifier;
 
             enovaCart.Name = currentCart.Name ?? enovaCart.Name;
             currentCart.Name = enovaCart.Name;

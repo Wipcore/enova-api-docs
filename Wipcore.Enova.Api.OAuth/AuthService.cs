@@ -153,7 +153,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (enovaObjectOwnedByIdentifier != null && !String.Equals(enovaObjectOwnedByIdentifier, GetLoggedInIdentifier(), StringComparison.CurrentCultureIgnoreCase))
                 return false;//if owned by someone else, deny
 
-            if (!String.Equals(specifiedOwner, GetLoggedInIdentifier(), StringComparison.CurrentCultureIgnoreCase))//if set to be owned by someone else, deny
+            if (specifiedOwner != null && !String.Equals(specifiedOwner, GetLoggedInIdentifier(), StringComparison.CurrentCultureIgnoreCase))//if set to be owned by someone else, deny
                 return false;
 
             return true;

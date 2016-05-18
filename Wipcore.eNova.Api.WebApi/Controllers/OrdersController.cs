@@ -41,6 +41,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         [HttpGet("{identifier}")]
+        [Authorize]
         public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
         {
             var order = _objectService.Get<EnovaOrder>(requestContext, getParameters, identifier);

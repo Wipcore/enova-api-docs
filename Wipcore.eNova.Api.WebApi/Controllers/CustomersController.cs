@@ -77,10 +77,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         [HttpPut()]
-        [Authorize(Policy = CustomerBodyIdentifierPolicy.Name)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
-            return _objectService.Save<EnovaCustomer>(requestContext, values);
+            return _customerService.SaveCustomer(requestContext, values);
         }
     }
 }
