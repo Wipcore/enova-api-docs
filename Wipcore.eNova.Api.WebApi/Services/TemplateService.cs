@@ -9,23 +9,23 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
-    public class LocationService : ILocationService
+    public class TemplateService : ITemplateService
     {
         private readonly IConfigurationRoot _configuration;
 
-        public LocationService(IConfigurationRoot configuration)
+        public TemplateService(IConfigurationRoot configuration)
         {
             _configuration = configuration;            
         }
 
-        public IGetParametersModel GetParametersFromLocationConfiguration(Type type, IGetParametersModel parameters)
+        public IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters)
         {
             parameters = parameters ?? new GetParametersModel();
 
             IConfigurationSection config = null;
             while ((config == null || !config.GetChildren().Any()) && type != typeof (object))
             {
-                config = _configuration.GetSection(type.Name)?.GetSection(parameters.Location);
+                config = _configuration.GetSection(type.Name)?.GetSection(parameters.Template);
 
                 type = type.BaseType;
             }

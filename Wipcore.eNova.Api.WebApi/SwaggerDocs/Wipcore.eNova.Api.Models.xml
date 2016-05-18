@@ -24,22 +24,7 @@
             Identifier of currency to use.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Customer">
-            <summary>
-            Identifier of any customer for whom the request shall be processed.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Admin">
-            <summary>
-            Identifier of an admin. Required to access certain elements.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Models.ContextModel.Pass">
-            <summary>
-            Password of the admin.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Location">
+        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Template">
             <summary>
             Identifier of pre-specified settings for request.
             </summary>

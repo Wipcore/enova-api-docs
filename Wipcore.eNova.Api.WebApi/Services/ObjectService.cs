@@ -28,21 +28,21 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IFilterService _filterService;
         private readonly IMappingFromService _mappingFromService;
         private readonly IMappingToService _mappingToService;
-        private readonly ILocationService _locationService;
+        private readonly ITemplateService _templateService;
         private readonly IContextService _contextService;
         private readonly IAuthService _authService;
         private readonly ILogger _logger;
 
 
         public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromService mappingFromService,
-            IMappingToService mappingToService, ILocationService locationService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
+            IMappingToService mappingToService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
         {
             _pagingService = pagingService;
             _sortService = sortService;
             _filterService = filterService;
             _mappingFromService = mappingFromService;
             _mappingToService = mappingToService;
-            _locationService = locationService;
+            _templateService = templateService;
             _contextService = contextService;
             _authService = authService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
@@ -51,7 +51,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
         {
             var context = _contextService.GetContext();
-            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T), getParameters);
+            getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
 
             var obj = context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: true);
             return _mappingFromService.MapFromEnovaObject(obj, getParameters.Properties);
@@ -59,7 +59,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
         {
-            getParameters = _locationService.GetParametersFromLocationConfiguration(typeof(T), getParameters);
+            getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
 
             var context = _contextService.GetContext();
             var memoryObject = IsMemoryObject<T>();

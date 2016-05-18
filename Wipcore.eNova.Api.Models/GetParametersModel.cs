@@ -7,7 +7,7 @@ namespace Wipcore.Enova.Api.Models
         /// <summary>
         /// Identifier of pre-specified settings for request.
         /// </summary>
-        public string Location { get; set; } = "default";
+        public string Template { get; set; } = "default";
 
         /// <summary>
         /// Comma-seperated list of the properties to map.
@@ -36,7 +36,7 @@ namespace Wipcore.Enova.Api.Models
 
         public override string ToString()
         {
-            return $"GetParametersModel: (Location: {Location}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
+            return $"GetParametersModel: (Template: {Template}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
         }
     }
 }
