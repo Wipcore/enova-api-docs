@@ -39,7 +39,7 @@ namespace Wipcore.Enova.Api.WebApi
             
             // Set up configuration sources. Key = filename, Value = optional or not
             var jsonConfigs = new Dictionary<string, bool>() { { "appsettings.json" , false}, { "localappsettings.json", true },
-                { "locationConfiguration.json" , false}, { "marketConfiguration.json", false}, { "customsettings.json", true} };
+                { "templateConfiguration.json" , false}, { "marketConfiguration.json", false}, { "customsettings.json", true} };
             _configFolderPath = Path.GetFullPath(Path.Combine(env.WebRootPath, @"..\Configs"));
             
             var builder = new ConfigurationBuilder();

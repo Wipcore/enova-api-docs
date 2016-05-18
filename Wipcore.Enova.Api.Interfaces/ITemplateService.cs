@@ -6,8 +6,8 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.Interfaces
 {
-    public interface ILocationService
+    public interface ITemplateService
     {
-        IGetParametersModel GetParametersFromLocationConfiguration(Type type, IGetParametersModel parameters);
+        IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters);
     }
 }
