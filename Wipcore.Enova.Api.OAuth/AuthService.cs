@@ -29,7 +29,7 @@ namespace Wipcore.Enova.Api.OAuth
         public AuthService(ILoggerFactory loggerFactory, IHttpContextAccessor httpAccessor)
         {
             _httpAccessor = httpAccessor;
-            _log = loggerFactory.CreateLogger(GetType().Namespace);
+            _log = loggerFactory.CreateLogger(GetType().Name);
         }
 
         public ClaimsPrincipal Login(ILoginModel model, bool admin)

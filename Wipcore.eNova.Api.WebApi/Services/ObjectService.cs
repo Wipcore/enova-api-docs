@@ -12,6 +12,7 @@ using Wipcore.Enova.Generics;
 using Wipcore.Enova.Api.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNet.Http;
+using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.WebApi.Helpers;
@@ -29,10 +30,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IMappingToService _mappingToService;
         private readonly ILocationService _locationService;
         private readonly IContextService _contextService;
+        private readonly ILogger _logger;
 
 
         public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromService mappingFromService,
-            IMappingToService mappingToService, ILocationService locationService, IContextService contextService)
+            IMappingToService mappingToService, ILocationService locationService, IContextService contextService, ILoggerFactory loggerFactory)
         {
             _pagingService = pagingService;
             _sortService = sortService;
@@ -41,6 +43,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _mappingToService = mappingToService;
             _locationService = locationService;
             _contextService = contextService;
+            _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
         public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
@@ -73,6 +76,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         public IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject
         {
+            if (values == null)
+                return null;
+
+            var newObject = false;
             var context = _contextService.GetContext();
 
             var identifier = values.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.CurrentCultureIgnoreCase)).Value?.ToString();
@@ -83,12 +90,17 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var obj = context.FindObject<T>(identifier);
 
             if (obj == null)
+            {
                 obj = EnovaObjectCreationHelper.CreateNew<T>(context);
+                newObject = true;
+            }
             else
                 obj.Edit();
 
             var resultingObject = _mappingToService.MapToEnovaObject(obj, values);
             obj.Save();
+
+            _logger.LogInformation("{0} object with Identifier: {1} of Type: {2} with Values: {3}", newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
 
             return resultingObject;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
@@ -21,14 +22,17 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         private readonly ICartService _cartService;
         private readonly IConfigurationRoot _configuration;
         private readonly IAuthService _authService;
+        private readonly ILogger _logger;
 
-        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration, IAuthService authService)
+        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration, 
+            IAuthService authService, ILoggerFactory loggerFactory)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
             _cartService = cartService;
             _configuration = configuration;
             _authService = authService;
+            _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
         public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
@@ -43,7 +47,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                 shippingFilter = " AND ShippingStatusID = " + status.ID;
             }
 
-            var type = typeof (EnovaOrder).GetMostDerivedType();
+            var type = typeof (EnovaOrder).GetMostDerivedEnovaType();
             var orders = context.Search("CustomerID = " + customer.ID + shippingFilter, type, null, 0, null, false);
             return orders;
         }
@@ -99,6 +103,13 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             cartModel.TotalPriceExclTax = totalPrice - taxAmount;
             cartModel.TotalPriceInclTax = totalPrice;
+
+            if (cartModel.Persist)
+            {
+                var newOrder = enovaOrder.ID == default(int);
+                enovaOrder.Save();
+                _logger.LogInformation("{0} cart with Identifier {1}, Type: {2} and Values: {3}", newOrder ? "Created" : "Updated", enovaOrder.Identifier, enovaOrder.GetType().Name, cartModel.ToString());
+            }
 
             return cartModel;
         }

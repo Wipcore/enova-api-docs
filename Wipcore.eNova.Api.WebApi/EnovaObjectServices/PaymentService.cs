@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
@@ -17,13 +18,15 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         private readonly IContextService _contextService;
         private readonly IMappingToService _mappingToService;
         private readonly IAuthService _authService;
+        private readonly ILogger _logger;
 
 
-        public PaymentService(IContextService contextService, IMappingToService mappingToService, IAuthService authService)
+        public PaymentService(IContextService contextService, IMappingToService mappingToService, IAuthService authService, ILoggerFactory loggerFactory)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
             _authService = authService;
+            _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
         public IPaymentModel SetPayment(IPaymentModel payment)
@@ -93,8 +96,10 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             enovaPayment.RelatedOrderIdentifier = payment.Order ?? String.Empty;
 
             payment.AdditionalValues = _mappingToService.MapToEnovaObject(enovaPayment, payment.AdditionalValues);
-            
+
+            var newPayment = enovaPayment.ID == default(int);
             enovaPayment.Save();
+            _logger.LogInformation("{0} cart with Identifier {1}, Type: {2} and Values: {3}", newPayment ? "Created" : "Updated", enovaPayment.Identifier, enovaPayment.GetType().Name, payment.ToString());
 
             if (!String.IsNullOrEmpty(payment.Order))
             {
