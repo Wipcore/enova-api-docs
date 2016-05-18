@@ -10,6 +10,7 @@ using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
 using System.Web.Http;
 using Microsoft.AspNet.Authorization;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Api.OAuth;
@@ -25,12 +26,14 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IObjectService _objectService;
         private readonly ICartService _cartService;
         private readonly IAuthService _authService;
+        private readonly IContextService _contextService;
 
-        public CartsController(IObjectService objectService, ICartService cartService, IAuthService authService)
+        public CartsController(IObjectService objectService, ICartService cartService, IAuthService authService, IContextService contextService)
         {
             _objectService = objectService;
             _cartService = cartService;
             _authService = authService;
+            _contextService = contextService;
         }
 
         [HttpGet()]
@@ -41,10 +44,14 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         [HttpGet("{identifier}")]
-        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
+        [Authorize]
         public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
-            return _objectService.Get<EnovaCart>(requestContext, getParameters, identifier);
+            var cart = _objectService.Get<EnovaCart>(requestContext, getParameters, identifier);
+            if (!_authService.AuthorizeAccess(EnovaCart.Find(_contextService.GetContext(), identifier).Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
+
+            return cart;
         }
         
         [HttpPost()]
