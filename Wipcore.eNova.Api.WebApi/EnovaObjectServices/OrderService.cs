@@ -92,8 +92,6 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             Map(context, enovaOrder, cartModel);
             
             enovaOrder.Recalculate();
-            if (cartModel.Persist)
-                enovaOrder.Save();
             
             var currency = context.CurrentCurrency;
             decimal taxAmount;
