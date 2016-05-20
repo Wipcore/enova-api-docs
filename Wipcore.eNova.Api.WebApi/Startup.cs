@@ -12,8 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using IdentityServer4.Core.Configuration;
+using Fasterflect;
 using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.DataProtection;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
@@ -22,6 +23,7 @@ using Wipcore.Library;
 using Wipcore.Core;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.OAuth;
+
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -91,8 +93,14 @@ namespace Wipcore.Enova.Api.WebApi
 
             // Add framework services.
             services.AddMvc().AddControllersAsServices(apiAssemblies);
-            
-            ConfigureSecurity(services);
+
+            //security
+            services.ConfigureDataProtection(configure => configure.PersistKeysToFileSystem(new DirectoryInfo(_configFolderPath)));
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
+                options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
+            });
 
             if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
                 ConfigureSwagger(services);
@@ -115,7 +123,6 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             ConfigureNlog(env,loggerFactory);
@@ -125,13 +132,31 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseStaticFiles();
             app.UseStatusCodePages();
 
+            var dataProtectionProvider = new DataProtectionProvider(new DirectoryInfo(_configFolderPath), configuration =>
+                {
+                    configuration.SetApplicationName(AuthService.AuthenticationScheme + "v1");
+                    if (Configuration.Get("ApiSettings:UseDpapiProtection", true))//turn off if having problems in clustered systems
+                        configuration.ProtectKeysWithDpapi();
+                });
+            
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                AuthenticationScheme = "cookies",
+                DataProtectionProvider = dataProtectionProvider,
+                AuthenticationScheme = AuthService.AuthenticationScheme,
                 AutomaticAuthenticate = true,
+                AutomaticChallenge = !String.IsNullOrEmpty(Configuration.Get("Auth:AutomaticChallenge", String.Empty)),
+                LoginPath = Configuration.Get("Auth:LoginPath", String.Empty),
+                LogoutPath = Configuration.Get("Auth:LogoutPath", String.Empty),
+                ReturnUrlParameter = Configuration.Get("Auth:ReturnUrlParameter", String.Empty),
+                CookieName = Configuration.Get("Auth:CookieName", String.Empty),
+                CookieDomain = Configuration.Get("Auth:CookieDomain", String.Empty),
+                CookieHttpOnly = Configuration.Get("Auth:CookieHttpOnly", false),
+                CookieSecure = Configuration.Get("Auth:CookieSecure", false) ? CookieSecureOption.Always : CookieSecureOption.SameAsRequest,
+                CookiePath = Configuration.Get("Auth:CookiePath", "/"),
+                ExpireTimeSpan = new TimeSpan(0, Configuration.Get("Auth:ExpireTimeMinutes", 120), 0),
+                SlidingExpiration = Configuration.Get("Auth:SlidingExpiration", false)
             });
-
-            app.UseIdentityServer();
 
             app.UseMvc();
             
@@ -179,23 +204,7 @@ namespace Wipcore.Enova.Api.WebApi
                 docFilePaths.ForEach(x => options.ModelFilter(new Swashbuckle.SwaggerGen.XmlComments.ApplyXmlTypeComments(x)));
             });
         }
-
-        private void ConfigureSecurity(IServiceCollection services)
-        {
-            services.ConfigureDataProtection(configure =>
-            {
-                //points out the path to the key used to encrypt cookies. Key access depends on user running the process (Windows DPAPI).
-                configure.PersistKeysToFileSystem(new DirectoryInfo(_configFolderPath));
-                configure.ProtectKeysWithDpapi();
-            });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
-                options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
-            });
-            services.AddIdentityServer();
-        }
-
+        
         private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();

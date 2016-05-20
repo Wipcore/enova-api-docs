@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using IdentityModel;
 using IdentityServer4.Core;
+using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
@@ -31,7 +32,7 @@ namespace Wipcore.Enova.Api.OAuth
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.Authentication.SignOutAsync(Constants.PrimaryAuthenticationType);
+            await HttpContext.Authentication.SignOutAsync(AuthService.AuthenticationScheme);
             return Ok("Successful logout.");
         }
 
@@ -51,7 +52,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (claimsPrincipal == null)
                 return HttpBadRequest("Invalid username or password.");
 
-            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, claimsPrincipal);
+            await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
             
             return Ok("Successful login.");
         }
@@ -72,7 +73,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (claimsPrincipal == null)
                 return HttpBadRequest("Invalid username or password.");
 
-            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, claimsPrincipal);
+            await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
             return Ok("Successful login.");
         }
@@ -93,7 +94,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (claimsPrincipal == null)
                 return HttpBadRequest("Invalid username or password.");
 
-            await HttpContext.Authentication.SignInAsync(Constants.PrimaryAuthenticationType, claimsPrincipal);
+            await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
             return Ok("Successful login.");
         }

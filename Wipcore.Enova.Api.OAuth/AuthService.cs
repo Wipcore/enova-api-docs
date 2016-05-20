@@ -22,6 +22,7 @@ namespace Wipcore.Enova.Api.OAuth
         public const string CustomerRole = "customer";
         public const string IdentifierClaim = "identifier";
         public const string HashClaim = "hash";
+        public const string AuthenticationScheme = "EnovaApi";
 
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly ILogger _log;
@@ -87,7 +88,6 @@ namespace Wipcore.Enova.Api.OAuth
             {
                 new Claim(JwtClaimTypes.Subject, user.Alias),
                 new Claim(JwtClaimTypes.Name, user.FirstNameLastName),
-                new Claim(JwtClaimTypes.IdentityProvider, "idsvr"),
                 new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
                 new Claim(JwtClaimTypes.Role, admin ? AdminRole : CustomerRole)
