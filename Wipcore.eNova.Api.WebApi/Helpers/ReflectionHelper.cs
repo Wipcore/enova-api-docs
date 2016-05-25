@@ -4,11 +4,40 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class ReflectionHelper
     {
+        /// <summary>
+        /// Returns the most derived type, if more then one type is found it will prioritize types found outside of enova.
+        /// </summary>
+        /// <param name="type">Dervied from this type.</param>
+        /// <returns></returns>
+        public static Type GetMostDerivedEnovaType(this Type type)
+        {
+            var derivedType = type.GetMostDerivedTypes(ReflectionHelper.GetAllAvailableTypes()).OrderBy<Type, int>(
+                x =>
+                {
+                    if (x.Namespace == typeof(BaseObject).Namespace)
+                        return 1000;
+                    
+                    if (x.Namespace == typeof(EnovaBaseProduct).Namespace)
+                        return 100;
+                    
+                    if (x.Namespace == "Wipcore.WebFoundation.Core")
+                        return 50;
+
+                    return 0;
+                }).FirstOrDefault();
+
+            //special handling for derived base-enova-product
+            return derivedType == typeof (EnovaBook) ? typeof (EnovaBaseProduct) : derivedType;
+        }
+
+
         /// <summary>
         /// Get all types in appdomain
         /// </summary>

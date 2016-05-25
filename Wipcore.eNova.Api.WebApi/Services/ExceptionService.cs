@@ -8,6 +8,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.eNova.Api.WebApi.Services
@@ -50,8 +51,12 @@ namespace Wipcore.eNova.Api.WebApi.Services
             //ObjectHasBeenModifiedException TODO might need special handling for this one
 
             var statusCode = HttpStatusCode.InternalServerError; //everything but known errors below are treated as server errors
+
             switch (exception.GetType().Name)
             {
+                case "HttpException":
+                    statusCode = ((HttpException) exception).StatusCode;
+                    break;
                 case "MissingMemberException":
                 case "PropertyCannotBeSetException":
                 case "IdentifierNotUniqueException":

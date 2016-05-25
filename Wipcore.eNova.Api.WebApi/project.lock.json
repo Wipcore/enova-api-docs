@@ -41,6 +41,53 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
       },
+      "IdentityModel/2.0.0-alpha3": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "6.0.4"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.IdentityModel",
+          "System.Net.Http",
+          "System.XML",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net451/IdentityModel.dll": {}
+        },
+        "runtime": {
+          "lib/net451/IdentityModel.dll": {}
+        }
+      },
+      "IdentityServer4/1.0.0-beta1-update1": {
+        "type": "package",
+        "dependencies": {
+          "IdentityModel": "2.0.0-alpha3",
+          "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Cors": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "8.0.2",
+          "System.IdentityModel.Tokens.Jwt": "4.0.2.202250711"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/IdentityServer4.dll": {}
+        },
+        "runtime": {
+          "lib/net451/IdentityServer4.dll": {}
+        }
+      },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -62,6 +109,50 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.Antiforgery.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Http": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final",
+          "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Authentication.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Authentication.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Authentication.Cookies/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Authentication": "1.0.0-rc1-final",
+          "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "6.0.6"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll": {}
         }
       },
       "Microsoft.AspNet.Authorization/1.0.0-rc1-final": {
@@ -162,6 +253,25 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.DataProtection.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.AspNet.DataProtection.Extensions/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+          "Microsoft.Extensions.DependencyInjection": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll": {}
         }
       },
       "Microsoft.AspNet.Diagnostics/1.0.0-rc1-final": {
@@ -697,6 +807,26 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.Mvc.Razor.Host.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Mvc.TagHelpers/6.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.Razor": "6.0.0-rc1-final",
+          "Microsoft.Extensions.Caching.Memory": "1.0.0-rc1-final",
+          "Microsoft.Extensions.FileSystemGlobbing": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll": {}
         }
       },
       "Microsoft.AspNet.Mvc.WebApiCompatShim/6.0.0-rc1-final": {
@@ -1222,6 +1352,21 @@
           "lib/net451/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
         }
       },
+      "Microsoft.Extensions.FileSystemGlobbing/1.0.0-rc1-final": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll": {}
+        }
+      },
       "Microsoft.Extensions.Globalization.CultureInfoCache/1.0.0-rc1-final": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1461,7 +1606,7 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/8.0.2": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -1626,6 +1771,15 @@
         },
         "runtime": {
           "lib/net45/_._": {}
+        }
+      },
+      "System.IdentityModel.Tokens.Jwt/4.0.2.202250711": {
+        "type": "package",
+        "compile": {
+          "lib/net45/System.IdentityModel.Tokens.Jwt.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.IdentityModel.Tokens.Jwt.dll": {}
         }
       },
       "System.IO/4.0.0": {
@@ -1794,7 +1948,24 @@
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+        }
+      },
+      "Wipcore.Enova.Api.OAuth/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Autofac": "4.0.0-rc1-177",
+          "IdentityServer4": "1.0.0-beta1-update1",
+          "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+          "Wipcore.Enova.Api.Interfaces": "1.0.0",
+          "Wipcore.Enova.Connectivity": "1.0.0",
+          "Wipcore.Enova.Core": "1.0.0"
+        }
       },
       "Wipcore.Enova.Connectivity/1.0.0": {
         "type": "project",
@@ -1894,6 +2065,53 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
       },
+      "IdentityModel/2.0.0-alpha3": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "6.0.4"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.IdentityModel",
+          "System.Net.Http",
+          "System.XML",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net451/IdentityModel.dll": {}
+        },
+        "runtime": {
+          "lib/net451/IdentityModel.dll": {}
+        }
+      },
+      "IdentityServer4/1.0.0-beta1-update1": {
+        "type": "package",
+        "dependencies": {
+          "IdentityModel": "2.0.0-alpha3",
+          "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Cors": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "8.0.2",
+          "System.IdentityModel.Tokens.Jwt": "4.0.2.202250711"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/IdentityServer4.dll": {}
+        },
+        "runtime": {
+          "lib/net451/IdentityServer4.dll": {}
+        }
+      },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1915,6 +2133,50 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.Antiforgery.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Http": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final",
+          "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Authentication.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Authentication.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Authentication.Cookies/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Authentication": "1.0.0-rc1-final",
+          "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "6.0.6"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll": {}
         }
       },
       "Microsoft.AspNet.Authorization/1.0.0-rc1-final": {
@@ -2015,6 +2277,25 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.DataProtection.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.AspNet.DataProtection.Extensions/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+          "Microsoft.Extensions.DependencyInjection": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll": {}
         }
       },
       "Microsoft.AspNet.Diagnostics/1.0.0-rc1-final": {
@@ -2550,6 +2831,26 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.Mvc.Razor.Host.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Mvc.TagHelpers/6.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.Razor": "6.0.0-rc1-final",
+          "Microsoft.Extensions.Caching.Memory": "1.0.0-rc1-final",
+          "Microsoft.Extensions.FileSystemGlobbing": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll": {}
         }
       },
       "Microsoft.AspNet.Mvc.WebApiCompatShim/6.0.0-rc1-final": {
@@ -3078,6 +3379,21 @@
           "lib/net451/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
         }
       },
+      "Microsoft.Extensions.FileSystemGlobbing/1.0.0-rc1-final": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll": {}
+        }
+      },
       "Microsoft.Extensions.Globalization.CultureInfoCache/1.0.0-rc1-final": {
         "type": "package",
         "frameworkAssemblies": [
@@ -3317,7 +3633,7 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/8.0.2": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -3482,6 +3798,15 @@
         },
         "runtime": {
           "lib/net45/_._": {}
+        }
+      },
+      "System.IdentityModel.Tokens.Jwt/4.0.2.202250711": {
+        "type": "package",
+        "compile": {
+          "lib/net45/System.IdentityModel.Tokens.Jwt.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.IdentityModel.Tokens.Jwt.dll": {}
         }
       },
       "System.IO/4.0.0": {
@@ -3650,7 +3975,24 @@
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+        }
+      },
+      "Wipcore.Enova.Api.OAuth/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Autofac": "4.0.0-rc1-177",
+          "IdentityServer4": "1.0.0-beta1-update1",
+          "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+          "Wipcore.Enova.Api.Interfaces": "1.0.0",
+          "Wipcore.Enova.Connectivity": "1.0.0",
+          "Wipcore.Enova.Core": "1.0.0"
+        }
       },
       "Wipcore.Enova.Connectivity/1.0.0": {
         "type": "project",
@@ -3750,6 +4092,53 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
       },
+      "IdentityModel/2.0.0-alpha3": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "6.0.4"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.IdentityModel",
+          "System.Net.Http",
+          "System.XML",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net451/IdentityModel.dll": {}
+        },
+        "runtime": {
+          "lib/net451/IdentityModel.dll": {}
+        }
+      },
+      "IdentityServer4/1.0.0-beta1-update1": {
+        "type": "package",
+        "dependencies": {
+          "IdentityModel": "2.0.0-alpha3",
+          "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Cors": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "8.0.2",
+          "System.IdentityModel.Tokens.Jwt": "4.0.2.202250711"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/IdentityServer4.dll": {}
+        },
+        "runtime": {
+          "lib/net451/IdentityServer4.dll": {}
+        }
+      },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -3771,6 +4160,50 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.Antiforgery.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Http": "1.0.0-rc1-final",
+          "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.Extensions.OptionsModel": "1.0.0-rc1-final",
+          "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Authentication.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Authentication.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Authentication.Cookies/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Authentication": "1.0.0-rc1-final",
+          "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final",
+          "Newtonsoft.Json": "6.0.6"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll": {}
         }
       },
       "Microsoft.AspNet.Authorization/1.0.0-rc1-final": {
@@ -3871,6 +4304,25 @@
         },
         "runtime": {
           "lib/net451/Microsoft.AspNet.DataProtection.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.AspNet.DataProtection.Extensions/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.DataProtection": "1.0.0-rc1-final",
+          "Microsoft.Extensions.DependencyInjection": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll": {}
         }
       },
       "Microsoft.AspNet.Diagnostics/1.0.0-rc1-final": {
@@ -4408,6 +4860,26 @@
           "lib/net451/Microsoft.AspNet.Mvc.Razor.Host.dll": {}
         }
       },
+      "Microsoft.AspNet.Mvc.TagHelpers/6.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.Razor": "6.0.0-rc1-final",
+          "Microsoft.Extensions.Caching.Memory": "1.0.0-rc1-final",
+          "Microsoft.Extensions.FileSystemGlobbing": "1.0.0-rc1-final"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll": {}
+        }
+      },
       "Microsoft.AspNet.Mvc.WebApiCompatShim/6.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -4934,6 +5406,21 @@
           "lib/net451/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
         }
       },
+      "Microsoft.Extensions.FileSystemGlobbing/1.0.0-rc1-final": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll": {}
+        }
+      },
       "Microsoft.Extensions.Globalization.CultureInfoCache/1.0.0-rc1-final": {
         "type": "package",
         "frameworkAssemblies": [
@@ -5173,7 +5660,7 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/8.0.2": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -5338,6 +5825,15 @@
         },
         "runtime": {
           "lib/net45/_._": {}
+        }
+      },
+      "System.IdentityModel.Tokens.Jwt/4.0.2.202250711": {
+        "type": "package",
+        "compile": {
+          "lib/net45/System.IdentityModel.Tokens.Jwt.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.IdentityModel.Tokens.Jwt.dll": {}
         }
       },
       "System.IO/4.0.0": {
@@ -5506,7 +6002,24 @@
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+        }
+      },
+      "Wipcore.Enova.Api.OAuth/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Autofac": "4.0.0-rc1-177",
+          "IdentityServer4": "1.0.0-beta1-update1",
+          "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
+          "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
+          "Wipcore.Enova.Api.Interfaces": "1.0.0",
+          "Wipcore.Enova.Connectivity": "1.0.0",
+          "Wipcore.Enova.Core": "1.0.0"
+        }
       },
       "Wipcore.Enova.Connectivity/1.0.0": {
         "type": "project",
@@ -5585,6 +6098,10 @@
       "type": "project",
       "path": "../Wipcore.eNova.Api.Models/project.json"
     },
+    "Wipcore.Enova.Api.OAuth/1.0.0": {
+      "type": "project",
+      "path": "../Wipcore.Enova.Api.OAuth/project.json"
+    },
     "Wipcore.Enova.Connectivity/1.0.0": {
       "type": "project",
       "path": "../wrap/Wipcore.Enova.Connectivity/project.json"
@@ -5649,6 +6166,32 @@
         "lib/netcore50/Autofac.Extensions.DependencyInjection.xml"
       ]
     },
+    "IdentityModel/2.0.0-alpha3": {
+      "type": "package",
+      "sha512": "Hct9Axzvo1wMYvvaAyUnbwAPcg5Xme2e02/9UOMM6nLE5OZK3fWY6Ds+zBZwQjnHo0zCyk6VEqpY1F9QdGcBAA==",
+      "files": [
+        "IdentityModel.2.0.0-alpha3.nupkg",
+        "IdentityModel.2.0.0-alpha3.nupkg.sha512",
+        "IdentityModel.nuspec",
+        "lib/dotnet5.4/IdentityModel.dll",
+        "lib/dotnet5.4/IdentityModel.xml",
+        "lib/net451/IdentityModel.dll",
+        "lib/net451/IdentityModel.xml"
+      ]
+    },
+    "IdentityServer4/1.0.0-beta1-update1": {
+      "type": "package",
+      "sha512": "0uXKLXnrQDZKgu2PfnWt9pdqjGOvPtx5WoXpnLuckAOUAEl9XsfHbH6At5Ztc6YYNJHA1FLfTas0qhhwJU9r/Q==",
+      "files": [
+        "IdentityServer4.1.0.0-beta1-update1.nupkg",
+        "IdentityServer4.1.0.0-beta1-update1.nupkg.sha512",
+        "IdentityServer4.nuspec",
+        "lib/dotnet5.4/IdentityServer4.dll",
+        "lib/dotnet5.4/IdentityServer4.xml",
+        "lib/net451/IdentityServer4.dll",
+        "lib/net451/IdentityServer4.xml"
+      ]
+    },
     "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -5661,6 +6204,34 @@
         "Microsoft.AspNet.Antiforgery.1.0.0-rc1-final.nupkg",
         "Microsoft.AspNet.Antiforgery.1.0.0-rc1-final.nupkg.sha512",
         "Microsoft.AspNet.Antiforgery.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sdFCeQlwkJXZ1KHsRvf7ewNEWkEeKYNpcEKKC0D+WNUvLliziLc7cMH+6sjNmTU3FgGjGrSk4WjGQMhsOHCrDQ==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.AspNet.Authentication.dll",
+        "lib/dotnet5.4/Microsoft.AspNet.Authentication.xml",
+        "lib/net451/Microsoft.AspNet.Authentication.dll",
+        "lib/net451/Microsoft.AspNet.Authentication.xml",
+        "Microsoft.AspNet.Authentication.1.0.0-rc1-final.nupkg",
+        "Microsoft.AspNet.Authentication.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.AspNet.Authentication.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.Authentication.Cookies/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "vjeSG8Z5i5Kqo1nC7wW1BO+YMk+gs/AVVJlmyF7EGgiUBtAAPkrgjxSabQqvFhPgpEFledUQ6gkhKXgr4WrMtw==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.AspNet.Authentication.Cookies.dll",
+        "lib/dotnet5.4/Microsoft.AspNet.Authentication.Cookies.xml",
+        "lib/net451/Microsoft.AspNet.Authentication.Cookies.dll",
+        "lib/net451/Microsoft.AspNet.Authentication.Cookies.xml",
+        "Microsoft.AspNet.Authentication.Cookies.1.0.0-rc1-final.nupkg",
+        "Microsoft.AspNet.Authentication.Cookies.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.AspNet.Authentication.Cookies.nuspec"
       ]
     },
     "Microsoft.AspNet.Authorization/1.0.0-rc1-final": {
@@ -5731,6 +6302,20 @@
         "Microsoft.AspNet.DataProtection.Abstractions.1.0.0-rc1-final.nupkg",
         "Microsoft.AspNet.DataProtection.Abstractions.1.0.0-rc1-final.nupkg.sha512",
         "Microsoft.AspNet.DataProtection.Abstractions.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.DataProtection.Extensions/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "d+ENlNMO04Gd3SBLzhbSyJkw08RI3yo2qwadgTBzrxrWY8FHIy1VvrHWTNwlFtnVIdT+oD8MCQSCLcyYQUYlrw==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.AspNet.DataProtection.Extensions.dll",
+        "lib/dotnet5.4/Microsoft.AspNet.DataProtection.Extensions.xml",
+        "lib/net451/Microsoft.AspNet.DataProtection.Extensions.dll",
+        "lib/net451/Microsoft.AspNet.DataProtection.Extensions.xml",
+        "Microsoft.AspNet.DataProtection.Extensions.1.0.0-rc1-final.nupkg",
+        "Microsoft.AspNet.DataProtection.Extensions.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.AspNet.DataProtection.Extensions.nuspec"
       ]
     },
     "Microsoft.AspNet.Diagnostics/1.0.0-rc1-final": {
@@ -6098,6 +6683,20 @@
         "Microsoft.AspNet.Mvc.Razor.Host.6.0.0-rc1-final.nupkg",
         "Microsoft.AspNet.Mvc.Razor.Host.6.0.0-rc1-final.nupkg.sha512",
         "Microsoft.AspNet.Mvc.Razor.Host.nuspec"
+      ]
+    },
+    "Microsoft.AspNet.Mvc.TagHelpers/6.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "zcoDzmKSMdOVUQHQZJQStArNqc5ERTxosB3GiK/MbC0HFhJ4vmh/vwI0rxnXO6X25+gYnr/2PAiY9fHvGkN58A==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.AspNet.Mvc.TagHelpers.dll",
+        "lib/dotnet5.4/Microsoft.AspNet.Mvc.TagHelpers.xml",
+        "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.dll",
+        "lib/net451/Microsoft.AspNet.Mvc.TagHelpers.xml",
+        "Microsoft.AspNet.Mvc.TagHelpers.6.0.0-rc1-final.nupkg",
+        "Microsoft.AspNet.Mvc.TagHelpers.6.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.AspNet.Mvc.TagHelpers.nuspec"
       ]
     },
     "Microsoft.AspNet.Mvc.WebApiCompatShim/6.0.0-rc1-final": {
@@ -6541,6 +7140,20 @@
         "Microsoft.Extensions.DependencyInjection.Abstractions.nuspec"
       ]
     },
+    "Microsoft.Extensions.FileSystemGlobbing/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "7N9IPDU0T1uQBj6hobeGNqiEd+Cuu6RHJ0RcwkUvzTsLq8Vf2Sc72+HEAICTw1CTRXHgW49Zr47PvO0QPxI/5g==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.Extensions.FileSystemGlobbing.dll",
+        "lib/dotnet5.4/Microsoft.Extensions.FileSystemGlobbing.xml",
+        "lib/net451/Microsoft.Extensions.FileSystemGlobbing.dll",
+        "lib/net451/Microsoft.Extensions.FileSystemGlobbing.xml",
+        "Microsoft.Extensions.FileSystemGlobbing.1.0.0-rc1-final.nupkg",
+        "Microsoft.Extensions.FileSystemGlobbing.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.Extensions.FileSystemGlobbing.nuspec"
+      ]
+    },
     "Microsoft.Extensions.Globalization.CultureInfoCache/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -6749,9 +7362,9 @@
         "Microsoft.Net.Http.Headers.nuspec"
       ]
     },
-    "Newtonsoft.Json/6.0.6": {
+    "Newtonsoft.Json/8.0.2": {
       "type": "package",
-      "sha512": "w26uZNyCG5VeoKiEOJ4+9/o8koSofLKwHl7WLreIcp0U6r57L7WiRXmjp8MTKFw6dYNZ9AE0lw69WYbIhUsU9Q==",
+      "sha512": "e5yWmEfu68rmtG431zl9N/7PlNKQDIuiDW5MHlEFAZcecakcxrIGnKqrPAtWNILzK2oNanRB5cD150MYhECK3g==",
       "files": [
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
@@ -6761,14 +7374,12 @@
         "lib/net40/Newtonsoft.Json.xml",
         "lib/net45/Newtonsoft.Json.dll",
         "lib/net45/Newtonsoft.Json.xml",
-        "lib/netcore45/Newtonsoft.Json.dll",
-        "lib/netcore45/Newtonsoft.Json.xml",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
-        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
-        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.6.0.6.nupkg",
-        "Newtonsoft.Json.6.0.6.nupkg.sha512",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
+        "Newtonsoft.Json.8.0.2.nupkg",
+        "Newtonsoft.Json.8.0.2.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
       ]
@@ -7062,6 +7673,18 @@
         "System.Globalization.4.0.0.nupkg",
         "System.Globalization.4.0.0.nupkg.sha512",
         "System.Globalization.nuspec"
+      ]
+    },
+    "System.IdentityModel.Tokens.Jwt/4.0.2.202250711": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "ei0sheOswuu6f6hXYu5xTU2FVaAAfWzL9hJuGere2IwJZzmRBxe8B0xCfjX3yq3TbcsqRFx6KfdHdSY2AXbIpw==",
+      "files": [
+        "lib/net45/System.IdentityModel.Tokens.Jwt.dll",
+        "lib/net45/System.IdentityModel.Tokens.Jwt.Xml",
+        "System.IdentityModel.Tokens.Jwt.4.0.2.202250711.nupkg",
+        "System.IdentityModel.Tokens.Jwt.4.0.2.202250711.nupkg.sha512",
+        "System.IdentityModel.Tokens.Jwt.nuspec"
       ]
     },
     "System.IO/4.0.0": {
@@ -7625,6 +8248,8 @@
     "": [
       "Autofac >= 4.0.0-rc1-177",
       "Autofac.Extensions.DependencyInjection >= 4.0.0-rc1-177",
+      "Microsoft.AspNet.Authentication.Cookies >= 1.0.0-rc1-final",
+      "Microsoft.AspNet.DataProtection.Extensions >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Diagnostics >= 1.0.0-rc1-final",
       "Microsoft.AspNet.IISPlatformHandler >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Mvc >= 6.0.0-rc1-final",
@@ -7640,7 +8265,8 @@
       "NLog.Extensions.Logging >= 1.0.0-rc1-final-2016-03-11",
       "Swashbuckle >= 6.0.0-rc1-final",
       "Wipcore.Enova.Api.Interfaces >= 1.0.0-*",
-      "Wipcore.eNova.Api.Models >= 1.0.0-*"
+      "Wipcore.eNova.Api.Models >= 1.0.0-*",
+      "Wipcore.Enova.Api.OAuth >= 1.0.0-*"
     ],
     "DNX,Version=v4.5.1": [
       "Fasterflect >= 1.0.0-*",

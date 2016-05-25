@@ -10,7 +10,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
     {
         public static T CreateNew<T>(Context context, params object[] args) where T : BaseObject
         {
-            var type = typeof (T).GetMostDerivedType();
+            var type = typeof (T).GetMostDerivedEnovaType();
             var allArgs = new[] {context}.Union(args).ToArray();
             var item = (T)Activator.CreateInstance(type, allArgs);
             return item;

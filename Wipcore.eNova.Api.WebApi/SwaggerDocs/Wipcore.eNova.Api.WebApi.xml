@@ -4,38 +4,6 @@
         <name>Wipcore.eNova.Api.WebApi</name>
     </assembly>
     <members>
-        <member name="T:Wipcore.Enova.Api.WebApi.EnovaSystemFacade">
-            <summary>
-            Provides an easy way to start up an Enova system.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.Connection">
-            <summary>
-            The Enova connection
-            Use the set only in unit tests
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.Current">
-            <summary>
-            Get the singleton instance of the Enova system facade. You can use this
-            property in cases where you cannot use constructor injection.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.Start">
-            <summary>
-            Starts the Enova system using the settings found in web.config.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.StartSystemInMemory">
-            <summary>
-            Starts a local Wipcore Enova system.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaSystemFacade.LoadAllAssemblies">
-            <summary>
-            Loads all assemblies so webpaymentprovuders etc can find them
-            </summary>
-        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetVariants(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
             <summary>
             Get all variants of the product specified by identifier.
@@ -53,6 +21,13 @@
             <param name="getParameters"></param>
             <param name="identifier"></param>
             <param name="warehouse"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetMostDerivedEnovaType(System.Type)">
+            <summary>
+            Returns the most derived type, if more then one type is found it will prioritize types found outside of enova.
+            </summary>
+            <param name="type">Dervied from this type.</param>
             <returns></returns>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetAllAvailableTypes">

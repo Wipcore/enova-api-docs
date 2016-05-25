@@ -9,23 +9,23 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
-    public class LocationService : ILocationService
+    public class TemplateService : ITemplateService
     {
         private readonly IConfigurationRoot _configuration;
 
-        public LocationService(IConfigurationRoot configuration)
+        public TemplateService(IConfigurationRoot configuration)
         {
             _configuration = configuration;            
         }
 
-        public IGetParametersModel GetParametersFromLocationConfiguration(Type type, IGetParametersModel parameters)
+        public IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters)
         {
             parameters = parameters ?? new GetParametersModel();
 
             IConfigurationSection config = null;
             while ((config == null || !config.GetChildren().Any()) && type != typeof (object))
             {
-                config = _configuration.GetSection(type.Name)?.GetSection(parameters.Location);
+                config = _configuration.GetSection(type.Name)?.GetSection(parameters.Template);
 
                 type = type.BaseType;
             }
@@ -36,7 +36,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var settings = config.GetChildren().ToList();
 
             //if the parameter is not already set, retrive it from the settings
-            parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "0");
+            parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "1");
             parameters.Size = parameters.Size ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "size")?.Value ?? "20");
 
             parameters.Sort = SetValue(parameters.Sort, settings, "sort");

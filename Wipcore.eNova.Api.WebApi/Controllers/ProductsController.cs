@@ -8,8 +8,10 @@ using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
 using System.Web.Http;
+using Microsoft.AspNet.Authorization;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.OAuth;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -81,6 +83,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
         
         [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
             return _objectService.Save<EnovaBaseProduct>(requestContext, values);

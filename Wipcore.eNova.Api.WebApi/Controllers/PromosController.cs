@@ -8,8 +8,10 @@ using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
 using System.Web.Http;
+using Microsoft.AspNet.Authorization;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.OAuth;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,6 +30,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         [HttpGet()]
+        [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
             return _objectService.Get<EnovaPromo>(requestContext, getParameters);

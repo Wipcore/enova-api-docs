@@ -7,6 +7,8 @@
   "dependencies": {
     "Autofac": "4.0.0-rc1-177",
     "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+    "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
+    "Microsoft.AspNet.DataProtection.Extensions": "1.0.0-rc1-final",
     "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
     "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
@@ -22,7 +24,8 @@
     "NLog.Extensions.Logging": "1.0.0-rc1-final-2016-03-11",
     "Swashbuckle": "6.0.0-rc1-final",
     "Wipcore.Enova.Api.Interfaces": "1.0.0-*",
-    "Wipcore.eNova.Api.Models": "1.0.0-*"
+    "Wipcore.eNova.Api.Models": "1.0.0-*",
+    "Wipcore.Enova.Api.OAuth": "1.0.0-*"
   },
 
   "commands": {

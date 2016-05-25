@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
@@ -18,13 +21,18 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         private readonly IMappingToService _mappingToService;
         private readonly ICartService _cartService;
         private readonly IConfigurationRoot _configuration;
+        private readonly IAuthService _authService;
+        private readonly ILogger _logger;
 
-        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration)
+        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration, 
+            IAuthService authService, ILoggerFactory loggerFactory)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
             _cartService = cartService;
             _configuration = configuration;
+            _authService = authService;
+            _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
         public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
@@ -39,7 +47,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                 shippingFilter = " AND ShippingStatusID = " + status.ID;
             }
 
-            var type = typeof (EnovaOrder).GetMostDerivedType();
+            var type = typeof (EnovaOrder).GetMostDerivedEnovaType();
             var orders = context.Search("CustomerID = " + customer.ID + shippingFilter, type, null, 0, null, false);
             return orders;
         }
@@ -51,31 +59,39 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             if (cartModel.Rows == null)
                 cartModel.Rows = new List<RowModel>();
 
+            if (cartModel.Identifier == String.Empty)
+                cartModel.Identifier = null;
+
             var context = _contextService.GetContext();
             
             //if new then make a cart from it first, if old then edit old order
-            var enovaOrder = context.FindObject<EnovaOrder>(cartModel.Identifier ?? "");
+            var enovaOrder = context.FindObject<EnovaOrder>(cartModel.Identifier);
+
+            if (!_authService.AuthorizeUpdate(enovaOrder?.Customer?.Identifier, cartModel.Customer))
+                throw new HttpException(HttpStatusCode.Unauthorized, "A customer can only update it's own order.");
+
             if (enovaOrder == null)
             {
                 var identifier = cartModel.Identifier;
                 cartModel.Identifier = null;
+                
+                if (String.IsNullOrEmpty(identifier))
+                    identifier = EnovaCommonFunctions.GetSequenceNumber(context, SystemRunningMode.Remote, SequenceType.OrderIdentifier);
 
                 var dummyCart = EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
                 _cartService.MapCart(context, dummyCart, cartModel);
 
                 enovaOrder = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, dummyCart);
-                enovaOrder.Identifier = cartModel.Identifier = identifier; //TODO generate order identifier if empty
+                enovaOrder.Identifier = cartModel.Identifier = identifier; 
 
                 var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
                 var defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
                 enovaOrder.Warehouse = EnovaWarehouse.Find(context, defaultWarehouse);
             }
-            
+
             Map(context, enovaOrder, cartModel);
             
             enovaOrder.Recalculate();
-            if (cartModel.Persist)
-                enovaOrder.Save();
             
             var currency = context.CurrentCurrency;
             decimal taxAmount;
@@ -85,6 +101,14 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             cartModel.TotalPriceExclTax = totalPrice - taxAmount;
             cartModel.TotalPriceInclTax = totalPrice;
+
+            if (cartModel.Persist)
+            {
+                var newOrder = enovaOrder.ID == default(int);
+                enovaOrder.Save();
+                _logger.LogInformation("{0} {1} order with Identifier {2}, Type: {3} and Values: {4}", 
+                    _authService.LogUser(), newOrder ? "Created" : "Updated", enovaOrder.Identifier, enovaOrder.GetType().Name, cartModel.ToString());
+            }
 
             return cartModel;
         }
@@ -109,12 +133,13 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             enovaOrder.Edit();
             enovaOrder.Identifier = currentCart.Identifier ?? enovaOrder.Identifier;
-            var customer = !String.IsNullOrEmpty(currentCart.Customer) ? EnovaCustomer.Find(context, currentCart.Customer) : null;
+
+            //set customer
+            var customerIdentifier = !String.IsNullOrEmpty(currentCart.Customer) ? currentCart.Customer : _authService.GetLoggedInIdentifier();
+            var customer = context.FindObject<EnovaCustomer>(customerIdentifier);
             if (customer != null)
                 enovaOrder.Customer = customer;
-            else
-                currentCart.Customer = enovaOrder.Customer?.Identifier;
-
+            currentCart.Customer = enovaOrder.Customer?.Identifier;
             
             currentCart.Status = enovaOrder.ShippingStatus?.Identifier;
             currentCart.AdditionalValues = _mappingToService.MapToEnovaObject(enovaOrder, currentCart.AdditionalValues);

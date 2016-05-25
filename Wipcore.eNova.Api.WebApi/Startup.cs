@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
+using Fasterflect;
+using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.DataProtection;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
@@ -19,8 +22,8 @@ using Swashbuckle.SwaggerGen;
 using Wipcore.Library;
 using Wipcore.Core;
 using Wipcore.eNova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.WebApi.Controllers;
+using Wipcore.Enova.Api.OAuth;
+
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -29,8 +32,8 @@ namespace Wipcore.Enova.Api.WebApi
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
-        public IConfigurationRoot Configuration { get; private set; }
-        public IHostingEnvironment Env { get; private set; }
+        public IConfigurationRoot Configuration { get; }
+        public IHostingEnvironment Env { get; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -38,7 +41,7 @@ namespace Wipcore.Enova.Api.WebApi
             
             // Set up configuration sources. Key = filename, Value = optional or not
             var jsonConfigs = new Dictionary<string, bool>() { { "appsettings.json" , false}, { "localappsettings.json", true },
-                { "locationConfiguration.json" , false}, { "marketConfiguration.json", false}, { "customsettings.json", true} };
+                { "templateConfiguration.json" , false}, { "marketConfiguration.json", false}, { "customsettings.json", true} };
             _configFolderPath = Path.GetFullPath(Path.Combine(env.WebRootPath, @"..\Configs"));
             
             var builder = new ConfigurationBuilder();
@@ -57,8 +60,6 @@ namespace Wipcore.Enova.Api.WebApi
 
         private void StartEnova()
         {
-            EnovaSystemFacade.Current.LoadAllAssemblies();
-
             var settings = new InMemoryConnectionSettings
             {
                 DatabaseConnection = Configuration.Get<String>("Enova:ConnectionString"),
@@ -84,7 +85,7 @@ namespace Wipcore.Enova.Api.WebApi
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterInstance<IConfigurationRoot>(Configuration);
 
-            var apiAssemblies = new List<Assembly>() {Assembly.GetExecutingAssembly()};
+            var apiAssemblies = new List<Assembly>() {Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(AccountController))};
             var autofacModules = new List<IEnovaApiModule>() {new WebApiModule()};
             LoadAddinAssemblies(apiAssemblies, autofacModules);
 
@@ -93,7 +94,15 @@ namespace Wipcore.Enova.Api.WebApi
             // Add framework services.
             services.AddMvc().AddControllersAsServices(apiAssemblies);
 
-            if(Configuration.Get<bool>("ApiSettings:UseSwagger", true))
+            //security
+            services.ConfigureDataProtection(configure => configure.PersistKeysToFileSystem(new DirectoryInfo(_configFolderPath)));
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
+                options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
+            });
+
+            if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
                 ConfigureSwagger(services);
 
             containerBuilder.Populate(services);
@@ -106,6 +115,7 @@ namespace Wipcore.Enova.Api.WebApi
             return container.Resolve<IServiceProvider>();
         }
         
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -113,7 +123,6 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             ConfigureNlog(env,loggerFactory);
@@ -123,8 +132,33 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseStaticFiles();
             app.UseStatusCodePages();
 
-            app.UseMvc();
+            var dataProtectionProvider = new DataProtectionProvider(new DirectoryInfo(_configFolderPath), configuration =>
+                {
+                    configuration.SetApplicationName(AuthService.AuthenticationScheme + "v1");
+                    if (Configuration.Get("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems
+                        configuration.ProtectKeysWithDpapiNG();
+                });
+            
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                DataProtectionProvider = dataProtectionProvider,
+                AuthenticationScheme = AuthService.AuthenticationScheme,
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = !String.IsNullOrEmpty(Configuration.Get("Auth:AutomaticChallenge", String.Empty)),
+                LoginPath = Configuration.Get("Auth:LoginPath", String.Empty),
+                LogoutPath = Configuration.Get("Auth:LogoutPath", String.Empty),
+                ReturnUrlParameter = Configuration.Get("Auth:ReturnUrlParameter", String.Empty),
+                CookieName = Configuration.Get("Auth:CookieName", String.Empty),
+                CookieDomain = Configuration.Get("Auth:CookieDomain", String.Empty),
+                CookieHttpOnly = Configuration.Get("Auth:CookieHttpOnly", false),
+                CookieSecure = Configuration.Get("Auth:CookieSecure", false) ? CookieSecureOption.Always : CookieSecureOption.SameAsRequest,
+                CookiePath = Configuration.Get("Auth:CookiePath", "/"),
+                ExpireTimeSpan = new TimeSpan(0, Configuration.Get("Auth:ExpireTimeMinutes", 120), 0),
+                SlidingExpiration = Configuration.Get("Auth:SlidingExpiration", false)
+            });
 
+            app.UseMvc();
+            
             if (Configuration.Get<bool>("ApiSettings:UseSwagger", true))
             {
                 app.UseSwaggerGen();

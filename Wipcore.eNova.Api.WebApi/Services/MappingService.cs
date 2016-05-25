@@ -11,6 +11,7 @@ using System.Runtime.Caching;
 using Fasterflect;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Wipcore.eNova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
@@ -66,7 +67,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     values[property.Key] = mappedValue;
                 }
                     //if it is a sub dictionary with additional values, from a dezerialized model for example, then map them the same way
-                else if (property.Key.ToLower() == "additionalvalues" && property.Value is JObject)
+                else if (property.IsAdditionalValuesKey())
                 {
                     var subValues = ((JObject)property.Value).ToObject<Dictionary<string, object>>();
                     this.MapToEnovaObject(obj, subValues);

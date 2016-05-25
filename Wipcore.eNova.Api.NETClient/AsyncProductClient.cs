@@ -88,10 +88,10 @@ namespace Wipcore.Enova.Api.NetClient
 
         public async Task<ResponseModel> GetPrices(IEnumerable<string> identifiers, int pageSize, int page, ContextModel context = null)
         {
-            const string location = "price";
+            const string template = "price";
             var filter = Join(" or ", identifiers.Where(x => !IsNullOrEmpty(x)).Select(x => "identifier =" + x));
 
-            var response = await _clientWrapper.Get("api/products?filter="+filter+"&location=" + location + "&size=" + pageSize + 
+            var response = await _clientWrapper.Get("api/products?filter="+filter+ "&template=" + template + "&size=" + pageSize + 
                 " &page = " + page + ContextHelper.GetContextParameters(context));
             var json = response.Content.ReadAsStringAsync();
 

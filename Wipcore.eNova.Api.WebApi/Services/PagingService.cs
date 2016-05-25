@@ -25,8 +25,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         {
             this.OutputPagingHeaders(pageNumber, pageSize, objects.Count);
 
-            //TODO limit size by configurable maxSize?
-            int index = pageNumber > 0 ? (pageNumber - 1) * pageSize : 0;
+            var index = pageNumber > 0 ? (pageNumber - 1) * pageSize : 0;
             objects = objects.GetRange(index, pageSize);
             return objects;
         }
@@ -41,12 +40,32 @@ namespace Wipcore.Enova.Api.WebApi.Services
             httpContext.Response.Headers.Add("X-Paging-PageCount", pageCount.ToString());
             httpContext.Response.Headers.Add("X-Paging-TotalRecordCount", objectCount.ToString());
 
-            //TODO limit next to max page and prev to 0?
+            var nextPage = Math.Min(pageNumber + 1, pageCount);
+            var previousPage = Math.Max(pageNumber - 1, 1);
+            
+            string prevPageLink;
+            string nextPageLink;
 
-            string prevPage = UrlHelper.GetRequestUrl(httpContext).Replace("page=" + pageNumber.ToString(), "page=" + (pageNumber - 1).ToString());
-            httpContext.Response.Headers.Add("X-Paging-PreviousPage", prevPage);
-            string nextPage = UrlHelper.GetRequestUrl(httpContext).Replace("page=" + pageNumber.ToString(), "page=" + (pageNumber + 1).ToString());
-            httpContext.Response.Headers.Add("X-Paging-NextPage", nextPage);
+            var requestUrl = UrlHelper.GetRequestUrl(httpContext);
+            if (requestUrl.Contains("page=" + pageNumber))
+            {
+                prevPageLink = requestUrl.Replace("page=" + pageNumber, "page=" + previousPage);
+                nextPageLink = requestUrl.Replace("page=" + pageNumber, "page=" + nextPage);
+            }
+            else if (requestUrl.Contains("Page=" + pageNumber))
+            {
+                prevPageLink = requestUrl.Replace("Page=" + pageNumber, "Page=" + previousPage);
+                nextPageLink = requestUrl.Replace("Page=" + pageNumber, "Page=" + nextPage);
+            }
+            else
+            {
+                var prefix = UrlHelper.RequestHasParameters(httpContext) ? "&" : "?";
+                prevPageLink = requestUrl + prefix + "Page=" + previousPage;
+                nextPageLink = requestUrl + prefix + "Page=" + nextPage;
+            }
+
+            httpContext.Response.Headers.Add("X-Paging-PreviousPage", prevPageLink);
+            httpContext.Response.Headers.Add("X-Paging-NextPage", nextPageLink);
         }
     }
 }

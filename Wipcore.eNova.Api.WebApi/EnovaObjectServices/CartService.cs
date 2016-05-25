@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
@@ -15,12 +18,16 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
     {
         private readonly IContextService _contextService;
         private readonly IMappingToService _mappingToService;
+        private readonly IAuthService _authService;
+        private readonly ILogger _logger;
 
 
-        public CartService(IContextService contextService, IMappingToService mappingToService)
+        public CartService(IContextService contextService, IMappingToService mappingToService, IAuthService authService, ILoggerFactory loggerFactory)
         {
             _contextService = contextService;
             _mappingToService = mappingToService;
+            _authService = authService;
+            _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
         public ICartModel CalculateCart(ICartModel currentCart)
@@ -29,17 +36,21 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                 return new CartModel(new List<RowModel>());
             if (currentCart.Rows == null)
                 currentCart.Rows = new List<RowModel>();
+            if (currentCart.Identifier == String.Empty)
+                currentCart.Identifier = null;
 
             var context = _contextService.GetContext();
 
             var enovaCart = context.FindObject<EnovaCart>(currentCart.Identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
+
+            if (!_authService.AuthorizeUpdate(enovaCart.Customer?.Identifier, currentCart.Customer))
+                throw new HttpException(HttpStatusCode.Unauthorized, "A customer can only update it's own cart.");
+
             enovaCart.Edit();
 
             MapCart(context, enovaCart, currentCart);//make sure all rows match
 
             enovaCart.Recalculate();
-            if (currentCart.Persist)
-                enovaCart.Save();
             
             var currency = context.CurrentCurrency;
             decimal rounding, taxAmount;
@@ -49,17 +60,27 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             currentCart.TotalPriceExclTax = totalPrice - taxAmount;
             currentCart.TotalPriceInclTax = totalPrice;
 
+            if (currentCart.Persist)
+            {
+                var newCart = enovaCart.ID == default(int);
+                enovaCart.Save();
+                _logger.LogInformation("{0} {1} cart with Identifier {2}, Type: {3} and Values: {4}", 
+                    _authService.LogUser(), newCart ? "Created" : "Updated", enovaCart.Identifier, enovaCart.GetType().Name, currentCart.ToString());
+            }
+
             return currentCart;
         }
 
         public void MapCart(Context context, EnovaCart enovaCart, ICartModel currentCart)
         {
             enovaCart.Identifier = currentCart.Identifier ?? enovaCart.Identifier;
-            var customer = !String.IsNullOrEmpty(currentCart.Customer) ? EnovaCustomer.Find(context, currentCart.Customer) : null;
+            
+            //set customer
+            var customerIdentifier = !String.IsNullOrEmpty(currentCart.Customer) ? currentCart.Customer : _authService.GetLoggedInIdentifier();
+            var customer = context.FindObject<EnovaCustomer>(customerIdentifier);
             if (customer != null)
                 enovaCart.Customer = customer;
-            else
-                currentCart.Customer = enovaCart.Customer?.Identifier;
+            currentCart.Customer = enovaCart.Customer?.Identifier;
 
             enovaCart.Name = currentCart.Name ?? enovaCart.Name;
             currentCart.Name = enovaCart.Name;
@@ -118,7 +139,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             var context = _contextService.GetContext();
             var customer = EnovaCustomer.Find(context, customerIdentifier);
             
-            var type = typeof(EnovaCart).GetMostDerivedType();
+            var type = typeof(EnovaCart).GetMostDerivedEnovaType();
             var carts = context.Search("CustomerID = " + customer.ID, type, null, 0, null, false);
             return carts;
         }

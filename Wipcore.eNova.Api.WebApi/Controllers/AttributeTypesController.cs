@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Controllers;
 using Wipcore.Enova.Core;
 
