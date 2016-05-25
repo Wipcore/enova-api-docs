@@ -135,11 +135,10 @@ namespace Wipcore.Enova.Api.WebApi
             var dataProtectionProvider = new DataProtectionProvider(new DirectoryInfo(_configFolderPath), configuration =>
                 {
                     configuration.SetApplicationName(AuthService.AuthenticationScheme + "v1");
-                    if (Configuration.Get("ApiSettings:UseDpapiProtection", true))//turn off if having problems in clustered systems
-                        configuration.ProtectKeysWithDpapi();
+                    if (Configuration.Get("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems
+                        configuration.ProtectKeysWithDpapiNG();
                 });
             
-
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 DataProtectionProvider = dataProtectionProvider,
