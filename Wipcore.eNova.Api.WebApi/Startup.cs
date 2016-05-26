@@ -15,6 +15,7 @@ using Autofac.Extensions.DependencyInjection;
 using Fasterflect;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.DataProtection;
+using Microsoft.AspNet.Http;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Connectivity;
 using NLog.Extensions.Logging;
@@ -139,7 +140,7 @@ namespace Wipcore.Enova.Api.WebApi
                         configuration.ProtectKeysWithDpapiNG();
                 });
             
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            var cookieOptions = new CookieAuthenticationOptions()
             {
                 DataProtectionProvider = dataProtectionProvider,
                 AuthenticationScheme = AuthService.AuthenticationScheme,
@@ -148,14 +149,20 @@ namespace Wipcore.Enova.Api.WebApi
                 LoginPath = Configuration.Get("Auth:LoginPath", String.Empty),
                 LogoutPath = Configuration.Get("Auth:LogoutPath", String.Empty),
                 ReturnUrlParameter = Configuration.Get("Auth:ReturnUrlParameter", String.Empty),
-                CookieName = Configuration.Get("Auth:CookieName", String.Empty),
-                CookieDomain = Configuration.Get("Auth:CookieDomain", String.Empty),
                 CookieHttpOnly = Configuration.Get("Auth:CookieHttpOnly", false),
                 CookieSecure = Configuration.Get("Auth:CookieSecure", false) ? CookieSecureOption.Always : CookieSecureOption.SameAsRequest,
                 CookiePath = Configuration.Get("Auth:CookiePath", "/"),
                 ExpireTimeSpan = new TimeSpan(0, Configuration.Get("Auth:ExpireTimeMinutes", 120), 0),
                 SlidingExpiration = Configuration.Get("Auth:SlidingExpiration", false)
-            });
+            };
+
+            if (!String.IsNullOrEmpty(Configuration.Get("Auth:CookieDomain", String.Empty)))
+                cookieOptions.CookieDomain = Configuration.Get("Auth:CookieDomain");
+            if (!String.IsNullOrEmpty(Configuration.Get("Auth:CookieName", String.Empty)))
+                cookieOptions.CookieName = Configuration.Get("Auth:CookieName");
+
+
+            app.UseCookieAuthentication(cookieOptions);
 
             app.UseMvc();
             
@@ -165,7 +172,7 @@ namespace Wipcore.Enova.Api.WebApi
                 app.UseSwaggerUi();
             }
         }
-
+        
         private void ConfigureSwagger(IServiceCollection services)
         {
             _swaggerDocsFolderPath = Configuration.Get("ApiSettings:PathToSwaggerDocs", Path.GetFullPath(Env.WebRootPath + @"\..\SwaggerDocs"));
