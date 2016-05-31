@@ -89,10 +89,11 @@ namespace Wipcore.Enova.Api.OAuth
             if (!ModelState.IsValid)
                 return HttpBadRequest(new LoginResponseModel("Username and password required."));
 
-            var claimsPrincipal = _loginService.LoginCustomerAsAdmin(model);
+            string errorMessage;
+            var claimsPrincipal = _loginService.LoginCustomerAsAdmin(model, out errorMessage);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel("Invalid username or password."));
+                return HttpBadRequest(new LoginResponseModel(errorMessage));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 

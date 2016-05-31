@@ -10,6 +10,7 @@ using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.OAuth
 {
@@ -51,13 +52,19 @@ namespace Wipcore.Enova.Api.OAuth
             }
         }
 
-        public ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model)
+        public ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model, out string errorMessage)
         {
+            errorMessage = String.Empty;
             var context = EnovaSystemFacade.Current.Connection.CreateContext();
             try
             {
                 context.Login(model.Username, model.Password);
-                var customer = EnovaCustomer.Find(context, model.CustomerIdentifier);
+                var customer = context.FindObject<EnovaCustomer>(model.CustomerIdentifier);
+                if (customer == null)
+                {
+                    errorMessage = "Customer could not be found!";
+                    return null;
+                }
                 var user = context.CustomerLogin(customer.ID);
 
                 var claimsPrincipal = BuildClaimsPrincipal(user, false);
@@ -65,6 +72,7 @@ namespace Wipcore.Enova.Api.OAuth
             }
             catch (Exception e)
             {
+                errorMessage = "Invalid username or password.";
                 _log.LogError($"Error at AuthService.LoginCustomerAsAdmin using model: {model?.ToString() ?? "null"}. Error: {e}");
                 return null;
             }

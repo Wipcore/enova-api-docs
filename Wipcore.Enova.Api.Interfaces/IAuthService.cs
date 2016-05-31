@@ -7,7 +7,7 @@ namespace Wipcore.Enova.Api.Interfaces
     public interface IAuthService
     {
         ClaimsPrincipal Login(ILoginModel model, bool admin);
-        ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model);
+        ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model, out string errorMessage);
         string GetLoggedInAlias();
         string GetLoggedInName();
         string GetLoggedInIdentifier();
