@@ -11,4 +11,11 @@
     {
         string CustomerIdentifier { get; set; }
     }
+
+    public interface ILoginResponseModel
+    {
+        string StatusMessage { get; }
+
+        string UserIdentifier { get; }
+    }
 }
