@@ -23,9 +23,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class ContextService : IContextService
     {
-        public const string ContextModelKey = "requestContext";
-        public const string EnovaContextKey = "enovaContext";
-
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IConfigurationRoot _configuration;
         private readonly IAuthService _authService;
@@ -41,17 +38,17 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         public Context GetContext()
         {
-            var enovaContext = _httpAccessor.HttpContext.Items[EnovaContextKey] as Context;
+            var enovaContext = _httpAccessor.HttpContext.Items[ContextConstants.EnovaContextKey] as Context;
             if (enovaContext != null)
                 return enovaContext;
             
             enovaContext = EnovaSystemFacade.Current.Connection.CreateContext();
-            _httpAccessor.HttpContext.Items[EnovaContextKey] = enovaContext;
+            _httpAccessor.HttpContext.Items[ContextConstants.EnovaContextKey] = enovaContext;
 
-            var requestContext = _httpAccessor.HttpContext.Items[ContextModelKey] as ContextModel;
+            var requestContext = _httpAccessor.HttpContext.Items[ContextConstants.ContextModelKey] as ContextModel;
             if (requestContext == null)
                 return enovaContext;
-
+            
             //first read any values from market configuration
             if (!String.IsNullOrEmpty(requestContext.Market))
             {
@@ -62,6 +59,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     var settings = config.GetChildren().ToList();
                     SetLanguage(enovaContext, settings.FirstOrDefault(x => x.Key == "language")?.Value);
                     SetCurrency(enovaContext, settings.FirstOrDefault(x => x.Key == "currency")?.Value);
+                    SetTaxRule(enovaContext, settings.FirstOrDefault(x => x.Key == "taxrule")?.Value);
                 }
             }
             
@@ -108,6 +106,15 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var pass = config.First(x => x.Key == "Password").Value;
 
             enovaContext.Login(username, pass, updateLastLoginDate: false); 
+        }
+
+        private void SetTaxRule(Context enovaContext, string taxruleIdentifier)
+        {
+            if (String.IsNullOrEmpty(taxruleIdentifier))
+                return;
+
+            var taxrule = EnovaTaxationRule.Find(enovaContext, taxruleIdentifier);
+            enovaContext.DefaultTaxationRule = taxrule;
         }
 
         private void SetLanguage(Context enovaContext, string languageIdentifier)
