@@ -8,7 +8,9 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.Models.Cart;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
@@ -18,17 +20,17 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
     public class OrderService : IOrderService
     {
         private readonly IContextService _contextService;
-        private readonly IMappingToService _mappingToService;
+        private readonly IMappingToEnovaService _mappingToEnovaService;
         private readonly ICartService _cartService;
         private readonly IConfigurationRoot _configuration;
         private readonly IAuthService _authService;
         private readonly ILogger _logger;
 
-        public OrderService( IContextService contextService, IMappingToService mappingToService, ICartService cartService, IConfigurationRoot configuration, 
+        public OrderService( IContextService contextService, IMappingToEnovaService mappingToEnovaService, ICartService cartService, IConfigurationRoot configuration, 
             IAuthService authService, ILoggerFactory loggerFactory)
         {
             _contextService = contextService;
-            _mappingToService = mappingToService;
+            _mappingToEnovaService = mappingToEnovaService;
             _cartService = cartService;
             _configuration = configuration;
             _authService = authService;
@@ -52,158 +54,170 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             return orders;
         }
 
-        public ICartModel CreateOrder(ICartModel cartModel)
+        public ICartModel SaveOrder(ICartModel cartModel)
         {
             if (cartModel == null)
-                return new CartModel(new List<RowModel>());
+                return new CartModel(new List<CalculatedCartRowModel>());
             if (cartModel.Rows == null)
-                cartModel.Rows = new List<RowModel>();
+                cartModel.Rows = new List<CalculatedCartRowModel>();
 
             if (cartModel.Identifier == String.Empty)
                 cartModel.Identifier = null;
 
             var context = _contextService.GetContext();
             
-            //if new then make a cart from it first, if old then edit old order
             var enovaOrder = context.FindObject<EnovaOrder>(cartModel.Identifier);
 
             if (!_authService.AuthorizeUpdate(enovaOrder?.Customer?.Identifier, cartModel.Customer))
                 throw new HttpException(HttpStatusCode.Unauthorized, "A customer can only update it's own order.");
 
-            if (enovaOrder == null)
+            var calculatedOrder = CalculatedCartModel.CreateFrom(cartModel);
+
+            if (enovaOrder == null)//if new then create order from cart
             {
-                var identifier = cartModel.Identifier;
-                cartModel.Identifier = null;
-                
+                var identifier = calculatedOrder.Identifier;
+                calculatedOrder.Identifier = null;
+                var additionalValues = cartModel.AdditionalValues;
+                calculatedOrder.AdditionalValues = null;
+
                 if (String.IsNullOrEmpty(identifier))
                     identifier = EnovaCommonFunctions.GetSequenceNumber(context, SystemRunningMode.Remote, SequenceType.OrderIdentifier);
 
                 var dummyCart = EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
-                _cartService.MapCart(context, dummyCart, cartModel);
+                _cartService.MapCart(context, dummyCart, calculatedOrder);
 
                 enovaOrder = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, dummyCart);
-                enovaOrder.Identifier = cartModel.Identifier = identifier; 
+                enovaOrder.Identifier = calculatedOrder.Identifier = identifier;
+                calculatedOrder.AdditionalValues = additionalValues;
 
                 var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
                 var defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
                 enovaOrder.Warehouse = EnovaWarehouse.Find(context, defaultWarehouse);
+
+                enovaOrder.Recalculate();
             }
 
-            Map(context, enovaOrder, cartModel);
-            
-            enovaOrder.Recalculate();
-            
+            Map(context, enovaOrder, calculatedOrder);
+
+            SetStatus(context, enovaOrder, calculatedOrder);
+
+            //calculate prices
             var currency = context.CurrentCurrency;
             decimal taxAmount;
             int decimals;
             double roundingFactor;
             var totalPrice = enovaOrder.GetSum(out taxAmount, out decimals, ref currency, out roundingFactor);
 
-            cartModel.TotalPriceExclTax = totalPrice - taxAmount;
-            cartModel.TotalPriceInclTax = totalPrice;
+            calculatedOrder.TotalPriceExclTax = totalPrice;
+            calculatedOrder.TotalPriceInclTax = totalPrice + taxAmount;
 
             if (cartModel.Persist)
             {
                 var newOrder = enovaOrder.ID == default(int);
                 enovaOrder.Save();
-                _logger.LogInformation("{0} {1} order with Identifier {2}, Type: {3} and Values: {4}", 
-                    _authService.LogUser(), newOrder ? "Created" : "Updated", enovaOrder.Identifier, enovaOrder.GetType().Name, cartModel.ToString());
+                _logger.LogInformation("{0} {1} order with Identifier {2}, Type: {3} and Values: {4}",_authService.LogUser(), 
+                    newOrder ? "Created" : "Updated", enovaOrder.Identifier, enovaOrder.GetType().Name, cartModel.ToString());
             }
 
-            return cartModel;
+            return calculatedOrder;
         }
 
-        private void Map(Context context, EnovaOrder enovaOrder, ICartModel currentCart)
+        private void SetStatus(Context context, EnovaOrder enovaOrder, ICalculatedCartModel model)
         {
             if (enovaOrder.ShippingStatus == null)//if none, set to given status or default new
             {
-                enovaOrder.Edit();
-                var newShippingIdentifier = currentCart.Status ?? _configuration["EnovaSettings:NewShippingStatus"] ?? "NEW_INTERNET";
+                if(!enovaOrder.IsBeingEdited)
+                    enovaOrder.Edit();
+                var newShippingIdentifier = model.Status ?? _configuration["EnovaSettings:NewShippingStatus"] ?? "NEW_INTERNET";
                 var shippingStatus = EnovaShippingStatus.Find(context, newShippingIdentifier);
                 enovaOrder.ShippingStatus = shippingStatus;
             }
-            else if (!String.IsNullOrEmpty(currentCart.Status))//if status specified that's different from current, then change it
+            else if (!String.IsNullOrEmpty(model.Status))//if status specified that's different from current, then change it
             {
                 var currentStatus = enovaOrder.ShippingStatus?.Identifier;
-                if (!String.Equals(currentStatus, currentCart.Status, StringComparison.InvariantCultureIgnoreCase))
+                if (!String.Equals(currentStatus, model.Status, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    enovaOrder.ChangeShippingStatus(EnovaShippingStatus.Find(context, currentCart.Status), null);
+                    enovaOrder.ChangeShippingStatus(EnovaShippingStatus.Find(context, model.Status), null);
                 }
             }
 
-            enovaOrder.Edit();
-            enovaOrder.Identifier = currentCart.Identifier ?? enovaOrder.Identifier;
-
-            //set customer
-            var customerIdentifier = !String.IsNullOrEmpty(currentCart.Customer) ? currentCart.Customer : _authService.GetLoggedInIdentifier();
-            var customer = context.FindObject<EnovaCustomer>(customerIdentifier);
-            if (customer != null)
-                enovaOrder.Customer = customer;
-            currentCart.Customer = enovaOrder.Customer?.Identifier;
-            
-            currentCart.Status = enovaOrder.ShippingStatus?.Identifier;
-            currentCart.AdditionalValues = _mappingToService.MapToEnovaObject(enovaOrder, currentCart.AdditionalValues);
-            
-            //if no rows in given cart, make sure no rows in enova cart
-            if (currentCart.Rows == null || !currentCart.Rows.Any())
-            {
-                enovaOrder.DeleteOrderItems(typeof(EnovaProductOrderItem));
-            }
-            else
-            {
-                //TODO specify what else (if anything) can be updated on an existing order
-                //go through all product rows and fix quantity if different
-                foreach (var cartItem in currentCart.Rows.Where(x => x.Type == null || 
-                    String.Equals(x.Type, "product", StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    var enovaOrderItem = enovaOrder.GetOrderItems<EnovaProductOrderItem>()
-                            .FirstOrDefault(x => x.ProductIdentifier == cartItem.Identifier);
-                    var quantity = cartItem.Quantity > 0 ? cartItem.Quantity : 1;
-
-                    if(enovaOrderItem == null)
-                        continue;
-
-                    if (enovaOrderItem.OrderedQuantity != quantity)
-                    {
-                        enovaOrderItem.OrderedQuantity = quantity;
-                    }
-                    
-                    cartItem.AdditionalValues = _mappingToService.MapToEnovaObject(enovaOrderItem, cartItem.AdditionalValues);
-                    
-                    cartItem.PriceExclTax = enovaOrderItem.GetPrice(false);
-                    cartItem.PriceInclTax = enovaOrderItem.GetPrice(true);
-                }
-
-                AddPromoRows(context, enovaOrder, currentCart);
-            }
+            model.Status = enovaOrder.ShippingStatus?.Identifier;
         }
 
-        private void AddPromoRows(Context context, EnovaOrder enovaOrder, ICartModel currentCart)
+        /// <summary>
+        /// Mapping order. Maps extra properties (additional values) on order and orderrows. Does not otherwise change orderrows.
+        /// </summary>
+        private void Map(Context context, EnovaOrder enovaOrder, ICalculatedCartModel model)
         {
-            enovaOrder.Recalculate();
-            var promoRows = enovaOrder.GetOrderItems<EnovaPromoOrderItem>();
-            var rows = currentCart.Rows.ToList();
-            foreach (var enovaPromoOrderItem in promoRows)
-            {
-                var newRow = false;
-                var orderItem = currentCart.Rows.FirstOrDefault(x => x.Password == enovaPromoOrderItem.Promo?.Password);
-                if (orderItem == null)
-                {
-                    orderItem = new RowModel();
-                    newRow = true;
-                }
-                orderItem.Type = "promo";
-                orderItem.Identifier = enovaPromoOrderItem.Identifier;
-                orderItem.Quantity = 1;
-                orderItem.Name = enovaPromoOrderItem.Name;
-                orderItem.PriceExclTax = enovaPromoOrderItem.GetPrice(includeTax: false);
-                orderItem.PriceInclTax = enovaPromoOrderItem.GetPrice(includeTax: true);
+            var orderRows = enovaOrder.OrderItems;
+            if (!enovaOrder.IsBeingEdited)
+                enovaOrder.Edit();
 
-                if (newRow)
-                    rows.Add(orderItem);
+            model.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(enovaOrder, model.AdditionalValues);
+            model.Customer = enovaOrder.Customer?.Identifier;
+            var mappedRows = new List<CalculatedCartRowModel>();
+            
+            foreach (var orderItem in orderRows.OfType<EnovaProductOrderItem>())
+            {
+                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Product && 
+                    String.Equals(orderItem.ProductIdentifier, x.Identifier, StringComparison.OrdinalIgnoreCase)) ?? new CalculatedCartRowModel();
+                row.Identifier = orderItem.ProductIdentifier;
+                row.Quantity = orderItem.OrderedQuantity;
+                row.PriceExclTax = orderItem.GetPrice(false);
+                row.PriceInclTax = orderItem.GetPrice(true);
+                row.Type = RowType.Product;
+                row.Name = orderItem.Name;
+
+                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                mappedRows.Add(row);
             }
 
-            currentCart.Rows = rows;
+            foreach (var orderItem in orderRows.OfType<EnovaShippingTypeOrderItem>())
+            {
+                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Shipping &&
+                    String.Equals(orderItem.ShippingType?.Identifier, x.Identifier, StringComparison.OrdinalIgnoreCase)) ?? new CalculatedCartRowModel();
+                row.Identifier = orderItem.ShippingType?.Identifier;
+                row.Quantity = orderItem.OrderedQuantity;
+                row.PriceExclTax = orderItem.GetPrice(false);
+                row.PriceInclTax = orderItem.GetPrice(true);
+                row.Type = RowType.Shipping;
+                row.Name = orderItem.Name;
+
+                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                mappedRows.Add(row);
+            }
+
+            foreach (var orderItem in orderRows.OfType<EnovaPaymentTypeOrderItem>())
+            {
+                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Payment &&
+                    String.Equals(orderItem.PaymentType?.Identifier, x.Identifier, StringComparison.OrdinalIgnoreCase)) ?? new CalculatedCartRowModel();
+                row.Identifier = orderItem.PaymentType?.Identifier;
+                row.Quantity = orderItem.OrderedQuantity;
+                row.PriceExclTax = orderItem.GetPrice(false);
+                row.PriceInclTax = orderItem.GetPrice(true);
+                row.Type = RowType.Payment;
+                row.Name = orderItem.Name;
+
+                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                mappedRows.Add(row);
+            }
+
+            foreach (var orderItem in orderRows.OfType<EnovaPromoOrderItem>())
+            {
+                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Promo && (x.Password == orderItem.Promo?.Password ||
+                    String.Equals(orderItem.Promo?.Identifier, x.Identifier, StringComparison.OrdinalIgnoreCase))) ?? new CalculatedCartRowModel();
+                row.Identifier = orderItem.Promo?.Identifier;
+                row.Quantity = orderItem.OrderedQuantity;
+                row.PriceExclTax = orderItem.GetPrice(false);
+                row.PriceInclTax = orderItem.GetPrice(true);
+                row.Type = RowType.Promo;
+                row.Name = orderItem.Name;
+
+                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                mappedRows.Add(row);
+            }
+
+            model.Rows = mappedRows;
         }
     }
 }

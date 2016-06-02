@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Wipcore.Enova.Api.Models.Interfaces
 {
+    /// <summary>
+    /// Model for customer information.
+    /// </summary>
     public interface ICustomerModel
     {
         string Identifier { get; set; }
