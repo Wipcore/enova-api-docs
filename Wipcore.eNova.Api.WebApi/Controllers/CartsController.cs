@@ -12,7 +12,9 @@ using System.Web.Http;
 using Microsoft.AspNet.Authorization;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.Models.Cart;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Api.OAuth;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,6 +38,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get a list of carts.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
@@ -43,6 +48,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _objectService.Get<EnovaCart>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get a cart specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize]
         public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
@@ -54,6 +62,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return cart;
         }
         
+        /// <summary>
+        /// Create or update a cart.
+        /// </summary>
         [HttpPost()]
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {

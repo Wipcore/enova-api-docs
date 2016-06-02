@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Wipcore.Enova.Api.Models
 {
+    /// <summary>
+    /// Model for logging in.
+    /// </summary>
     public class LoginModel : ILoginModel
     {
         [Required]
@@ -17,6 +20,9 @@ namespace Wipcore.Enova.Api.Models
 
     }
 
+    /// <summary>
+    /// Model for logging in a customer with the username and password of an administrator.
+    /// </summary>
     public class LoginCustomerWithAdminCredentialsModel : LoginModel, ILoginCustomerWithAdminCredentialsModel
     {
         [Required]
@@ -25,11 +31,20 @@ namespace Wipcore.Enova.Api.Models
         public override string ToString() => $"LoginModel: (Username={Username}, Password=****, CustomerIdentifier={CustomerIdentifier})";
     }
 
+    /// <summary>
+    /// Response model for an loggin-request.
+    /// </summary>
     public class LoginResponseModel : ILoginResponseModel
     {
+        /// <summary>
+        /// Response message, success or failure.
+        /// </summary>
         [Required]
         public string StatusMessage { get; }
 
+        /// <summary>
+        /// Identifier of the customer/admin that logged in.
+        /// </summary>
         public string UserIdentifier { get; }
 
         public LoginResponseModel(string message, string identifier = null)

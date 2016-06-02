@@ -26,22 +26,22 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IPagingService _pagingService;
         private readonly ISortService _sortService;
         private readonly IFilterService _filterService;
-        private readonly IMappingFromService _mappingFromService;
-        private readonly IMappingToService _mappingToService;
+        private readonly IMappingFromEnovaService _mappingFromEnovaService;
+        private readonly IMappingToEnovaService _mappingToEnovaService;
         private readonly ITemplateService _templateService;
         private readonly IContextService _contextService;
         private readonly IAuthService _authService;
         private readonly ILogger _logger;
 
 
-        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromService mappingFromService,
-            IMappingToService mappingToService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
+        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromEnovaService mappingFromEnovaService,
+            IMappingToEnovaService mappingToEnovaService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
         {
             _pagingService = pagingService;
             _sortService = sortService;
             _filterService = filterService;
-            _mappingFromService = mappingFromService;
-            _mappingToService = mappingToService;
+            _mappingFromEnovaService = mappingFromEnovaService;
+            _mappingToEnovaService = mappingToEnovaService;
             _templateService = templateService;
             _contextService = contextService;
             _authService = authService;
@@ -54,7 +54,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
 
             var obj = context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: true);
-            return _mappingFromService.MapFromEnovaObject(obj, getParameters.Properties);
+            return _mappingFromEnovaService.MapFromEnovaObject(obj, getParameters.Properties);
         }
 
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
@@ -71,7 +71,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             objectList = _sortService.Sort(objectList, getParameters.Sort);
             objectList = _filterService.Filter(objectList, getParameters.Filter);
             objectList = _pagingService.Page(objectList, getParameters.Page.Value, getParameters.Size.Value);
-            var objects = _mappingFromService.MapFromEnovaObject(objectList, getParameters.Properties);
+            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, getParameters.Properties);
 
             return objects.ToList();
         }
@@ -99,7 +99,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             else
                 obj.Edit();
 
-            var resultingObject = _mappingToService.MapToEnovaObject(obj, values);
+            var resultingObject = _mappingToEnovaService.MapToEnovaObject(obj, values);
             obj.Save();
 
             _logger.LogInformation("{0} {1} object with Identifier: {2} of Type: {3} with Values: {4}", _authService.LogUser(), newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());

@@ -78,10 +78,6 @@ namespace Wipcore.Enova.Api.OAuth
         /// <summary>
         /// Save claims (attributes) on the logged in user.
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="admin"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
         private ClaimsPrincipal BuildClaimsPrincipal(User user, bool admin, string password = null)
         {
             var claims = new List<Claim>
@@ -132,11 +128,8 @@ namespace Wipcore.Enova.Api.OAuth
         }
 
         /// <summary>
-        /// Returns true if the logged in user is an administrator, or if enovaObjectOwnedByIdentifier is the same as the logged in user.
-        /// 
+        /// Returns true if the logged in user is an administrator, or if enovaObjectOwnedByIdentifier is the same as the logged in user. 
         /// </summary>
-        /// <param name="enovaObjectOwnedByIdentifier">The user who owns the object to read, for example a customer on an order.</param>
-        /// <returns></returns>
         public bool AuthorizeAccess(string enovaObjectOwnedByIdentifier)
         {
             if (IsLoggedInAsAdmin())

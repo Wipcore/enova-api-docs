@@ -11,7 +11,9 @@ using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Models.Cart;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Api.OAuth;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
@@ -56,7 +58,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [HttpPost()]
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {
-            return _orderService.CreateOrder(cart);
+            return _orderService.SaveOrder(cart);
         }
     }
 }

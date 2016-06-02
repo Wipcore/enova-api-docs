@@ -17,8 +17,6 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <summary>
         /// Log in a customer with the credentials of an admin, ie inpersonation.
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model);
 
         /// <summary>
@@ -60,8 +58,6 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <summary>
         /// Get a claim on the logged in user by name.
         /// </summary>
-        /// <param name="claimName"></param>
-        /// <returns></returns>
         string GetClaim(string claimName);
 
         /// <summary>

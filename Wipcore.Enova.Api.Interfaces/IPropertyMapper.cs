@@ -6,27 +6,51 @@ using Wipcore.Core.SessionObjects;
 
 namespace Wipcore.Enova.Api.Interfaces
 {
+    /// <summary>
+    /// Implement to provide logic for mapping a property.
+    /// </summary>
     public interface IPropertyMapper
     {
+        /// <summary>
+        /// Names of the properties handled by this mapper.
+        /// </summary>
         List<string> Names { get; }
 
+        /// <summary>
+        /// The type of object that this map handles.
+        /// </summary>
         Type Type { get; }
 
-        bool InheritMapper { get; } //true if a derived class can use this mapper to map its property. Usually true.
+        /// <summary>
+        /// True if a derived class can use this mapper to map its property. Usually true.
+        /// </summary>
+        bool InheritMapper { get; } 
 
+        /// <summary>
+        /// Map a property from given object.
+        /// </summary>
         object MapFromEnovaProperty(BaseObject obj, string propertyName);
 
+        /// <summary>
+        /// Map a property to given object.        
+        /// </summary>
         object MapToEnovaProperty(BaseObject obj, string propertyName);
 
-        int Priority { get; } //higher number, higher priority
+        /// <summary>
+        /// Higher number, higher priority for choosing which mapper to use.
+        /// </summary>
+        int Priority { get; } 
 
+        /// <summary>
+        /// Which sort of mapping this mapper handles.
+        /// </summary>
         MapType MapType { get; }
     }
 
     public enum MapType
     {
-        MapTo,
-        MapFrom,
-        MapAll
+        MapTo, //mapping to enova, ie saving a property
+        MapFrom, //mapping from enova, ie querying
+        MapAll //map both from and to enova
     }
 }

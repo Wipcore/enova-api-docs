@@ -16,20 +16,20 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
     public class PaymentService : IPaymentService
     {
         private readonly IContextService _contextService;
-        private readonly IMappingToService _mappingToService;
+        private readonly IMappingToEnovaService _mappingToEnovaService;
         private readonly IAuthService _authService;
         private readonly ILogger _logger;
 
 
-        public PaymentService(IContextService contextService, IMappingToService mappingToService, IAuthService authService, ILoggerFactory loggerFactory)
+        public PaymentService(IContextService contextService, IMappingToEnovaService mappingToEnovaService, IAuthService authService, ILoggerFactory loggerFactory)
         {
             _contextService = contextService;
-            _mappingToService = mappingToService;
+            _mappingToEnovaService = mappingToEnovaService;
             _authService = authService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
-        public IPaymentModel SetPayment(IPaymentModel payment)
+        public IPaymentModel SavePayment(IPaymentModel payment)
         {
             var context = _contextService.GetContext();
             var enovaPayment = context.FindObject<EnovaPayment>(payment.Identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaPayment>(context);
@@ -95,7 +95,7 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
 
             enovaPayment.RelatedOrderIdentifier = payment.Order ?? String.Empty;
 
-            payment.AdditionalValues = _mappingToService.MapToEnovaObject(enovaPayment, payment.AdditionalValues);
+            payment.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(enovaPayment, payment.AdditionalValues);
 
             var newPayment = enovaPayment.ID == default(int);
             enovaPayment.Save();

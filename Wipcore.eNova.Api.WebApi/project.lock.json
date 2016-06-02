@@ -1950,7 +1950,9 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+          "Autofac": "3.5.2",
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final",
+          "Newtonsoft.Json": "8.0.2"
         }
       },
       "Wipcore.Enova.Api.OAuth/1.0.0": {
@@ -3977,7 +3979,9 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+          "Autofac": "3.5.2",
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final",
+          "Newtonsoft.Json": "8.0.2"
         }
       },
       "Wipcore.Enova.Api.OAuth/1.0.0": {
@@ -6004,7 +6008,9 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+          "Autofac": "3.5.2",
+          "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final",
+          "Newtonsoft.Json": "8.0.2"
         }
       },
       "Wipcore.Enova.Api.OAuth/1.0.0": {

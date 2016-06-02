@@ -61,6 +61,21 @@
             Get number of inheritances to the basetype
             </summary>
         </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+            <summary>
+            Get a list of attribute types.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+            <summary>
+            Get an attribute type specified by identifier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.EnovaObjectServices.OrderService.Map(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaOrder,Wipcore.Enova.Api.Models.Interfaces.Cart.ICalculatedCartModel)">
+            <summary>
+            Mapping order. Maps extra properties (additional values) on order and orderrows. Does not otherwise change orderrows.
+            </summary>
+        </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Helpers.ComplexModelFilter">
             <summary>
             This class is used to iterate parameters in api calls and setting descriptions for them in swagger. 

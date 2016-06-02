@@ -45,7 +45,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         [HttpPost()]
         public IPaymentModel Post([FromUri] ContextModel requestContext, [FromBody]PaymentModel payment)
         {
-            return _paymentService.SetPayment(payment);
+            return _paymentService.SavePayment(payment);
         }
     }
 }

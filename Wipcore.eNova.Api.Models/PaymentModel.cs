@@ -5,6 +5,9 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.Models
 {
+    /// <summary>
+    /// Model for adding a payment to an order.
+    /// </summary>
     public class PaymentModel : IPaymentModel
     {
         public string Identifier { get; set; }
@@ -21,10 +24,16 @@ namespace Wipcore.Enova.Api.Models
 
         public DateTime? CcSettleDate { get; set; }
 
+        /// <summary>
+        /// Identifier of the order to connect the payment to.
+        /// </summary>
         public string Order { get; set; }
 
         public string TypeOfPayment { get; set; }
 
+        /// <summary>
+        /// Status of the payment, a number that can have meaning outside the system.
+        /// </summary>
         public int? Status { get; set; }
         public string Name { get; set; }
         public IDictionary<string, object> AdditionalValues { get; set; }
