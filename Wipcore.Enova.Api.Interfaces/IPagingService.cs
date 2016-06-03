@@ -7,6 +7,9 @@ using Wipcore.Core.SessionObjects;
 
 namespace Wipcore.Enova.Api.Interfaces
 {
+    /// <summary>
+    /// Handles pagination of responses with many objects.
+    /// </summary>
     public interface IPagingService
     {
         /// <summary>

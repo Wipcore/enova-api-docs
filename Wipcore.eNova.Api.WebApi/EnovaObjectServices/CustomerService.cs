@@ -26,7 +26,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _objectService = objectService;
         }
 
-
+        /// <summary>
+        /// Get addresses belonging to given customer.
+        /// </summary>
         public BaseObjectList GetAddresses(string customerIdentifier, EnovaCustomerAddress.AddressTypeEnum? addressType = null)
         {
             var context = _contextService.GetContext();
@@ -40,6 +42,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             return addresses;
         }
 
+        /// <summary>
+        /// Saves a customer with given values.
+        /// </summary>
         public IDictionary<string, object> SaveCustomer(ContextModel requestContext, Dictionary<string, object> values)
         {
             var identifier = values.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.CurrentCultureIgnoreCase)).Value?.ToString();

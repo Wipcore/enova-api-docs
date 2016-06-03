@@ -11,6 +11,9 @@ using MapType = Wipcore.Enova.Api.Interfaces.MapType;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
+    /// <summary>
+    /// This mapper maps list prices taken from default price list, and IsDiscounted property which is true if listprice is less than current price of product.
+    /// </summary>
     public class ProductDiscountedMapper : IPropertyMapper, ICmoProperty
     {
         private readonly ObjectCache _cache;
@@ -26,7 +29,6 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public Type CmoType => typeof (CmoEnovaBaseProduct);
         public Type Type => typeof (EnovaBaseProduct);
         public bool InheritMapper => true;
-        
 
         public int Priority => 0;
         public MapType MapType => MapType.MapFrom;

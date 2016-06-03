@@ -21,6 +21,9 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
+    /// <summary>
+    /// Service for getting and saving objects to Enova.
+    /// </summary>
     public class ObjectService : IObjectService
     {
         private readonly IPagingService _pagingService;
@@ -48,6 +51,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
+        /// <summary>
+        /// Get an objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="getParameters">Query parameters.</param>
+        /// <param name="identifier">Object identifier.</param>
+        /// <returns></returns>
         public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
         {
             var context = _contextService.GetContext();
@@ -57,6 +68,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return _mappingFromEnovaService.MapFromEnovaObject(obj, getParameters.Properties);
         }
 
+        /// <summary>
+        /// Get objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="getParameters">Query parameters.</param>
+        /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
+        /// <returns></returns>
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
         {
             getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
@@ -76,6 +95,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return objects.ToList();
         }
 
+        /// <summary>
+        /// Save an object to Enova with the given values.
+        /// </summary>
+        /// <typeparam name="T">The most derived type of T is saved.</typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="values">Properties to save on the object.</param>
+        /// <returns></returns>
         public IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject
         {
             if (values == null)

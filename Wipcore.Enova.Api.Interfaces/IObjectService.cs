@@ -8,6 +8,9 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.Interfaces
 {
+    /// <summary>
+    /// Service for getting and saving objects to Enova.
+    /// </summary>
     public interface IObjectService
     {
         /// <summary>

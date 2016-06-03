@@ -24,7 +24,9 @@ namespace Wipcore.eNova.Api.WebApi.Services
             _log = loggerFactory.CreateLogger(GetType().Namespace);
         }
 
-
+        /// <summary>
+        /// Handles a controller exception by setting response code, message, and logging it.
+        /// </summary>
         public void HandleControllerException(ActionExecutedContext context)
         {
             if (context.Exception == null || context.ExceptionHandled)
@@ -46,6 +48,9 @@ namespace Wipcore.eNova.Api.WebApi.Services
                 StatusCode = (int)statusCode };
         }
 
+        /// <summary>
+        /// Get an appropriate status code for the given exception. (I.E 404 for not found object).
+        /// </summary>
         public HttpStatusCode GetStatusCodeForException(Exception exception)
         {
             //ObjectHasBeenModifiedException TODO might need special handling for this one

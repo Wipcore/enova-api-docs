@@ -32,6 +32,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
+        /// <summary>
+        /// Maps given model to a cart in Enova and returns a model with prices specified.  
+        /// </summary>
         public ICalculatedCartModel CalculateCart(ICartModel currentCart)
         {
             if (currentCart == null)
@@ -74,6 +77,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             return calculatedCart;
         }
 
+        /// <summary>
+        /// Map order rows between cart and model.
+        /// </summary>
         public void MapCart(Context context, EnovaCart enovaCart, ICalculatedCartModel cartModel)
         {
             enovaCart.Identifier = cartModel.Identifier ?? enovaCart.Identifier;
@@ -134,6 +140,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             }
         }
 
+        /// <summary>
+        /// Get all carts belonging to given customer.
+        /// </summary>
         public BaseObjectList GetCartsByCustomer(string customerIdentifier)
         {
             var context = _contextService.GetContext();

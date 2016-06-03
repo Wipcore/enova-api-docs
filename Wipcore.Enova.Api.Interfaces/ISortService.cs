@@ -6,6 +6,9 @@ using Wipcore.Core.SessionObjects;
 
 namespace Wipcore.Enova.Api.Interfaces
 {
+    /// <summary>
+    /// Handles sorting in responses with many objects.
+    /// </summary>
     public interface ISortService
     {
         /// <summary>

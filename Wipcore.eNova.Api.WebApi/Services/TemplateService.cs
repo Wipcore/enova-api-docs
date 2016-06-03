@@ -18,6 +18,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _configuration = configuration;            
         }
 
+        /// <summary>
+        /// Read template information from configuration - info of how queries should be processed, I.E default languages, properties etc.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="parameters">Parameters direct from query.</param>
+        /// <returns></returns>
         public IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters)
         {
             parameters = parameters ?? new GetParametersModel();

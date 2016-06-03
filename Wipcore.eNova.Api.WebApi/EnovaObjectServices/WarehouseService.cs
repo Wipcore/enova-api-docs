@@ -17,6 +17,12 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get warehose compartments for the given product. 
+        /// </summary>
+        /// <param name="productIdentifier"></param>
+        /// <param name="warehouseIdentifier">Filter compartments by specific warehose.</param>
+        /// <returns></returns>
         public BaseObjectList GetWarehouseCompartments(string productIdentifier, string warehouseIdentifier = null)
         {
             var context = _contextService.GetContext();

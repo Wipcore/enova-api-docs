@@ -8,6 +8,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
+    /// <summary>
+    /// Maps connection to a variant family for a product - if the product is an owner or has an owner.
+    /// </summary>
     public class VariantMapper : IPropertyMapper, ICmoProperty
     {
         public List<string> Names => new List<string>() {"IsOwner", "VariantOwner"};

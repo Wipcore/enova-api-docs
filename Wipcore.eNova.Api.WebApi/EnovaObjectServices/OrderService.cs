@@ -37,6 +37,12 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
+        /// <summary>
+        /// Get orders owned by given customer.
+        /// </summary>
+        /// <param name="customerIdentifier"></param>
+        /// <param name="shippingStatus">Filter by shippingstatus identifier.</param>
+        /// <returns></returns>
         public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
         {
             var context = _contextService.GetContext();
@@ -54,6 +60,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             return orders;
         }
 
+        /// <summary>
+        /// Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
+        /// </summary>
         public ICartModel SaveOrder(ICartModel cartModel)
         {
             if (cartModel == null)

@@ -24,18 +24,27 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _sectionService = sectionService;
         }
 
+        /// <summary>
+        /// Get a list of sections.
+        /// </summary>
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
             return _objectService.Get<EnovaBaseProductSection>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get a section specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
             return _objectService.Get<EnovaBaseProductSection>(requestContext, getParameters, identifier);
         }
 
+        /// <summary>
+        /// Get children sections for section specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}/children")]
         public IEnumerable<IDictionary<string, object>> GetSubSections(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
@@ -43,6 +52,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaBaseProductSection>(requestContext, getParameters, children);
         }
 
+        /// <summary>
+        /// Get connected products for section specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}/products")]
         public IEnumerable<IDictionary<string, object>> GetProducts(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {

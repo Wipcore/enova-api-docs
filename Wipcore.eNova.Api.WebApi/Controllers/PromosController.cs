@@ -29,6 +29,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
+        /// <summary>
+        /// Get a list of promos.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
@@ -36,6 +39,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _objectService.Get<EnovaPromo>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get a promo specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {

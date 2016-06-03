@@ -27,7 +27,10 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
             _paymentService = paymentService;
         }
-        
+
+        /// <summary>
+        /// Get a list of payments.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
@@ -35,6 +38,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaPayment>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get a payment specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
         public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
@@ -42,6 +48,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaPayment>(requestContext, getParameters, identifier);
         }
        
+        /// <summary>
+        /// Add a payment to an order.
+        /// </summary>
         [HttpPost()]
         public IPaymentModel Post([FromUri] ContextModel requestContext, [FromBody]PaymentModel payment)
         {

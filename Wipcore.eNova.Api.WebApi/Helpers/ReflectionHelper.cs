@@ -12,7 +12,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
     public static class ReflectionHelper
     {
         /// <summary>
-        /// Returns the most derived type, if more then one type is found it will prioritize types found outside of enova.
+        /// Returns the most derived type, if more then one type is found it will prioritize types found outside of enova-core.
         /// </summary>
         /// <param name="type">Dervied from this type.</param>
         /// <returns></returns>
@@ -98,13 +98,13 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
             if (!baseType.IsAssignableFrom(type))
                 return -1;
 
-            if (baseType.Equals(type))
+            if (baseType == type)
                 return 0;
 
             return type.BaseType.DerivedSteps(baseType) + 1;
         }
 
-        private static List<string> ExceptionDlls = new List<string>();
+        private static readonly List<string> ExceptionDlls = new List<string>();
 
         public static Assembly[] GetAssembliesSafe(this AppDomain domain, bool includeSystemDlls = false)
         {

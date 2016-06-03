@@ -17,6 +17,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get attributes of the object with the given identifier.
+        /// </summary>
         public BaseObjectList GetAttributes<T>(string identifier) where T : BaseObject
         {
             var context = _contextService.GetContext();

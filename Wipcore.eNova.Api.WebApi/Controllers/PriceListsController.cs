@@ -24,6 +24,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
+        /// <summary>
+        /// Get a list of pricelists.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
@@ -31,6 +34,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             return _objectService.Get<EnovaPriceList>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get a pricelist specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize(Roles = AuthService.AdminRole)]
         public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)

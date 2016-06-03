@@ -11,6 +11,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
+    /// <summary>
+    /// Map stock and reserved information for a product.
+    /// </summary>
     public class ProductStockMapper : IPropertyMapper, ICmoProperty
     {
         public List<string> Names => new List<string>() {"TotalStock", "TotalReserved" };

@@ -8,6 +8,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers
 {
+    /// <summary>
+    /// Maps all prices on a pricelist, with and without tax.
+    /// </summary>
     public class PriceListPriceMapper : IPropertyMapper
     {
         public List<string> Names => new List<string>() {"PricesInclTax","PricesExclTax" };

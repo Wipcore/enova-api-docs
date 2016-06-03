@@ -10,6 +10,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers
 {
+    /// <summary>
+    /// Maps the cart sum for a cart, with and without tax.
+    /// </summary>
     public class CartSumMapper : IPropertyMapper, ICmoProperty
     {
         private readonly IContextService _contextService;

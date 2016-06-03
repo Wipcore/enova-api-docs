@@ -29,6 +29,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
+        /// <summary>
+        /// Saves a payment from given model.
+        /// </summary>
         public IPaymentModel SavePayment(IPaymentModel payment)
         {
             var context = _contextService.GetContext();

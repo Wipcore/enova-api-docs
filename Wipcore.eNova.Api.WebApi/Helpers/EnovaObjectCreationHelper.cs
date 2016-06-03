@@ -8,6 +8,9 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class EnovaObjectCreationHelper
     {
+        /// <summary>
+        /// Create a new Enova object of most derived type of T, with given arguments.
+        /// </summary>
         public static T CreateNew<T>(Context context, params object[] args) where T : BaseObject
         {
             var type = typeof (T).GetMostDerivedEnovaType();

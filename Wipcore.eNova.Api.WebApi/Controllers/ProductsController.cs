@@ -34,12 +34,18 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _attributeService = attributeService;
         }
 
+        /// <summary>
+        /// Get a list of products.
+        /// </summary>
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
         {
             return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get a product specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
@@ -49,10 +55,6 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <summary>
         /// Get all variants of the product specified by identifier.
         /// </summary>
-        /// <param name="requestContext"></param>
-        /// <param name="getParameters"></param>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
         [HttpGet("{identifier}/variants")]
         public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
@@ -61,13 +63,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get all stock information for the product specified by identifier.
+        /// Get stock information for the product specified by identifier.
         /// </summary>
-        /// <param name="requestContext">Context stuff</param>
-        /// <param name="getParameters"></param>
-        /// <param name="identifier"></param>
-        /// <param name="warehouse"></param>
-        /// <returns></returns>
         [HttpGet("{identifier}/stock")]
         public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, GetParametersModel getParameters, string identifier, string warehouse = null)
         {
@@ -75,6 +72,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return compartments == null ? null : _objectService.Get<EnovaWarehouseCompartment>(requestContext, getParameters, compartments);
         }
 
+        /// <summary>
+        /// Get attributes for the product specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}/attributes")]
         public IEnumerable<IDictionary<string, object>> GetAttributes(ContextModel requestContext, GetParametersModel getParameters, string identifier)
         {
@@ -82,6 +82,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return attributes == null ? null : _objectService.Get<EnovaAttributeValue>(requestContext, getParameters, attributes);
         }
         
+        /// <summary>
+        /// Create or update a product.
+        /// </summary>
         [HttpPut()]
         [Authorize(Roles = AuthService.AdminRole)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)

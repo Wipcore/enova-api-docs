@@ -35,6 +35,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get a list of orders.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
@@ -42,6 +45,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _objectService.Get<EnovaOrder>(requestContext, getParameters);
         }
 
+        /// <summary>
+        /// Get an order specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize]
         public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
@@ -54,7 +60,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return order;
         }
         
-
+        /// <summary>
+        /// Create or update an order. Already existing orders cannot have basic order rows changed (quantity, types); instead create a new order.
+        /// </summary>
         [HttpPost()]
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {

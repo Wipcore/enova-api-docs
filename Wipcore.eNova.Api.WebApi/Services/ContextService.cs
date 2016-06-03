@@ -36,8 +36,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _authService = authService;
         }
 
+        /// <summary>
+        /// Get an EnovaContext for the current user.
+        /// </summary>
         public Context GetContext()
         {
+            //if a context has already been created for the request, then use that one
             var enovaContext = _httpAccessor.HttpContext.Items[ContextConstants.EnovaContextKey] as Context;
             if (enovaContext != null)
                 return enovaContext;

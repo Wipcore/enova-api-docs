@@ -8,6 +8,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers
 {
+    /// <summary>
+    /// Maps addresstype enum for a customer address.
+    /// </summary>
     public class AddressTypeMapper : IPropertyMapper
     {
         public List<string> Names => new List<string>() { "AddressType" };

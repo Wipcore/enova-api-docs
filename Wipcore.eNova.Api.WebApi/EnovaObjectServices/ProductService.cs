@@ -14,6 +14,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get all members of any variant family the given product is a member of. Null if no family exists.
+        /// </summary>
         public BaseObjectList GetVariants(string identifier)
         {
             var context = _contextService.GetContext();
