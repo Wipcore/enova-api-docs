@@ -33,11 +33,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// </summary>
         public IEnumerable<IDictionary<string, object>> MapFromEnovaObject(BaseObjectList objects, string properties)
         {
-            foreach (BaseObject obj in objects)//TODO parallel
-            {
-                var dynamicObject = MapFromEnovaObject(obj, properties);
-                yield return dynamicObject;
-            }
+            return from BaseObject obj in objects select MapFromEnovaObject(obj, properties);
         }
 
         /// <summary>

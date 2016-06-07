@@ -23,7 +23,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 return objects;
 
             sort = sort.Replace(',', ';');
-            objects.Sort(sort); //TODO handle several properties, asc and desc
+            objects.Sort(sort);
             return objects;
         }
     }

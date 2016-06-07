@@ -29,7 +29,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             parameters = parameters ?? new GetParametersModel();
 
             IConfigurationSection config = null;
-            while ((config == null || !config.GetChildren().Any()) && type != typeof (object))
+            while ((config == null || !config.GetChildren().Any()) && type != typeof (object))//looping down in types until some setting is found
             {
                 config = _configuration.GetSection(type.Name)?.GetSection(parameters.Template);
 
