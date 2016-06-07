@@ -61,8 +61,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <returns></returns>
         public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
         {
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
             var context = _contextService.GetContext();
-            getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
+            getParameters = _templateService.GetParametersFromTemplateConfiguration(derivedType, getParameters);
 
             var obj = context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: true);
             return _mappingFromEnovaService.MapFromEnovaObject(obj, getParameters.Properties);
@@ -78,14 +79,15 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <returns></returns>
         public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
         {
-            getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
-
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
+            getParameters = _templateService.GetParametersFromTemplateConfiguration(derivedType, getParameters);
+            
             var context = _contextService.GetContext();
-            var memoryObject = IsMemoryObject<T>();
+            var memoryObject = IsMemoryObject(derivedType);
 
             //return from the candidates, or if memoryobject, get whats in memory. otherwise search the database
-            var objectList = candidates ?? (memoryObject ? context.GetAllObjects(typeof(T)) :
-                             context.Search(getParameters.Filter ?? "ID > 0", typeof(T), null, 0, null, false));
+            var objectList = candidates ?? (memoryObject ? context.GetAllObjects(derivedType) :
+                             context.Search(getParameters.Filter ?? "ID > 0", derivedType, null, 0, null, false));
 
             objectList = _sortService.Sort(objectList, getParameters.Sort);
             objectList = _filterService.Filter(objectList, getParameters.Filter);
@@ -133,9 +135,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return resultingObject;
         }
 
-        private bool IsMemoryObject<T>()
+        private bool IsMemoryObject(Type derivedType)
         {
-            var cmoClass = typeof(T).GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",
+            var cmoClass = derivedType.GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",
                             BindingFlags.Instance |
                             BindingFlags.NonPublic |
                             BindingFlags.Public) as Type;
