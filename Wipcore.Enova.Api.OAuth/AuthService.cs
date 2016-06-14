@@ -84,7 +84,7 @@ namespace Wipcore.Enova.Api.OAuth
             {
                 new Claim(JwtClaimTypes.Subject, user.Alias),
                 new Claim(JwtClaimTypes.Name, user.FirstNameLastName),
-                new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString()),
+                new Claim(JwtClaimTypes.AuthenticationTime, DateTime.Now.ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
                 new Claim(JwtClaimTypes.Role, admin ? AdminRole : CustomerRole)
             };
