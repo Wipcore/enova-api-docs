@@ -3,7 +3,7 @@ namespace Wipcore.Enova.Api.Models.Interfaces
     /// <summary>
     /// Parameters for handling a get request.
     /// </summary>
-    public interface IGetParametersModel
+    public interface IQueryModel
     {
         /// <summary>
         /// Identifier of pre-specified settings for request.

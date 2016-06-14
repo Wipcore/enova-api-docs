@@ -31,7 +31,7 @@
         </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomerWithAdminCredentials(Wipcore.Enova.Api.Models.LoginCustomerWithAdminCredentialsModel)">
             <summary>
-            Login as a customer by providing a customer identifier, and the username and password of an administrator.
+              Login as a customer by providing a customer identifier, and the alias and password of an administrator.
             </summary>
             <param name="model"></param>
             <returns></returns>

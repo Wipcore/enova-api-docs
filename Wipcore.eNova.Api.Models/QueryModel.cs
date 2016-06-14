@@ -2,7 +2,7 @@
 
 namespace Wipcore.Enova.Api.Models
 {
-    public class GetParametersModel : IGetParametersModel
+    public class QueryModel : IQueryModel
     {
         /// <summary>
         /// Identifier of pre-specified settings for request.
@@ -36,7 +36,7 @@ namespace Wipcore.Enova.Api.Models
 
         public override string ToString()
         {
-            return $"GetParametersModel: (Template: {Template}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
+            return $"QueryModel: (Template: {Template}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
         }
     }
 }

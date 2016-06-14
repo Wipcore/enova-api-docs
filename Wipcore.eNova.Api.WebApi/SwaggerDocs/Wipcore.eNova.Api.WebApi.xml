@@ -4,12 +4,12 @@
         <name>Wipcore.eNova.Api.WebApi</name>
     </assembly>
     <members>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of carts.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a cart specified by identifier. 
             </summary>
@@ -19,27 +19,27 @@
             Create or update a cart.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of customers.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a customer specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.GetOrders(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.GetOrders(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String,System.String)">
             <summary>
             Get orders beloning to the customer specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.GetCarts(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.GetCarts(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get carts beloning to the customer specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.GetAddresses(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String,System.Nullable{Wipcore.Enova.Core.EnovaCustomerAddress.AddressTypeEnum})">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.GetAddresses(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String,System.Nullable{Wipcore.Enova.Core.EnovaCustomerAddress.AddressTypeEnum})">
             <summary>
             Get addresses beloning to the customer specified by identifier.
             </summary>
@@ -49,12 +49,12 @@
             Create or update a customer.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of orders.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get an order specified by identifier.
             </summary>
@@ -64,27 +64,27 @@
             Create or update an order. Already existing orders cannot have basic order rows changed (quantity, types); instead create a new order.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of products.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a product specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetVariants(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetVariants(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get all variants of the product specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetStock(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetStock(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String,System.String)">
             <summary>
             Get stock information for the product specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetAttributes(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.GetAttributes(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get attributes for the product specified by identifier.
             </summary>
@@ -94,12 +94,12 @@
             Create or update a product.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromosController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromosController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of promos.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromosController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromosController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a promo specified by identifier. 
             </summary>
@@ -170,17 +170,17 @@
             <param name="filter">I.E: Name=myfinename</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
             <summary>
             Maps given enova objects with the comma-seperated properties into dictionaries.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.String)">
             <summary>
             Maps given enova object with the comma-seperated properties into a dictionary of property-value.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaEnovaService.MapToEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaService.MapToEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Maps given properties in dictionary to the given enova object.
             </summary>
@@ -190,23 +190,23 @@
             Service for getting and saving objects to Enova.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.ObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.ObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IQueryModel,System.String)">
             <summary>
             Get an objects from Enova. 
             </summary>
             <typeparam name="T"></typeparam>
             <param name="requestContext">Context for the query, ie language.</param>
-            <param name="getParameters">Query parameters.</param>
+            <param name="query">Query parameters.</param>
             <param name="identifier">Object identifier.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.ObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel,Wipcore.Core.SessionObjects.BaseObjectList)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.ObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IQueryModel,Wipcore.Core.SessionObjects.BaseObjectList)">
             <summary>
             Get objects from Enova. 
             </summary>
             <typeparam name="T"></typeparam>
             <param name="requestContext">Context for the query, ie language.</param>
-            <param name="getParameters">Query parameters.</param>
+            <param name="query">Query parameters.</param>
             <param name="candidates">Objects to look at, or null to look at all objects.</param>
             <returns></returns>
         </member>
@@ -251,7 +251,7 @@
             Sort the given objects by the given sort string.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.TemplateService.GetParametersFromTemplateConfiguration(System.Type,Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.TemplateService.GetQueryModelFromTemplateConfiguration(System.Type,Wipcore.Enova.Api.Models.Interfaces.IQueryModel)">
             <summary>
             Read template information from configuration - info of how queries should be processed, I.E default languages, properties etc.
             </summary>
@@ -259,92 +259,92 @@
             <param name="parameters">Parameters direct from query.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of attribute types.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get an attribute type specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeValuesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeValuesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of attribute values.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeValuesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeValuesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get an attribute value specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CompaniesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CompaniesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of companies.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CompaniesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CompaniesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a company specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of countries.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a country specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CurrenciesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CurrenciesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of currencies.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CurrenciesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CurrenciesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a currency specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CustomerGroupsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CustomerGroupsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of customergroups.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CustomerGroupsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.CustomerGroupsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a customergroup specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.LanguagesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.LanguagesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of languages.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.LanguagesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.LanguagesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a language specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ManufacturersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ManufacturersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of manufacturers.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ManufacturersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ManufacturersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a manufacturer specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of payments.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a payment specified by identifier. 
             </summary>
@@ -354,132 +354,132 @@
             Add a payment to an order.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of paymenttypes.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PaymentTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a paymenttype specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PriceListsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PriceListsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of pricelists.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PriceListsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.PriceListsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a pricelist specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of sections.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a section specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.GetSubSections(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.GetSubSections(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get children sections for section specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.GetProducts(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SectionsController.GetProducts(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get connected products for section specified by identifier.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingStatusesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingStatusesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of shippingstatuses.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingStatusesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingStatusesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a shippingstatus specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypeCostsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypeCostsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of shippingtypecosts.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypeCostsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypeCostsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a shippingtypecost specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of shippingtypes.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.ShippingTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a shippingtype specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SuppliersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SuppliersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of suppliers.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SuppliersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SuppliersController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a supplier specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SystemTextsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SystemTextsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of systemtexts.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SystemTextsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.SystemTextsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a systemtext specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxationRulesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxationRulesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of taxationrules.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxationRulesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxationRulesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a taxationrule specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of taxes.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.TaxesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a tax specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehouseCompartmentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehouseCompartmentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of warehousescompartments.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehouseCompartmentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehouseCompartmentsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a warehousecompartment specified by identifier. 
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehousesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehousesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of warehouses.
             </summary>
         </member>
-        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehousesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.GetParametersModel,System.String)">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.WarehousesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a warehouse specified by identifier. 
             </summary>

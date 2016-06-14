@@ -19,32 +19,32 @@
             Identifier of currency to use.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Template">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Template">
             <summary>
             Identifier of pre-specified settings for request.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Properties">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Properties">
             <summary>
             Comma-seperated list of the properties to map.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Page">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Page">
             <summary>
             Pagination. Index of page to retrieve. 
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Size">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Size">
             <summary>
             Size of the page; the number of items to retrieve.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Sort">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Sort">
             <summary>
             Sort order. Example: Identifier,Name Desc
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Filter">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Filter">
             <summary>
             Filter the response. Example: Identifier=123 OR Name=pizza*
             </summary>
@@ -56,7 +56,7 @@
         </member>
         <member name="T:Wipcore.Enova.Api.Models.LoginCustomerWithAdminCredentialsModel">
             <summary>
-            Model for logging in a customer with the username and password of an administrator.
+            Model for logging in a customer with the alias and password of an administrator.
             </summary>
         </member>
         <member name="T:Wipcore.Enova.Api.Models.LoginResponseModel">
@@ -184,37 +184,37 @@
             Model for customer information.
             </summary>
         </member>
-        <member name="T:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel">
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.IQueryModel">
             <summary>
             Parameters for handling a get request.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel.Template">
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Template">
             <summary>
             Identifier of pre-specified settings for request.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel.Properties">
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Properties">
             <summary>
             Comma-seperated list of the properties to map.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel.Page">
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Page">
             <summary>
             Pagination. Index of page to retrieve. 
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel.Size">
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Size">
             <summary>
             Size of the page; the number of items to retrieve.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel.Sort">
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Sort">
             <summary>
             Sort order. Example: Identifier,Name Desc
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel.Filter">
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Filter">
             <summary>
             Filter the response. Example: Identifier=123 OR Name=pizza*
             </summary>
@@ -226,7 +226,7 @@
         </member>
         <member name="T:Wipcore.Enova.Api.Models.Interfaces.ILoginCustomerWithAdminCredentialsModel">
             <summary>
-            Model for logging in a customer with the username and password of an administrator.
+              Model for logging in a customer with the alias and password of an administrator.
             </summary>
         </member>
         <member name="T:Wipcore.Enova.Api.Models.Interfaces.ILoginResponseModel">

@@ -26,18 +26,18 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         /// Get a list of taxes.
         /// </summary>
         [HttpGet()]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaTax>(requestContext, getParameters);
+            return _objectService.Get<EnovaTax>(requestContext, query);
         }
 
         /// <summary>
         /// Get a tax specified by identifier. 
         /// </summary>
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaTax>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaTax>(requestContext, query, identifier);
         }
     }
 }

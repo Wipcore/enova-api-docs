@@ -43,9 +43,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaCart>(requestContext, getParameters);
+            return _objectService.Get<EnovaCart>(requestContext, query);
         }
 
         /// <summary>
@@ -53,9 +53,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}")]
         [Authorize]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
-            var cart = _objectService.Get<EnovaCart>(requestContext, getParameters, identifier);
+            var cart = _objectService.Get<EnovaCart>(requestContext, query, identifier);
             if (!_authService.AuthorizeAccess(EnovaCart.Find(_contextService.GetContext(), identifier).Customer?.Identifier))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
 

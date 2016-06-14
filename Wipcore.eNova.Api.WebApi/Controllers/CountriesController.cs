@@ -26,18 +26,18 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         /// Get a list of countries.
         /// </summary>
         [HttpGet()]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaCountry>(requestContext, getParameters);
+            return _objectService.Get<EnovaCountry>(requestContext, query);
         }
 
         /// <summary>
         /// Get a country specified by identifier. 
         /// </summary>
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaCountry>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaCountry>(requestContext, query, identifier);
         }
     }
 }

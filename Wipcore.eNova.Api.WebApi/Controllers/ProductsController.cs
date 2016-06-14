@@ -38,48 +38,48 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get a list of products.
         /// </summary>
         [HttpGet()]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters);
+            return _objectService.Get<EnovaBaseProduct>(requestContext, query);
         }
 
         /// <summary>
         /// Get a product specified by identifier. 
         /// </summary>
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaBaseProduct>(requestContext, query, identifier);
         }
 
         /// <summary>
         /// Get all variants of the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/variants")]
-        public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, QueryModel query, string identifier)
         {
             var members = _productService.GetVariants(identifier);
-            return members == null ? null : _objectService.Get<EnovaBaseProduct>(requestContext, getParameters, members);
+            return members == null ? null : _objectService.Get<EnovaBaseProduct>(requestContext, query, members);
         }
 
         /// <summary>
         /// Get stock information for the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/stock")]
-        public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, GetParametersModel getParameters, string identifier, string warehouse = null)
+        public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, QueryModel query, string identifier, string warehouse = null)
         {
             var compartments = _warehouseService.GetWarehouseCompartments(identifier, warehouse);
-            return compartments == null ? null : _objectService.Get<EnovaWarehouseCompartment>(requestContext, getParameters, compartments);
+            return compartments == null ? null : _objectService.Get<EnovaWarehouseCompartment>(requestContext, query, compartments);
         }
 
         /// <summary>
         /// Get attributes for the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/attributes")]
-        public IEnumerable<IDictionary<string, object>> GetAttributes(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IEnumerable<IDictionary<string, object>> GetAttributes(ContextModel requestContext, QueryModel query, string identifier)
         {
             var attributes = _attributeService.GetAttributes<EnovaBaseProduct>(identifier);
-            return attributes == null ? null : _objectService.Get<EnovaAttributeValue>(requestContext, getParameters, attributes);
+            return attributes == null ? null : _objectService.Get<EnovaAttributeValue>(requestContext, query, attributes);
         }
         
         /// <summary>

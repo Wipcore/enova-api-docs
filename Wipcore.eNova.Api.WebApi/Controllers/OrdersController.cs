@@ -40,9 +40,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaOrder>(requestContext, getParameters);
+            return _objectService.Get<EnovaOrder>(requestContext, query);
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}")]
         [Authorize]
-        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]QueryModel query, string identifier)
         {
-            var order = _objectService.Get<EnovaOrder>(requestContext, getParameters, identifier);
+            var order = _objectService.Get<EnovaOrder>(requestContext, query, identifier);
 
             if(!_authService.AuthorizeAccess(EnovaOrder.Find(_contextService.GetContext(), identifier).Customer?.Identifier))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");

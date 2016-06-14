@@ -13,22 +13,22 @@ namespace Wipcore.Enova.Api.Models
     public class LoginModel : ILoginModel
     {
         [Required]
-        public string Username { get; set; }
+        public string Alias { get; set; }
         [Required]
         public string Password { get; set; }
-        public override string ToString() => $"LoginModel: (Username={Username}, Password=****)";
+        public override string ToString() => $"LoginModel: (Alias={Alias}, Password=****)";
 
     }
 
     /// <summary>
-    /// Model for logging in a customer with the username and password of an administrator.
+    /// Model for logging in a customer with the alias and password of an administrator.
     /// </summary>
     public class LoginCustomerWithAdminCredentialsModel : LoginModel, ILoginCustomerWithAdminCredentialsModel
     {
         [Required]
         public string CustomerIdentifier { get; set; }
 
-        public override string ToString() => $"LoginModel: (Username={Username}, Password=****, CustomerIdentifier={CustomerIdentifier})";
+        public override string ToString() => $"LoginModel: (Alias={Alias}, Password=****, CustomerIdentifier={CustomerIdentifier})";
     }
 
     /// <summary>

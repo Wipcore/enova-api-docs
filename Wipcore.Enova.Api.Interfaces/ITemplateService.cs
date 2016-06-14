@@ -14,6 +14,6 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <param name="type"></param>
         /// <param name="parameters">Parameters direct from query.</param>
         /// <returns></returns>
-        IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters);
+        IQueryModel GetQueryModelFromTemplateConfiguration(Type type, IQueryModel parameters);
     }
 }

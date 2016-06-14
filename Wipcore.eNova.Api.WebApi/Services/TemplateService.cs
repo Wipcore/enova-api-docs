@@ -24,9 +24,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <param name="type"></param>
         /// <param name="parameters">Parameters direct from query.</param>
         /// <returns></returns>
-        public IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters)
+        public IQueryModel GetQueryModelFromTemplateConfiguration(Type type, IQueryModel parameters)
         {
-            parameters = parameters ?? new GetParametersModel();
+            parameters = parameters ?? new QueryModel();
 
             IConfigurationSection config = null;
             while ((config == null || !config.GetChildren().Any()) && type != typeof (object))//looping down in types until some setting is found

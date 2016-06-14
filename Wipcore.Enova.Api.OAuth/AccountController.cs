@@ -45,12 +45,12 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> LoginAdmin([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
-                return HttpBadRequest(new LoginResponseModel("Username and password required."));
+                return HttpBadRequest(new LoginResponseModel("Alias and password required."));
 
             var claimsPrincipal = _loginService.Login(model, admin:true);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel("Invalid username or password."));
+                return HttpBadRequest(new LoginResponseModel("Invalid alias or password."));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
@@ -66,12 +66,12 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
-                return (HttpBadRequest(new LoginResponseModel("Username and password required.")));
+                return (HttpBadRequest(new LoginResponseModel("Alias and password required.")));
 
             var claimsPrincipal = _loginService.Login(model, admin: false);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel("Invalid username or password."));
+                return HttpBadRequest(new LoginResponseModel("Invalid alias or password."));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
@@ -79,7 +79,7 @@ namespace Wipcore.Enova.Api.OAuth
         }
 
         /// <summary>
-        /// Login as a customer by providing a customer identifier, and the username and password of an administrator.
+        /// Login as a customer by providing a customer identifier, and the alias and password of an administrator.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -87,12 +87,12 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> LoginCustomerWithAdminCredentials([FromBody]LoginCustomerWithAdminCredentialsModel model)
         {
             if (!ModelState.IsValid)
-                return HttpBadRequest(new LoginResponseModel("Username and password required."));
+                return HttpBadRequest(new LoginResponseModel("Alias and password required."));
 
             var claimsPrincipal = _loginService.LoginCustomerAsAdmin(model);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel("Invalid username or password."));
+                return HttpBadRequest(new LoginResponseModel("Invalid alias or password."));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 

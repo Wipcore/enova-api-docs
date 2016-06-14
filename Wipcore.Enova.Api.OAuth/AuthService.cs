@@ -38,8 +38,8 @@ namespace Wipcore.Enova.Api.OAuth
             try
             {
                 var context = EnovaSystemFacade.Current.Connection.CreateContext();
-                var user = admin ? (User)context.Login(model.Username, model.Password)
-                    : context.CustomerLogin(model.Username, model.Password);
+                var user = admin ? (User)context.Login(model.Alias, model.Password)
+                    : context.CustomerLogin(model.Alias, model.Password);
 
                 var claimsPrincipal = BuildClaimsPrincipal(user, admin, model.Password);
                 return claimsPrincipal;
@@ -56,7 +56,7 @@ namespace Wipcore.Enova.Api.OAuth
             var context = EnovaSystemFacade.Current.Connection.CreateContext();
             try
             {
-                context.Login(model.Username, model.Password);
+                context.Login(model.Alias, model.Password);
                 var customer = EnovaCustomer.Find(context, model.CustomerIdentifier);
                 var user = context.CustomerLogin(customer.ID);
 

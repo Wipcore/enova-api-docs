@@ -6,12 +6,12 @@
     public interface ILoginModel
     {
         string Password { get; set; }
-        string Username { get; set; }
+        string Alias { get; set; }
         
     }
 
     /// <summary>
-    /// Model for logging in a customer with the username and password of an administrator.
+    /// Model for logging in a customer with the alias and password of an administrator.
     /// </summary>
     public interface ILoginCustomerWithAdminCredentialsModel : ILoginModel
     {

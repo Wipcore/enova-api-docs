@@ -56,17 +56,17 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="requestContext">Context for the query, ie language.</param>
-        /// <param name="getParameters">Query parameters.</param>
+        /// <param name="query">Query parameters.</param>
         /// <param name="identifier">Object identifier.</param>
         /// <returns></returns>
-        public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
+        public IDictionary<string, object> Get<T>(IContextModel requestContext, IQueryModel query, string identifier) where T : BaseObject
         {
             var derivedType = typeof(T).GetMostDerivedEnovaType();
             var context = _contextService.GetContext();
-            getParameters = _templateService.GetParametersFromTemplateConfiguration(derivedType, getParameters);
+            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
 
             var obj = context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: true);
-            return _mappingFromEnovaService.MapFromEnovaObject(obj, getParameters.Properties);
+            return _mappingFromEnovaService.MapFromEnovaObject(obj, query.Properties);
         }
 
         /// <summary>
@@ -74,25 +74,25 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="requestContext">Context for the query, ie language.</param>
-        /// <param name="getParameters">Query parameters.</param>
+        /// <param name="query">Query parameters.</param>
         /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
         /// <returns></returns>
-        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
+        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject
         {
             var derivedType = typeof(T).GetMostDerivedEnovaType();
-            getParameters = _templateService.GetParametersFromTemplateConfiguration(derivedType, getParameters);
+            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
             
             var context = _contextService.GetContext();
             var memoryObject = IsMemoryObject(derivedType);
 
             //return from the candidates, or if memoryobject, get whats in memory. otherwise search the database
             var objectList = candidates ?? (memoryObject ? context.GetAllObjects(derivedType) :
-                             context.Search(getParameters.Filter ?? "ID > 0", derivedType, null, 0, null, false));
+                             context.Search(query.Filter ?? "ID > 0", derivedType, null, 0, null, false));
 
-            objectList = _sortService.Sort(objectList, getParameters.Sort);
-            objectList = _filterService.Filter(objectList, getParameters.Filter);
-            objectList = _pagingService.Page(objectList, getParameters.Page.Value, getParameters.Size.Value);
-            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, getParameters.Properties);
+            objectList = _sortService.Sort(objectList, query.Sort);
+            objectList = _filterService.Filter(objectList, query.Filter);
+            objectList = _pagingService.Page(objectList, query.Page.Value, query.Size.Value);
+            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties);
 
             return objects.ToList();
         }

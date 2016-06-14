@@ -18,20 +18,20 @@ namespace Wipcore.Enova.Api.Interfaces
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="requestContext">Context for the query, ie language.</param>
-        /// <param name="getParameters">Query parameters.</param>
+        /// <param name="query">Query parameters.</param>
         /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
         /// <returns></returns>
-        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject;
+        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject;
 
         /// <summary>
         /// Get an objects from Enova. 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="requestContext">Context for the query, ie language.</param>
-        /// <param name="getParameters">Query parameters.</param>
+        /// <param name="query">Query parameters.</param>
         /// <param name="identifier">Object identifier.</param>
         /// <returns></returns>
-        IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject;
+        IDictionary<string, object> Get<T>(IContextModel requestContext, IQueryModel query, string identifier) where T : BaseObject;
 
         /// <summary>
         /// Save an object to Enova with the given values.

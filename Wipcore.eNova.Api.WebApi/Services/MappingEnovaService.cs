@@ -15,13 +15,13 @@ using Wipcore.eNova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
-    public class MappingEnovaEnovaService : IMappingFromEnovaService, IMappingToEnovaService
+    public class MappingEnovaService : IMappingFromEnovaService, IMappingToEnovaService
     {
         private readonly IConfigurationRoot _configuration;
         private readonly IEnumerable<IPropertyMapper> _mappers;
         private readonly ObjectCache _cache;
 
-        public MappingEnovaEnovaService(IConfigurationRoot configuration, ObjectCache cache, IEnumerable<IPropertyMapper> mappers)
+        public MappingEnovaService(IConfigurationRoot configuration, ObjectCache cache, IEnumerable<IPropertyMapper> mappers)
         {
             _configuration = configuration;
             _mappers = mappers;

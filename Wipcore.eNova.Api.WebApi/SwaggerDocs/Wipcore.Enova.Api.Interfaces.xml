@@ -174,23 +174,23 @@
             Service for getting and saving objects to Enova.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel,Wipcore.Core.SessionObjects.BaseObjectList)">
+        <member name="M:Wipcore.Enova.Api.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IQueryModel,Wipcore.Core.SessionObjects.BaseObjectList)">
             <summary>
             Get objects from Enova. 
             </summary>
             <typeparam name="T"></typeparam>
             <param name="requestContext">Context for the query, ie language.</param>
-            <param name="getParameters">Query parameters.</param>
+            <param name="query">Query parameters.</param>
             <param name="candidates">Objects to look at, or null to look at all objects.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Models.Interfaces.IContextModel,Wipcore.Enova.Api.Models.Interfaces.IQueryModel,System.String)">
             <summary>
             Get an objects from Enova. 
             </summary>
             <typeparam name="T"></typeparam>
             <param name="requestContext">Context for the query, ie language.</param>
-            <param name="getParameters">Query parameters.</param>
+            <param name="query">Query parameters.</param>
             <param name="identifier">Object identifier.</param>
             <returns></returns>
         </member>
@@ -300,7 +300,7 @@
             Sort the given objects by the given sort string.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Interfaces.ITemplateService.GetParametersFromTemplateConfiguration(System.Type,Wipcore.Enova.Api.Models.Interfaces.IGetParametersModel)">
+        <member name="M:Wipcore.Enova.Api.Interfaces.ITemplateService.GetQueryModelFromTemplateConfiguration(System.Type,Wipcore.Enova.Api.Models.Interfaces.IQueryModel)">
             <summary>
             Read template information from configuration - info of how queries should be processed, I.E default languages, properties etc.
             </summary>
