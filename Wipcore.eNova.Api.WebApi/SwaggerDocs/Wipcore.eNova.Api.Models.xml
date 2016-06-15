@@ -4,11 +4,6 @@
         <name>Wipcore.eNova.Api.Models</name>
     </assembly>
     <members>
-        <member name="P:Wipcore.Enova.Api.Models.CartModel.Persist">
-            <summary>
-            Set true to save the cart in the database.
-            </summary>
-        </member>
         <member name="P:Wipcore.Enova.Api.Models.ContextModel.Market">
             <summary>
             Identifier of pre-defined market.
@@ -24,34 +19,289 @@
             Identifier of currency to use.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Template">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Template">
             <summary>
             Identifier of pre-specified settings for request.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Properties">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Properties">
             <summary>
             Comma-seperated list of the properties to map.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Page">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Page">
             <summary>
             Pagination. Index of page to retrieve. 
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Size">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Size">
             <summary>
             Size of the page; the number of items to retrieve.
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Sort">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Sort">
             <summary>
             Sort order. Example: Identifier,Name Desc
             </summary>
         </member>
-        <member name="P:Wipcore.Enova.Api.Models.GetParametersModel.Filter">
+        <member name="P:Wipcore.Enova.Api.Models.QueryModel.Filter">
             <summary>
             Filter the response. Example: Identifier=123 OR Name=pizza*
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.LoginModel">
+            <summary>
+            Model for logging in.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.LoginCustomerWithAdminCredentialsModel">
+            <summary>
+            Model for logging in a customer with the alias and password of an administrator.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.LoginResponseModel">
+            <summary>
+            Response model for an loggin-request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.LoginResponseModel.StatusMessage">
+            <summary>
+            Response message, success or failure.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.LoginResponseModel.UserIdentifier">
+            <summary>
+            Identifier of the customer/admin that logged in.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.PaymentModel">
+            <summary>
+            Model for adding a payment to an order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.PaymentModel.Order">
+            <summary>
+            Identifier of the order to connect the payment to.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.PaymentModel.Status">
+            <summary>
+            Status of the payment, a number that can have meaning outside the system.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Cart.CalculatedCartModel">
+            <summary>
+            Model for a cart/order that has had it's prices calculated.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Models.Cart.CalculatedCartModel.CreateFrom(Wipcore.Enova.Api.Models.Interfaces.Cart.ICartModel)">
+            <summary>
+            Copy values from given model to the derived calculated model.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Cart.CalculatedCartRowModel">
+            <summary>
+            Model for a cart/order row with it's prices calculated.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Cart.CartModel">
+            <summary>
+            Model for posting a cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartModel.Customer">
+            <summary>
+            Identifier of customer owning the cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartModel.Persist">
+            <summary>
+            Set true to save the cart in the database.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartModel.Status">
+            <summary>
+            Shipping status, applies to orders.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Cart.CartRowModel">
+            <summary>
+            Model for a cart / order row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartRowModel.Type">
+            <summary>
+            The type of row (product, payment, shipping etc)
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartRowModel.Identifier">
+            <summary>
+            Identifier of the product, payment, shippingtype etc (depending on which type of row it is).
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartRowModel.Password">
+            <summary>
+            Password for unlocking a promo row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Cart.CartRowModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Cart.RowType">
+            <summary>
+            Type of cart / order row.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.IContextModel">
+            <summary>
+            Context for requests, specifying culture settings.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IContextModel.Market">
+            <summary>
+            Name of a pre-defined market read from configuration.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IContextModel.Language">
+            <summary>
+            Identifier of the Enova language to use during the request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IContextModel.Currency">
+            <summary>
+            Identifier of the Enova currency used during the request.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.ICustomerModel">
+            <summary>
+            Model for customer information.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.IQueryModel">
+            <summary>
+            Parameters for handling a get request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Template">
+            <summary>
+            Identifier of pre-specified settings for request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Properties">
+            <summary>
+            Comma-seperated list of the properties to map.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Page">
+            <summary>
+            Pagination. Index of page to retrieve. 
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Size">
+            <summary>
+            Size of the page; the number of items to retrieve.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Sort">
+            <summary>
+            Sort order. Example: Identifier,Name Desc
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.IQueryModel.Filter">
+            <summary>
+            Filter the response. Example: Identifier=123 OR Name=pizza*
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.ILoginModel">
+            <summary>
+            Model for logging in.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.ILoginCustomerWithAdminCredentialsModel">
+            <summary>
+              Model for logging in a customer with the alias and password of an administrator.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.ILoginResponseModel">
+            <summary>
+            Response model for an loggin-request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.ILoginResponseModel.StatusMessage">
+            <summary>
+            Response message, success or failure.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.ILoginResponseModel.UserIdentifier">
+            <summary>
+            Identifier of the customer/admin that logged in.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.Cart.ICalculatedCartModel">
+            <summary>
+            Model for a cart/order that has had it's prices calculated.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.Cart.ICalculatedCartRowModel">
+            <summary>
+            Model for a cart/order row with it's prices calculated.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartModel">
+            <summary>
+            Model for posting a cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartModel.Customer">
+            <summary>
+            Identifier of customer owning the cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartModel.Persist">
+            <summary>
+            Set true to save the cart in the database.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartModel.Status">
+            <summary>
+            Shipping status, applies to orders.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartRowModel">
+            <summary>
+            Model for a cart / order row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartRowModel.Type">
+            <summary>
+            The type of row (product, payment, shipping etc)
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartRowModel.Identifier">
+            <summary>
+            Identifier of the product, payment, shippingtype etc (depending on which type of row it is).
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartRowModel.Password">
+            <summary>
+            Password for unlocking a promo row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Models.Interfaces.Cart.ICartRowModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
             </summary>
         </member>
     </members>

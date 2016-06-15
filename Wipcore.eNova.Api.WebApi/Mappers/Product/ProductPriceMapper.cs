@@ -7,6 +7,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
+    /// <summary>
+    /// Maps prices with and without tax for a product.
+    /// </summary>
     public class ProductPriceExclTaxMapper : IPropertyMapper, ICmoProperty
     {
         

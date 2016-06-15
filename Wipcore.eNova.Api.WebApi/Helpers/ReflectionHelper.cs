@@ -11,30 +11,35 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class ReflectionHelper
     {
+        private static readonly ConcurrentDictionary<Type, Type> ResolvedDerivedTypes = new ConcurrentDictionary<Type, Type>(); 
+
         /// <summary>
-        /// Returns the most derived type, if more then one type is found it will prioritize types found outside of enova.
+        /// Returns the most derived type, if more then one type is found it will prioritize types found outside of enova-core.
         /// </summary>
         /// <param name="type">Dervied from this type.</param>
         /// <returns></returns>
         public static Type GetMostDerivedEnovaType(this Type type)
         {
-            var derivedType = type.GetMostDerivedTypes(ReflectionHelper.GetAllAvailableTypes()).OrderBy<Type, int>(
-                x =>
-                {
-                    if (x.Namespace == typeof(BaseObject).Namespace)
-                        return 1000;
-                    
-                    if (x.Namespace == typeof(EnovaBaseProduct).Namespace)
-                        return 100;
-                    
-                    if (x.Namespace == "Wipcore.WebFoundation.Core")
-                        return 50;
+            return ResolvedDerivedTypes.GetOrAdd(type, t =>
+            {
+                var derivedType = t.GetMostDerivedTypes(ReflectionHelper.GetAllAvailableTypes()).OrderBy<Type, int>(
+                    x =>
+                    {
+                        if (x.Namespace == typeof (BaseObject).Namespace)
+                            return 1000;
 
-                    return 0;
-                }).FirstOrDefault();
+                        if (x.Namespace == typeof (EnovaBaseProduct).Namespace)
+                            return 100;
 
-            //special handling for derived base-enova-product
-            return derivedType == typeof (EnovaBook) ? typeof (EnovaBaseProduct) : derivedType;
+                        if (x.Namespace == "Wipcore.WebFoundation.Core")
+                            return 50;
+
+                        return 0;
+                    }).FirstOrDefault();
+
+                //special handling for derived base-enova-product
+                return derivedType == typeof (EnovaBook) ? typeof (EnovaBaseProduct) : derivedType;
+            });
         }
 
 
@@ -98,13 +103,13 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
             if (!baseType.IsAssignableFrom(type))
                 return -1;
 
-            if (baseType.Equals(type))
+            if (baseType == type)
                 return 0;
 
             return type.BaseType.DerivedSteps(baseType) + 1;
         }
 
-        private static List<string> ExceptionDlls = new List<string>();
+        private static readonly List<string> ExceptionDlls = new List<string>();
 
         public static Assembly[] GetAssembliesSafe(this AppDomain domain, bool includeSystemDlls = false)
         {

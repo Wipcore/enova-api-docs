@@ -22,7 +22,9 @@ using NLog.Extensions.Logging;
 using Swashbuckle.SwaggerGen;
 using Wipcore.Library;
 using Wipcore.Core;
+using Wipcore.Core.SystemMonitoring;
 using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.OAuth;
 
 
@@ -30,6 +32,7 @@ namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
+        public const string ApiVersion = "1.0"; //TODO might specify somewhere else.
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
@@ -67,7 +70,7 @@ namespace Wipcore.Enova.Api.WebApi
                 HistoryDatabaseConnection = Configuration.Get<String>("Enova:RevisionConnectionString"),
                 CertificateKey = Configuration.Get<String>("Enova:CertificateKey"),
                 CertificatePassword = Configuration.Get<String>("Enova:CertificatePassword"),
-                UserName = Configuration.Get<String>("Enova:Username"),
+                UserName = Configuration.Get<String>("Enova:Alias"),
                 Password = Configuration.Get<String>("Enova:Password"),
                 LogPath = Configuration.Get<String>("Enova:LogPath"),
                 LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel) Convert.ToInt32(Configuration.Get<String>("Enova:LogLevel")),
@@ -76,7 +79,6 @@ namespace Wipcore.Enova.Api.WebApi
             };
 
             EnovaSystemFacade.Current.Settings = settings;
-
             EnovaSystemFacade.Current.Start();
         }
 
@@ -135,7 +137,7 @@ namespace Wipcore.Enova.Api.WebApi
 
             var dataProtectionProvider = new DataProtectionProvider(new DirectoryInfo(_configFolderPath), configuration =>
                 {
-                    configuration.SetApplicationName(AuthService.AuthenticationScheme + "v1");
+                    configuration.SetApplicationName(AuthService.AuthenticationScheme + ApiVersion);
                     if (Configuration.Get("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems
                         configuration.ProtectKeysWithDpapiNG();
                 });
@@ -145,7 +147,7 @@ namespace Wipcore.Enova.Api.WebApi
                 DataProtectionProvider = dataProtectionProvider,
                 AuthenticationScheme = AuthService.AuthenticationScheme,
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = !String.IsNullOrEmpty(Configuration.Get("Auth:AutomaticChallenge", String.Empty)),
+                AutomaticChallenge = Configuration.Get("Auth:AutomaticChallenge", false),
                 LoginPath = Configuration.Get("Auth:LoginPath", String.Empty),
                 LogoutPath = Configuration.Get("Auth:LogoutPath", String.Empty),
                 ReturnUrlParameter = Configuration.Get("Auth:ReturnUrlParameter", String.Empty),
@@ -191,7 +193,7 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 options.SingleApiVersion(new Info
                 {
-                    Version = "v1",//TODO global setting
+                    Version = ApiVersion,
                     Title = "Enova API",
                     Description = "",
                     TermsOfService = ""

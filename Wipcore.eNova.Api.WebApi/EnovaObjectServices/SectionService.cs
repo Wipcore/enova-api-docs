@@ -17,6 +17,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get any sub-sections to the section with given identifier.
+        /// </summary>
         public BaseObjectList GetSubSections(string identifier)
         {
             var context = _contextService.GetContext();
@@ -25,6 +28,9 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
             return section.GetChildren(typeof (EnovaBaseProductSection), false, true);
         }
 
+        /// <summary>
+        /// Get any products beloning to the section with given identifier.
+        /// </summary>
         public BaseObjectList GetProducts(string identifier)
         {
             var context = _contextService.GetContext();

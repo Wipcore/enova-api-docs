@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Wipcore.Enova.Api.WebApi.Services;
-using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces;
 
-namespace Wipcore.Enova.Api.WebApi.Controllers
+namespace Wipcore.Enova.Api.Interfaces
 {
+    /// <summary>
+    /// Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
+    /// </summary>
     public abstract class EnovaApiController : Controller
     {
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -18,12 +19,12 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             context.ActionArguments.TryGetValue("requestContext", out requestContext);
 
             if (requestContext is IContextModel)
-                context.HttpContext.Items[ContextService.ContextModelKey] = requestContext;
+                context.HttpContext.Items[ContextConstants.ContextModelKey] = requestContext;
         }
         
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.Exception != null)
+            if (context.Exception != null)//handle any exception caused by action executed
             {
                 var exceptionService = this.Resolver.GetService<IExceptionService>();
                 exceptionService.HandleControllerException(context);

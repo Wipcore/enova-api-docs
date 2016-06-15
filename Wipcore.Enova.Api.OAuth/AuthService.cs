@@ -39,8 +39,8 @@ namespace Wipcore.Enova.Api.OAuth
             try
             {
                 var context = EnovaSystemFacade.Current.Connection.CreateContext();
-                var user = admin ? (User)context.Login(model.Username, model.Password)
-                    : context.CustomerLogin(model.Username, model.Password);
+                var user = admin ? (User)context.Login(model.Alias, model.Password)
+                    : context.CustomerLogin(model.Alias, model.Password);
 
                 var claimsPrincipal = BuildClaimsPrincipal(user, admin, model.Password);
                 return claimsPrincipal;
@@ -58,13 +58,14 @@ namespace Wipcore.Enova.Api.OAuth
             var context = EnovaSystemFacade.Current.Connection.CreateContext();
             try
             {
-                context.Login(model.Username, model.Password);
+                context.Login(model.Alias, model.Password);
                 var customer = context.FindObject<EnovaCustomer>(model.CustomerIdentifier);
                 if (customer == null)
                 {
                     errorMessage = "Customer could not be found!";
                     return null;
                 }
+
                 var user = context.CustomerLogin(customer.ID);
 
                 var claimsPrincipal = BuildClaimsPrincipal(user, false);
@@ -86,17 +87,13 @@ namespace Wipcore.Enova.Api.OAuth
         /// <summary>
         /// Save claims (attributes) on the logged in user.
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="admin"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
         private ClaimsPrincipal BuildClaimsPrincipal(User user, bool admin, string password = null)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtClaimTypes.Subject, user.Alias),
                 new Claim(JwtClaimTypes.Name, user.FirstNameLastName),
-                new Claim(JwtClaimTypes.AuthenticationTime, DateTime.UtcNow.ToEpochTime().ToString()),
+                new Claim(JwtClaimTypes.AuthenticationTime, DateTime.Now.ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
                 new Claim(JwtClaimTypes.Role, admin ? AdminRole : CustomerRole)
             };
@@ -140,11 +137,8 @@ namespace Wipcore.Enova.Api.OAuth
         }
 
         /// <summary>
-        /// Returns true if the logged in user is an administrator, or if enovaObjectOwnedByIdentifier is the same as the logged in user.
-        /// 
+        /// Returns true if the logged in user is an administrator, or if enovaObjectOwnedByIdentifier is the same as the logged in user. 
         /// </summary>
-        /// <param name="enovaObjectOwnedByIdentifier">The user who owns the object to read, for example a customer on an order.</param>
-        /// <returns></returns>
         public bool AuthorizeAccess(string enovaObjectOwnedByIdentifier)
         {
             if (IsLoggedInAsAdmin())

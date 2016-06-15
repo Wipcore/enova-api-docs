@@ -4,6 +4,9 @@ namespace Wipcore.Enova.Api.Interfaces
 {
     public interface IAttributeService
     {
+        /// <summary>
+        /// Get attributes of the object with the given identifier.
+        /// </summary>
         BaseObjectList GetAttributes<T>(string identifier) where T : BaseObject;
     }
 }

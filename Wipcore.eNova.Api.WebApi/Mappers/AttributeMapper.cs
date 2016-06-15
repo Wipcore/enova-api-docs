@@ -8,6 +8,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers
 {
+    /// <summary>
+    /// Maps attributes belonging to any Enova object.
+    /// </summary>
     public class AttributeMapper : IPropertyMapper
     {
         public List<string> Names => new List<string>() {"Attributes"};

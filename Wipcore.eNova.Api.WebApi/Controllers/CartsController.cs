@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
@@ -12,7 +13,9 @@ using System.Web.Http;
 using Microsoft.AspNet.Authorization;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.Models.Cart;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Api.OAuth;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,24 +39,33 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _contextService = contextService;
         }
 
+        /// <summary>
+        /// Get a list of carts.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaCart>(requestContext, getParameters);
+            return _objectService.Get<EnovaCart>(requestContext, query);
         }
 
+        /// <summary>
+        /// Get a cart specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
-            var cart = _objectService.Get<EnovaCart>(requestContext, getParameters, identifier);
+            var cart = _objectService.Get<EnovaCart>(requestContext, query, identifier);
             if (!_authService.AuthorizeAccess(EnovaCart.Find(_contextService.GetContext(), identifier).Customer?.Identifier))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
 
             return cart;
         }
         
+        /// <summary>
+        /// Create or update a cart.
+        /// </summary>
         [HttpPost()]
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {

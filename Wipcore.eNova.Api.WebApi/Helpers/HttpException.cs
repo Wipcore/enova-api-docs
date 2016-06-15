@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wipcore.eNova.Api.WebApi.Helpers
 {
+    /// <summary>
+    /// A HttpException with statuscode and message.
+    /// </summary>
     public class HttpException : Exception
     {
         public HttpStatusCode StatusCode { get; }

@@ -22,16 +22,21 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
+        /// <summary>
+        /// Get a list of shippingtypecosts.
+        /// </summary>
         [HttpGet()]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaShippingTypeCost>(requestContext, getParameters);
+            return _objectService.Get<EnovaShippingTypeCost>(requestContext, query);
         }
-
+        /// <summary>
+        /// Get a shippingtypecost specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
-        public IDictionary<string, object> Get(ContextModel requestContext, GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaShippingTypeCost>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaShippingTypeCost>(requestContext, query, identifier);
         }
     }
 }

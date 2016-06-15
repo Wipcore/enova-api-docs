@@ -18,12 +18,18 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _configuration = configuration;            
         }
 
-        public IGetParametersModel GetParametersFromTemplateConfiguration(Type type, IGetParametersModel parameters)
+        /// <summary>
+        /// Read template information from configuration - info of how queries should be processed, I.E default languages, properties etc.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="parameters">Parameters direct from query.</param>
+        /// <returns></returns>
+        public IQueryModel GetQueryModelFromTemplateConfiguration(Type type, IQueryModel parameters)
         {
-            parameters = parameters ?? new GetParametersModel();
+            parameters = parameters ?? new QueryModel();
 
             IConfigurationSection config = null;
-            while ((config == null || !config.GetChildren().Any()) && type != typeof (object))
+            while ((config == null || !config.GetChildren().Any()) && type != typeof (object))//looping down in types until some setting is found
             {
                 config = _configuration.GetSection(type.Name)?.GetSection(parameters.Template);
 

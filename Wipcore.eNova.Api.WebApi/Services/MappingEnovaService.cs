@@ -15,28 +15,30 @@ using Wipcore.eNova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
-    public class MappingService : IMappingFromService, IMappingToService
+    public class MappingEnovaService : IMappingFromEnovaService, IMappingToEnovaService
     {
         private readonly IConfigurationRoot _configuration;
         private readonly IEnumerable<IPropertyMapper> _mappers;
         private readonly ObjectCache _cache;
 
-        public MappingService(IConfigurationRoot configuration, ObjectCache cache, IEnumerable<IPropertyMapper> mappers)
+        public MappingEnovaService(IConfigurationRoot configuration, ObjectCache cache, IEnumerable<IPropertyMapper> mappers)
         {
             _configuration = configuration;
             _mappers = mappers;
             _cache = cache;
         }
 
+        /// <summary>
+        /// Maps given enova objects with the comma-seperated properties into dictionaries.
+        /// </summary>
         public IEnumerable<IDictionary<string, object>> MapFromEnovaObject(BaseObjectList objects, string properties)
         {
-            foreach (BaseObject obj in objects)//TODO parallel
-            {
-                var dynamicObject = MapFromEnovaObject(obj, properties);
-                yield return dynamicObject;
-            }
+            return from BaseObject obj in objects select MapFromEnovaObject(obj, properties);
         }
 
+        /// <summary>
+        /// Maps given enova object with the comma-seperated properties into a dictionary of property-value.
+        /// </summary>
         public IDictionary<string, object> MapFromEnovaObject(BaseObject obj, string properties)
         {
             if (properties == null)
@@ -53,6 +55,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return dynamicObject;
         }
 
+        /// <summary>
+        /// Maps given properties in dictionary to the given enova object.
+        /// </summary>
         public IDictionary<string, object> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values)
         {
             if (values == null)

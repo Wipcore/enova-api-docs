@@ -21,61 +21,89 @@ using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
+    /// <summary>
+    /// Service for getting and saving objects to Enova.
+    /// </summary>
     public class ObjectService : IObjectService
     {
         private readonly IPagingService _pagingService;
         private readonly ISortService _sortService;
         private readonly IFilterService _filterService;
-        private readonly IMappingFromService _mappingFromService;
-        private readonly IMappingToService _mappingToService;
+        private readonly IMappingFromEnovaService _mappingFromEnovaService;
+        private readonly IMappingToEnovaService _mappingToEnovaService;
         private readonly ITemplateService _templateService;
         private readonly IContextService _contextService;
         private readonly IAuthService _authService;
         private readonly ILogger _logger;
 
 
-        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromService mappingFromService,
-            IMappingToService mappingToService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
+        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromEnovaService mappingFromEnovaService,
+            IMappingToEnovaService mappingToEnovaService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
         {
             _pagingService = pagingService;
             _sortService = sortService;
             _filterService = filterService;
-            _mappingFromService = mappingFromService;
-            _mappingToService = mappingToService;
+            _mappingFromEnovaService = mappingFromEnovaService;
+            _mappingToEnovaService = mappingToEnovaService;
             _templateService = templateService;
             _contextService = contextService;
             _authService = authService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
-        public IDictionary<string, object> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, string identifier) where T : BaseObject
+        /// <summary>
+        /// Get an objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="identifier">Object identifier.</param>
+        /// <returns></returns>
+        public IDictionary<string, object> Get<T>(IContextModel requestContext, IQueryModel query, string identifier) where T : BaseObject
         {
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
             var context = _contextService.GetContext();
-            getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
+            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
 
             var obj = context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: true);
-            return _mappingFromService.MapFromEnovaObject(obj, getParameters.Properties);
+            return _mappingFromEnovaService.MapFromEnovaObject(obj, query.Properties);
         }
 
-        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IGetParametersModel getParameters, BaseObjectList candidates = null) where T : BaseObject
+        /// <summary>
+        /// Get objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
+        /// <returns></returns>
+        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject
         {
-            getParameters = _templateService.GetParametersFromTemplateConfiguration(typeof(T), getParameters);
-
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
+            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
+            
             var context = _contextService.GetContext();
-            var memoryObject = IsMemoryObject<T>();
+            var memoryObject = IsMemoryObject(derivedType);
 
             //return from the candidates, or if memoryobject, get whats in memory. otherwise search the database
-            var objectList = candidates ?? (memoryObject ? context.GetAllObjects(typeof(T)) :
-                             context.Search(getParameters.Filter ?? "ID > 0", typeof(T), null, 0, null, false));
+            var objectList = candidates ?? (memoryObject ? context.GetAllObjects(derivedType) :
+                             context.Search(query.Filter ?? "ID > 0", derivedType, null, 0, null, false));
 
-            objectList = _sortService.Sort(objectList, getParameters.Sort);
-            objectList = _filterService.Filter(objectList, getParameters.Filter);
-            objectList = _pagingService.Page(objectList, getParameters.Page.Value, getParameters.Size.Value);
-            var objects = _mappingFromService.MapFromEnovaObject(objectList, getParameters.Properties);
+            objectList = _sortService.Sort(objectList, query.Sort);
+            objectList = _filterService.Filter(objectList, query.Filter);
+            objectList = _pagingService.Page(objectList, query.Page.Value, query.Size.Value);
+            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties);
 
             return objects.ToList();
         }
 
+        /// <summary>
+        /// Save an object to Enova with the given values.
+        /// </summary>
+        /// <typeparam name="T">The most derived type of T is saved.</typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="values">Properties to save on the object.</param>
+        /// <returns></returns>
         public IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject
         {
             if (values == null)
@@ -99,7 +127,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             else
                 obj.Edit();
 
-            var resultingObject = _mappingToService.MapToEnovaObject(obj, values);
+            var resultingObject = _mappingToEnovaService.MapToEnovaObject(obj, values);
             obj.Save();
 
             _logger.LogInformation("{0} {1} object with Identifier: {2} of Type: {3} with Values: {4}", _authService.LogUser(), newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
@@ -107,9 +135,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return resultingObject;
         }
 
-        private bool IsMemoryObject<T>()
+        private bool IsMemoryObject(Type derivedType)
         {
-            var cmoClass = typeof(T).GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",
+            var cmoClass = derivedType.GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",
                             BindingFlags.Instance |
                             BindingFlags.NonPublic |
                             BindingFlags.Public) as Type;

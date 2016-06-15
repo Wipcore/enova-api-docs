@@ -7,6 +7,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
+    /// <summary>
+    /// Maps active promos for a product.
+    /// </summary>
     public class ProductPromoMapper : IPropertyMapper
     {
         public List<string> Names => new List<string>() {"Promos" };

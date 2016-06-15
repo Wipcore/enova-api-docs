@@ -27,25 +27,34 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
             _paymentService = paymentService;
         }
-        
+
+        /// <summary>
+        /// Get a list of payments.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaPayment>(requestContext, getParameters);
+            return _objectService.Get<EnovaPayment>(requestContext, query);
         }
 
+        /// <summary>
+        /// Get a payment specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaPayment>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaPayment>(requestContext, query, identifier);
         }
        
+        /// <summary>
+        /// Add a payment to an order.
+        /// </summary>
         [HttpPost()]
         public IPaymentModel Post([FromUri] ContextModel requestContext, [FromBody]PaymentModel payment)
         {
-            return _paymentService.SetPayment(payment);
+            return _paymentService.SavePayment(payment);
         }
     }
 }

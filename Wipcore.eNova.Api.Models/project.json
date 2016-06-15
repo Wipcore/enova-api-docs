@@ -7,8 +7,9 @@
   "licenseUrl": "",
 
   "dependencies": {
-
-    "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final"
+    "Autofac": "3.5.2",
+    "Microsoft.AspNet.Mvc.DataAnnotations": "6.0.0-rc1-final",
+    "Newtonsoft.Json": "8.0.2"
   },
 
   "frameworks": {

@@ -38,44 +38,62 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Get a list of customers.
+        /// </summary>
         [HttpGet]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaCustomer>(requestContext, getParameters);
+            return _objectService.Get<EnovaCustomer>(requestContext, query);
         }
 
+        /// <summary>
+        /// Get a customer specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaCustomer>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaCustomer>(requestContext, query, identifier);
         }
 
+        /// <summary>
+        /// Get orders beloning to the customer specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}/orders")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        public IEnumerable<IDictionary<string, object>> GetOrders([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier, string shippingStatus = null)
+        public IEnumerable<IDictionary<string, object>> GetOrders([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier, string shippingStatus = null)
         {
             var orders = _orderService.GetOrdersByCustomer(identifier, shippingStatus);
-            return _objectService.Get<EnovaOrder>(requestContext, getParameters, orders);
+            return _objectService.Get<EnovaOrder>(requestContext, query, orders);
         }
 
+        /// <summary>
+        /// Get carts beloning to the customer specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}/carts")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        public IEnumerable<IDictionary<string, object>> GetCarts([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier)
+        public IEnumerable<IDictionary<string, object>> GetCarts([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier)
         {
             var carts = _cartService.GetCartsByCustomer(identifier);
-            return _objectService.Get<EnovaCart>(requestContext, getParameters, carts);
+            return _objectService.Get<EnovaCart>(requestContext, query, carts);
         }
 
+        /// <summary>
+        /// Get addresses beloning to the customer specified by identifier.
+        /// </summary>
         [HttpGet("{identifier}/addresses")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        public IEnumerable<IDictionary<string, object>> GetAddresses([FromUri]ContextModel requestContext, [FromUri] GetParametersModel getParameters, string identifier, EnovaCustomerAddress.AddressTypeEnum? addressType = null)
+        public IEnumerable<IDictionary<string, object>> GetAddresses([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier, EnovaCustomerAddress.AddressTypeEnum? addressType = null)
         {
             var addresses = _customerService.GetAddresses(identifier, addressType);
-            return _objectService.Get<EnovaCustomerAddress>(requestContext, getParameters, addresses);
+            return _objectService.Get<EnovaCustomerAddress>(requestContext, query, addresses);
         }
 
+        /// <summary>
+        /// Create or update a customer.
+        /// </summary>
         [HttpPut()]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {

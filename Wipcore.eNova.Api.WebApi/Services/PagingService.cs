@@ -12,6 +12,9 @@ using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
+    /// <summary>
+    /// Handles pagination of responses with many objects.
+    /// </summary>
     public class PagingService : IPagingService
     {
         private readonly IHttpContextAccessor _httpAccessor;
@@ -21,6 +24,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _httpAccessor = httpAccessor;
         }
 
+        /// <summary>
+        /// Get a subset/page of a list of objects.
+        /// </summary>
+        /// <param name="objects">Candidate objects to page.</param>
+        /// <param name="pageNumber">The page numer, i.e. page 2 to view objects 20-40 if pagesize is 20.</param>
+        /// <param name="pageSize">The number of objects to get per page.</param>
+        /// <returns></returns>
         public BaseObjectList Page(BaseObjectList objects, int pageNumber, int pageSize)
         {
             this.OutputPagingHeaders(pageNumber, pageSize, objects.Count);
@@ -30,6 +40,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return objects;
         }
 
+        /// <summary>
+        /// Adds paging headers to Http response
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="objectCount"></param>
         private void OutputPagingHeaders(int pageNumber, int pageSize, int objectCount)
         {
             int pageCount = (objectCount + pageSize - 1) / pageSize;

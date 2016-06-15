@@ -24,18 +24,24 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
+        /// <summary>
+        /// Get a list of pricelists.
+        /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] GetParametersModel getParameters)
+        public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaPriceList>(requestContext, getParameters);
+            return _objectService.Get<EnovaPriceList>(requestContext, query);
         }
 
+        /// <summary>
+        /// Get a pricelist specified by identifier. 
+        /// </summary>
         [HttpGet("{identifier}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]GetParametersModel getParameters, string identifier)
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]QueryModel query, string identifier)
         {
-            return _objectService.Get<EnovaPriceList>(requestContext, getParameters, identifier);
+            return _objectService.Get<EnovaPriceList>(requestContext, query, identifier);
         }
     }
 }

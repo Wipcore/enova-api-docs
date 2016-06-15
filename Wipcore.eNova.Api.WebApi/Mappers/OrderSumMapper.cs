@@ -12,6 +12,9 @@ using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers
 {
+    /// <summary>
+    /// Maps the order sum for a order, with and without tax.
+    /// </summary>
     public class OrderSumMapper : IPropertyMapper, ICmoProperty
     {
         private readonly IContextService _contextService;

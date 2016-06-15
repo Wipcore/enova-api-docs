@@ -1,14 +1,17 @@
 {
   "default": {
     "language": "sv",
-    "currency": "sek"
+    "currency": "sek",
+    "taxrule": "STANDARD_TAX"
   },
   "sv": {
     "language": "sv",
-    "currency": "sek"
+    "currency": "sek",
+    "taxrule": "STANDARD_TAX"
   },
   "eu": {
     "language": "en",
-    "currency": "euro"
+    "currency": "euro",
+    "taxrule": "STANDARD_EN"
   }
 }

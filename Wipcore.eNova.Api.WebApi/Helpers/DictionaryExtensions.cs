@@ -9,6 +9,9 @@ namespace Wipcore.eNova.Api.WebApi.Helpers
 {
     public static class DictionaryExtensions
     {
+        /// <summary>
+        /// Creates a log friendly string from a dictionary.
+        /// </summary>
         public static string ToLog(this IDictionary<string, object> values)
         {
             if(values == null)
@@ -30,6 +33,9 @@ namespace Wipcore.eNova.Api.WebApi.Helpers
             return String.Join(", ", valuesAsStrings);
         }
 
+        /// <summary>
+        /// True if the given value is an 'additionalvalue', which means it's a subdictionary.
+        /// </summary>
         public static bool IsAdditionalValuesKey(this KeyValuePair<string, object> pair)
         {
             return pair.Key.ToLower() == "additionalvalues" && pair.Value is JObject;

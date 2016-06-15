@@ -4,6 +4,9 @@ namespace Wipcore.Enova.Api.Interfaces
 {
     public interface IPaymentService
     {
-        IPaymentModel SetPayment(IPaymentModel payment);
+        /// <summary>
+        /// Saves a payment from given model.
+        /// </summary>
+        IPaymentModel SavePayment(IPaymentModel payment);
     }
 }
