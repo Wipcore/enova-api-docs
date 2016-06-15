@@ -22,7 +22,9 @@ using NLog.Extensions.Logging;
 using Swashbuckle.SwaggerGen;
 using Wipcore.Library;
 using Wipcore.Core;
+using Wipcore.Core.SystemMonitoring;
 using Wipcore.eNova.Api.WebApi.Helpers;
+using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.OAuth;
 
 
@@ -30,6 +32,7 @@ namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
+        public const string ApiVersion = "1.0"; //TODO might specify somewhere else.
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
@@ -76,7 +79,6 @@ namespace Wipcore.Enova.Api.WebApi
             };
 
             EnovaSystemFacade.Current.Settings = settings;
-
             EnovaSystemFacade.Current.Start();
         }
 
@@ -135,7 +137,7 @@ namespace Wipcore.Enova.Api.WebApi
 
             var dataProtectionProvider = new DataProtectionProvider(new DirectoryInfo(_configFolderPath), configuration =>
                 {
-                    configuration.SetApplicationName(AuthService.AuthenticationScheme + "v1");
+                    configuration.SetApplicationName(AuthService.AuthenticationScheme + ApiVersion);
                     if (Configuration.Get("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems
                         configuration.ProtectKeysWithDpapiNG();
                 });
@@ -191,7 +193,7 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 options.SingleApiVersion(new Info
                 {
-                    Version = "v1",//TODO global setting
+                    Version = ApiVersion,
                     Title = "Enova API",
                     Description = "",
                     TermsOfService = ""
