@@ -259,6 +259,29 @@
             <param name="parameters">Parameters direct from query.</param>
             <returns></returns>
         </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AboutController.About">
+            <summary>
+            Basic welcome information about the API.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AboutController.IsEnovaAlive">
+            <summary>
+            Returns true if Enova is running.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AboutController.NodeInfo">
+            <summary>
+            Get information about this Enova node.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AboutController.MonitorInfo">
+            <summary>
+            Get monitor information about the Enova system.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Wipcore.eNova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of attribute types.
@@ -639,6 +662,11 @@
         <member name="M:Wipcore.eNova.Api.WebApi.Services.ExceptionService.GetStatusCodeForException(System.Exception)">
             <summary>
             Get an appropriate status code for the given exception. (I.E 404 for not found object).
+            </summary>
+        </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Services.SystemMonitorService">
+            <summary>
+            Very basic implementation of a system monitor for Enova.
             </summary>
         </member>
     </members>

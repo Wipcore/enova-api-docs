@@ -22,7 +22,7 @@
             <param name="admin">True to log in as an administrator.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.Interfaces.IAuthService.LoginCustomerAsAdmin(Wipcore.Enova.Api.Models.Interfaces.ILoginCustomerWithAdminCredentialsModel)">
+        <member name="M:Wipcore.Enova.Api.Interfaces.IAuthService.LoginCustomerAsAdmin(Wipcore.Enova.Api.Models.Interfaces.ILoginCustomerWithAdminCredentialsModel,System.String@)">
             <summary>
             Log in a customer with the credentials of an admin, ie inpersonation.
             </summary>

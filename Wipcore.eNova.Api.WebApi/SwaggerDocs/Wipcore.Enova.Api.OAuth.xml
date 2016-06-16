@@ -9,6 +9,11 @@
             This controller is used to login customers and admins into Enova. It should put a cookie in the response, which should be sent back by the client on subsequent requests. 
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoggedInAs">
+            <summary>
+            Get information about any logged in user.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AccountController.Logout">
             <summary>
             Logout from Enova.
@@ -31,7 +36,7 @@
         </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomerWithAdminCredentials(Wipcore.Enova.Api.Models.LoginCustomerWithAdminCredentialsModel)">
             <summary>
-              Login as a customer by providing a customer identifier, and the alias and password of an administrator.
+            Login as a customer by providing a customer identifier, and the alias and password of an administrator.
             </summary>
             <param name="model"></param>
             <returns></returns>
