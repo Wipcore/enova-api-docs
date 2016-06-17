@@ -2,20 +2,33 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Fasterflect;
+using Wipcore.Core;
+using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
     public class TemplateService : ITemplateService
     {
         private readonly IConfigurationRoot _configuration;
+        private readonly IContextService _contextService;
+        private readonly IEnumerable<IPropertyMapper> _mappers;
+        private readonly ObjectCache _cache;
 
-        public TemplateService(IConfigurationRoot configuration)
+        public TemplateService(IConfigurationRoot configuration, IContextService contextService, IEnumerable<IPropertyMapper> mappers, ObjectCache cache)
         {
-            _configuration = configuration;            
+            _configuration = configuration;
+            _contextService = contextService;
+            _mappers = mappers;
+            _cache = cache;
         }
 
         /// <summary>
@@ -27,34 +40,35 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public IQueryModel GetQueryModelFromTemplateConfiguration(Type type, IQueryModel parameters)
         {
             parameters = parameters ?? new QueryModel();
-
-            IConfigurationSection config = null;
-            while ((config == null || !config.GetChildren().Any()) && type != typeof (object))//looping down in types until some setting is found
+            
+            List<IConfigurationSection> settings = null;
+            var configType = type;
+            while (configType != typeof (object))//looping down in types until some setting is found
             {
-                config = _configuration.GetSection(type.Name)?.GetSection(parameters.Template);
+                settings = _configuration.GetSection(configType.Name)?.GetSection(parameters.Template).GetChildren().ToList();
+                if (settings.Any())
+                    break;
 
-                type = type.BaseType;
+                configType = configType.BaseType;
             }
-
-            if (config == null)
-                return null;
-
-            var settings = config.GetChildren().ToList();
-
+            
             //if the parameter is not already set, retrive it from the settings
-            parameters.Page = parameters.Page ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "page")?.Value ?? "1");
-            parameters.Size = parameters.Size ?? Convert.ToInt32(settings.FirstOrDefault(x => x.Key == "size")?.Value ?? "20");
+            parameters.Page = parameters.Page ?? Convert.ToInt32(settings?.FirstOrDefault(x => x.Key == "page")?.Value ?? "1");
+            parameters.Size = parameters.Size ?? Convert.ToInt32(settings?.FirstOrDefault(x => x.Key == "size")?.Value ?? "20");
 
             parameters.Sort = SetValue(parameters.Sort, settings, "sort");
-            parameters.Filter = SetValue(parameters.Filter, settings, "filter");  
-            parameters.Properties = SetValue(parameters.Properties, settings, "properties");
+            parameters.Filter = SetValue(parameters.Filter, settings, "filter");
+
+            parameters.Properties = "_all".Equals(parameters.Properties, StringComparison.CurrentCultureIgnoreCase) ? 
+                GetAllProperties(type) //if keyword "_all" is given, then find all possible properties
+                : SetValue(parameters.Properties, settings, "properties");
 
             return parameters;
         }
 
         private string SetValue(string parameterValue, List<IConfigurationSection> settings, string settingName)
         {
-            var settingValue = settings.FirstOrDefault(x => x.Key == settingName)?.Value;
+            var settingValue = settings?.FirstOrDefault(x => x.Key == settingName)?.Value;
             if(parameterValue == null)
                 return settingValue;
             //combine given parameter with setting. + or space as +  can be modelbinded to space
@@ -62,6 +76,47 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 return parameterValue.Substring(1) + ","+ settingValue;
 
             return parameterValue;
+        }
+
+        /// <summary>
+        /// Get all possible properties on a type.
+        /// </summary>
+        private string GetAllProperties(Type type)
+        {
+            var key = "all_properties_" + type.Name;
+            var cacheValue = _cache.Get(key);
+
+            if (cacheValue != null)
+                return cacheValue.ToString();
+
+            //first get any matching mappers
+            var properties = _mappers.
+                Where(x => x.MapType == MapType.MapAll || x.MapType == MapType.MapFrom).
+                Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
+                OrderBy(x => x.Priority).SelectMany(x => x.Names).ToList();
+
+            //then get any basic enova properties
+            string tableName;
+            var propertyNames = _contextService.GetContext().GetAllPropertyNames(type, out tableName);
+            var dummy = (BaseObject)EnovaObjectCreationHelper.CreateNew(type, _contextService.GetContext());
+            
+            foreach (var propertyName in propertyNames)
+            {
+                try
+                {
+                    dummy.GetProperty(propertyName);//making sure none of these properties causes exceptions
+                    properties.Add(propertyName);
+                }
+                catch
+                {
+                    // ignored, just interested in getting those that work
+                }
+            }
+            
+            var propertiesString = String.Join(",", properties);
+            _cache.Set(key, propertiesString, DateTime.Now.AddDays(1));
+
+            return propertiesString;
         }
     }
 }

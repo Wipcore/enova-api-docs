@@ -193,7 +193,7 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 options.SingleApiVersion(new Info
                 {
-                    Version = ApiVersion,
+                    Version = "v1",
                     Title = "Enova API",
                     Description = "",
                     TermsOfService = ""
