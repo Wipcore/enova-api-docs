@@ -61,6 +61,20 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
         }
 
         /// <summary>
+        /// Get a list of identifiers of the valid new shipping statuses for the given order.
+        /// </summary>
+        public IEnumerable<string> GetValidShippingStatuses(EnovaOrder order)
+        {
+            var currentStatus = order.ShippingStatus?.Identifier;
+            if(currentStatus == null)
+                return new List<string>();
+
+            var context = _contextService.GetContext();
+            var destinations = context.Search<EnovaConfigShippingStatusRule>("Allow = 1 AND Enabled = 1 AND SourceStatus = "+currentStatus).Select(x => x.DestinationStatus);
+            return destinations;
+        }
+
+        /// <summary>
         /// Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
         /// </summary>
         public ICartModel SaveOrder(ICartModel cartModel)
@@ -106,10 +120,10 @@ namespace Wipcore.eNova.Api.WebApi.EnovaObjectServices
                 enovaOrder.Recalculate();
             }
 
-            Map(context, enovaOrder, calculatedOrder);
-
             SetStatus(context, enovaOrder, calculatedOrder);
 
+            Map(context, enovaOrder, calculatedOrder);
+            
             //calculate prices
             var currency = context.CurrentCurrency;
             decimal taxAmount;

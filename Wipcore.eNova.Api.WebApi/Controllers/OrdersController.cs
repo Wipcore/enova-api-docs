@@ -59,7 +59,22 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 
             return order;
         }
-        
+
+        /// <summary>
+        /// Get valid new shipping statuses for an order.
+        /// </summary>
+        [HttpGet("{identifier}/ValidStatusChanges")]
+        [Authorize]
+        public IEnumerable<string> ValidShippingMoves([FromUri]ContextModel requestContext, string identifier)
+        {
+            var order = EnovaOrder.Find(_contextService.GetContext(), identifier);
+
+            if (!_authService.AuthorizeAccess(order.Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
+
+            return _orderService.GetValidShippingStatuses(order);
+        }
+
         /// <summary>
         /// Create or update an order. Already existing orders cannot have basic order rows changed (quantity, types); instead create a new order.
         /// </summary>

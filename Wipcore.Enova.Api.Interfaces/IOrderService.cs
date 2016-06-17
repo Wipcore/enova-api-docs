@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces.Cart;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.Interfaces
 {
@@ -18,5 +20,10 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <param name="shippingStatus">Filter by shippingstatus identifier.</param>
         /// <returns></returns>
         BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null);
+
+        /// <summary>
+        /// Get a list of identifiers of the valid new shipping statuses for the given order.
+        /// </summary>
+        IEnumerable<string> GetValidShippingStatuses(EnovaOrder order);
     }
 }
