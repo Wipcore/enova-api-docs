@@ -81,7 +81,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
             return defaultPrice;
         }
 
-        public object MapToEnovaProperty(BaseObject obj, string propertyName)
+        public object MapToEnovaProperty(BaseObject obj, string propertyName, object value)
         {
             throw new NotImplementedException();
         }

@@ -68,8 +68,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
                 if (mapper != null)
                 {
-                    var mappedValue = mapper.MapToEnovaProperty(obj, property.Key);
-                    values[property.Key] = mappedValue;
+                    mapper.MapToEnovaProperty(obj, property.Key, property.Value);
                 }
                     //if it is a sub dictionary with additional values, from a dezerialized model for example, then map them the same way
                 else if (property.IsAdditionalValuesKey())
