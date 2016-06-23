@@ -106,7 +106,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private void LoginDefaultAdmin(Context enovaContext)
         {
             var config = _configuration.GetSection("Enova").GetChildren().ToList();
-            var alias = config.First(x => x.Key == "Alias").Value;
+            var alias = config.First(x => x.Key == "Username").Value;
             var pass = config.First(x => x.Key == "Password").Value;
 
             enovaContext.Login(alias, pass, updateLastLoginDate: false); 

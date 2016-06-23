@@ -12,7 +12,6 @@ using Wipcore.Enova.Core;
 namespace Wipcore.eNova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [Route("api/{market}/[controller]")]
     public class CurrenciesController : EnovaApiController
     {
         private readonly IObjectService _objectService;

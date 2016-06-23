@@ -20,7 +20,6 @@ using Wipcore.Enova.Api.OAuth;
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [Route("api/{market}/[controller]")]
     public class CustomersController : EnovaApiController
     {
         private readonly IObjectService _objectService;
