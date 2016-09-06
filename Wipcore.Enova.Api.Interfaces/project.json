@@ -2,13 +2,10 @@
   "version": "1.0.0-*",
   "description": "Wipcore.Enova.Api.Interfaces Class Library",
   "authors": [ "henrik.eliasson" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
   "frameworks": {
-    "net451": {
+    "net461": {
       "dependencies": {
-        "Fasterflect": "1.0.0-*",
+        "NETStandard.Library": "1.6.0",
         "Wipcore": "1.0.0-*",
         "Wipcore.Enova.Core": "1.0.0-*",
         "Wipcore.Enova.Generics": "1.0.0-*",
@@ -17,8 +14,11 @@
     }
   },
   "dependencies": {
-    "Autofac": "4.0.0-rc1-177",
-    "Wipcore.eNova.Api.Models": "1.0.0-*",
-    "Microsoft.AspNet.Mvc": "6.0.0-rc1-final"
+    "Autofac": "4.1.0",
+    "Wipcore.eNova.Api.Models": {
+      "target": "project",
+      "version": "1.0.0-*"
+    },
+    "Microsoft.AspNetCore.Mvc": "1.0.0"
   }
 }

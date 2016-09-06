@@ -5,9 +5,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using IdentityModel;
-using IdentityServer4.Core;
-using Microsoft.AspNet.Http.Authentication;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 

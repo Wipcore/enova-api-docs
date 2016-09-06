@@ -9,15 +9,6 @@
         "Fasterflect": "1.0.0-*",
         "Wipcore.Library": "1.0.0-*"
       }
-    },
-    "dnx451": {
-      "bin": {
-        "assembly": "../../lib/dnx451/Wipcore.dll"
-      },
-      "dependencies": {
-        "Fasterflect": "1.0.0-*",
-        "Wipcore.Library": "1.0.0-*"
-      }
     }
   }
 }

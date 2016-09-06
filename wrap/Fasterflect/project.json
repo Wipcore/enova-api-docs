@@ -5,11 +5,6 @@
       "bin": {
         "assembly": "../../lib/net451/Fasterflect.dll"
       }
-    },
-    "dnx451": {
-      "bin": {
-        "assembly": "../../lib/dnx451/Fasterflect.dll"
-      }
     }
   }
 }

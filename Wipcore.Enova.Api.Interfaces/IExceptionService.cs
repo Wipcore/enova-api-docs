@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Wipcore.Enova.Api.Interfaces
 {

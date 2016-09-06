@@ -9,15 +9,6 @@
         "Wipcore": "1.0.0-*",
         "Wipcore.Enova.Core": "1.0.0-*"
       }
-    },
-    "dnx451": {
-      "bin": {
-        "assembly": "../../lib/dnx451/Wipcore.Enova.Generics.dll"
-      },
-      "dependencies": {
-        "Wipcore": "1.0.0-*",
-        "Wipcore.Enova.Core": "1.0.0-*"
-      }
     }
   }
 }

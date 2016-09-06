@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Wipcore.Enova.Api.Models.Interfaces;
 
@@ -10,6 +10,14 @@ namespace Wipcore.Enova.Api.Interfaces
     /// </summary>
     public abstract class EnovaApiController : Controller
     {
+
+        private readonly IExceptionService _exceptionService;
+        
+        public EnovaApiController(IExceptionService exceptionService)
+        {
+            _exceptionService = exceptionService;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
@@ -26,7 +34,7 @@ namespace Wipcore.Enova.Api.Interfaces
         {
             if (context.Exception != null)//handle any exception caused by action executed
             {
-                var exceptionService = this.Resolver.GetService<IExceptionService>();
+                var exceptionService = _exceptionService;
                 exceptionService.HandleControllerException(context);
             }
 

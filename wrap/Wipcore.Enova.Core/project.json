@@ -8,14 +8,6 @@
       "dependencies": {
         "Wipcore": "1.0.0-*"
       }
-    },
-    "dnx451": {
-      "bin": {
-        "assembly": "../../lib/dnx451/Wipcore.Enova.Core.dll"
-      },
-      "dependencies": {
-        "Wipcore": "1.0.0-*"
-      }
     }
   }
 }
