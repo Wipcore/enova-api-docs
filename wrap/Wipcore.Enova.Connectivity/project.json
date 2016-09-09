@@ -1,15 +1,15 @@
 {
-  "version": "1.0.0-*",
+  "version": "6.4.0.1",
   "frameworks": {
     "net451": {
       "bin": {
         "assembly": "../../lib/net451/Wipcore.Enova.Connectivity.dll"
       },
       "dependencies": {
-        "Wipcore": "1.0.0-*",
-        "Wipcore.Enova.Core": "1.0.0-*",
-        "Wipcore.Enova.KernelPlugin": "1.0.0-*",
-        "Wipcore.Library": "1.0.0-*"
+        "Wipcore": "6.4.0.1",
+        "Wipcore.Enova.Core": "6.4.0.1",
+        "Wipcore.Enova.KernelPlugin": "6.4.0.1",
+        "Wipcore.Library": "6.4.0.1"
       }
     }
   }

@@ -1749,16 +1749,16 @@
           "lib/net46/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Fasterflect/1.0.0": {
+      "Fasterflect/2.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Wipcore/1.0.0": {
+      "Wipcore/6.4.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Fasterflect": "1.0.0",
-          "Wipcore.Library": "1.0.0"
+          "Fasterflect": "2.0.0",
+          "Wipcore.Library": "6.4.0.1"
         }
       },
       "Wipcore.eNova.Api.Models/1.0.0": {
@@ -1776,22 +1776,22 @@
           "net461/Wipcore.eNova.Api.Models.dll": {}
         }
       },
-      "Wipcore.Enova.Core/1.0.0": {
+      "Wipcore.Enova.Core/6.4.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Wipcore": "1.0.0"
+          "Wipcore": "6.4.0.1"
         }
       },
-      "Wipcore.Enova.Generics/1.0.0": {
+      "Wipcore.Enova.Generics/6.4.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Wipcore": "1.0.0",
-          "Wipcore.Enova.Core": "1.0.0"
+          "Wipcore": "6.4.0.1",
+          "Wipcore.Enova.Core": "6.4.0.1"
         }
       },
-      "Wipcore.Library/1.0.0": {
+      "Wipcore.Library/6.4.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -5925,11 +5925,11 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Fasterflect/1.0.0": {
+    "Fasterflect/2.0.0": {
       "type": "project",
       "path": "../wrap/Fasterflect/project.json"
     },
-    "Wipcore/1.0.0": {
+    "Wipcore/6.4.0.1": {
       "type": "project",
       "path": "../wrap/Wipcore/project.json"
     },
@@ -5938,15 +5938,15 @@
       "path": "../Wipcore.eNova.Api.Models/project.json",
       "msbuildProject": "../Wipcore.eNova.Api.Models/Wipcore.eNova.Api.Models.xproj"
     },
-    "Wipcore.Enova.Core/1.0.0": {
+    "Wipcore.Enova.Core/6.4.0.1": {
       "type": "project",
       "path": "../wrap/Wipcore.Enova.Core/project.json"
     },
-    "Wipcore.Enova.Generics/1.0.0": {
+    "Wipcore.Enova.Generics/6.4.0.1": {
       "type": "project",
       "path": "../wrap/Wipcore.Enova.Generics/project.json"
     },
-    "Wipcore.Library/1.0.0": {
+    "Wipcore.Library/6.4.0.1": {
       "type": "project",
       "path": "../wrap/Wipcore.Library/project.json"
     }
@@ -5959,10 +5959,10 @@
     ],
     ".NETFramework,Version=v4.6.1": [
       "NETStandard.Library >= 1.6.0",
-      "Wipcore >= 1.0.0-*",
-      "Wipcore.Enova.Core >= 1.0.0-*",
-      "Wipcore.Enova.Generics >= 1.0.0-*",
-      "Wipcore.Library >= 1.0.0-*"
+      "Wipcore >= 6.4.0.1",
+      "Wipcore.Enova.Core >= 6.4.0.1",
+      "Wipcore.Enova.Generics >= 6.4.0.1",
+      "Wipcore.Library >= 6.4.0.1"
     ]
   },
   "tools": {},

@@ -1,12 +1,12 @@
 {
-  "version": "1.0.0-*",
+  "version": "6.4.0.1",
   "frameworks": {
     "dnx451": {
       "bin": {
         "assembly": "../../lib/dnx451/Wipcore.Enova.ExternalInvoicingLib.dll"
       },
       "dependencies": {
-        "Wipcore": "1.0.0-*"
+        "Wipcore": "6.4.0.1"
       }
     }
   }
