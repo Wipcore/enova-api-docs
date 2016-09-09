@@ -1,9 +1,9 @@
 {
   "version": "6.4.0.1",
   "frameworks": {
-    "dnx451": {
+    "net451": {
       "bin": {
-        "assembly": "../../lib/dnx451/Wipcore.Enova.Library.CreditCard.dll"
+        "assembly": "../../lib/net451/Wipcore.Enova.Library.CreditCard.dll"
       },
       "dependencies": {
         "Wipcore": "6.4.0.1"
