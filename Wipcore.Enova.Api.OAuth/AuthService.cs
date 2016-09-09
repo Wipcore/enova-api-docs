@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Wipcore.Core.SessionObjects;
 using IdentityModel;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
+using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;

@@ -60,12 +60,12 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> LoginAdmin([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
-                return HttpBadRequest(new LoginResponseModel("Alias and password required."));
+                return BadRequest(new LoginResponseModel("Alias and password required."));
 
             var claimsPrincipal = _loginService.Login(model, admin: true);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel("Invalid alias or password."));
+                return BadRequest(new LoginResponseModel("Invalid alias or password."));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
@@ -81,12 +81,12 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
-                return (HttpBadRequest(new LoginResponseModel("Alias and password required.")));
+                return (BadRequest(new LoginResponseModel("Alias and password required.")));
 
             var claimsPrincipal = _loginService.Login(model, admin: false);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel("Invalid alias or password."));
+                return BadRequest(new LoginResponseModel("Invalid alias or password."));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
@@ -102,13 +102,13 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> LoginCustomerWithAdminCredentials([FromBody]LoginCustomerWithAdminCredentialsModel model)
         {
             if (!ModelState.IsValid)
-                return HttpBadRequest(new LoginResponseModel("Alias and password required."));
+                return BadRequest(new LoginResponseModel("Alias and password required."));
 
             string errorMessage;
             var claimsPrincipal = _loginService.LoginCustomerAsAdmin(model, out errorMessage);
 
             if (claimsPrincipal == null)
-                return HttpBadRequest(new LoginResponseModel(errorMessage));
+                return BadRequest(new LoginResponseModel(errorMessage));
 
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 

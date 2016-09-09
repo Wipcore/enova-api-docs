@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityModel;
-using Microsoft.AspNet.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Wipcore.Enova.Api.Interfaces;
 
@@ -18,12 +18,12 @@ namespace Wipcore.Enova.Api.OAuth
     {
         public const string Name = "BodyIdentifier";
 
-        protected override void Handle(AuthorizationContext context, CustomerBodyIdentifierPolicy requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerBodyIdentifierPolicy requirement)
         {
             if (context.User.HasClaim(x => x.Type == JwtClaimTypes.Role && x.Value == AuthService.AdminRole))
             {
                 context.Succeed(requirement);
-                return;
+                return Task.FromResult(0);
             }
 
             var userIdentifier = context.User.FindFirst(AuthService.IdentifierClaim)?.Value;
@@ -31,16 +31,16 @@ namespace Wipcore.Enova.Api.OAuth
             if (userIdentifier == null)
             {
                 context.Fail(); //must be specified if inputing body as customer, otherwise a new object is created
-                return;
+                return Task.FromResult(0);
             }
 
-            var resource = (context.Resource as Microsoft.AspNet.Mvc.Filters.AuthorizationContext);
+            var resource = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext);
             
             var bodyStream = resource?.HttpContext?.Request?.Body;
             if (bodyStream == null)
             {
                 context.Fail();
-                return;
+                return Task.FromResult(0);
             }
             
             if (bodyStream.CanSeek)
@@ -53,6 +53,8 @@ namespace Wipcore.Enova.Api.OAuth
                 context.Succeed(requirement);
             else
                 context.Fail();
+
+            return Task.FromResult(0);
         }
     }
 }

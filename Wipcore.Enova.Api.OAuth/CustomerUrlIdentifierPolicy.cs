@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityModel;
-using Microsoft.AspNet.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.Enova.Api.OAuth
@@ -17,14 +17,14 @@ namespace Wipcore.Enova.Api.OAuth
     {
         public const string Name = "UrlIdentifier";
 
-        protected override void Handle(AuthorizationContext context, CustomerUrlIdentifierPolicy requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerUrlIdentifierPolicy requirement)
         {
             if (context.User.HasClaim(x => x.Type == JwtClaimTypes.Role && x.Value == AuthService.AdminRole))
             {
                 context.Succeed(requirement);
-                return;
+                return Task.FromResult(0);
             }
-            var resource = (context.Resource as Microsoft.AspNet.Mvc.Filters.AuthorizationContext);
+            var resource = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext);
             var identifier = resource?.RouteData?.Values?.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.InvariantCultureIgnoreCase)).Value;
 
             var userIdentifier = context.User.FindFirst(AuthService.IdentifierClaim)?.Value;
@@ -33,6 +33,8 @@ namespace Wipcore.Enova.Api.OAuth
                 context.Succeed(requirement);
             else
                 context.Fail();
+
+            return Task.FromResult(0);
         }
     }
 }
