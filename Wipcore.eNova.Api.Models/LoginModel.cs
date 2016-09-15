@@ -40,12 +40,14 @@ namespace Wipcore.Enova.Api.Models
         /// Response message, success or failure.
         /// </summary>
         [Required]
-        public string StatusMessage { get; }
+        public string StatusMessage { get; set; }
 
         /// <summary>
         /// Identifier of the customer/admin that logged in.
         /// </summary>
-        public string UserIdentifier { get; }
+        public string UserIdentifier { get; set; }
+
+        public LoginResponseModel() { }
 
         public LoginResponseModel(string message, string identifier = null)
         {
