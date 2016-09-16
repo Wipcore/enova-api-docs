@@ -52,6 +52,15 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get a product specified by id. 
+        /// </summary>
+        [HttpGet("id-{id}")]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaBaseProduct>(requestContext, query, id);
+        }
+
+        /// <summary>
         /// Get all variants of the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/variants")]

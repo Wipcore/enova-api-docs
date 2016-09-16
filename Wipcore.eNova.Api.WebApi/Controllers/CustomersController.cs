@@ -58,6 +58,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get a customer specified by id.
+        /// </summary>
+        [HttpGet("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri] QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaCustomer>(requestContext, query, id);
+        }
+
+        /// <summary>
         /// Get orders beloning to the customer specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/orders")]

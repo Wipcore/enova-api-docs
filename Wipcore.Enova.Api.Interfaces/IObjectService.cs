@@ -34,6 +34,17 @@ namespace Wipcore.Enova.Api.Interfaces
         IDictionary<string, object> Get<T>(IContextModel requestContext, IQueryModel query, string identifier) where T : BaseObject;
 
         /// <summary>
+        /// Get an objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="id">Object id.</param>
+        /// <returns></returns>
+        IDictionary<string, object> Get<T>(IContextModel requestContext, IQueryModel query, int id) where T : BaseObject;
+
+
+        /// <summary>
         /// Save an object to Enova with the given values.
         /// </summary>
         /// <typeparam name="T">The most derived type of T is saved.</typeparam>

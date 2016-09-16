@@ -70,6 +70,24 @@ namespace Wipcore.Enova.Api.WebApi.Services
         }
 
         /// <summary>
+        /// Get an objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="id">Object id.</param>
+        /// <returns></returns>
+        public IDictionary<string, object> Get<T>(IContextModel requestContext, IQueryModel query, int id) where T : BaseObject
+        {
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
+            var context = _contextService.GetContext();
+            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
+
+            var obj = context.FindObject(id, typeof(T), throwExceptionIfNotFound: true);
+            return _mappingFromEnovaService.MapFromEnovaObject(obj, query.Properties);
+        }
+
+        /// <summary>
         /// Get objects from Enova. 
         /// </summary>
         /// <typeparam name="T"></typeparam>

@@ -40,5 +40,14 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         {
             return _objectService.Get<EnovaAttributeType>(requestContext, query, identifier);
         }
+
+        /// <summary>
+        /// Get an attribute type specified by id.
+        /// </summary>
+        [HttpGet("id-{id}")]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaAttributeType>(requestContext, query, id);
+        }
     }
 }

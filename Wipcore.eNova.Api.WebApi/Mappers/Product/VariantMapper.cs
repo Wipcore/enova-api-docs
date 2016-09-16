@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
@@ -13,7 +15,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
     /// </summary>
     public class VariantMapper : IPropertyMapper, ICmoProperty
     {
-        public List<string> Names => new List<string>() {"IsOwner", "VariantOwner"};
+        public List<string> Names => new List<string>() {"IsOwner", "VariantOwnerIdentifier", "VariantOwnerId", "VariantIds"};
         public Type CmoType => typeof(CmoEnovaBaseProduct);
         public Type Type => typeof(EnovaBaseProduct);
         public bool InheritMapper => true;
@@ -34,8 +36,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 
             if (String.Equals(propertyName, "IsOwner", StringComparison.InvariantCultureIgnoreCase))
                 return isOwner;
-            if (String.Equals(propertyName, "VariantOwner", StringComparison.InvariantCultureIgnoreCase))
+            if (String.Equals(propertyName, "VariantOwnerIdentifier", StringComparison.InvariantCultureIgnoreCase))
                 return isOwner ? null : owner?.Identifier ?? "";
+            if (String.Equals(propertyName, "VariantOwnerId", StringComparison.InvariantCultureIgnoreCase))
+                return isOwner ? null : owner?.ID;
+            if (String.Equals(propertyName, "VariantIds", StringComparison.InvariantCultureIgnoreCase))
+                return product.GetVariantMembers().Where(x => x.ID != product.ID && (owner == null || x.ID != owner.ID)).Select(x => x.ID).ToList();
 
             return null;
         }
@@ -54,8 +60,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 
             if (String.Equals(propertyName, "IsOwner", StringComparison.InvariantCultureIgnoreCase))
                 return isOwner;
-            if (String.Equals(propertyName, "VariantOwner", StringComparison.InvariantCultureIgnoreCase))
+            if (String.Equals(propertyName, "VariantOwnerIdentifier", StringComparison.InvariantCultureIgnoreCase))
                 return isOwner ? "" : owner?.GetIdentifier(context) ?? "";
+            if (String.Equals(propertyName, "VariantOwnerId", StringComparison.InvariantCultureIgnoreCase))
+                return isOwner ? 0 : owner?.ID;
 
             return null;
         }
