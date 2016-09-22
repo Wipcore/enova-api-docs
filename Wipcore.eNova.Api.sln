@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{12031503-6C3E-4F27-909B-A92746EE6034}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{017EDCD0-4F70-4B81-AECB-A4D366A31C66}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
@@ -10,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Models", "src\Wipcore.Enova.Api.Models\Wipcore.Enova.Api.Models.xproj", "{2B19A35E-F29A-4EDB-9175-44844C413404}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.NETClient", "src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NETClient.xproj", "{9093C2B9-F0C5-4641-AD58-DC4EC7FF9AFA}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.NetClient", "src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NetClient.xproj", "{9093C2B9-F0C5-4641-AD58-DC4EC7FF9AFA}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Interfaces", "src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj", "{CC6E3526-67F3-481F-B09C-42A2589F275D}"
 EndProject
@@ -47,5 +49,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B19A35E-F29A-4EDB-9175-44844C413404} = {12031503-6C3E-4F27-909B-A92746EE6034}
+		{9093C2B9-F0C5-4641-AD58-DC4EC7FF9AFA} = {12031503-6C3E-4F27-909B-A92746EE6034}
+		{CC6E3526-67F3-481F-B09C-42A2589F275D} = {12031503-6C3E-4F27-909B-A92746EE6034}
+		{C25684EF-23F2-4262-8227-6116CD799B6F} = {12031503-6C3E-4F27-909B-A92746EE6034}
+		{842358BA-07F9-4B77-B529-76A15CDF4838} = {12031503-6C3E-4F27-909B-A92746EE6034}
 	EndGlobalSection
 EndGlobal
