@@ -40,5 +40,14 @@ namespace Wipcore.eNova.Api.WebApi.Helpers
         {
             return pair.Key.ToLower() == "additionalvalues" && pair.Value is JObject;
         }
+
+        public static T GetOrDefault<T>(this IDictionary<string, object> values, string key)
+        {
+            object value;
+            if (values.TryGetValue(key, out value))
+                return (T)Convert.ChangeType(value, typeof(T));
+
+            return default(T);
+        }
     }
 }

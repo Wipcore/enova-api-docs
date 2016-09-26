@@ -20,7 +20,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public int Priority => 0;
         public MapType MapType => MapType.MapTo;
 
-        public object MapToEnovaProperty(BaseObject obj, string propertyName, object value)
+        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var customer = (EnovaCustomer) obj;
             var country = "CountryName".Equals(propertyName, StringComparison.CurrentCultureIgnoreCase) ? 
@@ -28,7 +28,6 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
                 EnovaCountry.Find(obj.GetContext(), value.ToString());
 
             customer.Country = country;
-            return value;
         }
 
         public object MapFromEnovaProperty(BaseObject obj, string propertyName)

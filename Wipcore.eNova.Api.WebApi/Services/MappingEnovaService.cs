@@ -18,7 +18,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
     public class MappingEnovaService : IMappingFromEnovaService, IMappingToEnovaService
     {
         private readonly IConfigurationRoot _configuration;
-        private readonly IEnumerable<IPropertyMapper> _mappers;
+        private readonly ConcurrentDictionary<IPropertyMapper> _mappers;
         private readonly ObjectCache _cache;
 
         public MappingEnovaService(IConfigurationRoot configuration, ObjectCache cache, IEnumerable<IPropertyMapper> mappers)
@@ -61,14 +61,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public IDictionary<string, object> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values)
         {
             if (values == null)
-                return values;
+                return null;
 
             foreach (var property in values)
             {
                 var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
                 if (mapper != null)
                 {
-                    mapper.MapToEnovaProperty(obj, property.Key, property.Value);
+                    mapper.MapToEnovaProperty(obj, property.Key, property.Value, values);
                 }
                     //if it is a sub dictionary with additional values, from a dezerialized model for example, then map them the same way
                 else if (property.IsAdditionalValuesKey())

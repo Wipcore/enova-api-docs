@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
@@ -16,11 +18,77 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public Type Type => typeof (BaseObject);
         public bool InheritMapper => true;
         public int Priority => 0;
-        public MapType MapType => MapType.MapFrom;
+        public MapType MapType => MapType.MapAll;
 
-        public object MapToEnovaProperty(BaseObject obj, string propertyName, object value)
+        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            throw new NotImplementedException();
+            if(value == null)
+                return;
+
+            var context = obj.GetContext();
+            var product = (EnovaBaseProduct)obj;
+            dynamic attributes = value;
+            foreach (var attributeJson in attributes)
+            {
+                var enovaAttribute = context.FindObject(Convert.ToInt32(attributeJson.ID.Value), typeof(EnovaAttributeValue), false) as EnovaAttributeValue;
+                var isNew = enovaAttribute == null;
+
+                if (attributeJson.MarkForDelete.Value)
+                {
+                    if (isNew)
+                        continue;
+
+                    product.RemoveAttributeValue(enovaAttribute);
+                    continue;
+                }
+
+                if (attributeJson.AttributeType?.IsContinuous?.Value) //if contineous then just add whatever value it is
+                {
+                    if (isNew)
+                        enovaAttribute = EnovaObjectCreationHelper.CreateNew<EnovaAttributeValue>(context);
+                    else
+                        enovaAttribute.Edit();
+                    enovaAttribute.Identifier = attributeJson.Identifier.Value;
+
+                    if (attributeJson.Value != null)
+                    {
+                        if (attributeJson.LanguageDependant.Value)
+                            enovaAttribute.Name = attributeJson.Value.Value;
+                        else
+                            enovaAttribute.ValueCode = attributeJson.Value.Value;
+                    }
+
+                    if (!isNew) //if not new, then save it
+                    {
+                        enovaAttribute.Save();
+                    }
+                    else //otherwise set up the attribute type
+                    {
+                        var attributeType = EnovaAttributeType.Find(context, Convert.ToInt32(attributeJson.AttributeType.ID));
+                        attributeType.AddValue(enovaAttribute);
+                        product.AddAttributeValue(enovaAttribute);
+                    }
+                }
+                else //if not contineous then add the new attribute and remove the old
+                {
+                    var currentValue = enovaAttribute == null ? null : !String.IsNullOrEmpty(enovaAttribute.ValueCode) ? enovaAttribute.ValueCode : enovaAttribute.Name;
+                    var requestedNewValue = attributeJson.Value.Value;
+
+                    if (!requestedNewValue.Equals(currentValue)) //if the value is changed
+                    {
+                        //then find the correct attribute
+                        var attributeType = (EnovaAttributeType)EnovaAttributeType.Find(context, Convert.ToInt32(attributeJson.AttributeType.ID));
+
+                        var newAttributeValue = attributeType.Values.OfType<EnovaAttributeValue>().
+                            First(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
+
+                        if (enovaAttribute != null)
+                            product.RemoveAttributeValue(enovaAttribute);
+
+                        product.AddAttributeValue(newAttributeValue);
+                    }
+                }
+            }
         }
 
         public object MapFromEnovaProperty(BaseObject obj, string propertyName)

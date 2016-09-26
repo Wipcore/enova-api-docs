@@ -16,7 +16,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public int Priority => 0;
         public MapType MapType => MapType.MapFrom;
 
-        public object MapToEnovaProperty(BaseObject obj, string propertyName, object value)
+        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             throw new NotImplementedException();
         }
