@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<key id="f254e44c-8209-4b9b-a517-ce07604bd43e" version="1">
+  <creationDate>2016-09-26T12:40:23.6727092Z</creationDate>
+  <activationDate>2016-09-26T12:40:23.6355849Z</activationDate>
+  <expirationDate>2016-12-25T12:40:23.6355849Z</expirationDate>
+  <descriptor deserializerType="Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+    <descriptor>
+      <encryption algorithm="AES_256_CBC" />
+      <validation algorithm="HMACSHA256" />
+      <encryptedSecret decryptorType="Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiNGXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" xmlns="http://schemas.asp.net/2015/03/dataProtection">
+        <encryptedKey xmlns="">
+          <!-- This key is encrypted with Windows DPAPI-NG. -->
+          <!-- Rule: SID=S-1-5-21-1924917842-4103418669-1102304669-1154 -->
+          <value>MIICugYJKoZIhvcNAQcDoIICqzCCAqcCAQIxggEaooIBFgIBBDCB2QSBgAEAAABLRFNLAgAAAGMBAAAcAAAACgAAAF1Nr5MuS23whfkup3rBJakgAAAAFgAAABYAAACyBPgAZYNhHUUU/C66XsqA4izG9inkjDrJXs+o2ujzv3cAaQBwAGMAbwByAGUALgBzAGUAAAB3AGkAcABjAG8AcgBlAC4AcwBlAAAAMFQGCSsGAQQBgjdKATBHBgorBgEEAYI3SgEBMDkwNzA1DANTSUQMLlMtMS01LTIxLTE5MjQ5MTc4NDItNDEwMzQxODY2OS0xMTAyMzA0NjY5LTExNTQwCwYJYIZIAWUDBAEtBCgIblNv+kMHdw+sb9bMK6GSoQYHvN6Zhgox5J1ROjAKX+/ym6pLEu8MMIIBggYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwropdtP3DJ8+a2FfACARCAggFTYvImlFLQbfCGcR+EIEr+Um4kWcumqNQJah6E7MCpWKgwezKWpufisa5eQMv1nediG+rx+2vPQjDx8jTT4axb0JBwetfK+xVKiqRZzUeLe5yAlOoFUCSUPoAaBakmXcNAgqGK41XcK5/f1WQjyAuS1LuhT+GNUtWPUQ/cEgbL0+kbakmhfaBUQFIYyttz08Xgm5DQlGkHmiKi0AHNqr6CBUZQ/vj/cw8C6RZGz0KI9A7sP5ebTmtTt95sHT93wxNjD6nFb+yrFas75LsZi9FeKTZa0rWtKfuojksfMpe4liiqUs9jSwXafi3/457YSmbkvn2+0dqNaXyLnhrNv0ZaARabxUhPaKR1q20CsJwX22NvZC9EQ7/uKZNk59N8wHeYpbeGZLi/yrDkmArAP/ZsbogospKlHfO6O97klzUO6k/Mck4NaspW01QmKfs5LdQxLR28</value>
+        </encryptedKey>
+      </encryptedSecret>
+    </descriptor>
+  </descriptor>
+</key>

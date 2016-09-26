@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0-*",
+  "dependencies": {
+    "Autofac": "4.1.0",
+    "Autofac.Extensions.DependencyInjection": "4.0.0",
+    "IdentityServer4": "1.0.0-rc1-update2",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
+    "Microsoft.AspNetCore.DataProtection.Extensions": "1.0.0",
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
+    "Microsoft.AspNetCore.Html.Abstractions": "1.0.0",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
+    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "NLog": "4.4.0-*",
+    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4",
+    "Swashbuckle": "6.0.0-beta902",
+    "Wipcore.Enova.Api.Interfaces": {
+      "target": "project",
+      "version": "1.0.0-*"
+    },
+    "Wipcore.Enova.Api.Models": {
+      "target": "project",
+      "version": "1.0.0-*"
+    },
+    "Wipcore.Enova.Api.OAuth": {
+      "target": "project",
+      "version": "1.0.0-*"
+    },
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.213-dev"  },
+
+  "commands": {
+    "web": "Microsoft.AspNetCore.Server.Kestrel"
+  },
+
+  "frameworks": {
+    "net461": {
+      "frameworkAssemblies": {
+        "System.Runtime.Caching": "4.0.0.0"
+      }
+    }
+  },
+  "buildOptions": {
+    "exclude": [
+      "wwwroot",
+      "node_modules"
+    ],
+
+    "emitEntryPoint": true
+  },
+  "publishOptions": {
+
+
+    "publishExclude": [
+      "**.user",
+      "**.vspscc"
+    ]
+  }
+}
