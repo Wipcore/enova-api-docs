@@ -27,7 +27,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public Type Type => typeof(EnovaBaseProduct);
         public bool InheritMapper => true;
         public int Priority => 0;
-        public MapType MapType => MapType.MapAll;
+        public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
         public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {

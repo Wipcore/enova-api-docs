@@ -48,7 +48,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <param name="objectCount"></param>
         private void OutputPagingHeaders(int pageNumber, int pageSize, int objectCount)
         {
-            int pageCount = (objectCount + pageSize - 1) / pageSize;
+            var pageCount = (objectCount + pageSize - 1) / pageSize;
 
             var httpContext = _httpAccessor.HttpContext;
             httpContext.Response.Headers.Add("X-Paging-PageNo", pageNumber.ToString());

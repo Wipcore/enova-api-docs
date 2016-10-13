@@ -11,6 +11,6 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <summary>
         /// Maps given properties in dictionary to the given enova object.
         /// </summary>
-        IDictionary<string, object> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values);
+        void MapToEnovaObject(BaseObject obj, IDictionary<string, object> values);
     }
 }

@@ -50,5 +50,15 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             return _objectService.Get<EnovaAttributeType>(requestContext, query, id);
         }
+
+        /// <summary>
+        /// Create or update an attributetype.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaAttributeType>(requestContext, values);
+        }
     }
 }

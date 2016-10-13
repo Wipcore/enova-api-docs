@@ -6,7 +6,7 @@ using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
 {
     /// <summary>
     /// Maps attributes belonging to any Enova object.
@@ -17,7 +17,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public Type Type => typeof(BaseObject);
         public bool InheritMapper => true;
         public int Priority => 0;
-        public MapType MapType => MapType.MapAll;
+        public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
         public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {

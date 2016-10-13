@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -19,13 +20,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
     {
         private readonly IConfigurationRoot _configuration;
         private readonly IEnumerable<IPropertyMapper> _mappers;
-        private readonly ObjectCache _cache;
+        private readonly ConcurrentDictionary<string, IPropertyMapper> _resolvedMappers = new ConcurrentDictionary<string, IPropertyMapper>();
+        private readonly ConcurrentDictionary<string, bool> _settableEnovaProperties = new ConcurrentDictionary<string, bool>();
 
-        public MappingEnovaService(IConfigurationRoot configuration, ObjectCache cache, IEnumerable<IPropertyMapper> mappers)
+        public MappingEnovaService(IConfigurationRoot configuration, IEnumerable<IPropertyMapper> mappers)
         {
             _configuration = configuration;
             _mappers = mappers;
-            _cache = cache;
         }
 
         /// <summary>
@@ -44,11 +45,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
             if (properties == null)
                 properties = "identifier";
 
-            var dynamicObject = new Dictionary<string, Object>();
+            var dynamicObject = new Dictionary<string, object>();
             
             foreach (var property in properties.Split(','))
             {
-                var mapper = GetMapper(obj.GetType(), property, MapType.MapFrom);
+                var mapper = GetMapper(obj.GetType(), property, MapType.MapFromEnovaAllowed);
                 var value = mapper != null ? mapper.MapFromEnovaProperty(obj, property) : MapProperty(property, obj);
                 dynamicObject.Add(property, value);
             }
@@ -58,14 +59,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <summary>
         /// Maps given properties in dictionary to the given enova object.
         /// </summary>
-        public IDictionary<string, object> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values)
+        public void MapToEnovaObject(BaseObject obj, IDictionary<string, object> values)
         {
             if (values == null)
-                return null;
+                return;
 
             foreach (var property in values)
             {
-                var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapTo);
+                var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapToEnovaAllowed);
                 if (mapper != null)
                 {
                     mapper.MapToEnovaProperty(obj, property.Key, property.Value, values);
@@ -76,11 +77,22 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     var subValues = ((JObject)property.Value).ToObject<Dictionary<string, object>>();
                     this.MapToEnovaObject(obj, subValues);
                 }
-                else
+                else if (IsSettableEnovaProperty(obj.GetType(), property.Key))
+                {
                     obj.SetProperty(property.Key, property.Value);
+                }
             }
 
-            return values;
+            //return MapFromEnovaObject(obj, String.Join(",", values.Select(x => x.Key)));//remap to get changed values
+        }
+
+        private bool IsSettableEnovaProperty(Type type, string propertyName)
+        {
+            return _settableEnovaProperties.GetOrAdd(type.FullName + propertyName, k =>
+            {
+                var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+                return property != null && property.CanWrite;
+            });
         }
 
         private object MapProperty(string property, BaseObject obj)
@@ -100,21 +112,34 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return null;
         }
 
+        private object SetProperty(string property, BaseObject obj)
+        {
+            var properties = property.Split('.'); //splitting ex. Manufacturer.Identifier into its parts
+            for (var i = 0; i < properties.Length; i++)
+            {
+                if (i == properties.Length - 1) //the last name (Identifier in example above) is returned directly
+                    return obj.GetProperty(properties[i]);
+
+                //nested properties are retrieved from the object. In example obj is set to Manufacturer
+                obj = obj.GetPropertyValue(properties[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
+
+                if (obj == null)
+                    break;
+            }
+            return null;
+        }
+
         private IPropertyMapper GetMapper(Type type, string propertyName, MapType mapType)
         {
-            var key = type.FullName + propertyName;
-
-            var lazyMapper = new Lazy<IPropertyMapper>(() => {
-                return  _mappers.
-                Where(x => x.MapType == MapType.MapAll || x.MapType == mapType).
+            var mapper = _resolvedMappers.GetOrAdd(type.FullName + propertyName + mapType, k =>
+            {
+                return _mappers.Where(x => x.MapType == MapType.MapFromAndToEnovaAllowed || x.MapType == mapType).
                 Where(x => x.Names.Any(n => n.Equals(propertyName, StringComparison.CurrentCultureIgnoreCase))).
                 Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
-                OrderBy(x => x.Priority).FirstOrDefault();                
+                OrderBy(x => x.Priority).FirstOrDefault();
             });
 
-            var cachedMapper = (Lazy<IPropertyMapper>)_cache.AddOrGetExisting(key, lazyMapper, DateTime.Now.AddMinutes(15));
-
-            return (cachedMapper ?? lazyMapper).Value;            
+            return mapper;
         }
         
     }

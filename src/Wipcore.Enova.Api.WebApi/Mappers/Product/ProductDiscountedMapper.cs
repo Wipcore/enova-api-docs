@@ -31,7 +31,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public bool InheritMapper => true;
 
         public int Priority => 0;
-        public MapType MapType => MapType.MapFrom;
+        public MapType MapType => MapType.MapFromEnovaAllowed;
 
         
         public object MapFromEnovaProperty(BaseObject obj, string propertyName)

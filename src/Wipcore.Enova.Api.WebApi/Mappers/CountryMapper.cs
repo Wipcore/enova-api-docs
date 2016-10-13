@@ -18,7 +18,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
         public Type Type => typeof (EnovaCustomer);
         public bool InheritMapper => true;
         public int Priority => 0;
-        public MapType MapType => MapType.MapTo;
+        public MapType MapType => MapType.MapToEnovaAllowed;
 
         public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {

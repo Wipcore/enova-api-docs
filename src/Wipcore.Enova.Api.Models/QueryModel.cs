@@ -38,5 +38,14 @@ namespace Wipcore.Enova.Api.Models
         {
             return $"QueryModel: (Template: {Template}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
         }
+
+        /// <summary>
+        /// Creates a copy of the model.
+        /// </summary>
+        /// <returns></returns>
+        public QueryModel Copy()
+        {
+            return new QueryModel() { Template = Template, Properties = Properties, Filter = Filter, Size = Size, Sort = Sort, Page = Page};
+        }
     }
 }

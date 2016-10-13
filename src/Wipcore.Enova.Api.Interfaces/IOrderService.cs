@@ -22,8 +22,8 @@ namespace Wipcore.Enova.Api.Interfaces
         BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null);
 
         /// <summary>
-        /// Get a list of identifiers of the valid new shipping statuses for the given order.
+        /// Get a list of identifiers|names of the valid new shipping statuses for the given order.
         /// </summary>
-        IEnumerable<string> GetValidShippingStatuses(EnovaOrder order);
+        IDictionary<string, string> GetValidShippingStatuses(EnovaOrder order, bool includeCurrentStatus);
     }
 }

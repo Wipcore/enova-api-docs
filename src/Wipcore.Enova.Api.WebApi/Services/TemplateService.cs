@@ -60,8 +60,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
             parameters.Filter = SetValue(parameters.Filter, settings, "filter");
 
             parameters.Properties = "_all".Equals(parameters.Properties, StringComparison.CurrentCultureIgnoreCase) ? 
-                GetAllProperties(type) //if keyword "_all" is given, then find all possible properties
-                : SetValue(parameters.Properties, settings, "properties");
+                GetAllProperties(type) ://if keyword "_all" is given, then find all possible properties
+                "_all_custom".Equals(parameters.Properties, StringComparison.CurrentCultureIgnoreCase) ? //if all_custom then only get custom propeties
+                GetAllProperties(type, true) : 
+                SetValue(parameters.Properties, settings, "properties");
 
             return parameters;
         }
@@ -81,9 +83,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <summary>
         /// Get all possible properties on a type.
         /// </summary>
-        private string GetAllProperties(Type type)
+        private string GetAllProperties(Type type, bool onlyCustom = false)
         {
-            var key = "all_properties_" + type.Name;
+            var key = "all_properties_" + type.Name + onlyCustom;
             var cacheValue = _cache.Get(key);
 
             if (cacheValue != null)
@@ -91,27 +93,33 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             //first get any matching mappers
             var properties = _mappers.
-                Where(x => x.MapType == MapType.MapAll || x.MapType == MapType.MapFrom).
+                Where(x => x.MapType == MapType.MapFromAndToEnovaAllowed || x.MapType == MapType.MapFromEnovaAllowed).
                 Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
                 OrderBy(x => x.Priority).SelectMany(x => x.Names).ToList();
 
-            //then get any basic enova properties
-            string tableName;
-            var propertyNames = _contextService.GetContext().GetAllPropertyNames(type, out tableName);
-            var dummy = (BaseObject)EnovaObjectCreationHelper.CreateNew(type, _contextService.GetContext());
-            
-            foreach (var propertyName in propertyNames)
+            if (!onlyCustom)
             {
-                try
+                //then get any basic enova properties
+                string tableName;
+                var propertyNames = _contextService.GetContext().GetAllPropertyNames(type, out tableName);
+                var dummy = (BaseObject)EnovaObjectCreationHelper.CreateNew(type, _contextService.GetContext());
+
+                foreach (var propertyName in propertyNames)
                 {
-                    dummy.GetProperty(propertyName);//making sure none of these properties causes exceptions
-                    properties.Add(propertyName);
-                }
-                catch
-                {
-                    // ignored, just interested in getting those that work
+                    try
+                    {
+                        dummy.GetProperty(propertyName);//making sure none of these properties causes exceptions
+                        properties.Add(propertyName);
+                    }
+                    catch
+                    {
+                        // ignored, just interested in getting those that work
+                    }
                 }
             }
+
+            //make sure they are unique
+            properties = properties.Distinct().ToList();
             
             var propertiesString = String.Join(",", properties);
             _cache.Set(key, propertiesString, DateTime.Now.AddDays(1));

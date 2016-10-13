@@ -42,5 +42,24 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             return _objectService.Get<EnovaSystemText>(requestContext, query, identifier);
         }
+
+        /// <summary>
+        /// Get a systemtext specified by id. 
+        /// </summary>
+        [HttpGet("id-{id}")]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaSystemText>(requestContext, query, id);
+        }
+
+        /// <summary>
+        /// Create or update a systemtext.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaSystemText>(requestContext, values);
+        }
     }
 }

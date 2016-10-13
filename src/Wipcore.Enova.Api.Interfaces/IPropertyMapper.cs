@@ -49,8 +49,8 @@ namespace Wipcore.Enova.Api.Interfaces
 
     public enum MapType
     {
-        MapTo, //mapping to enova, ie saving a property
-        MapFrom, //mapping from enova, ie querying
-        MapAll //map both from and to enova
+        MapToEnovaAllowed, //mapping to enova, ie saving a property
+        MapFromEnovaAllowed, //mapping from enova, ie querying
+        MapFromAndToEnovaAllowed //map both from and to enova
     }
 }

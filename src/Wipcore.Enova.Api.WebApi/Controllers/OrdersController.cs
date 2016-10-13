@@ -61,18 +61,34 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get an order specified by id.
+        /// </summary>
+        [HttpGet("id-{id}")]
+        [Authorize]
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]QueryModel query, int id)
+        {
+            var order = _objectService.Get<EnovaOrder>(requestContext, query, id);
+
+            if (!_authService.AuthorizeAccess(EnovaOrder.Find(_contextService.GetContext(), id).Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
+
+            return order;
+        }
+
+        /// <summary>
         /// Get valid new shipping statuses for an order.
         /// </summary>
         [HttpGet("{identifier}/ValidStatusChanges")]
+        [HttpGet("id-{id}/ValidStatusChanges")]
         [Authorize]
-        public IEnumerable<string> ValidShippingMoves([FromUri]ContextModel requestContext, string identifier)
+        public IDictionary<string, string> ValidShippingMoves([FromUri]ContextModel requestContext, string identifier = null, int id = 0, bool includeCurrentStatus = false)
         {
-            var order = EnovaOrder.Find(_contextService.GetContext(), identifier);
+            var order = String.IsNullOrEmpty(identifier) ? EnovaOrder.Find(_contextService.GetContext(), id) : EnovaOrder.Find(_contextService.GetContext(), identifier);
 
             if (!_authService.AuthorizeAccess(order.Customer?.Identifier))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
 
-            return _orderService.GetValidShippingStatuses(order);
+            return _orderService.GetValidShippingStatuses(order, includeCurrentStatus);
         }
 
         /// <summary>
@@ -82,6 +98,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {
             return _orderService.SaveOrder(cart);
+        }
+
+        /// <summary>
+        /// Create or update an order.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaOrder>(requestContext, values);
         }
     }
 }

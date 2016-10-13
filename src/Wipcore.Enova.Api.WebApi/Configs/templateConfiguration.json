@@ -133,5 +133,15 @@
     "default": {
       "properties": "Identifier,Name,Street,PostalAddress,PostalCode,City,State,CountryName,Phone,Mobile,Email,Url,OrgNumber,CoAddress"
     }
+  },
+  "enovaglobalsystemsettings": {
+    "default": {
+      "properties": "Identifier,Value,ValueString,ValueInteger,ValueDateTime,ValueBoolean,ValueFloat,ValueMoney"
+    }
+  },
+  "enovalocalsystemsettings": {
+    "default": {
+      "properties": "Identifier,Value"
+    }
   }
 }

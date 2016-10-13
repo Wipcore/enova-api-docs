@@ -60,17 +60,22 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         }
 
         /// <summary>
-        /// Get a list of identifiers of the valid new shipping statuses for the given order.
+        /// Get a list of identifiers|names of the valid new shipping statuses for the given order.
         /// </summary>
-        public IEnumerable<string> GetValidShippingStatuses(EnovaOrder order)
+        public IDictionary<string, string> GetValidShippingStatuses(EnovaOrder order, bool includeCurrentStatus)
         {
             var currentStatus = order.ShippingStatus?.Identifier;
-            if(currentStatus == null)
-                return new List<string>();
+            if (currentStatus == null)
+                return new Dictionary<string, string>();
 
             var context = _contextService.GetContext();
-            var destinations = context.Search<EnovaConfigShippingStatusRule>("Allow = 1 AND Enabled = 1 AND SourceStatus = "+currentStatus).Select(x => x.DestinationStatus);
-            return destinations;
+            var destinations = context.Search<EnovaConfigShippingStatusRule>("Allow = 1 AND Enabled = 1 AND SourceStatus = "+currentStatus).Select(x => x.DestinationStatus).ToList();
+
+            if(includeCurrentStatus)
+                destinations.Add(order.ShippingStatus.Identifier);
+
+            var statuses = context.FindObjects<EnovaShippingStatus>(destinations).Where(x => x != null).ToDictionary(k => k.Identifier, v => v.Name);
+            return statuses;
         }
 
         /// <summary>
@@ -175,7 +180,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             if (!enovaOrder.IsBeingEdited)
                 enovaOrder.Edit();
 
-            model.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(enovaOrder, model.AdditionalValues);
+            _mappingToEnovaService.MapToEnovaObject(enovaOrder, model.AdditionalValues);
             model.Customer = enovaOrder.Customer?.Identifier;
             var mappedRows = new List<CalculatedCartRowModel>();
             
@@ -190,7 +195,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 row.Type = RowType.Product;
                 row.Name = orderItem.Name;
 
-                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
                 mappedRows.Add(row);
             }
 
@@ -205,7 +210,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 row.Type = RowType.Shipping;
                 row.Name = orderItem.Name;
 
-                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
                 mappedRows.Add(row);
             }
 
@@ -220,7 +225,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 row.Type = RowType.Payment;
                 row.Name = orderItem.Name;
 
-                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
                 mappedRows.Add(row);
             }
 
@@ -235,7 +240,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 row.Type = RowType.Promo;
                 row.Name = orderItem.Name;
 
-                row.AdditionalValues = _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
+                _mappingToEnovaService.MapToEnovaObject(orderItem, row.AdditionalValues);
                 mappedRows.Add(row);
             }
 

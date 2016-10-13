@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Fasterflect;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.WebApi;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.Enova.Api.WebApi.Mappers
+namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 {
     /// <summary>
     /// Maps the order sum for a order, with and without tax.
@@ -24,13 +19,13 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
             _contextService = contextService;
         }
 
-        public List<string> Names => new List<string>() { "SumInclTax", "SumExclTax" };
+        public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax" };
         public Type CmoType => typeof (CmoEnovaOrder);
         public Type Type => typeof (EnovaOrder);
         public bool InheritMapper => true;
 
         public int Priority => 0;
-        public MapType MapType => MapType.MapFrom;
+        public MapType MapType => MapType.MapFromEnovaAllowed;
 
         public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
@@ -46,8 +41,8 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
             double currencyFactor;
             var sum = order.GetSum(out taxAmount, out decimals, ref currency, out currencyFactor);
 
-            if (String.Equals(propertyName, "SumExclTax", StringComparison.InvariantCultureIgnoreCase))
-                return sum - taxAmount;
+            if (String.Equals(propertyName, "TotalPriceInclTax", StringComparison.InvariantCultureIgnoreCase))
+                return sum + taxAmount;
 
             return sum;
         }
@@ -60,7 +55,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
             if (cmoContext == null)
                 cmoContext = context.GetCmoContext();
             var order = (CmoEnovaOrder) obj;
-            var includeTax = String.Equals(propertyName, "SumExclTax", StringComparison.InvariantCultureIgnoreCase);
+            var includeTax = String.Equals(propertyName, "TotalPriceInclTax", StringComparison.InvariantCultureIgnoreCase);
 
             var sum = order.GetSum(cmoContext, out decimals, ref currency, includeTax, true);
             return sum;

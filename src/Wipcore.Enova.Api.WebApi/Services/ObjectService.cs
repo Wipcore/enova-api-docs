@@ -144,12 +144,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
             else
                 obj.Edit();
 
-            var resultingObject = _mappingToEnovaService.MapToEnovaObject(obj, values);
+            _mappingToEnovaService.MapToEnovaObject(obj, values);
             obj.Save();
 
             _logger.LogInformation("{0} {1} object with Identifier: {2} of Type: {3} with Values: {4}", _authService.LogUser(), newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
 
-            return resultingObject;
+            var changedObject = context.FindObject<T>(obj.ID);//reget from enova to get any changes made
+            return _mappingFromEnovaService.MapFromEnovaObject(changedObject, String.Join(",",values.Select(x => x.Key)));//remap to get changed values
         }
 
         private bool IsMemoryObject(Type derivedType)

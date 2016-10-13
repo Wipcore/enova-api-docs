@@ -43,5 +43,25 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             return _objectService.Get<EnovaCustomerGroup>(requestContext, query, identifier);
         }
+
+        /// <summary>
+        /// Get a customergroup specified by id. 
+        /// </summary>
+        [HttpGet("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaCustomerGroup>(requestContext, query, id);
+        }
+
+        /// <summary>
+        /// Create or update a customergroup.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaCustomerGroup>(requestContext, values);
+        }
     }
 }

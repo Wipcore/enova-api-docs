@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Wipcore.Library;
 
 namespace Wipcore.Enova.Api.WebApi.Helpers
 {
@@ -41,13 +39,13 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
             return pair.Key.ToLower() == "additionalvalues" && pair.Value is JObject;
         }
 
-        public static T GetOrDefault<T>(this IDictionary<string, object> values, string key)
+        public static T GetOrDefault<T>(this IDictionary<string, object> values, string key, object defaultValue = null)
         {
             object value;
             if (values.TryGetValue(key, out value))
                 return (T)Convert.ChangeType(value, typeof(T));
 
-            return default(T);
+            return defaultValue == null ? default(T) : (T)Convert.ChangeType(defaultValue, typeof(T));
         }
     }
 }
