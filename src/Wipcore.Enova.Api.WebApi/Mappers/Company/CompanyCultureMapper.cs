@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
+namespace Wipcore.eNova.Api.WebApi.Mappers
 {
-    public class CustomerPasswordMapper : IPropertyMapper
+    public class CompanyCultureMapper : IPropertyMapper
     {
-        public List<string> Names => new List<string>() { "UserPassword" };
-        public Type Type => typeof(EnovaCustomer);
+        public List<string> Names => new List<string>() { "Country" };
+        public Type Type => typeof(EnovaCompany);
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
@@ -19,17 +17,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
-            return String.Empty; //passwords can't be retrived
+            var company = (EnovaCompany)obj;
+            return company.CountryIsoCode;
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            if(value == null)
-                return;
-
-            var customer = (EnovaCustomer) obj;
-            customer.Password = value.ToString();
+            var company = (EnovaCompany)obj;
+            var country = EnovaCountry.Find(company.GetContext(), value.ToString());
+            company.CountryIsoCode = country.Identifier;
+            company.CountryName = country.Name;
         }
-     
     }
 }

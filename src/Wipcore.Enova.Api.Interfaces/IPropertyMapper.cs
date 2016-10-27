@@ -29,12 +29,12 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <summary>
         /// Map a property from given object.
         /// </summary>
-        object MapFromEnovaProperty(BaseObject obj, string propertyName);
+        object GetEnovaProperty(BaseObject obj, string propertyName);
 
         /// <summary>
         /// Map a property to given object.        
         /// </summary>
-        void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues);
+        void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues);
 
         /// <summary>
         /// Higher number, higher priority for choosing which mapper to use.

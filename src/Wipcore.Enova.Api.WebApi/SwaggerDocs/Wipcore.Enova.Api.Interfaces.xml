@@ -260,12 +260,12 @@
             True if a derived class can use this mapper to map its property. Usually true.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Interfaces.IPropertyMapper.MapFromEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String)">
+        <member name="M:Wipcore.Enova.Api.Interfaces.IPropertyMapper.GetEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String)">
             <summary>
             Map a property from given object.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Interfaces.IPropertyMapper.MapToEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String)">
+        <member name="M:Wipcore.Enova.Api.Interfaces.IPropertyMapper.SetEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String)">
             <summary>
             Map a property to given object.        
             </summary>

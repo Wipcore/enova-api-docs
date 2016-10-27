@@ -17,7 +17,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var customer = (EnovaCustomer) obj;
             if (propertyName.Equals("Taxrule", StringComparison.InvariantCultureIgnoreCase))
@@ -28,7 +28,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
             return customer.Country?.Identifier;
         }
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var customer = (EnovaCustomer)obj;
             if(propertyName.Equals("Taxrule", StringComparison.InvariantCultureIgnoreCase))

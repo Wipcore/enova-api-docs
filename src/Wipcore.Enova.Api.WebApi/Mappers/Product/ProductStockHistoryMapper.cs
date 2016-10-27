@@ -18,11 +18,11 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
         }
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var context = obj.GetContext();
             var searchExpression = String.Format("ProductID='{0}'", obj.ID);

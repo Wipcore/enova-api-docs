@@ -16,7 +16,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var group = (EnovaCustomerGroup) obj;
             return group.GetUsers(typeof (EnovaCustomer)).Cast<EnovaCustomer>().Select(x => new
@@ -25,7 +25,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
             });
         }
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var group = (EnovaCustomerGroup)obj;
             var context = obj.GetContext();

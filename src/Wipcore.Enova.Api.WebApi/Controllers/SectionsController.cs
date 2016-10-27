@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Controllers;
 using Wipcore.Enova.Core;
 
@@ -43,6 +45,15 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get a section specified by id. 
+        /// </summary>
+        [HttpGet("id-{id}")]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaBaseProductSection>(requestContext, query, id);
+        }
+
+        /// <summary>
         /// Get children sections for section specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/children")]
@@ -52,6 +63,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _objectService.Get<EnovaBaseProductSection>(requestContext, query, children);
         }
 
+
         /// <summary>
         /// Get connected products for section specified by identifier.
         /// </summary>
@@ -60,6 +72,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             var items = _sectionService.GetProducts(identifier);
             return _objectService.Get<EnovaBaseProduct>(requestContext, query, items);
+        }
+
+        /// <summary>
+        /// Create or update a section.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaBaseProductSection>(requestContext, values);
         }
     }
 }

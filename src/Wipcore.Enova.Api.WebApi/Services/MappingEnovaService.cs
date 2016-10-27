@@ -50,7 +50,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             foreach (var property in properties.Split(','))
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFromEnovaAllowed);
-                var value = mapper != null ? mapper.MapFromEnovaProperty(obj, property) : MapProperty(property, obj);
+                var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);
                 dynamicObject.Add(property, value);
             }
             return dynamicObject;
@@ -69,7 +69,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var mapper = GetMapper(obj.GetType(), property.Key, MapType.MapToEnovaAllowed);
                 if (mapper != null)
                 {
-                    mapper.MapToEnovaProperty(obj, property.Key, property.Value, values);
+                    mapper.SetEnovaProperty(obj, property.Key, property.Value, values);
                 }
                     //if it is a sub dictionary with additional values, from a dezerialized model for example, then map them the same way
                 else if (property.IsAdditionalValuesKey())
@@ -82,8 +82,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     obj.SetProperty(property.Key, property.Value);
                 }
             }
-
-            //return MapFromEnovaObject(obj, String.Join(",", values.Select(x => x.Key)));//remap to get changed values
         }
 
         private bool IsSettableEnovaProperty(Type type, string propertyName)

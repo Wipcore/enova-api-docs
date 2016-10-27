@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Core;
+
+namespace Wipcore.eNova.Api.WebApi.Mappers.Section
+{
+    public class SectionProdctsMapper : IPropertyMapper
+    {
+        public List<string> Names => new List<string>() { "Products" };
+        public Type Type => typeof(EnovaBaseProductSection);
+        public bool InheritMapper => true;
+        public int Priority => 0;
+        public MapType MapType => MapType.MapFromAndToEnovaAllowed;
+
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        {
+            var section = (EnovaBaseProductSection)obj;
+            
+            return section?.Items.OfType<EnovaBaseProduct>().Select(x => new {ID = x.ID, Identifier = x.Identifier, Name = x.Name, MarkForDelete = false});
+        }
+
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        {
+            var section = (EnovaBaseProductSection)obj;
+
+            var productModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { Identifier = "", MarkForDelete = false } });
+
+            foreach (var productModel in productModels)
+            {
+                var product = EnovaBaseProduct.Find(section.GetContext(), productModel.Identifier);
+                if (productModel.MarkForDelete)
+                {
+
+                    if (section.HasItem(product))
+                        section.RemoveItem(product);
+                }
+                else
+                {
+                    if (!section.HasItem(product))
+                        section.AddItem(product);
+                }
+            }
+        }
+    }
+
+}

@@ -12,8 +12,8 @@ namespace Wipcore.Enova.Api.Interfaces
     {
 
         private readonly IExceptionService _exceptionService;
-        
-        public EnovaApiController(IExceptionService exceptionService)
+
+        protected EnovaApiController(IExceptionService exceptionService)
         {
             _exceptionService = exceptionService;
         }
@@ -34,8 +34,7 @@ namespace Wipcore.Enova.Api.Interfaces
         {
             if (context.Exception != null)//handle any exception caused by action executed
             {
-                var exceptionService = _exceptionService;
-                exceptionService.HandleControllerException(context);
+                _exceptionService.HandleControllerException(context);
             }
 
             base.OnActionExecuted(context);

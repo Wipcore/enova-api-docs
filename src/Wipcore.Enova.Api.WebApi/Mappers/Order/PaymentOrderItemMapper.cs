@@ -20,7 +20,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public Type Type => typeof(EnovaOrder);
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             Currency currency;
             var order = (EnovaOrder)obj;
@@ -42,7 +42,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             return orderItems.FirstOrDefault();
         }
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             throw new NotImplementedException();
         }

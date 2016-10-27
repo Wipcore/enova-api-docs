@@ -21,7 +21,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public Type Type => typeof(EnovaBaseProduct);
 
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var product = (EnovaBaseProduct)obj;
             var priceLists = product.GetPriceLists<EnovaPriceList>();
@@ -49,7 +49,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
             return prices;
         }
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             //throw new NotImplementedException();
         }

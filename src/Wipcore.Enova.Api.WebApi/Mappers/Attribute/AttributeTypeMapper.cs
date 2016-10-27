@@ -24,7 +24,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var context = _context.GetContext();
             var type = (EnovaAttributeType)obj;
@@ -53,7 +53,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
             }
         }
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var type = (EnovaAttributeType) obj;
             var values = type.Values.Cast<EnovaAttributeValue>().Select(x => new

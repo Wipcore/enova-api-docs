@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Controllers;
 using Wipcore.Enova.Core;
 
@@ -35,9 +37,30 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get a company specified by identifier. 
         /// </summary>
         [HttpGet("{identifier}")]
+        [Authorize(Roles = AuthService.AdminRole)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
             return _objectService.Get<EnovaCompany>(requestContext, query, identifier);
+        }
+
+        /// <summary>
+        /// Get a company specified by id. 
+        /// </summary>
+        [HttpGet("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri]QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaCompany>(requestContext, query, id);
+        }
+
+        /// <summary>
+        /// Create or update a company.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaCompany>(requestContext, values);
         }
     }
 }

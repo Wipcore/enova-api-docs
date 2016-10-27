@@ -27,12 +27,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             throw new NotImplementedException();
         }
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var order = (EnovaOrder) obj;
             decimal taxAmount;

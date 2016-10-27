@@ -21,7 +21,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var pricelist = (EnovaPriceList)obj;
             var context = obj.GetContext();
@@ -54,7 +54,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
             }
         }
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var pricelist = (EnovaPriceList) obj;
             var products = pricelist.GetProducts(typeof (EnovaBaseProduct)).Cast<EnovaBaseProduct>();

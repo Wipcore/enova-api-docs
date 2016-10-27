@@ -604,7 +604,7 @@
             A HttpException with statuscode and message.
             </summary>
         </member>
-        <member name="T:Wipcore.Enova.Api.WebApi.Mappers.AddressTypeMapper">
+        <member name="T:Wipcore.Enova.Api.WebApi.Mappers.CustomerAddressTypeMapper">
             <summary>
             Maps addresstype enum for a customer address.
             </summary>

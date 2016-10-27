@@ -29,7 +29,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
-        public void MapToEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             if (String.Equals(propertyName, "IsOwner", StringComparison.InvariantCultureIgnoreCase))
                 return;
@@ -74,7 +74,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             }
         }
 
-        public object MapFromEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var product = (EnovaBaseProduct)obj;
             var family = product.GetVariantFamily(true, true);
