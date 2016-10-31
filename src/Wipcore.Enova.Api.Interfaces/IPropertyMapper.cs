@@ -45,6 +45,11 @@ namespace Wipcore.Enova.Api.Interfaces
         /// Which sort of mapping this mapper handles.
         /// </summary>
         MapType MapType { get; }
+
+        /// <summary>
+        /// Set to true if this property should be mapped -after- the object is saved instead of before.
+        /// </summary>
+        bool PostSaveSet { get; }
     }
 
     public enum MapType

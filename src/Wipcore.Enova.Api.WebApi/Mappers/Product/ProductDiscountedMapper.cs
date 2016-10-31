@@ -16,6 +16,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
     /// </summary>
     public class ProductDiscountedMapper : IPropertyMapper, ICmoProperty
     {
+        public bool PostSaveSet => false;
         private readonly ObjectCache _cache;
         private readonly IContextService _contextService;
 

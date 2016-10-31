@@ -15,6 +15,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
     /// </summary>
     public class SectionParentMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "Parent" };
         public Type Type => typeof(EnovaBaseProductSection);
         public bool InheritMapper => true;

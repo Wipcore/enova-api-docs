@@ -18,6 +18,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
             _context = context;
         }
 
+        public bool PostSaveSet => false;
+
         public List<string> Names => new List<string>() {"Values"};
         public Type Type => typeof (EnovaAttributeType);
         public bool InheritMapper => true;

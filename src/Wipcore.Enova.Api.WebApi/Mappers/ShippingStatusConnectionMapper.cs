@@ -13,6 +13,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
 {
     public class ShippingStatusConnectionMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "DestinationStatuses", "ArrivalStatuses" };
         public Type Type => typeof(EnovaShippingStatus);
         public bool InheritMapper => true;

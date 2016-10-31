@@ -12,6 +12,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
     /// </summary>
     public class ProductPromoMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() {"Promos" };
         public Type Type => typeof (EnovaBaseProduct);
         public bool InheritMapper => true;

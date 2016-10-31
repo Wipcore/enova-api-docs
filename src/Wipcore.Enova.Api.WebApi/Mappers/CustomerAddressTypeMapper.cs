@@ -18,6 +18,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
+        public bool PostSaveSet => false;
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {

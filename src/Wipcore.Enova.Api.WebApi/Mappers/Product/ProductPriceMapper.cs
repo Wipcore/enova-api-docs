@@ -12,7 +12,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
     /// </summary>
     public class ProductPriceExclTaxMapper : IPropertyMapper, ICmoProperty
     {
-        
+        public bool PostSaveSet => false;
         public bool InheritMapper => true;
 
         public int Priority => 0;

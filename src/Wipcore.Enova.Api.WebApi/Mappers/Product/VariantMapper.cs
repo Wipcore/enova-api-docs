@@ -15,6 +15,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
     /// </summary>
     public class VariantMapper : IPropertyMapper, ICmoProperty
     {
+        public bool PostSaveSet => false;
         private readonly IProductService _productService;
 
         public VariantMapper(IProductService productService)

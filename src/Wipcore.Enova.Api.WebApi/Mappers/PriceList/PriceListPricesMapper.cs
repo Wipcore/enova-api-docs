@@ -15,6 +15,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
     /// </summary>
     public class PriceListPriceMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() {"PricesInclTax","PricesExclTax", "ProductPrices" };
         public Type Type => typeof (EnovaPriceList);
         public bool InheritMapper => true;

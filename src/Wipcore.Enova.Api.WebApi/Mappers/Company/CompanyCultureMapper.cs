@@ -8,6 +8,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
 {
     public class CompanyCultureMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "Country" };
         public Type Type => typeof(EnovaCompany);
         public bool InheritMapper => true;

@@ -20,6 +20,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
+        public bool PostSaveSet => false;
+
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             if (value == null)

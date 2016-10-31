@@ -19,6 +19,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
     /// </summary>
     public class ProductStockMapper : IPropertyMapper, ICmoProperty
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() {"TotalStock", "TotalReserved", "Compartments" };
         public Type CmoType => typeof (CmoEnovaBaseProduct);
         public Type Type => typeof (EnovaBaseProduct);

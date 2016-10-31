@@ -8,6 +8,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
 {
     public class PriceListCurrencyMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "Currency"};
         public Type Type => typeof(EnovaPriceList);
         public bool InheritMapper => true;

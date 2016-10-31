@@ -11,6 +11,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
 {
     public class PriceListGroupMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         private readonly IContextService _contextService;
 
         public PriceListGroupMapper(IContextService contextService)

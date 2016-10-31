@@ -9,8 +9,8 @@ namespace Wipcore.Enova.Api.Interfaces
     public interface IMappingToEnovaService
     {
         /// <summary>
-        /// Maps given properties in dictionary to the given enova object.
+        /// Maps given properties in dictionary to the given enova object. Returns mappers that must be set after object is saved.
         /// </summary>
-        void MapToEnovaObject(BaseObject obj, IDictionary<string, object> values);
+        List<Action> MapToEnovaObject(BaseObject obj, IDictionary<string, object> values, List<Action> delayedMappers = null);
     }
 }

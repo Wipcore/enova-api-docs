@@ -11,6 +11,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 {
     public class PromoOrderItemMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public bool InheritMapper => true;
 
         public int Priority => 0;

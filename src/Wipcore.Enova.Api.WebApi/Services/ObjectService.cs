@@ -144,8 +144,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
             else
                 obj.Edit();
 
-            _mappingToEnovaService.MapToEnovaObject(obj, values);
+            var postSaveMappers = _mappingToEnovaService.MapToEnovaObject(obj, values);
             obj.Save();
+            
+            postSaveMappers?.ForEach(x => x.Invoke());
 
             _logger.LogInformation("{0} {1} object with Identifier: {2} of Type: {3} with Values: {4}", _authService.LogUser(), newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
 

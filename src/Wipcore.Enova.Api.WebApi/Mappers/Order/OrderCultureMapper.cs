@@ -13,7 +13,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
-
+        public bool PostSaveSet => false;
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {

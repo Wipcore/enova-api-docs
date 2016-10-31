@@ -11,6 +11,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 {
     public class ProductPriceListMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public bool InheritMapper => true;
 
         public int Priority => 0;

@@ -13,6 +13,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
 {
     public class PromoConditionsMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "Conditions" };
         public Type Type => typeof(EnovaPromo);
         public bool InheritMapper => true;

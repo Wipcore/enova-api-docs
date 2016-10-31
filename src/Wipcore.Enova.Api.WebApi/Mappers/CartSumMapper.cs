@@ -22,6 +22,8 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
             _contextService = contextService;
         }
 
+        public bool PostSaveSet => false;
+
         public List<string> Names => new List<string>() { "SumInclTax", "SumExclTax" };
         public Type CmoType => typeof (CmoEnovaCart);
         public Type Type => typeof (EnovaCart);

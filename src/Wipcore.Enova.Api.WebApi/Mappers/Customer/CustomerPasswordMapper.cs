@@ -10,6 +10,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
 {
     public class CustomerPasswordMapper : IPropertyMapper
     {
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "UserPassword" };
         public Type Type => typeof(EnovaCustomer);
         public bool InheritMapper => true;

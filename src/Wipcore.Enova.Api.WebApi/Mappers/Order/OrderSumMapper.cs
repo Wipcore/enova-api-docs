@@ -18,7 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         {
             _contextService = contextService;
         }
-
+        public bool PostSaveSet => false;
         public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax" };
         public Type CmoType => typeof (CmoEnovaOrder);
         public Type Type => typeof (EnovaOrder);
