@@ -13,6 +13,7 @@ using Fasterflect;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
@@ -20,13 +21,15 @@ namespace Wipcore.Enova.Api.WebApi.Services
     {
         private readonly IConfigurationRoot _configuration;
         private readonly IEnumerable<IPropertyMapper> _mappers;
+        private readonly IContextService _contextService;
         private readonly ConcurrentDictionary<string, IPropertyMapper> _resolvedMappers = new ConcurrentDictionary<string, IPropertyMapper>();
         private readonly ConcurrentDictionary<string, bool> _settableEnovaProperties = new ConcurrentDictionary<string, bool>();
 
-        public MappingEnovaService(IConfigurationRoot configuration, IEnumerable<IPropertyMapper> mappers)
+        public MappingEnovaService(IConfigurationRoot configuration, IEnumerable<IPropertyMapper> mappers, IContextService contextService)
         {
             _configuration = configuration;
             _mappers = mappers;
+            _contextService = contextService;
         }
 
         /// <summary>
@@ -53,6 +56,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);
                 dynamicObject.Add(property, value);
             }
+            
             return dynamicObject;
         }
 
@@ -63,7 +67,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         {
             if (values == null)
                 return delayedMappers;
-
+            
             delayedMappers = delayedMappers ?? new List<Action>();
 
             foreach (var property in values)
@@ -87,6 +91,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     obj.SetProperty(property.Key, property.Value);
                 }
             }
+
+            //orders and carts might need to be recalculated if their rows have changed
+            (obj as EnovaCart)?.Recalculate();
+            (obj as EnovaOrder)?.Recalculate();
 
             return delayedMappers;
         }

@@ -29,6 +29,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             var group = (EnovaCustomerGroup)obj;
             var context = obj.GetContext();
             foreach (var g in value as dynamic)

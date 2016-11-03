@@ -99,7 +99,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             //then override by url specified values
             SetLanguage(enovaContext, requestContext.Language);
             SetCurrency(enovaContext, requestContext.Currency);
-
+            
             return enovaContext;
         }
         

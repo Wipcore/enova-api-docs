@@ -34,6 +34,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             var context = obj.GetContext();
             var status = (EnovaShippingStatus)obj;
 

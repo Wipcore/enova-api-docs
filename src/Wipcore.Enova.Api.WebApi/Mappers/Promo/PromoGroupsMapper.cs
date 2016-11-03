@@ -8,12 +8,12 @@ using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
+namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
 {
-    public class CustomerGroupsMapper : IPropertyMapper
+    public class PromoGroupsMapper : IPropertyMapper
     {
         public List<string> Names => new List<string>() { "Groups" };
-        public Type Type => typeof(EnovaCustomer);
+        public Type Type => typeof(EnovaPromo);
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
@@ -22,16 +22,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var groups = new List<object>();
-            var customer = (EnovaCustomer) obj;
+            var promo = (EnovaPromo) obj;
+            var context = promo.GetContext();
 
-            foreach (var group in customer.Groups.OfType<EnovaCustomerGroup>())
+            foreach (var group in promo.GetObjectsWithSpecificAccess(context, typeof(EnovaCustomerGroup)).Cast<EnovaCustomerGroup>())
             {
                 var customerGroup = new
                 {
                     ID = group.ID,
                     Identifier = group.Identifier,
-                    Name = group.Name,
-                    MarkForDelete = false
+                    Name = group.Name
                 };
                 groups.Add(customerGroup);
             }
@@ -44,18 +44,23 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
             if (value == null)
                 return;
 
-            var customer = (EnovaCustomer)obj;
-            dynamic groups = value;
-            foreach (var g in groups)
-            {
-                var group = (Dictionary<string, object>)JsonConvert.DeserializeObject(g.ToString(), typeof(Dictionary<string, object>));
-                var enovaGroup = EnovaCustomerGroup.Find(obj.GetContext(), group.GetOrDefault<int>("ID"));
+            var promo = (EnovaPromo)obj;
+            var context = promo.GetContext();
 
-                if (group.GetOrDefault<bool>("MarkForDelete"))
-                    enovaGroup.RemoveUser(customer);
-                else if (!enovaGroup.HasUser(customer))
-                    enovaGroup.AddUser(customer);
+            var groups = JsonConvert.DeserializeAnonymousType(value.ToString(), new [] { new {ID = 0, MarkForDelete = false } });
+            foreach (var group in groups)
+            {
+                var customerGroup = EnovaCustomerGroup.Find(context, group.ID);
+                if (group.MarkForDelete == true)
+                {
+                    promo.RemoveSpecificAccess(customerGroup);
+                    continue;
+                }
+
+                if (promo.GetSpecificAccess(customerGroup) < (BaseObject.AccessUse | BaseObject.AccessRead))
+                    promo.SetSpecificAccess(customerGroup, BaseObject.AccessUse | BaseObject.AccessRead);
             }
+
         }
 
         

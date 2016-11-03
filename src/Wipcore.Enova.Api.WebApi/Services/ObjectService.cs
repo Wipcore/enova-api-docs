@@ -17,6 +17,7 @@ using Wipcore.Core;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

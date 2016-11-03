@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.Enova.Api.WebApi.Mappers
+namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 {
     /// <summary>
     /// Maps the cart sum for a cart, with and without tax.
@@ -24,7 +21,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers
 
         public bool PostSaveSet => false;
 
-        public List<string> Names => new List<string>() { "SumInclTax", "SumExclTax" };
+        public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax" };
         public Type CmoType => typeof (CmoEnovaCart);
         public Type Type => typeof (EnovaCart);
         public bool InheritMapper => true;

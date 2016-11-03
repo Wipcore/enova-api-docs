@@ -27,6 +27,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Company
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if(value == null)
+                return;
+
             var context = obj.GetContext();
             var company = (EnovaCompany)obj;
             var userModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new [] {new {ID = 0, MarkForDelete = false} });

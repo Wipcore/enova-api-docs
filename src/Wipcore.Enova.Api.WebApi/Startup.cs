@@ -44,10 +44,13 @@ namespace Wipcore.Enova.Api.WebApi
         {
             Env = env;
             
+            Console.WriteLine("Webroot: "+env.WebRootPath);
+            Console.WriteLine("Content root: " + env.ContentRootPath);
+
             // Set up configuration sources. Key = filename, Value = optional or not
             var jsonConfigs = new Dictionary<string, bool>() { { "appsettings.json" , false}, { "localappsettings.json", true },
                 { "templateConfiguration.json" , false}, { "marketConfiguration.json", false}, { "customsettings.json", true} };
-            _configFolderPath = Path.GetFullPath(Path.Combine(env.WebRootPath, @"..\Configs"));
+            _configFolderPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, @".\Configs"));
             
             var builder = new ConfigurationBuilder();
             jsonConfigs.ForEach(x => builder.AddJsonFile(Path.Combine(_configFolderPath, x.Key), x.Value, reloadOnChange: true));
@@ -58,7 +61,7 @@ namespace Wipcore.Enova.Api.WebApi
 
             _addInFolderPath = Configuration.GetValue<String>("ApiSettings:PathToAddins");
             if (String.IsNullOrEmpty(_addInFolderPath))
-                _addInFolderPath = Path.GetFullPath(Path.Combine(env.WebRootPath, @"..\AddIn"));
+                _addInFolderPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, @".\AddIn"));
 
             StartEnova();
         }

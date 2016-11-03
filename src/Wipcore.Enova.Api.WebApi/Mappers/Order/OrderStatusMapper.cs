@@ -29,6 +29,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             var order = (EnovaOrder)obj;
             var shippingStatus = order.GetContext().FindObject<EnovaShippingStatus>(value.ToString());
             order.ChangeShippingStatus(shippingStatus, null);//TODO maybe insert paymenthandlers by configuration here

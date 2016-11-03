@@ -31,6 +31,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             var customer = (EnovaCustomer)obj;
             if(propertyName.Equals("Taxrule", StringComparison.InvariantCultureIgnoreCase))
                 customer.TaxationRule = EnovaTaxationRule.Find(customer.GetContext(), value.ToString());

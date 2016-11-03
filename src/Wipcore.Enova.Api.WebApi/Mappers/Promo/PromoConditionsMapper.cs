@@ -63,6 +63,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             var context = obj.GetContext();
             var promo = (EnovaPromo)obj;
             var amountCondition = promo.GetConditions(typeof(EnovaOrderAmountPromoCondition)).Cast<EnovaOrderAmountPromoCondition>().FirstOrDefault();

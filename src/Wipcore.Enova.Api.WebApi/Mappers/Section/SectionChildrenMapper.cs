@@ -29,6 +29,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             var section = (EnovaBaseProductSection)obj;
             
             var childrenModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { Identifier = "", MarkForDelete = false } });

@@ -62,7 +62,21 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 
             return cart;
         }
-        
+
+        /// <summary>
+        /// Get a cart specified by id. 
+        /// </summary>
+        [HttpGet("id-{id}")]
+        [Authorize]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            var cart = _objectService.Get<EnovaCart>(requestContext, query, id);
+            if (!_authService.AuthorizeAccess(EnovaCart.Find(_contextService.GetContext(), id).Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
+
+            return cart;
+        }
+
         /// <summary>
         /// Create or update a cart.
         /// </summary>
@@ -70,6 +84,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
         {
             return _cartService.CalculateCart(cart);
+        }
+
+        /// <summary>
+        /// Create or update a cart.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaCart>(requestContext, values);
         }
     }
 }

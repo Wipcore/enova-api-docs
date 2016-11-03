@@ -10,7 +10,7 @@
   },
   "enovaorder": {
     "default": {
-      "properties": "Identifier,FirstName,LastName,Customer.Identifier,SumInclTax"
+      "properties": "Identifier,FirstName,LastName,Customer.Identifier,TotalPriceInclTax"
 
     }
   },
@@ -21,7 +21,7 @@
   },
   "enovacart": {
     "default": {
-      "properties": "Identifier,CustomerComment,Customer.Identifier,SumInclTax"
+      "properties": "Identifier,CustomerComment,Customer.Identifier,TotalPriceInclTax"
     }
   },
   "enovabaseproductsection": {

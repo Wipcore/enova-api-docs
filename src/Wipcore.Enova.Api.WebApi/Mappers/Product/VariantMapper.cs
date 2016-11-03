@@ -32,6 +32,9 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if (value == null)
+                return;
+
             if (String.Equals(propertyName, "IsOwner", StringComparison.InvariantCultureIgnoreCase))
                 return;
             

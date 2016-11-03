@@ -1,40 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers.Order
+namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 {
-    public class OrderCustomerMapper : IPropertyMapper
+    public class CartCustomerMapper : IPropertyMapper
     {
         public List<string> Names => new List<string>() { "CustomerID", "CustomerIdentifier" };
-        public Type Type => typeof(EnovaOrder);
+        public Type Type => typeof(EnovaCart);
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
         public bool PostSaveSet => false;
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
-            var order = (EnovaOrder)obj;
+            var cart = (EnovaCart)obj;
 
             if (propertyName.Equals("CustomerID", StringComparison.InvariantCultureIgnoreCase))
-                return order.Customer?.ID ?? 0;
+                return cart.Customer?.ID ?? 0;
 
-            return order.Customer?.Identifier;
+            return cart.Customer?.Identifier;
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            var order = (EnovaOrder)obj;
-            var context = order.GetContext();
+            var cart = (EnovaCart)obj;
+            var context = cart.GetContext();
 
             if (value == null)
             {
-                order.Customer = null;
+                cart.Customer = null;
                 return;
             }
 
@@ -42,20 +39,20 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             {
                 var id = Convert.ToInt32(value);
                 if (id == 0)
-                    order.Customer = null;
-                else if(order.Customer?.ID != id)
+                    cart.Customer = null;
+                else if(cart.Customer?.ID != id)
                 {
-                    order.Customer = EnovaCustomer.Find(context, id);
+                    cart.Customer = EnovaCustomer.Find(context, id);
                 }
             }
             else
             {
                 var identifier = value.ToString();
                 if (String.IsNullOrEmpty(identifier))
-                    order.Customer = null;
-                else if (order.Customer?.Identifier != identifier)
+                    cart.Customer = null;
+                else if (cart.Customer?.Identifier != identifier)
                 {
-                    order.Customer = EnovaCustomer.Find(context, identifier);
+                    cart.Customer = EnovaCustomer.Find(context, identifier);
                 }
             }
           

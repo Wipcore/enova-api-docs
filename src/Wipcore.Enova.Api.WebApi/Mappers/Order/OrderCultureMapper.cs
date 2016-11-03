@@ -17,20 +17,20 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
-            var customer = (EnovaOrder) obj;
+            var order = (EnovaOrder) obj;
             if (propertyName.Equals("Currency", StringComparison.InvariantCultureIgnoreCase))
-                return customer.Currency?.Identifier;
+                return order.Currency?.Identifier;
 
-            return customer.Country?.Identifier;
+            return order.Country?.Identifier;
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            var customer = (EnovaOrder)obj;
+            var order = (EnovaOrder)obj;
             if (propertyName.Equals("Currency", StringComparison.InvariantCultureIgnoreCase))
             { /*don't set */}
             else
-                customer.Country = EnovaCountry.Find(customer.GetContext(), value.ToString());
+                order.Country = value == null ? null : EnovaCountry.Find(order.GetContext(), value.ToString());
         }
     }
 }

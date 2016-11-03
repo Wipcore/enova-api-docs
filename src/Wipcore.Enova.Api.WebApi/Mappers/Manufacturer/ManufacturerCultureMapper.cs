@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Manufacturer
 {
@@ -26,9 +27,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Manufacturer
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var manufacturer = (EnovaManufacturer)obj;
-            var country = EnovaCountry.Find(manufacturer.GetContext(), value.ToString());
-            manufacturer.CountryIsoCode = country.Identifier;
-            manufacturer.CountryName = country.Name;
+            var country = obj.GetContext().FindObject<EnovaCountry>(value?.ToString());
+            manufacturer.CountryIsoCode = country?.Identifier;
+            manufacturer.CountryName = country?.Name;
         }
 
     }

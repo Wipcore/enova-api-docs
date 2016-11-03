@@ -26,6 +26,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Manufacturer
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if(value == null)
+                return;
+
             var context = obj.GetContext();
             var manufacturer = (EnovaManufacturer)obj;
             var productModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { ID = 0, MarkForDelete = false } });

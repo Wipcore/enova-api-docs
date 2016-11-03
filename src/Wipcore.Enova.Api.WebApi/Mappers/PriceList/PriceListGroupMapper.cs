@@ -27,6 +27,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if(value == null)
+                return;
+
             var priceList = (EnovaPriceList)obj;
             var context = _contextService.GetContext();
             foreach (var i in value as dynamic)

@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Core;
-using Wipcore.Enova.Generics;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
+namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 {
-    public class PriceListCurrencyMapper : IPropertyMapper
+    public class CartPromoCodeMapper : IPropertyMapper
     {
-        public bool PostSaveSet => false;
-        public List<string> Names => new List<string>() { "Currency"};
-        public Type Type => typeof(EnovaPriceList);
+        public List<string> Names => new List<string>() { "PromoCode" };
+        public Type Type => typeof(EnovaCart);
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
-
+        public bool PostSaveSet => false;
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
-            var pricelist = (EnovaPriceList) obj;
-            return pricelist.Currency?.Identifier;
+            return String.Empty;
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            var pricelist = (EnovaPriceList)obj;
-            pricelist.Currency = obj.GetContext().FindObject<EnovaCurrency>(value?.ToString());
+            if(value == null)
+                return;
+
+            var context = obj.GetContext();
+            context.UnlockCampaigns(value.ToString());
         }
     }
 }

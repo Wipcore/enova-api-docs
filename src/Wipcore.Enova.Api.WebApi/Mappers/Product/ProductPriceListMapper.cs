@@ -52,7 +52,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
