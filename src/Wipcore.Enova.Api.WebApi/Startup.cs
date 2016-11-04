@@ -186,7 +186,7 @@ namespace Wipcore.Enova.Api.WebApi
         
         private void ConfigureSwagger(IServiceCollection services)
         {
-            _swaggerDocsFolderPath = Configuration.GetValue<string>("ApiSettings:PathToSwaggerDocs", Path.GetFullPath(Env.WebRootPath + @"\..\SwaggerDocs"));
+            _swaggerDocsFolderPath = Configuration.GetValue<string>("ApiSettings:PathToSwaggerDocs", Path.GetFullPath(Env.ContentRootPath + @".\SwaggerDocs"));
             var docFilePaths = Directory.Exists(_swaggerDocsFolderPath) ? Directory.GetFiles(_swaggerDocsFolderPath, "*.xml").ToList() : new List<string>();
             
             if(!docFilePaths.Any())
@@ -225,6 +225,7 @@ namespace Wipcore.Enova.Api.WebApi
             logger.LogInformation("Reading addin files from: {0}", _addInFolderPath);
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
                 logger.LogInformation("Reading swagger docs from: {0}", _swaggerDocsFolderPath);
+            logger.LogInformation("Connecting to Enova with: {0}", EnovaSystemFacade.Current.Settings.DatabaseConnection);
         }
         
         private void LoadAddinAssemblies(List<Assembly> assemblies, List<IEnovaApiModule> autofacModules)

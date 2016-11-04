@@ -109,5 +109,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             return _objectService.Save<EnovaOrder>(requestContext, values);
         }
+
+        /// <summary>
+        /// Delete an order. Note: it is usually better to put it in scrap status.
+        /// </summary>
+        [HttpDelete("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Delete(int id)
+        {
+            var success = _objectService.Delete<EnovaOrder>(id);
+            if (!success)
+                throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
+
+        /// <summary>
+        /// Delete an order. Note: it is usually better to put it in scrap status.
+        /// </summary>
+        [HttpDelete("{identifier}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Delete(string identifier)
+        {
+            var success = _objectService.Delete<EnovaOrder>(identifier);
+            if (!success)
+                throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
     }
 }

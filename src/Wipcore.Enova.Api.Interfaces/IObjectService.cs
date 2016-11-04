@@ -9,7 +9,7 @@ using Wipcore.Enova.Api.Models.Interfaces;
 namespace Wipcore.Enova.Api.Interfaces
 {
     /// <summary>
-    /// Service for getting and saving objects to Enova.
+    /// Service for getting, deleting and saving objects to Enova.
     /// </summary>
     public interface IObjectService
     {
@@ -52,5 +52,15 @@ namespace Wipcore.Enova.Api.Interfaces
         /// <param name="values">Properties to save on the object.</param>
         /// <returns></returns>
         IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject; 
+
+        /// <summary>
+        /// Deletes an object of type T and given id from Enova. Returns true if successfull.
+        /// </summary>
+        bool Delete<T>(int id) where T : BaseObject;
+
+        /// <summary>
+        /// Deletes an object of type T and given identifier from Enova. Returns true if successfull.
+        /// </summary>
+        bool Delete<T>(string identifier) where T : BaseObject;
     }
 }

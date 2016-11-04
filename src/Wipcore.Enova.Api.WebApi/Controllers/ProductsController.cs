@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,6 +12,7 @@ using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.OAuth;
+using Wipcore.Enova.Api.WebApi.Helpers;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -100,6 +102,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _objectService.Save<EnovaBaseProduct>(requestContext, values);
         }
 
+        /// <summary>
+        /// Delete a product.
+        /// </summary>
+        [HttpDelete("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Delete(int id)
+        {
+            var success = _objectService.Delete<EnovaBaseProduct>(id);
+            if (!success)
+                throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
+
+        /// <summary>
+        /// Delete a product.
+        /// </summary>
+        [HttpDelete("{identifier}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Delete(string identifier)
+        {
+            var success = _objectService.Delete<EnovaBaseProduct>(identifier);
+            if (!success)
+                throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
 
     }
 }

@@ -50,11 +50,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _httpAccessor.HttpContext.Items[ContextConstants.EnovaContextKey] = enovaContext;
 
             var requestContext = _httpAccessor.HttpContext.Items[ContextConstants.ContextModelKey] as ContextModel;
-            if (requestContext == null)
-                return enovaContext;
             
             //first read any values from market configuration
-            if (!String.IsNullOrEmpty(requestContext.Market))
+            if (!String.IsNullOrEmpty(requestContext?.Market))
             {
                 var config = _configuration.GetSection(requestContext.Market);
 
@@ -96,10 +94,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 }
             }
             
-            //then override by url specified values
-            SetLanguage(enovaContext, requestContext.Language);
-            SetCurrency(enovaContext, requestContext.Currency);
-            
+            if (requestContext != null)
+            {
+                //then override by url specified values
+                SetLanguage(enovaContext, requestContext.Language);
+                SetCurrency(enovaContext, requestContext.Currency);
+            }
+
             return enovaContext;
         }
         

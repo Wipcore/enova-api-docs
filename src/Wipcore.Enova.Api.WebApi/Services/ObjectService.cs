@@ -156,6 +156,37 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return _mappingFromEnovaService.MapFromEnovaObject(changedObject, String.Join(",",values.Select(x => x.Key)));//remap to get changed values
         }
 
+
+        /// <summary>
+        /// Deletes an object of type T and given id from Enova. Returns true if successfull.
+        /// </summary>
+        public bool Delete<T>(int id) where T : BaseObject
+        {
+            var context = _contextService.GetContext();
+            var obj = context.FindObject<T>(id);
+
+            if (obj == null)
+                return false;
+
+            obj.Delete();
+            return true;
+        }
+
+        /// <summary>
+        /// Deletes an object of type T and given identifier from Enova. Returns true if successfull.
+        /// </summary>
+        public bool Delete<T>(string identifier) where T : BaseObject
+        {
+            var context = _contextService.GetContext();
+            var obj = context.FindObject<T>(identifier);
+
+            if (obj == null)
+                return false;
+
+            obj.Delete();
+            return true;
+        }
+
         private bool IsMemoryObject(Type derivedType)
         {
             var cmoClass = derivedType.GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",

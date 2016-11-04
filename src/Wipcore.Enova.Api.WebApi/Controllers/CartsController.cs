@@ -95,5 +95,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             return _objectService.Save<EnovaCart>(requestContext, values);
         }
+
+        /// <summary>
+        /// Deletes the cart.
+        /// </summary>
+        [HttpDelete("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Delete(int id)
+        {
+            var success = _objectService.Delete<EnovaCart>(id);
+            if(!success)
+                throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
+
+        /// <summary>
+        /// Deletes the cart.
+        /// </summary>
+        [HttpDelete("{identifier}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Delete(string identifier)
+        {
+            var success = _objectService.Delete<EnovaCart>(identifier);
+            if (!success)
+                throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
     }
 }
