@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.WebApi.Helpers;
@@ -19,17 +20,48 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
     {
         private readonly IContextService _contextService;
         private readonly IMappingToEnovaService _mappingToEnovaService;
+        private readonly IMappingFromEnovaService _mappingFromEnovaService;
         private readonly IAuthService _authService;
+        private readonly IConfigurationRoot _configuration;
         private readonly ILogger _logger;
 
 
-        public CartService(IContextService contextService, IMappingToEnovaService mappingToEnovaService, IAuthService authService, ILoggerFactory loggerFactory)
+        public CartService(IContextService contextService, IMappingToEnovaService mappingToEnovaService, IMappingFromEnovaService mappingFromEnovaService, IAuthService authService, 
+            ILoggerFactory loggerFactory, IConfigurationRoot configuration)
         {
             _contextService = contextService;
             _mappingToEnovaService = mappingToEnovaService;
+            _mappingFromEnovaService = mappingFromEnovaService;
             _authService = authService;
+            _configuration = configuration;
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
+
+
+        /// <summary>
+        /// Creates an order from a mapping to cart by given values.
+        /// </summary>
+        public int CreateOrderFromCart(ContextModel requestContext, Dictionary<string, object> values)
+        {
+            var context = _contextService.GetContext();
+            var identifier = values.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.CurrentCultureIgnoreCase)).Value?.ToString();
+            var cart = context.FindObject<EnovaCart>(identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
+            cart.Edit();
+
+            _mappingToEnovaService.MapToEnovaObject(cart, values);
+
+            var order = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, cart);
+            order.Identifier = EnovaCommonFunctions.GetSequenceNumber(context, SystemRunningMode.Remote, SequenceType.OrderIdentifier);
+
+            var newShippingIdentifier = _configuration["EnovaSettings:NewShippingStatus"] ?? "NEW_INTERNET";
+            var shippingStatus = EnovaShippingStatus.Find(context, newShippingIdentifier);
+
+            order.ShippingStatus = shippingStatus;
+            order.Save();
+
+            return order.ID;
+        }
+
 
         /// <summary>
         /// Maps given model to a cart in Enova and returns a model with prices specified.  

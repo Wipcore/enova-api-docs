@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Core;
@@ -25,5 +26,12 @@ namespace Wipcore.Enova.Api.Interfaces
         /// Get all carts belonging to given customer.
         /// </summary>
         BaseObjectList GetCartsByCustomer(string customerIdentifier);
+
+        /// <summary>
+        /// Creates an order from a mapping to cart by given values.
+        /// </summary>
+        int CreateOrderFromCart(ContextModel requestContext, Dictionary<string, object> values);
+
+
     }
 }

@@ -97,6 +97,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Create an order from given cart information. Returns order id.
+        /// </summary>
+        [HttpPut("createorder")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public int PutOrder([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _cartService.CreateOrderFromCart(requestContext, values);
+        }
+
+        /// <summary>
         /// Deletes the cart.
         /// </summary>
         [HttpDelete("id-{id}")]
