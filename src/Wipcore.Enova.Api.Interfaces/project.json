@@ -16,5 +16,6 @@
       "version": "1.0.0-*"
     },
     "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Wipcore.Enova.Core.Package": "6.4.0.213-dev"  }
+    "Wipcore.Enova.Core.Package": "6.4.0.213-dev"    
+  }
 }

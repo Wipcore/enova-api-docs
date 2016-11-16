@@ -1,0 +1,11 @@
+#:C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Models\Wipcore.Enova.Api.Models.xproj
+#:C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Models\Wipcore.Enova.Api.Models.xproj
+#:C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Models\Wipcore.Enova.Api.Models.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Models\Wipcore.Enova.Api.Models.xproj
+C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.xproj|C:\GitProjects\Enova\Wipcore.eNova.Api\src\Wipcore.Enova.Api.Interfaces\Wipcore.Enova.Api.Interfaces.xproj

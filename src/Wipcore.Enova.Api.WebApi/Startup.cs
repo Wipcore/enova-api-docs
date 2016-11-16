@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Fasterflect;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Wipcore.Enova.Api.Interfaces;
@@ -27,6 +29,7 @@ using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Api.OAuth;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.Swagger.Model;
 
 namespace Wipcore.Enova.Api.WebApi
@@ -57,7 +60,6 @@ namespace Wipcore.Enova.Api.WebApi
             builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
-            //jsonConfigs.ForEach(x => Configuration.ReloadOnChanged(_configFolderPath, x.Key));//monitor changes on all files
 
             _addInFolderPath = Configuration.GetValue<String>("ApiSettings:PathToAddins");
             if (String.IsNullOrEmpty(_addInFolderPath))
@@ -139,8 +141,6 @@ namespace Wipcore.Enova.Api.WebApi
             loggerFactory.AddDebug();
             ConfigureNlog(env,loggerFactory);
 
-            //app.UseIISPlatformHandler();  - Moved to Main-method
-
             app.UseStaticFiles();
             app.UseStatusCodePages();
 
@@ -172,6 +172,26 @@ namespace Wipcore.Enova.Api.WebApi
             if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieName", String.Empty)))
                 cookieOptions.CookieName = Configuration.GetValue<string>("Auth:CookieName");
 
+            var jwtBearer = new JwtBearerOptions()
+            {
+                AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", false),
+                TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey))),
+                    ValidateIssuer = Configuration.GetValue<bool>("Auth:ValidateIssuer", true),
+                    ValidIssuer = AuthService.AuthenticationScheme,
+                    ValidateAudience = Configuration.GetValue<bool>("Auth:ValidateAudience", true),
+                    ValidAudience = Configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
+                    ValidateLifetime = Configuration.GetValue<bool>("Auth:ValidateLifetime", true),
+                    ClockSkew = TimeSpan.Zero,
+                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme
+                }
+            };
+
+            app.UseJwtBearerAuthentication(jwtBearer);
 
             app.UseCookieAuthentication(cookieOptions);
 
@@ -202,12 +222,12 @@ namespace Wipcore.Enova.Api.WebApi
                 options.SingleApiVersion(new Info
                 {
                     Version = "v1",
-                    Title = "Enova API",
+                    Title = AuthService.AuthenticationScheme,
                     Description = "",
                     TermsOfService = ""
                 });
                 options.OperationFilter<ComplexModelFilter>(_swaggerDocsFolderPath);
-                docFilePaths.ForEach(x => options.IncludeXmlComments(x));
+                docFilePaths.ForEach(options.IncludeXmlComments);
                 options.DescribeAllEnumsAsStrings();
 
             });

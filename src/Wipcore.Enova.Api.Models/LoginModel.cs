@@ -47,12 +47,18 @@ namespace Wipcore.Enova.Api.Models
         /// </summary>
         public string UserIdentifier { get; set; }
 
+        /// <summary>
+        /// Bearer authentication access token.
+        /// </summary>
+        public string AccessToken { get; set; }
+
         public LoginResponseModel() { }
 
-        public LoginResponseModel(string message, string identifier = null)
+        public LoginResponseModel(string message, string identifier = null, string accessToken = null)
         {
             StatusMessage = message;
             UserIdentifier = identifier;
+            AccessToken = accessToken;
         }
 
         public override string ToString()

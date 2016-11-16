@@ -5,6 +5,7 @@
     "Autofac.Extensions.DependencyInjection": "4.0.0",
     "IdentityServer4": "1.0.0-rc1-update2",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
+    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
     "Microsoft.AspNetCore.DataProtection.Extensions": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Html.Abstractions": "1.0.0",
@@ -33,7 +34,8 @@
       "target": "project",
       "version": "1.0.0-*"
     },
-    "Wipcore.Enova.Connectivity.Package": "6.4.0.213-dev"  },
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.213-dev"
+  },
 
   "commands": {
     "web": "Microsoft.AspNetCore.Server.Kestrel"

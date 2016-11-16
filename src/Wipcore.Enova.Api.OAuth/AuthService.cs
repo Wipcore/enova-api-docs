@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using IdentityModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
@@ -11,6 +15,7 @@ using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
+using System.Linq;
 
 namespace Wipcore.Enova.Api.OAuth
 {
@@ -23,16 +28,28 @@ namespace Wipcore.Enova.Api.OAuth
         public const string CustomerRole = "customer";
         public const string IdentifierClaim = "identifier";
         public const string HashClaim = "hash";
+        public const string SubjectClaim = "subject";
+        public const string NameClaim = "name";
+        public const string RoleClaim = "role";
+
         public const string AuthenticationScheme = "EnovaApi";
+        public const string DefaultSignKey = "secret_awesome_1223_key";
 
         private readonly IHttpContextAccessor _httpAccessor;
+        private readonly IConfigurationRoot _configuration;
         private readonly ILogger _log;
+        private readonly SigningCredentials _signingCredentials;
 
-        public AuthService(ILoggerFactory loggerFactory, IHttpContextAccessor httpAccessor)
+        public AuthService(ILoggerFactory loggerFactory, IHttpContextAccessor httpAccessor, IConfigurationRoot configuration)
         {
             _httpAccessor = httpAccessor;
+            _configuration = configuration;
             _log = loggerFactory.CreateLogger(GetType().Name);
+            var secretKey = configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey);
+            _signingCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)), SecurityAlgorithms.HmacSha256);
         }
+
 
         public ClaimsPrincipal Login(ILoginModel model, bool admin)
         {
@@ -50,6 +67,21 @@ namespace Wipcore.Enova.Api.OAuth
                 _log.LogError($"Error at AuthService.Login using model: {model?.ToString() ?? "null"}. Admin: {admin}. Error: {e}");
                 return null;
             }
+        }
+
+        public string BuildToken(ClaimsPrincipal claimsPrincipal)
+        {
+            var jwt = new JwtSecurityToken(
+                     issuer: AuthService.AuthenticationScheme, // Needs to be same as when checking authorization - no good error message when missaligned.
+                     audience: _configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
+                     claims: claimsPrincipal.Claims.ToList(),
+                     notBefore: DateTime.UtcNow,
+                     expires: DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Auth:ExpireTimeMinutes", 60)),
+                     signingCredentials: _signingCredentials
+                 );
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
         }
 
         public ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model, out string errorMessage)
@@ -91,32 +123,39 @@ namespace Wipcore.Enova.Api.OAuth
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtClaimTypes.Subject, user.Alias),
-                new Claim(JwtClaimTypes.Name, user.FirstNameLastName),
+                new Claim(SubjectClaim, user.Alias),
+                new Claim(NameClaim, user.FirstNameLastName),
                 new Claim(JwtClaimTypes.AuthenticationTime, DateTime.Now.ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
-                new Claim(JwtClaimTypes.Role, admin ? AdminRole : CustomerRole)
+                new Claim(RoleClaim, admin ? AdminRole : CustomerRole)
             };
 
             if (admin)
                 claims.Add(new Claim(HashClaim, WipUtils.CreateHashString(password)));
 
-            var claimsIdentity = new ClaimsIdentity(claims, "password", JwtClaimTypes.Name, JwtClaimTypes.Role);
+            var claimsIdentity = new ClaimsIdentity(claims, "password", NameClaim, RoleClaim);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             return claimsPrincipal;
         }
 
-        public string GetLoggedInAlias() => GetClaim(JwtClaimTypes.Subject);
+        public string GetLoggedInAlias() => GetClaim(SubjectClaim);
 
-        public string GetLoggedInName() => GetClaim(JwtClaimTypes.Name);
+        public string GetLoggedInName() => GetClaim(NameClaim);
 
         public string GetLoggedInIdentifier() => GetClaim(IdentifierClaim);
 
-        public string GetLoggedInRole() => GetClaim(JwtClaimTypes.Role);
+        public string GetLoggedInRole()
+        {
+            var role = GetClaim(RoleClaim);
+            if(role != null)
+                return role;
+            var user = _httpAccessor.HttpContext.User;
+            return user.Claims.FirstOrDefault(x => x.Type.EndsWith("/" + RoleClaim))?.Value;//escaping the schema
+        }
 
-        public bool IsLoggedInAsAdmin() => GetClaim(JwtClaimTypes.Role) == AdminRole;
+        public bool IsLoggedInAsAdmin() => GetClaim(RoleClaim) == AdminRole;
 
-        public bool IsLoggedInAsCustomer() => GetClaim(JwtClaimTypes.Role) == CustomerRole;
+        public bool IsLoggedInAsCustomer() => GetClaim(RoleClaim) == CustomerRole;
 
         public string GetPasswordHash() => GetClaim(HashClaim);
 
@@ -130,7 +169,7 @@ namespace Wipcore.Enova.Api.OAuth
         {
             if (IsLoggedInAsAdmin())
                 return "Admin with identifier: " + GetLoggedInIdentifier();
-            if(IsLoggedInAsCustomer())
+            if (IsLoggedInAsCustomer())
                 return "Customer with identifier: " + GetLoggedInIdentifier();
 
             return "Anonymous user";

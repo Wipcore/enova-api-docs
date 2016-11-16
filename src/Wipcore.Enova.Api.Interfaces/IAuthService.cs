@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Wipcore.Enova.Api.Models;
 using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.Interfaces
@@ -18,7 +17,8 @@ namespace Wipcore.Enova.Api.Interfaces
         /// Log in a customer with the credentials of an admin, ie inpersonation.
         /// </summary>
         ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model, out string errorMessage);
-       
+
+        string BuildToken(ClaimsPrincipal claimsPrincipal);
 
         /// <summary>
         /// Get the alias of any logged in user. Returns null if no-one logged in.
