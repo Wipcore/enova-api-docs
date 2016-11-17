@@ -39,6 +39,11 @@ namespace Wipcore.Enova.Api.Interfaces
         string GetLoggedInIdentifier();
 
         /// <summary>
+        /// Get the id of an logged in user. Returns null if no-one logged in.
+        /// </summary>
+        string GetLoggedInId();
+
+        /// <summary>
         /// Get the role of any logged in user. Returns null if no-one logged in.
         /// </summary>
         /// <returns></returns>

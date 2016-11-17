@@ -27,6 +27,7 @@ namespace Wipcore.Enova.Api.OAuth
         public const string AdminRole = "admin";
         public const string CustomerRole = "customer";
         public const string IdentifierClaim = "identifier";
+        public const string IdClaim = "id";
         public const string HashClaim = "hash";
         public const string SubjectClaim = "subject";
         public const string NameClaim = "name";
@@ -127,6 +128,7 @@ namespace Wipcore.Enova.Api.OAuth
                 new Claim(NameClaim, user.FirstNameLastName),
                 new Claim(JwtClaimTypes.AuthenticationTime, DateTime.Now.ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
+                new Claim(IdClaim, user.ID.ToString()),
                 new Claim(RoleClaim, admin ? AdminRole : CustomerRole)
             };
 
@@ -144,6 +146,8 @@ namespace Wipcore.Enova.Api.OAuth
 
         public string GetLoggedInIdentifier() => GetClaim(IdentifierClaim);
 
+        public string GetLoggedInId() => GetClaim(IdClaim);
+
         public string GetLoggedInRole()
         {
             var role = GetClaim(RoleClaim);
@@ -153,9 +157,9 @@ namespace Wipcore.Enova.Api.OAuth
             return user.Claims.FirstOrDefault(x => x.Type.EndsWith("/" + RoleClaim))?.Value;//escaping the schema
         }
 
-        public bool IsLoggedInAsAdmin() => GetClaim(RoleClaim) == AdminRole;
+        public bool IsLoggedInAsAdmin() => GetLoggedInRole() == AdminRole;
 
-        public bool IsLoggedInAsCustomer() => GetClaim(RoleClaim) == CustomerRole;
+        public bool IsLoggedInAsCustomer() => GetLoggedInRole() == CustomerRole;
 
         public string GetPasswordHash() => GetClaim(HashClaim);
 

@@ -43,7 +43,7 @@ namespace Wipcore.Enova.Api.OAuth
                 new Dictionary<string, object>()
                 {
                     { "LoggedIn", true }, { "Alias", _authService.GetLoggedInAlias() }, { "Identifier", _authService.GetLoggedInIdentifier() }, { "Name", _authService.GetLoggedInName() },
-                    { "LoginTime", _authService.GetClaim(JwtClaimTypes.AuthenticationTime) },  { "Role", _authService.GetLoggedInRole() }
+                    { "LoginTime", _authService.GetClaim(JwtClaimTypes.AuthenticationTime) },  { "Role", _authService.GetLoggedInRole() }, { "Id", _authService.GetLoggedInId() }
                 };
         }
 
@@ -76,7 +76,8 @@ namespace Wipcore.Enova.Api.OAuth
             
             var bearerToken = _authService.BuildToken(claimsPrincipal);
 
-            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value, bearerToken));
+            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value, 
+                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken));
         }
 
         /// <summary>
@@ -97,7 +98,8 @@ namespace Wipcore.Enova.Api.OAuth
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
 
-            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value, bearerToken));
+            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
+                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken));
         }
 
         /// <summary>
@@ -121,7 +123,8 @@ namespace Wipcore.Enova.Api.OAuth
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
 
-            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value, bearerToken));
+            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
+                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken));
         }
     }
 }

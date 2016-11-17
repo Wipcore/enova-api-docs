@@ -37,5 +37,10 @@
         /// Bearer authentication access token.
         /// </summary>
         string AccessToken { get; }
+
+        /// <summary>
+        /// ID of the customer/admin that logged in.
+        /// </summary>
+        string UserId { get; }
     }
 }
