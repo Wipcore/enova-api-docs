@@ -104,6 +104,7 @@ namespace Wipcore.Enova.Api.WebApi
             var builder = services.AddMvc();
             foreach (var assembly in apiAssemblies)
             {
+                Console.WriteLine("Looking for controllers in assembly: {0}", assembly.FullName);
                 builder.PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
             }
             builder.AddControllersAsServices();
@@ -267,7 +268,8 @@ namespace Wipcore.Enova.Api.WebApi
                     assemblies.Add(assembly);
 
                     //extract module types and add them to be registered
-                    var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x));
+                    var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x)).ToList();
+                    moduleTypes.ForEach(x => Console.WriteLine("Found addin IEnovaApiModule module in assembly: " + x.Assembly.FullName));
                     autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule) Activator.CreateInstance(x)));
                 }
             }

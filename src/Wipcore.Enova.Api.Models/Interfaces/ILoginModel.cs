@@ -42,5 +42,10 @@
         /// ID of the customer/admin that logged in.
         /// </summary>
         string UserId { get; }
+
+        /// <summary>
+        /// Default language/currency context for the user.
+        /// </summary>
+        ContextModel ContextModel { get; }
     }
 }

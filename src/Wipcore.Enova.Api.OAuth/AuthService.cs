@@ -32,9 +32,11 @@ namespace Wipcore.Enova.Api.OAuth
         public const string SubjectClaim = "subject";
         public const string NameClaim = "name";
         public const string RoleClaim = "role";
+        public const string DefaultCurrencyClaim = "currency";
+        public const string DefaultLanguageClaim = "language";
 
         public const string AuthenticationScheme = "EnovaApi";
-        public const string DefaultSignKey = "secret_awesome_1223_key";
+        public const string DefaultSignKey = "317aff46-2ed0-4e82-9f43-47d94663887b";
 
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IConfigurationRoot _configuration;
@@ -60,6 +62,7 @@ namespace Wipcore.Enova.Api.OAuth
                 var user = admin ? (User)context.Login(model.Alias, model.Password)
                     : context.CustomerLogin(model.Alias, model.Password);
 
+                //contextModel = new ContextModel() {Currency = user.Currency?.Identifier, Language = user.Language?.Identifier};
                 var claimsPrincipal = BuildClaimsPrincipal(user, admin, model.Password);
                 return claimsPrincipal;
             }
@@ -68,21 +71,6 @@ namespace Wipcore.Enova.Api.OAuth
                 _log.LogError($"Error at AuthService.Login using model: {model?.ToString() ?? "null"}. Admin: {admin}. Error: {e}");
                 return null;
             }
-        }
-
-        public string BuildToken(ClaimsPrincipal claimsPrincipal)
-        {
-            var jwt = new JwtSecurityToken(
-                     issuer: AuthService.AuthenticationScheme, // Needs to be same as when checking authorization - no good error message when missaligned.
-                     audience: _configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
-                     claims: claimsPrincipal.Claims.ToList(),
-                     notBefore: DateTime.UtcNow,
-                     expires: DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Auth:ExpireTimeMinutes", 60)),
-                     signingCredentials: _signingCredentials
-                 );
-
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return encodedJwt;
         }
 
         public ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model, out string errorMessage)
@@ -102,6 +90,7 @@ namespace Wipcore.Enova.Api.OAuth
                 var user = context.CustomerLogin(customer.ID);
 
                 var claimsPrincipal = BuildClaimsPrincipal(user, false);
+
                 return claimsPrincipal;
             }
             catch (Exception e)
@@ -117,6 +106,21 @@ namespace Wipcore.Enova.Api.OAuth
             }
         }
 
+        public string BuildToken(ClaimsPrincipal claimsPrincipal)
+        {
+            var jwt = new JwtSecurityToken(
+                     issuer: AuthService.AuthenticationScheme, // Needs to be same as when checking authorization - no good error message when missaligned.
+                     audience: _configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
+                     claims: claimsPrincipal.Claims.ToList(),
+                     notBefore: DateTime.UtcNow,
+                     expires: DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Auth:ExpireTimeMinutes", 60)),
+                     signingCredentials: _signingCredentials
+                 );
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
+        }
+        
         /// <summary>
         /// Save claims (attributes) on the logged in user.
         /// </summary>
@@ -129,7 +133,9 @@ namespace Wipcore.Enova.Api.OAuth
                 new Claim(JwtClaimTypes.AuthenticationTime, DateTime.Now.ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
                 new Claim(IdClaim, user.ID.ToString()),
-                new Claim(RoleClaim, admin ? AdminRole : CustomerRole)
+                new Claim(RoleClaim, admin ? AdminRole : CustomerRole),
+                new Claim(DefaultCurrencyClaim, user.Currency?.Identifier),
+                new Claim(DefaultLanguageClaim, user.Language?.Identifier)
             };
 
             if (admin)
@@ -147,6 +153,10 @@ namespace Wipcore.Enova.Api.OAuth
         public string GetLoggedInIdentifier() => GetClaim(IdentifierClaim);
 
         public string GetLoggedInId() => GetClaim(IdClaim);
+
+        public string GetLoggedInDefaultCurrency() => GetClaim(DefaultCurrencyClaim);
+
+        public string GetLoggedInDefaultLanguage() => GetClaim(DefaultLanguageClaim);
 
         public string GetLoggedInRole()
         {

@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.Models;
 using System.Linq;
+using Wipcore.Enova.Api.Models.Interfaces;
 
 namespace Wipcore.Enova.Api.OAuth
 {
@@ -43,7 +44,8 @@ namespace Wipcore.Enova.Api.OAuth
                 new Dictionary<string, object>()
                 {
                     { "LoggedIn", true }, { "Alias", _authService.GetLoggedInAlias() }, { "Identifier", _authService.GetLoggedInIdentifier() }, { "Name", _authService.GetLoggedInName() },
-                    { "LoginTime", _authService.GetClaim(JwtClaimTypes.AuthenticationTime) },  { "Role", _authService.GetLoggedInRole() }, { "Id", _authService.GetLoggedInId() }
+                    { "LoginTime", _authService.GetClaim(JwtClaimTypes.AuthenticationTime) },  { "Role", _authService.GetLoggedInRole() }, { "Id", _authService.GetLoggedInId() },
+                    { "Currency", _authService.GetLoggedInDefaultCurrency() }, { "Language", _authService.GetLoggedInDefaultLanguage() }
                 };
         }
 
@@ -67,6 +69,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (!ModelState.IsValid)
                 return BadRequest(new LoginResponseModel("Alias and password required."));
 
+            
             var claimsPrincipal = _authService.Login(model, admin: true);
 
             if (claimsPrincipal == null)
@@ -75,9 +78,10 @@ namespace Wipcore.Enova.Api.OAuth
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
             
             var bearerToken = _authService.BuildToken(claimsPrincipal);
+            var contextModel = new ContextModel() {Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value, 
-                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken));
+                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken, contextModel));
         }
 
         /// <summary>
@@ -97,9 +101,10 @@ namespace Wipcore.Enova.Api.OAuth
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
+            var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
-                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken));
+                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken, contextModel));
         }
 
         /// <summary>
@@ -112,7 +117,7 @@ namespace Wipcore.Enova.Api.OAuth
         {
             if (!ModelState.IsValid)
                 return BadRequest(new LoginResponseModel("Alias and password required."));
-
+            
             string errorMessage;
             var claimsPrincipal = _authService.LoginCustomerAsAdmin(model, out errorMessage);
 
@@ -122,9 +127,11 @@ namespace Wipcore.Enova.Api.OAuth
             await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
+            var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
+
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
-                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken));
+                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken, contextModel));
         }
     }
 }

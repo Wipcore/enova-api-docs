@@ -39,6 +39,17 @@ namespace Wipcore.Enova.Api.Interfaces
         string GetLoggedInIdentifier();
 
         /// <summary>
+        /// Get the default currency of the logged in user.
+        /// </summary>
+
+        string GetLoggedInDefaultCurrency();
+
+        /// <summary>
+        /// Get the default language of the logged in user.
+        /// </summary>
+        string GetLoggedInDefaultLanguage();
+
+        /// <summary>
         /// Get the id of an logged in user. Returns null if no-one logged in.
         /// </summary>
         string GetLoggedInId();

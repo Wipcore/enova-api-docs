@@ -53,15 +53,19 @@ namespace Wipcore.Enova.Api.Models
         public string UserId { get; set; }
 
         /// <summary>
+        /// Default language/currency context for the user.
+        /// </summary>
+        public ContextModel ContextModel { get; set; }
+
+        /// <summary>
         /// Bearer authentication access token.
         /// </summary>
         public string AccessToken { get; set; }
         
-        public LoginResponseModel() { }
-
-        public LoginResponseModel(string message, string identifier = null, string id = null, string accessToken = null)
+        public LoginResponseModel(string message, string identifier = null, string id = null, string accessToken = null, ContextModel contextModel = null)
         {
             StatusMessage = message;
+            ContextModel = contextModel;
             UserIdentifier = identifier;
             AccessToken = accessToken;
             UserId = id;
