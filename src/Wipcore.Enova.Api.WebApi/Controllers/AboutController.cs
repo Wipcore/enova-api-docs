@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.WebEncoders;
 using Wipcore.Core;
 using Wipcore.Enova.Api.WebApi.Services;
@@ -21,6 +22,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     [Route("")]
     public class AboutController : Controller
     {
+        private readonly IConfigurationRoot _configurationRoot;
+
+        public AboutController(IConfigurationRoot configurationRoot)
+        {
+            _configurationRoot = configurationRoot;
+        }
+
         /// <summary>
         /// Basic welcome information about the API.
         /// </summary>
@@ -78,6 +86,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             }
 
             info.Add("IsAlive", IsEnovaAlive());
+            info.Add("Database", _configurationRoot.GetValue<String>("Enova:ConnectionString"));
+            info.Add("Logging", _configurationRoot.GetValue<String>("Enova:LogPath"));
 
             return info;
         }

@@ -19,12 +19,12 @@ using Wipcore.Enova.Api.WebApi.Helpers;
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class PromosController : EnovaApiController
+    public class PromotionsController : EnovaApiController
     {
         private readonly IObjectService _objectService;
        
 
-        public PromosController(IExceptionService exceptionService,IObjectService objectService)
+        public PromotionsController(IExceptionService exceptionService,IObjectService objectService)
             : base(exceptionService)
         {
             _objectService = objectService;

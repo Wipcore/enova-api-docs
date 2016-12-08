@@ -134,8 +134,8 @@ namespace Wipcore.Enova.Api.OAuth
                 new Claim(IdentifierClaim, user.Identifier),
                 new Claim(IdClaim, user.ID.ToString()),
                 new Claim(RoleClaim, admin ? AdminRole : CustomerRole),
-                new Claim(DefaultCurrencyClaim, user.Currency?.Identifier),
-                new Claim(DefaultLanguageClaim, user.Language?.Identifier)
+                new Claim(DefaultCurrencyClaim, user.Currency?.Identifier ?? ""),
+                new Claim(DefaultLanguageClaim, user.Language?.Identifier ?? "")
             };
 
             if (admin)

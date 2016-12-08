@@ -94,12 +94,12 @@
             Create or update a product.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromosController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromotionsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel)">
             <summary>
             Get a list of promos.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromosController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromotionsController.Get(Wipcore.Enova.Api.Models.ContextModel,Wipcore.Enova.Api.Models.QueryModel,System.String)">
             <summary>
             Get a promo specified by identifier. 
             </summary>
