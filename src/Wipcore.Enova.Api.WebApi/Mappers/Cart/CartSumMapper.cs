@@ -38,7 +38,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
             var cart = (EnovaCart) obj;
             decimal taxAmount;
             int decimals;
-            var currency = obj.GetContext().CurrentCurrency;
+            Currency currency = null;
             decimal rounding;
             var sum = cart.GetPrice(out taxAmount, out rounding, out decimals, ref currency);
 

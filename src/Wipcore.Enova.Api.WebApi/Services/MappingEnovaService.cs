@@ -114,7 +114,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
             for (var i = 0; i < properties.Length; i++)
             {
                 if (i == properties.Length - 1) //the last name (Identifier in example above) is returned directly
-                    return obj.GetProperty(properties[i]);
+                {
+                    var propertyAndLanguage = properties[i].Split('-');//if language specified, for example name-en for english name
+                    return propertyAndLanguage.Length == 1 ? 
+                        obj.GetProperty(properties[i]) :
+                        obj.GetProperty(propertyAndLanguage[0], EnovaLanguage.Find(obj.GetContext(), propertyAndLanguage[1]));
+
+                }
 
                 //nested properties are retrieved from the object. In example obj is set to Manufacturer
                 obj = obj.GetPropertyValue(properties[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;

@@ -37,7 +37,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             var order = (EnovaOrder) obj;
             decimal taxAmount;
             int decimals;
-            var currency = obj.GetContext()?.CurrentCurrency;
+            Currency currency = null;
             double currencyFactor;
             var sum = order.GetSum(out taxAmount, out decimals, ref currency, out currencyFactor);
 

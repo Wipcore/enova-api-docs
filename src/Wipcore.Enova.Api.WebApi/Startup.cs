@@ -30,6 +30,7 @@ using Wipcore.Enova.Api.WebApi.Services;
 using Wipcore.Enova.Api.OAuth;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.Swagger.Model;
 
 namespace Wipcore.Enova.Api.WebApi
@@ -107,6 +108,7 @@ namespace Wipcore.Enova.Api.WebApi
                 Console.WriteLine("Looking for controllers in assembly: {0}", assembly.FullName);
                 builder.PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
             }
+            builder.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             builder.AddControllersAsServices();
 
             //security
