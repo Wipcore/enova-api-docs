@@ -74,6 +74,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <returns></returns>
         [Authorize(Roles = AuthService.AdminRole)]
         [HttpGet("NodeInfo")]
+        [HttpGet("api/NodeInfo")]
         public IDictionary<string, object> NodeInfo()
         {
             var info = new Dictionary<string, object>();
