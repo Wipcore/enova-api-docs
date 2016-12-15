@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "6.4.0.215-dev",
   "description": "Wipcore.Enova.Api.Interfaces Class Library",
   "authors": [ "henrik.eliasson" ],
   "frameworks": {
@@ -13,9 +13,19 @@
     "Autofac": "4.1.0",
     "Wipcore.Enova.Api.Models": {
       "target": "project",
-      "version": "1.0.0-*"
+      "version": "6.4.0.215-*"
     },
     "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Wipcore.Enova.Core.Package": "6.4.0.213-dev"    
+    "Wipcore.Enova.Core.Package": "6.4.0.215-*"
+  },
+
+  "buildOptions": {
+    "compile": {
+      "include": [
+        "..\\..\\..\\SharedAssemblyInfo\\SharedVersionInfo.cs",
+        "..\\..\\..\\SharedAssemblyInfo\\SharedAssemblyInfo.cs"
+      ]
+    }
   }
+
 }

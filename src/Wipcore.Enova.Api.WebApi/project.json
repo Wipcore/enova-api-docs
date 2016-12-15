@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "6.4.0.215-dev",
   "dependencies": {
     "Autofac": "4.1.0",
     "Autofac.Extensions.DependencyInjection": "4.0.0",
@@ -16,25 +16,27 @@
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "NLog": "4.4.0-*",
-    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4",
+    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4", 
     "Swashbuckle": "6.0.0-beta902",
     "Wipcore.Enova.Api.Interfaces": {
       "target": "project",
-      "version": "1.0.0-*"
+      "version": "6.4.0.215-*"
     },
     "Wipcore.Enova.Api.Models": {
       "target": "project",
-      "version": "1.0.0-*"
+      "version": "6.4.0.215-*"
     },
     "Wipcore.Enova.Api.OAuth": {
       "target": "project",
-      "version": "1.0.0-*"
+      "version": "6.4.0.215-*"
     },
-    "Wipcore.Enova.Connectivity.Package": "6.4.0.213-dev"
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.215-*"
+
   },
 
   "commands": {

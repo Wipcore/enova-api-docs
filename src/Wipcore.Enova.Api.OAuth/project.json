@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "6.4.0.215-dev",
   "description": "Wipcore.Enova.Api.OAuth Class Library",
   "authors": [ "henrik.eliasson" ],
 
@@ -11,13 +11,24 @@
     "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1",
     "Wipcore.Enova.Api.Interfaces": {
       "target": "project",
-      "version": "1.0.0-*"
+      "version": "6.4.0.215-*"
     },
-    "Wipcore.Enova.Connectivity.Package": "6.4.0.213-dev"  },
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.215-*"
+  },
 
   "frameworks": {
     "net461": {
     }
+  },
+
+  "buildOptions": {
+    "compile": {
+      "include": [
+        "..\\..\\..\\SharedAssemblyInfo\\SharedVersionInfo.cs",
+        "..\\..\\..\\SharedAssemblyInfo\\SharedAssemblyInfo.cs"
+      ]
+    }
   }
+
 }
 
