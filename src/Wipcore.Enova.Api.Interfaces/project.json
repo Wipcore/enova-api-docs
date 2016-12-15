@@ -5,7 +5,7 @@
   "frameworks": {
     "net461": {
       "dependencies": {
-        "NETStandard.Library": "1.6.0"
+        "NETStandard.Library": "1.6.1"
       }
     }
   },
@@ -15,7 +15,7 @@
       "target": "project",
       "version": "6.4.0.215-*"
     },
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Wipcore.Enova.Core.Package": "6.4.0.215-*"
   },
 
