@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
@@ -15,7 +17,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
     /// </summary>
     public class VariantMapper : IPropertyMapper, ICmoProperty
     {
-        public bool PostSaveSet => false;
+        public bool PostSaveSet => true;
         private readonly IProductService _productService;
 
         public VariantMapper(IProductService productService)
@@ -42,7 +44,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
             if (String.Equals(propertyName, "VariantIds", StringComparison.InvariantCultureIgnoreCase))
             {
-                var variantIds = value as List<int>;
+                var variantIds = JsonConvert.DeserializeObject<List<int>>(value.ToString());
                 //should be owner if there are variant ids and no specified owner
                 var shouldBeOwner = variantIds != null && variantIds.Any() && Convert.ToInt32(otherValues["VariantOwnerId"]) == default(int) 
                     && String.IsNullOrEmpty(Convert.ToString(otherValues["VariantOwnerIdentifier"]));
