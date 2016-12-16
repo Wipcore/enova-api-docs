@@ -10,7 +10,7 @@
     }
   },
   "dependencies": {
-    "Autofac": "4.1.0",
+    "Autofac": "4.1.1",
     "Wipcore.Enova.Api.Models": {
       "target": "project",
       "version": "6.4.0.215-*"

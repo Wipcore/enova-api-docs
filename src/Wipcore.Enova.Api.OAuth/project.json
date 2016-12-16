@@ -4,7 +4,7 @@
   "authors": [ "henrik.eliasson" ],
 
   "dependencies": {
-    "Autofac": "4.1.0",
+    "Autofac": "4.1.1",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.AspNetCore.Mvc.TagHelpers": "1.1.0",
     "IdentityServer4": "1.0.0-rc5",
