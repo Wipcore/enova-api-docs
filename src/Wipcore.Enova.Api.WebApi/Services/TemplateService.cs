@@ -75,7 +75,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 return settingValue;
             //combine given parameter with setting. + or space as +  can be modelbinded to space
             if (parameterValue.StartsWith("+") || parameterValue.StartsWith(" "))
-                return parameterValue.Substring(1) + ","+ settingValue;
+                return settingValue + "," + parameterValue.Substring(1);
 
             return parameterValue;
         }
