@@ -20,7 +20,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         }
 
         public bool PostSaveSet => false;
-
+        public bool FlattenMapping => false;
         public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax" };
         public Type CmoType => typeof (CmoEnovaCart);
         public Type Type => typeof (EnovaCart);

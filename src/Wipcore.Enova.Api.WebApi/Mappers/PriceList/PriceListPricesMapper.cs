@@ -19,6 +19,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
         public List<string> Names => new List<string>() {"PricesInclTax","PricesExclTax", "ProductPrices" };
         public Type Type => typeof (EnovaPriceList);
         public bool InheritMapper => true;
+        public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 

@@ -30,6 +30,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public Type CmoType => typeof (CmoEnovaBaseProduct);
         public Type Type => typeof (EnovaBaseProduct);
         public bool InheritMapper => true;
+        public bool FlattenMapping => false;
 
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;

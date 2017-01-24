@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
+using Wipcore.Library;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
@@ -54,7 +55,16 @@ namespace Wipcore.Enova.Api.WebApi.Services
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFromEnovaAllowed);
                 var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);
-                dynamicObject.Add(property, value);
+
+                if (mapper?.FlattenMapping == true)//add values directly to object instead of as a subvalue.
+                {
+                    var subValues = (IDictionary<string, object>) value;
+                    subValues.ForEach(x => dynamicObject.Add(x.Key, x.Value));
+                }
+                else
+                {
+                    dynamicObject.Add(property, value);
+                }
             }
             
             return dynamicObject;

@@ -15,7 +15,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public Type CmoType => typeof(CmoEnovaOrder);
         public Type Type => typeof(EnovaOrder);
         public bool InheritMapper => true;
-
+        public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 

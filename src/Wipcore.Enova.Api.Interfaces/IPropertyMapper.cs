@@ -50,6 +50,11 @@ namespace Wipcore.Enova.Api.Interfaces
         /// Set to true if this property should be mapped -after- the object is saved instead of before.
         /// </summary>
         bool PostSaveSet { get; }
+
+        /// <summary>
+        /// Set to true to flatten structure, meaning adding properties from mapping directly to parent. Attributes as properties for example. Mapping returned must be IDictionary<string, value>
+        /// </summary>
+        bool FlattenMapping { get; }
     }
 
     public enum MapType

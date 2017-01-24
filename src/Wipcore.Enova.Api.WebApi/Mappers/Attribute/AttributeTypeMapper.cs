@@ -18,11 +18,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
             _context = context;
         }
 
-        public bool PostSaveSet => false;
+        public bool PostSaveSet => true;
 
         public List<string> Names => new List<string>() {"Values"};
         public Type Type => typeof (EnovaAttributeType);
         public bool InheritMapper => true;
+        public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
@@ -35,7 +36,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                 var item = JsonConvert.DeserializeAnonymousType(v.ToString(), new { ID = 0, Identifier = "", MarkForDelete = false, Value = "", LanguageDependant = false });
                 //find first by id, then identifier, then create if nothing found
                 var attributeValue = (EnovaAttributeValue)(context.FindObject(item.ID, typeof (EnovaAttributeValue), false) ?? 
-                    context.FindObject(item.Identifier, typeof(EnovaAttributeValue), false)) ??
+                    context.FindObject(item.Identifier ?? String.Empty, typeof(EnovaAttributeValue), false)) ??
                     EnovaObjectCreationHelper.CreateNew<EnovaAttributeValue>(context);
 
                 if (item.MarkForDelete)
@@ -44,7 +45,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     continue;
                 }
                 attributeValue.Edit();
-                attributeValue.Identifier = item.Identifier;
+                attributeValue.Identifier = item.Identifier ?? String.Empty;
                 if (item.LanguageDependant)
                     attributeValue.Name = item.Value;
                 else

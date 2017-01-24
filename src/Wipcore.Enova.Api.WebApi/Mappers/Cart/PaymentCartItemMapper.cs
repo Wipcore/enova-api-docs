@@ -22,6 +22,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         public List<string> Names => new List<string>() { "PaymentCartItem", "NewPaymentType" };
 
         public Type Type => typeof(EnovaCart);
+        public bool FlattenMapping => false;
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {

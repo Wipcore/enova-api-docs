@@ -17,6 +17,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
         public List<string> Names => new List<string>() { "Results" };
         public Type Type => typeof(EnovaPromo);
         public bool InheritMapper => true;
+        public bool FlattenMapping => false;
 
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;

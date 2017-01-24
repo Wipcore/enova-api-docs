@@ -15,6 +15,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
         public List<string> Names => new List<string>() { "Children" };
         public Type Type => typeof(EnovaBaseProductSection);
         public bool InheritMapper => true;
+        public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 

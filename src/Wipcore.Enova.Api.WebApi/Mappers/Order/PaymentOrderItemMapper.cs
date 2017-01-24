@@ -13,10 +13,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
     {
         public bool PostSaveSet => false;
         public bool InheritMapper => true;
-
+        public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
-
         public List<string> Names => new List<string>() { "PaymentInfo" };
 
         public Type Type => typeof(EnovaOrder);

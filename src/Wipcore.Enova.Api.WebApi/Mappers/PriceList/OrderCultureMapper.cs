@@ -15,6 +15,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
         public bool InheritMapper => true;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
+        public bool FlattenMapping => false;
 
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)

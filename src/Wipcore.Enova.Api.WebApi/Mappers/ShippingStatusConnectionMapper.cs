@@ -18,6 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public Type Type => typeof(EnovaShippingStatus);
         public bool InheritMapper => true;
         public int Priority => 0;
+        public bool FlattenMapping => false;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
         
         public object GetEnovaProperty(BaseObject obj, string propertyName)

@@ -6,6 +6,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
 {
@@ -17,6 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public List<string> Names => new List<string>() { "Attributes" };
         public Type Type => typeof(BaseObject);
         public bool InheritMapper => true;
+        public bool FlattenMapping  => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
@@ -101,7 +103,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     if (!requestedNewValue.Equals(currentValue)) //if the value is changed
                     {
                         //then find the correct attribute
-                        var attributeType = (EnovaAttributeType)EnovaAttributeType.Find(context, Convert.ToInt32(attribute.AttributeType.ID));
+                        var attributeType = (EnovaAttributeType) (context.FindObject(Convert.ToInt32(attribute.AttributeType.ID), typeof (EnovaAttributeType), false) ??
+                            context.FindObject(attribute.AttributeType.Identifier, typeof (EnovaAttributeType), true));
 
                         var newAttributeValue = attributeType.Values.OfType<EnovaAttributeValue>().
                             First(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
