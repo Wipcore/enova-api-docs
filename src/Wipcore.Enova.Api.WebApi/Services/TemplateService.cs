@@ -1,18 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Caching;
-using System.Threading.Tasks;
-using Fasterflect;
-using Wipcore.Core;
+using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.Models.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

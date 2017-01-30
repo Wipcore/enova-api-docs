@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 

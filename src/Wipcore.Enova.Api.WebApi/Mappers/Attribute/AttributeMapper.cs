@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
-using Wipcore.Enova.Generics;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
 {

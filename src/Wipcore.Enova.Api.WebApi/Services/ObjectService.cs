@@ -2,22 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
-using System.Threading.Tasks;
-using System.Web.Http;
 using Fasterflect;
-using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Generics;
-using Wipcore.Enova.Api.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
+using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Interfaces;
-using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

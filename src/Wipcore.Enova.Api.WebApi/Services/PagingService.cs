@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Generics;
-using Wipcore.Enova.Api.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Web;
+using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Services

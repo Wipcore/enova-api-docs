@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Cart;
+using Wipcore.Enova.Api.Abstractions.Models;
 
 namespace Wipcore.Enova.Api.NetClient
 {

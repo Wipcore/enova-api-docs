@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Web.Http;
-using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.WebApi.Services;
-using Wipcore.Enova.Core;
-using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Abstractions;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {

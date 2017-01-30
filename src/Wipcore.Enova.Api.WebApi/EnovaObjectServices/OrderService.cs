@@ -5,12 +5,10 @@ using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces.Cart;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Cart;
-using Wipcore.Enova.Api.Models.Interfaces;
-using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 

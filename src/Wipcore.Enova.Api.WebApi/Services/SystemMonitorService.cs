@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Wipcore.Core;
+﻿using Wipcore.Core;
 using Wipcore.Core.SystemMonitoring;
 
 namespace Wipcore.Enova.Api.WebApi.Services

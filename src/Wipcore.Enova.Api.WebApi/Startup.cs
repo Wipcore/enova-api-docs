@@ -1,37 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Fasterflect;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Connectivity;
-using NLog.Extensions.Logging;
-using Swashbuckle.SwaggerGen;
-using Wipcore.Library;
-using Wipcore.Core;
-using Wipcore.Core.SystemMonitoring;
-using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.WebApi.Services;
-using Wipcore.Enova.Api.OAuth;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using NLog.Extensions.Logging;
 using Swashbuckle.Swagger.Model;
+using Wipcore.Core;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.OAuth;
+using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Connectivity;
+using EnumerableExtensions = Wipcore.Library.EnumerableExtensions;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -57,7 +50,7 @@ namespace Wipcore.Enova.Api.WebApi
             _configFolderPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, @".\Configs"));
             
             var builder = new ConfigurationBuilder();
-            jsonConfigs.ForEach(x => builder.AddJsonFile(Path.Combine(_configFolderPath, x.Key), x.Value, reloadOnChange: true));
+            EnumerableExtensions.ForEach(jsonConfigs, x => builder.AddJsonFile(Path.Combine(_configFolderPath, x.Key), x.Value, reloadOnChange: true));
             builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();

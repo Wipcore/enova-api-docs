@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Caching;
-using System.Threading;
-using System.Threading.Tasks;
-using Fasterflect;
-using IdentityModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Interfaces;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
-using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Core;
-using Wipcore.Enova.Generics;
 using System.Linq;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Swashbuckle.SwaggerGen.Generator;
 using Swashbuckle.Swagger.Model;
-using Wipcore.Enova.Api.Models;
+using Swashbuckle.SwaggerGen.Generator;
 
 namespace Wipcore.Enova.Api.WebApi.Helpers
 {

@@ -4,9 +4,8 @@ using System.Net;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
