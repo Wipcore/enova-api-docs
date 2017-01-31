@@ -10,12 +10,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 using System.Linq;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 
 namespace Wipcore.Enova.Api.OAuth
 {

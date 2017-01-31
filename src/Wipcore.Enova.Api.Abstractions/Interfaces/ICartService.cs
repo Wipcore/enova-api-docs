@@ -8,6 +8,12 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
 {
     public interface ICartService
     {
+
+        /// <summary>
+        /// Get an existing cart, mapped to a model.
+        /// </summary>
+        ICalculatedCartModel GetCart(string identifier = null, int id = 0);
+
         /// <summary>
         /// Maps given model to a cart in Enova and returns a model with prices specified.  
         /// </summary>
