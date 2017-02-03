@@ -47,7 +47,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             var dynamicObject = new Dictionary<string, object>();
             
-            foreach (var property in properties.Split(','))
+            foreach (var property in properties.Split(',').Distinct())
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFromEnovaAllowed);
                 var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);
