@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
@@ -51,6 +53,28 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
         {
             return _objectService.Get<EnovaCustomerGroup>(requestContext, query, id);
+        }
+
+        /// <summary>
+        /// Get EnovaCustomerGroup specified by ids. 
+        /// </summary>
+        [HttpGet("ids/{ids}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
+        {
+            var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
+            return _objectService.Get<EnovaCustomerGroup>(requestContext, query, listIds);
+        }
+
+        /// <summary>
+        /// Get EnovaCustomerGroup specified by identifiers. 
+        /// </summary>
+        [HttpGet("identifiers/{identifiers}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
+        {
+            var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
+            return _objectService.Get<EnovaCustomerGroup>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>

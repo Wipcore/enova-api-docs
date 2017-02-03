@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +44,15 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get an attribute type specified by id.
+        /// </summary>
+        [HttpGet("id-{id}")]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaAttributeType>(requestContext, query, id);
+        }
+
+        /// <summary>
         /// Delete a country.
         /// </summary>
         [HttpDelete("id-{id}")]
@@ -51,6 +62,26 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             var success = _objectService.Delete<EnovaCountry>(id);
             if (!success)
                 throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
+
+        /// <summary>
+        /// Get EnovaCountry specified by ids. 
+        /// </summary>
+        [HttpGet("ids/{ids}")]
+        public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
+        {
+            var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
+            return _objectService.Get<EnovaCountry>(requestContext, query, listIds);
+        }
+
+        /// <summary>
+        /// Get EnovaCountry specified by identifiers. 
+        /// </summary>
+        [HttpGet("identifiers/{identifiers}")]
+        public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
+        {
+            var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
+            return _objectService.Get<EnovaCountry>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>

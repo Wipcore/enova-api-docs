@@ -80,6 +80,48 @@ namespace Wipcore.Enova.Api.WebApi.Services
         }
 
         /// <summary>
+        /// Get several objects from Enova.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="ids">List of ids of objects to find.</param>
+        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids) where T : BaseObject
+        {
+            return this.Get<T>(requestContext, query, ids, null);
+        }
+
+        /// <summary>
+        /// Get several objects from Enova.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="identifiers">List of identifiers of objects to find.</param>
+        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<string> identifiers) where T : BaseObject
+        {
+            return this.Get<T>(requestContext, query, null, identifiers);
+        }
+
+        private IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids, IEnumerable<string> identifiers) where T : BaseObject
+        {
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
+            var context = _contextService.GetContext();
+            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
+
+            var objectList = ids != null ? context.FindObjects(ids, derivedType) : context.FindObjects(identifiers, derivedType);
+            if(!String.IsNullOrEmpty(query.Filter))
+                objectList = objectList.Search(query.Filter);
+
+            objectList = _sortService.Sort(objectList, query.Sort);
+            objectList = _filterService.Filter(objectList, query.Filter);
+            objectList = _pagingService.Page(objectList, query.Page.Value, query.Size.Value);
+            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties);
+
+            return objects.ToList();
+        }
+
+        /// <summary>
         /// Get objects from Enova. 
         /// </summary>
         /// <typeparam name="T"></typeparam>

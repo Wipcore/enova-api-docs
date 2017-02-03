@@ -40,6 +40,25 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
 
 
         /// <summary>
+        /// Get several objects from Enova.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="ids">List of ids of objects to find.</param>
+        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids) where T : BaseObject;
+
+        /// <summary>
+        /// Get several objects from Enova.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="identifiers">List of identifiers of objects to find.</param>
+        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<string> identifiers) where T : BaseObject;
+
+
+        /// <summary>
         /// Save an object to Enova with the given values.
         /// </summary>
         /// <typeparam name="T">The most derived type of T is saved.</typeparam>
