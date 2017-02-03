@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using Wipcore.Core;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

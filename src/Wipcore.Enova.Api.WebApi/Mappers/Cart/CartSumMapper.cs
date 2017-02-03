@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Cart

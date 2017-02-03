@@ -2,21 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Wipcore.Enova.Api.WebApi.Services;
-using Wipcore.Enova.Core;
-using Wipcore.Enova.Api.Interfaces;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
-using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Cart;
-using Wipcore.Enova.Api.Models.Interfaces;
-using Wipcore.Enova.Api.Models.Interfaces.Cart;
+using Microsoft.AspNetCore.Mvc;
+using Wipcore.Enova.Api.Abstractions;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces.Cart;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
+using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -75,6 +71,45 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
                 throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
 
             return cart;
+        }
+
+        /// <summary>
+        /// Get EnovaCart specified by ids. 
+        /// </summary>
+        [HttpGet("ids/{ids}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
+        {
+            var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
+            return _objectService.Get<EnovaCart>(requestContext, query, listIds);
+        }
+
+        /// <summary>
+        /// Get EnovaCart specified by identifiers. 
+        /// </summary>
+        [HttpGet("identifiers/{identifiers}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
+        {
+            var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
+            return _objectService.Get<EnovaCart>(requestContext, query, listIdentifiers);
+        }
+
+        /// <summary>
+        /// Get a cart mapped to a model.
+        /// </summary>
+        [HttpGet("AsModel")]
+        [Authorize]
+        public ICalculatedCartModel GetCartAsModel(ContextModel requestContext, string identifier = null, int id = 0)
+        {
+            var model = _cartService.GetCart(identifier, id);
+            var context = _contextService.GetContext();
+            var cart = context.FindObject<EnovaCart>(identifier) ?? context.FindObject<EnovaCart>(id);
+
+            if (!_authService.AuthorizeAccess(cart?.Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
+
+            return model;
         }
 
         /// <summary>

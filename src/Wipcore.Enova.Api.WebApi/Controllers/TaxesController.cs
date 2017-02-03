@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.Abstractions;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
-using Wipcore.Enova.Api.WebApi.Controllers;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
@@ -36,12 +35,41 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get a tax specified by identifier. 
+        /// Get an EnovaTax specified by identifier. 
         /// </summary>
         [HttpGet("{identifier}")]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
             return _objectService.Get<EnovaTax>(requestContext, query, identifier);
+        }
+
+        /// <summary>
+        /// Get an EnovaTax type specified by id.
+        /// </summary>
+        [HttpGet("id-{id}")]
+        public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
+        {
+            return _objectService.Get<EnovaTax>(requestContext, query, id);
+        }
+
+        /// <summary>
+        /// Get EnovaTax specified by ids. 
+        /// </summary>
+        [HttpGet("ids/{ids}")]
+        public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
+        {
+            var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
+            return _objectService.Get<EnovaTax>(requestContext, query, listIds);
+        }
+
+        /// <summary>
+        /// Get EnovaTax specified by identifiers. 
+        /// </summary>
+        [HttpGet("identifiers/{identifiers}")]
+        public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
+        {
+            var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
+            return _objectService.Get<EnovaTax>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>

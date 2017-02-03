@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers

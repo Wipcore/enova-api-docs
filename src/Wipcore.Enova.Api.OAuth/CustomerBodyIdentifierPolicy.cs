@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
-using Wipcore.Enova.Api.Interfaces;
 
 namespace Wipcore.Enova.Api.OAuth
 {

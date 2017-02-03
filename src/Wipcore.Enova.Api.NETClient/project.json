@@ -4,7 +4,7 @@
   "authors": [ "fredrik.astrand" ],
   "dependencies": {
     "Newtonsoft.Json": "9.0.1",
-    "Wipcore.Enova.Api.Models": {
+    "Wipcore.Enova.Api.Abstractions": {
       "target": "project",
       "version": "6.4.0.215-*"
     }

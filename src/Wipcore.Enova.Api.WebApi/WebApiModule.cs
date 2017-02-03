@@ -1,14 +1,10 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Caching;
-using Wipcore.Enova.Api.Interfaces;
+using Autofac;
+using Microsoft.AspNetCore.Http;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.WebApi.Services;
 
 namespace Wipcore.Enova.Api.WebApi
 {

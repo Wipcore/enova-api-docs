@@ -3,15 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Generics;
-using Wipcore.Enova.Api.Interfaces;
-using Microsoft.Extensions.Configuration;
-using System.Runtime.Caching;
 using Fasterflect;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Library;
@@ -51,7 +47,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             var dynamicObject = new Dictionary<string, object>();
             
-            foreach (var property in properties.Split(','))
+            foreach (var property in properties.Split(',').Distinct())
             {
                 var mapper = GetMapper(obj.GetType(), property, MapType.MapFromEnovaAllowed);
                 var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);

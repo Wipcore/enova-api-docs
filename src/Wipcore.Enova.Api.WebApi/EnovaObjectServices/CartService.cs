@@ -5,12 +5,10 @@ using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces.Cart;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
-using Wipcore.Enova.Api.Interfaces;
-using Wipcore.Enova.Api.Models;
-using Wipcore.Enova.Api.Models.Cart;
-using Wipcore.Enova.Api.Models.Interfaces;
-using Wipcore.Enova.Api.Models.Interfaces.Cart;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -60,6 +58,52 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             order.Save();
 
             return order.ID;
+        }
+
+        /// <summary>
+        /// Get an existing cart, mapped to a model.
+        /// </summary>
+        public ICalculatedCartModel GetCart(string identifier = null, int id = 0)
+        {
+            var context = _contextService.GetContext();
+            var enovaCart = context.FindObject<EnovaCart>(identifier) ?? context.FindObject<EnovaCart>(id);
+            if (enovaCart == null)
+                return null;
+
+            var currency = context.CurrentCurrency;
+            decimal rounding, taxAmount;
+            int decimals;
+            var totalPrice = enovaCart.GetPrice(out taxAmount, out rounding, out decimals, ref currency);
+            
+            var rows = new List<CalculatedCartRowModel>();
+            var model = new CalculatedCartModel(rows) {Customer = enovaCart.Customer?.Identifier, Identifier = enovaCart.Identifier, TotalPriceExclTax = totalPrice - taxAmount, TotalPriceInclTax = totalPrice };
+
+            var shipping = enovaCart.GetCartItems<EnovaShippingTypeCartItem>().FirstOrDefault();
+            if (shipping?.ShippingType?.Identifier != null)
+            {
+                var shippingModel = new CalculatedCartRowModel() {Identifier = shipping.ShippingType.Identifier, Type = RowType.Shipping};
+                MapShippingItem(context, enovaCart, shippingModel);
+                rows.Add(shippingModel);
+            }
+
+            var payment = enovaCart.GetCartItems<EnovaPaymentTypeCartItem>().FirstOrDefault();
+            if (payment?.PaymentType?.Identifier != null)
+            {
+                var paymentModel = new CalculatedCartRowModel() { Identifier = payment.PaymentType.Identifier, Type = RowType.Payment};
+                MapPaymentItem(context, enovaCart, paymentModel);
+                rows.Add(paymentModel);
+            }
+
+            foreach (var cartItem in enovaCart.GetCartItems<EnovaProductCartItem>())
+            {
+                var productModel = new CalculatedCartRowModel() { Identifier = cartItem.ProductIdentifier, Type = RowType.Product, Quantity = cartItem.Quantity};
+                MapProductItem(context, enovaCart, productModel);
+                rows.Add(productModel);
+            }
+            
+            AddPromoRows(enovaCart, model);
+            
+            return model;
         }
 
 
@@ -155,7 +199,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                     _mappingToEnovaService.MapToEnovaObject(enovaCartItem, cartItem.AdditionalValues);
                 }
                 
-                AddPromoRows(context, enovaCart, cartModel);//promos are added automatically depending on other cartitems
+                AddPromoRows(enovaCart, cartModel);//promos are added automatically depending on other cartitems
 
                 //any product, payment or shipping items that are not in the model, remove from the cart
                 var identifiers = cartModel.Rows.Select(x => x.Identifier).ToList();
@@ -263,9 +307,11 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             return enovaCart.GetCartItems<EnovaPromoCartItem>().FirstOrDefault(x => x.Promo?.Password == calculatedCartItem.Password);
         }
 
-        private void AddPromoRows(Context context, EnovaCart enovaCart, ICalculatedCartModel currentCart)
+        private void AddPromoRows(EnovaCart enovaCart, ICalculatedCartModel currentCart)
         {
-            enovaCart.Recalculate();
+            if(enovaCart.IsBeingEdited)
+                enovaCart.Recalculate();
+
             var promoRows = enovaCart.GetCartItems<EnovaPromoCartItem>();
             var rows = currentCart.Rows.ToList();
             foreach (var enovaPromoCartItem in promoRows)

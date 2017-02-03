@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Wipcore.Enova.Api.Models;
-using System.Reflection;
+using Wipcore.Enova.Api.Abstractions.Models;
 
 namespace Wipcore.Enova.Api.NetClient
 {

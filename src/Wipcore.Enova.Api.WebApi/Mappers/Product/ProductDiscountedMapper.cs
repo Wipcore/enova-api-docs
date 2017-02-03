@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Caching;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
-using MapType = Wipcore.Enova.Api.Interfaces.MapType;
+using System.Linq;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 {
