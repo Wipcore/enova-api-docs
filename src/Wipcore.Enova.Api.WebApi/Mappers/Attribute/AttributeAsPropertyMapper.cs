@@ -18,19 +18,23 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public bool FlattenMapping => true;
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
-            var values = new Dictionary<string, object>();
+            var values = new Dictionary<string, string>();
             foreach (var attributeValue in obj.AttributeValues.OfType<EnovaAttributeValue>())
             {
                 var value = !String.IsNullOrEmpty(attributeValue.ValueCode) ? attributeValue.ValueCode : attributeValue.Name;
                 var type = attributeValue.AttributeType?.Identifier ?? String.Empty;
-                values.Add(type, value);
+
+                if (values.ContainsKey(type))
+                    values[type] = values[type] + ", " + value;
+                else
+                    values.Add(type, value);
             }
             return values;
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            
+            throw new NotImplementedException();   
         }
 
     }

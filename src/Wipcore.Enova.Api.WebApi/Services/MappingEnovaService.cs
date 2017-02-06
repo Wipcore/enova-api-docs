@@ -54,7 +54,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
                 if (mapper?.FlattenMapping == true)//add values directly to object instead of as a subvalue.
                 {
-                    var subValues = (IDictionary<string, object>) value;
+                    var subValues = (IDictionary<string, string>) value;
                     subValues.ForEach(x => dynamicObject.Add(x.Key, x.Value));
                 }
                 else
