@@ -31,7 +31,8 @@
       "target": "project",
       "version": "6.4.0.215-*"
     },
-    "Wipcore.Enova.Connectivity.Package": "6.4.0.215-*"
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.238-*",
+    "Wipcore.Enova.Core.Package": "6.4.0.238-*"
 
   },
 

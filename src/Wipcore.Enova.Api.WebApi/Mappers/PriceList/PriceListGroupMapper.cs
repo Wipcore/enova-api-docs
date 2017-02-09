@@ -5,12 +5,13 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
 {
     public class PriceListGroupMapper : IPropertyMapper
     {
-        public bool PostSaveSet => false;
+        public bool PostSaveSet => true;
         private readonly IContextService _contextService;
 
         public PriceListGroupMapper(IContextService contextService)
@@ -34,8 +35,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
             var context = _contextService.GetContext();
             foreach (var i in value as dynamic)
             {
-                var item = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, MarkForDelete = false});
-                var customerGroup = EnovaCustomerGroup.Find(context, item.ID);
+                var item = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, Identifier = String.Empty, MarkForDelete = false});
+                var customerGroup = (CustomerGroup) (context.FindObject(item.ID, typeof(CustomerGroup), false) ?? context.FindObject(item.Identifier, typeof(CustomerGroup), true));
                 if (item.MarkForDelete == true)
                 {
                     priceList.RemoveSpecificAccess(customerGroup);
@@ -51,7 +52,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
         {
             var context = _contextService.GetContext();
             var priceList = (EnovaPriceList) obj;
-            var lists = priceList.GetObjectsWithSpecificAccess(context, typeof (EnovaCustomerGroup)).Cast<EnovaCustomerGroup>();
+            var lists = priceList.GetObjectsWithSpecificAccess(context, typeof (CustomerGroup)).Cast<CustomerGroup>();
 
             return lists.Select(x => new
             {

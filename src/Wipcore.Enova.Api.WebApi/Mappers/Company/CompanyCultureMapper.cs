@@ -25,10 +25,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if(String.IsNullOrEmpty(value?.ToString()))
+                return;
+
             var company = (EnovaCompany)obj;
-            var country = obj.GetContext().FindObject<EnovaCountry>(value?.ToString());
-            company.CountryIsoCode = country?.Identifier;
-            company.CountryName = country?.Name;
+            var country = obj.GetContext().FindObject<EnovaCountry>(value.ToString());
+            company.CountryIsoCode = country.Identifier;
+            company.CountryName = country.Name;
         }
     }
 }
