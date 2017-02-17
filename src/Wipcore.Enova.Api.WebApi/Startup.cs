@@ -160,7 +160,7 @@ namespace Wipcore.Enova.Api.WebApi
                 CookieSecure = Configuration.GetValue<bool>("Auth:CookieSecure", false) ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest,
                 CookiePath = Configuration.GetValue<string>("Auth:CookiePath", "/"),
                 ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 120), 0),
-                SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", false)
+                SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true)
             };
 
             if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieDomain", String.Empty)))
