@@ -59,6 +59,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
                 ID = x.ID,
                 Identifier = x.Identifier,
                 Name = x.Name,
+                Type = x.GetType().Name,
                 MarkForDelete = false
             });
         }

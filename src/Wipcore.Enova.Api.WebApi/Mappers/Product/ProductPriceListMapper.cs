@@ -30,7 +30,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
 
             foreach (var priceList in priceLists)
             {
-                var accessGroups = priceList.GetObjectsWithSpecificAccess(product.GetContext(), typeof(EnovaCustomerGroup)).Cast<EnovaCustomerGroup>();
+                var accessGroups = priceList.GetObjectsWithSpecificAccess(product.GetContext(), typeof(CustomerGroup)).Cast<CustomerGroup>();
                 var price = new
                 {
                     PriceListId = priceList.ID,
