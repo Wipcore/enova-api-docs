@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NLog;
+using NLog.Targets;
 using Wipcore.Core;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Services;
@@ -79,9 +81,18 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 
             info.Add("IsAlive", IsEnovaAlive());
             info.Add("Database", _configurationRoot.GetValue<String>("Enova:ConnectionString"));
-            info.Add("Logging", _configurationRoot.GetValue<String>("Enova:LogPath"));
+            info.Add("EnovaLogging", _configurationRoot.GetValue<String>("Enova:LogPath"));
+            info.Add("NlogLogging", GetNlogLogFile());
+
 
             return info;
+        }
+
+        private string GetNlogLogFile()
+        {
+            var fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("File");
+            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            return fileTarget.FileName.Render(logEventInfo)?.Replace('/', '\\');
         }
 
         /// <summary>
