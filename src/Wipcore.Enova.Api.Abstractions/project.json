@@ -15,7 +15,8 @@
     "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Wipcore.Enova.Core.Package": "6.4.0.215-*",
     "Microsoft.AspNetCore.Mvc.DataAnnotations": "1.1.0",
-    "Newtonsoft.Json": "9.0.1-*"
+    "Newtonsoft.Json": "9.0.1-*",
+    "IdentityServer4": "1.0.0-rc5"
   },
 
   "buildOptions": {

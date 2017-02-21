@@ -1,4 +1,6 @@
+using System;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Wipcore.Enova.Api.Abstractions.Interfaces
 {
@@ -101,5 +103,11 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="enovaObjectOwnedByIdentifier">The current owner of the object.</param>
         /// <param name="specifiedOwner">The owner specified to own the object after update.</param>
         bool AuthorizeUpdate(string enovaObjectOwnedByIdentifier, string specifiedOwner);
+
+
+        /// <summary>
+        /// Validator for when tokens expire.
+        /// </summary>
+        bool ExpireValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters);
     }
 }

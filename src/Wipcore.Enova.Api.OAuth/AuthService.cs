@@ -51,6 +51,21 @@ namespace Wipcore.Enova.Api.OAuth
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)), SecurityAlgorithms.HmacSha256);
         }
 
+        public bool ExpireValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+        {
+            if (notBefore.HasValue && notBefore.Value > DateTime.Now)
+                return false; //if not valid yet, then disallow
+
+            if (expires.HasValue)
+            {
+                var nextNightFromExpire = expires.Value.AddDays(1).Date.AddHours(4);//expire next night at 4
+                if (DateTime.Now > nextNightFromExpire)
+                    return false;
+            }
+
+            return true;
+        }
+
 
         public ClaimsPrincipal Login(ILoginModel model, bool admin)
         {

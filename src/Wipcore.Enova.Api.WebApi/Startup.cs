@@ -34,8 +34,11 @@ namespace Wipcore.Enova.Api.WebApi
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
-        public IConfigurationRoot Configuration { get; }
-        public IHostingEnvironment Env { get; }
+        private IConfigurationRoot Configuration { get; }
+        private IHostingEnvironment Env { get; }
+
+        private IContainer Container { get; set; }
+
 
         public Startup(IHostingEnvironment env)
         {
@@ -116,13 +119,13 @@ namespace Wipcore.Enova.Api.WebApi
                 ConfigureSwagger(services);
 
             containerBuilder.Populate(services);
-            var container = containerBuilder.Build();
+            Container = containerBuilder.Build();
 
             // add cmo properties
-            var cmoProperties = container.Resolve<IEnumerable<ICmoProperty>>();
+            var cmoProperties = Container.Resolve<IEnumerable<ICmoProperty>>();
             EnovaSystemFacade.Current.Connection.Kernel.AddCmoProperties(cmoProperties);
 
-            return container.Resolve<IServiceProvider>();
+            return Container.Resolve<IServiceProvider>();
         }
         
 
@@ -159,7 +162,7 @@ namespace Wipcore.Enova.Api.WebApi
                 CookieHttpOnly = Configuration.GetValue<bool>("Auth:CookieHttpOnly", false),
                 CookieSecure = Configuration.GetValue<bool>("Auth:CookieSecure", false) ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest,
                 CookiePath = Configuration.GetValue<string>("Auth:CookiePath", "/"),
-                ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 120), 0),
+                ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 360), 0),
                 SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true)
             };
 
@@ -186,6 +189,9 @@ namespace Wipcore.Enova.Api.WebApi
                     AuthenticationType = JwtBearerDefaults.AuthenticationScheme
                 }
             };
+
+            if(Configuration.GetValue<bool>("Auth:UseAuthTimeValidation", true))
+                jwtBearer.TokenValidationParameters.LifetimeValidator = Container.Resolve<IAuthService>().ExpireValidator;
 
             app.UseJwtBearerAuthentication(jwtBearer);
 
