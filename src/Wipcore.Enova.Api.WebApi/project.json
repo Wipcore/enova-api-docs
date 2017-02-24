@@ -24,12 +24,12 @@
     "NLog.Extensions.Logging": "1.0.0-rtm-alpha4",
     "Swashbuckle": "6.0.0-beta902",    
     "Wipcore.Enova.Api.Abstractions": {
-      "target": "project",
-      "version": "6.4.0.215-*"
+      "version": "6.4.0.215-*",
+      "target": "project"
     },
     "Wipcore.Enova.Api.OAuth": {
-      "target": "project",
-      "version": "6.4.0.215-*"
+      "version": "6.4.0.215-*",
+      "target": "project"
     },
     "Wipcore.Enova.Connectivity.Package": "6.4.0.238-*",
     "Wipcore.Enova.Core.Package": "6.4.0.238-*"
