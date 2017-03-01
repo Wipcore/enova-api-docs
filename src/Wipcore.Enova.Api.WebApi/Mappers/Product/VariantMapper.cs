@@ -24,7 +24,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             _productService = productService;
         }
 
-        public List<string> Names => new List<string>() {"IsOwner", "VariantOwnerIdentifier", "VariantOwnerId", "VariantIds"};
+        public List<string> Names => new List<string>() {"IsOwner", "VariantOwnerIdentifier", "VariantOwnerId", "VariantIds", "VariantIdentifiers"};
         public Type CmoType => typeof(CmoEnovaBaseProduct);
         public Type Type => typeof(EnovaBaseProduct);
         public bool InheritMapper => true;
@@ -42,12 +42,16 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             
             var product = (EnovaBaseProduct)obj;
 
-            if (String.Equals(propertyName, "VariantIds", StringComparison.InvariantCultureIgnoreCase))
+            if (String.Equals(propertyName, "VariantIds", StringComparison.InvariantCultureIgnoreCase) || String.Equals(propertyName, "VariantIdentifiers", StringComparison.InvariantCultureIgnoreCase))
             {
-                var variantIds = JsonConvert.DeserializeObject<List<int>>(value.ToString());
+                var variants = String.Equals(propertyName, "VariantIds", StringComparison.InvariantCultureIgnoreCase)
+                    ? (IList)JsonConvert.DeserializeObject<List<int>>(value.ToString())
+                    : (IList)JsonConvert.DeserializeObject<List<string>>(value.ToString());
+                
                 //should be owner if there are variant ids and no specified owner
-                var shouldBeOwner = variantIds != null && variantIds.Any() && Convert.ToInt32(otherValues["VariantOwnerId"]) == default(int) 
-                    && String.IsNullOrEmpty(Convert.ToString(otherValues["VariantOwnerIdentifier"]));
+                var shouldBeOwner = variants?.Count > 0 && 
+                    (!otherValues.ContainsKey("VariantOwnerId") || Convert.ToInt32(otherValues["VariantOwnerId"]) == default(int)) &&
+                    (!otherValues.ContainsKey("VariantOwnerIdentifier") || String.IsNullOrEmpty(Convert.ToString(otherValues["VariantOwnerIdentifier"])));
 
                 if (!shouldBeOwner && product.IsVariantOwner) //if you shouldn't be an owner, but are, then stop it!
                 {
@@ -57,7 +61,11 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
                 if (shouldBeOwner)
                 {
-                    _productService.SetupVariantFamily(product, variantIds);
+                    var variantIds = variants as List<int>;
+                    if (variantIds != null)
+                        _productService.SetupVariantFamily(product, variantIds);
+                    else
+                        _productService.SetupVariantFamily(product, (List<string>) variants);
                 }
                 return;
             }

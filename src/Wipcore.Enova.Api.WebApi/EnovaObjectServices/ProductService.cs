@@ -56,6 +56,18 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             deletedVariants.ForEach(x => ownerFamily.RemoveObject(x));
         }
 
+        public void SetupVariantFamily(EnovaBaseProduct owner, List<string> variantIdentifiers)
+        {
+            var context = _contextService.GetContext();
+            var ownerFamily = GetOrCreateVariantFamily(owner);
+            var currentVariantMembers = ownerFamily.GetFamilyMembers<EnovaBaseProduct>().Where(x => x.ID != owner.ID).ToList();
+            var newVariants = variantIdentifiers.Distinct().Except(currentVariantMembers.Select(x => x.Identifier)).Select(x => context.FindObject<EnovaBaseProduct>(x)).Where(x => x != null).ToList();
+            var deletedVariants = currentVariantMembers.Where(x => !variantIdentifiers.Contains(x.Identifier)).ToList();
+
+            newVariants.ForEach(x => ownerFamily.AddObject(x));
+            deletedVariants.ForEach(x => ownerFamily.RemoveObject(x));
+        }
+
         private VariantFamily GetOrCreateVariantFamily(EnovaBaseProduct variantOwner)
         {
             var context = _contextService.GetContext();
