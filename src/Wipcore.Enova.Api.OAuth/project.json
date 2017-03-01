@@ -10,8 +10,8 @@
     "IdentityServer4": "1.0.0-rc5",
     "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.1.0",
     "Wipcore.Enova.Api.Abstractions": {
-      "target": "project",
-      "version": "6.4.0.215-*"
+      "version": "6.4.0.215-*",
+      "target": "project"
     },
     "Wipcore.Enova.Connectivity.Package": "6.4.0.215-*"
   },
