@@ -103,6 +103,8 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                 return isOwner ? null : owner?.ID;
             if (String.Equals(propertyName, "VariantIds", StringComparison.InvariantCultureIgnoreCase))
                 return product.GetVariantMembers().Where(x => x.ID != product.ID && (owner == null || x.ID != owner.ID)).Select(x => x.ID).ToList();
+            if (String.Equals(propertyName, "VariantIdentifiers", StringComparison.InvariantCultureIgnoreCase))
+                return product.GetVariantMembers().Where(x => x.Identifier != product.Identifier && (owner == null || x.Identifier != owner.Identifier)).Select(x => x.Identifier).ToList();
 
             return null;
         }

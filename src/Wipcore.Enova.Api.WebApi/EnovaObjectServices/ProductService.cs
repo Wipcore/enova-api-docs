@@ -40,6 +40,9 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                         context.FindObject<EnovaBaseProduct>(ownerIdentifier);
 
             //if owner null, mabe throw exception TODO
+            if(owner == null)
+                return;
+
             var ownerFamily = GetOrCreateVariantFamily(owner);
             ownerFamily.AddObject(product);
         }
@@ -66,6 +69,11 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             newVariants.ForEach(x => ownerFamily.AddObject(x));
             deletedVariants.ForEach(x => ownerFamily.RemoveObject(x));
+        }
+
+        public void SetupVariantFamily(EnovaBaseProduct owner, List<EnovaBaseProduct> variants)
+        {
+            SetupVariantFamily(owner, variants.Select(x => x.ID).ToList());
         }
 
         private VariantFamily GetOrCreateVariantFamily(EnovaBaseProduct variantOwner)

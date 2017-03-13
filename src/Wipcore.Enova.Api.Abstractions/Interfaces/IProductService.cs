@@ -16,5 +16,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         void SetupVariantFamily(EnovaBaseProduct owner, List<int> variantIds);
 
         void SetupVariantFamily(EnovaBaseProduct owner, List<string> variantIdentifiers);
+
+        void SetupVariantFamily(EnovaBaseProduct owner, List<EnovaBaseProduct> variants);
     }
 }
