@@ -34,9 +34,14 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// </summary>
         public string Filter { get; set; }
 
+        /// <summary>
+        /// Whether to use cache as response.
+        /// </summary>
+        public bool? Cache { get; set; }
+
         public override string ToString()
         {
-            return $"QueryModel: (Template: {Template}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter})";
+            return $"QueryModel: (Template: {Template}, Properties: {Properties}, Page: {Page}, Size: {Size}, Sort: {Sort}, Filter: {Filter}, Cache: {Cache})";
         }
 
         /// <summary>
@@ -45,7 +50,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// <returns></returns>
         public QueryModel Copy()
         {
-            return new QueryModel() { Template = Template, Properties = Properties, Filter = Filter, Size = Size, Sort = Sort, Page = Page};
+            return new QueryModel() { Template = Template, Properties = Properties, Filter = Filter, Size = Size, Sort = Sort, Page = Page, Cache = Cache};
         }
     }
 }

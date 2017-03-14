@@ -7,6 +7,7 @@ using Fasterflect;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Generics;
@@ -26,11 +27,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly ITemplateService _templateService;
         private readonly IContextService _contextService;
         private readonly IAuthService _authService;
+        private readonly ICacheService _cacheService;
         private readonly ILogger _logger;
 
 
-        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromEnovaService mappingFromEnovaService,
-            IMappingToEnovaService mappingToEnovaService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService)
+        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromEnovaService mappingFromEnovaService, 
+            IMappingToEnovaService mappingToEnovaService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService, ICacheService cacheService)
         {
             _pagingService = pagingService;
             _sortService = sortService;
@@ -40,6 +42,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _templateService = templateService;
             _contextService = contextService;
             _authService = authService;
+            _cacheService = cacheService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
@@ -107,18 +110,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
         {
             var derivedType = typeof(T).GetMostDerivedEnovaType();
             var context = _contextService.GetContext();
-            query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
-
             var objectList = ids != null ? context.FindObjects(ids, derivedType) : context.FindObjects(identifiers, derivedType);
-            if(!String.IsNullOrEmpty(query.Filter))
-                objectList = objectList.Search(query.Filter);
-
-            objectList = _sortService.Sort(objectList, query.Sort);
-            objectList = _filterService.Filter(objectList, query.Filter);
-            objectList = _pagingService.Page(objectList, query.Page.Value, query.Size.Value);
-            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties);
-
-            return objects.ToList();
+            return this.Get<T>(requestContext, query, objectList);
         }
 
         /// <summary>
@@ -133,6 +126,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
         {
             var derivedType = typeof(T).GetMostDerivedEnovaType();
             query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);
+
+            var cache = _cacheService.GetCache(requestContext, query, derivedType, candidates);
+            if (cache != null)
+                return cache;
             
             var context = _contextService.GetContext();
             var memoryObject = IsMemoryObject(derivedType);
@@ -144,9 +141,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
             objectList = _sortService.Sort(objectList, query.Sort);
             objectList = _filterService.Filter(objectList, query.Filter);
             objectList = _pagingService.Page(objectList, query.Page.Value, query.Size.Value);
-            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties);
+            var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties).ToList();
 
-            return objects.ToList();
+            _cacheService.SetCache(objects, requestContext, query, derivedType, candidates);
+
+            return objects;
         }
 
         /// <summary>
@@ -185,6 +184,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
             postSaveMappers?.ForEach(x => x.Invoke());
 
             _logger.LogInformation("{0} {1} object with Identifier: {2} of Type: {3} with Values: {4}", _authService.LogUser(), newObject ? "Created" : "Updated", identifier, obj.GetType().Name, values.ToLog());
+
+            _cacheService.ClearCache(obj.GetType());
 
             var changedObject = context.FindObject<T>(obj.ID);//reget from enova to get any changes made
             return _mappingFromEnovaService.MapFromEnovaObject(changedObject, String.Join(",",values.Select(x => x.Key)));//remap to get changed values

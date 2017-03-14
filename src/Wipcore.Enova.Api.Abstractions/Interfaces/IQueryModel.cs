@@ -29,5 +29,10 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// Filter the response. Example: Identifier=123 OR Name=pizza*
         /// </summary>
         string Filter { get; set; }
+
+        /// <summary>
+        /// Whether to use cache as response.
+        /// </summary>
+        bool? Cache { get; set; }
     }
 }
