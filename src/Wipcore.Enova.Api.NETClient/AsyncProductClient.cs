@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Wipcore.Enova.Api.Models;
+using Wipcore.Enova.Api.Abstractions.Models;
 using static System.String;
 
 namespace Wipcore.Enova.Api.NetClient
