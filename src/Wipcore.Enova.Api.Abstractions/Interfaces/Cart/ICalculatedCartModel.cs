@@ -8,5 +8,8 @@
         decimal TotalPriceInclTax { get; set; }
 
         decimal TotalPriceExclTax { get; set; }
+
+        string TotalPriceInclTaxString { get; set; }
+        string TotalPriceExclTaxString { get; set; }
     }
 }

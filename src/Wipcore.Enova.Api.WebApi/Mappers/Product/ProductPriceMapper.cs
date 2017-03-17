@@ -19,7 +19,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
         
-        public List<string> Names => new List<string>(){"PriceExclTax", "PriceInclTax"};
+        public List<string> Names => new List<string>(){"PriceExclTax", "PriceInclTax", "PriceExclTaxString", "PriceInclTaxString" };
 
         public Type Type => typeof(EnovaBaseProduct);
 
@@ -27,10 +27,17 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
-            var includeTax = String.Equals(propertyName, "PriceInclTax", StringComparison.InvariantCultureIgnoreCase);
+            var outputAsString = propertyName.EndsWith("String", StringComparison.InvariantCultureIgnoreCase);
+            var includeTax = String.Equals(propertyName, "PriceInclTax", StringComparison.InvariantCultureIgnoreCase) || 
+                             String.Equals(propertyName, "PriceInclTaxString", StringComparison.InvariantCultureIgnoreCase);
             var product = (EnovaBaseProduct)obj;
             var price = product.GetPrice(includeTax);
-            return price;
+
+            if (!outputAsString)
+                return price;
+
+            var context = product.GetContext();
+            return context.AmountToString(price, context.CurrentCurrency, 2, true, true);
         }
 
         public object GetProperty(CmoDbObject obj, CmoContext context, string propertyName, CmoLanguage language)

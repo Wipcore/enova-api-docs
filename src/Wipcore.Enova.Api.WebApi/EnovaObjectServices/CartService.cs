@@ -11,6 +11,7 @@ using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
+using Wipcore.Library;
 
 namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 {
@@ -22,6 +23,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         private readonly IAuthService _authService;
         private readonly IConfigurationRoot _configuration;
         private readonly ILogger _logger;
+        private const int DecimalsInAmountString = 2;
 
 
         public CartService(IContextService contextService, IMappingToEnovaService mappingToEnovaService, IMappingFromEnovaService mappingFromEnovaService, IAuthService authService, 
@@ -140,6 +142,14 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             calculatedCart.TotalPriceExclTax = totalPrice - taxAmount;
             calculatedCart.TotalPriceInclTax = totalPrice;
+            calculatedCart.TotalPriceExclTaxString = context.AmountToString(calculatedCart.TotalPriceExclTax, currency, DecimalsInAmountString, true, true);
+            calculatedCart.TotalPriceInclTaxString = context.AmountToString(calculatedCart.TotalPriceInclTax, currency, DecimalsInAmountString, true, true);
+
+            calculatedCart.Rows.Cast<ICalculatedCartRowModel>().ForEach(x =>
+            {
+                x.PriceExclTaxString = context.AmountToString(x.PriceExclTax, currency, DecimalsInAmountString, true, true);
+                x.PriceInclTaxString = context.AmountToString(x.PriceInclTax, currency, DecimalsInAmountString, true, true);
+            });
 
             if (currentCart.Persist)
             {

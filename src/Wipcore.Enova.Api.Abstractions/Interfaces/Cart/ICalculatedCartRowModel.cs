@@ -9,6 +9,9 @@
 
         decimal PriceExclTax { get; set; }
 
+        string PriceInclTaxString { get; set; }
+        string PriceExclTaxString { get; set; }
+
         string Name { get; set; }
     }
 }

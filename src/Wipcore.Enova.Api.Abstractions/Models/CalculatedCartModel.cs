@@ -16,6 +16,9 @@ namespace Wipcore.Enova.Api.Abstractions.Models
        
         public decimal TotalPriceExclTax { get; set; }
 
+        public string TotalPriceInclTaxString { get; set; }
+        public string TotalPriceExclTaxString { get; set; }
+
         public override string ToString()
         {
             var rows = Rows == null ? String.Empty : $"[{String.Join("| ", Rows.Select(x => x.ToString()))}]";
