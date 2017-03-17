@@ -24,13 +24,14 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
             var groups = new List<object>();
             var customer = (EnovaCustomer) obj;
 
-            foreach (var group in customer.Groups.OfType<EnovaCustomerGroup>())
+            foreach (var group in customer.Groups.OfType<CustomerGroup>())
             {
                 var customerGroup = new
                 {
                     ID = group.ID,
                     Identifier = group.Identifier,
                     Name = group.Name,
+                    Type = group.GetType().Name,
                     MarkForDelete = false
                 };
                 groups.Add(customerGroup);
@@ -45,13 +46,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
                 return;
 
             var customer = (EnovaCustomer)obj;
-            dynamic groups = value;
-            foreach (var g in groups)
+            var context = obj.GetContext();
+            foreach (var group in value as dynamic)
             {
-                var group = (Dictionary<string, object>)JsonConvert.DeserializeObject(g.ToString(), typeof(Dictionary<string, object>));
-                var enovaGroup = EnovaCustomerGroup.Find(obj.GetContext(), group.GetOrDefault<int>("ID"));
+                var groupModel = JsonConvert.DeserializeAnonymousType(group.ToString(), new {ID = 0, Identifier = String.Empty, MarkForDelete = false}) ;
+                var enovaGroup = (CustomerGroup) (context.FindObject(groupModel.ID, typeof(CustomerGroup), false) ?? context.FindObject(groupModel.Identifier, typeof(CustomerGroup), true));
 
-                if (group.GetOrDefault<bool>("MarkForDelete"))
+                if (groupModel.MarkForDelete)
                     enovaGroup.RemoveUser(customer);
                 else if (!enovaGroup.HasUser(customer))
                     enovaGroup.AddUser(customer);
