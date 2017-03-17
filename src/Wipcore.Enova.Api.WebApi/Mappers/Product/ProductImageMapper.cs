@@ -17,16 +17,9 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 {
     public class ProductImageMapper : IPropertyMapper
     {
-        private readonly IConfigurationRoot _configurationRoot;
-        public bool PostSaveSet => false;//TODO split...
-       
+        public bool PostSaveSet => false;
 
-        public ProductImageMapper(IConfigurationRoot configurationRoot)
-        {
-            _configurationRoot = configurationRoot;
-        }
-
-        public List<string> Names => new List<string>() { "MasterImage", "Images" };
+        public List<string> Names => new List<string>() { "Images" };
         public Type Type => typeof(EnovaBaseProduct);
         public bool InheritMapper => true;
         public bool FlattenMapping => false;
@@ -38,91 +31,70 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public object GetEnovaProperty(BaseObject obj, string propertyName)
         {
             var product = (EnovaBaseProduct)obj;
-            var archivePath = _configurationRoot["Image:Archive"] ?? String.Empty;
 
-            if (String.Equals(propertyName, "MasterImage", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return Path.Combine(archivePath, product.ImageMaster);
-            }
-            else
-            {
-                var pictureFamily = obj.GetContext().FindObject<EnovaPictureLinkFamily>(product.Identifier + "_images");
-                if(pictureFamily == null)
-                    return new ArrayList();
+            var pictureFamily = obj.GetContext().FindObject<EnovaPictureLinkFamily>(product.Identifier + "_images");
+            if (pictureFamily == null)
+                return new ArrayList();
 
-                return pictureFamily.GetObjects().Cast<EnovaPictureLinkObject>().Select(x => new
-                {
-                    x.ID,
-                    x.Identifier,
-                    Path = Path.Combine(archivePath, x.ImageFilePath),
-                    x.Name
-                });
-            }
-            
+            return pictureFamily.GetObjects().Cast<EnovaPictureLinkObject>().Select(x => new
+            {
+                x.ID,
+                x.Identifier,
+                Path = x.ImageFilePath,
+                x.Name
+            });
         }
-        
+
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            if(value == null)
+            if (value == null)
                 return;
 
             var product = (EnovaBaseProduct)obj;
-            var archivePath = _configurationRoot["Image:Archive"] ?? String.Empty;
 
-            if (String.Equals(propertyName, "MasterImage", StringComparison.InvariantCultureIgnoreCase))
+            var context = product.GetContext();
+            var pictureFamily = context.FindObject<EnovaPictureLinkFamily>(product.Identifier + "_images");
+            if (pictureFamily == null)
             {
-                var image = value.ToString().Replace(archivePath, String.Empty);
-                if (image.StartsWith(@"\"))
-                    image = image.Substring(1);
-                product.ImageMaster = image;
+                pictureFamily = new EnovaPictureLinkFamily(context) { Identifier = product.Identifier + "_images", ProductID = product.ID };
+                pictureFamily.Save();
             }
-            else
+
+            foreach (var i in value as dynamic)
             {
-                var context = product.GetContext();
-                var pictureFamily = context.FindObject<EnovaPictureLinkFamily>(product.Identifier + "_images");
-                if (pictureFamily == null)
-                {
-                    pictureFamily = new EnovaPictureLinkFamily(context) {Identifier = product.Identifier + "_images", ProductID = product.ID};
-                    pictureFamily.Save();
-                }
+                var imageModel = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, Identifier = String.Empty, MarkForDelete = false, Name = String.Empty, Path = String.Empty });
+                var pictureObj = context.FindObject(imageModel.ID, typeof(EnovaPictureLinkObject), false) ?? context.FindObject(imageModel.Identifier, typeof(EnovaPictureLinkObject), false);
 
-                foreach (var i in value as dynamic)
+                if (pictureObj == null)
                 {
-                    var imageModel = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, Identifier = String.Empty, MarkForDelete = false, Name = String.Empty, Path = String.Empty });
-                    var pictureObj = context.FindObject(imageModel.ID, typeof(EnovaPictureLinkObject), false) ?? context.FindObject(imageModel.Identifier, typeof(EnovaPictureLinkObject), false);
-                    
-                    if (pictureObj == null)
-                    {
-                        if(imageModel.MarkForDelete)
-                            continue;
-
-                        pictureObj = new EnovaPictureLinkObject(context) { Identifier = imageModel.Identifier ?? String.Empty, Name = imageModel.Name ?? String.Empty};
-                    }
-                    else if (imageModel.MarkForDelete)
-                    {
-                        pictureFamily.RemoveObject(pictureObj);
-                        pictureObj.Delete();
+                    if (imageModel.MarkForDelete)
                         continue;
-                    }
 
-
-                    pictureObj.Edit();
-                    pictureObj.Identifier = imageModel.Identifier;
-                    pictureObj.Name = imageModel.Name;
-                    pictureObj.ImageFilePath = imageModel.Path;
-                    pictureObj.Save();
-
-                    if (pictureFamily.GetObjects(typeof(EnovaPictureLinkObject)).Search($"ID = {pictureObj.ID}").Count == 0)
-                    {
-                        pictureFamily.AddObject(pictureObj);
-                    }
-
-
+                    pictureObj = new EnovaPictureLinkObject(context) { Identifier = imageModel.Identifier ?? String.Empty, Name = imageModel.Name ?? String.Empty };
                 }
+                else if (imageModel.MarkForDelete)
+                {
+                    pictureFamily.RemoveObject(pictureObj);
+                    pictureObj.Delete();
+                    continue;
+                }
+
+
+                pictureObj.Edit();
+                pictureObj.Identifier = imageModel.Identifier;
+                pictureObj.Name = imageModel.Name;
+                pictureObj.ImageFilePath = imageModel.Path;
+                pictureObj.Save();
+
+                if (pictureFamily.GetObjects(typeof(EnovaPictureLinkObject)).Search($"ID = {pictureObj.ID}").Count == 0)
+                {
+                    pictureFamily.AddObject(pictureObj);
+                }
+
             }
-            
+
         }
 
-        
+
     }
 }
