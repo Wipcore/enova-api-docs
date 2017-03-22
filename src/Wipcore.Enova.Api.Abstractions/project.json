@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "6.4.0.215-dev",
   "description": "Wipcore.Enova.Api.Abstractions Class Library",
   "authors": [ "henrik.eliasson" ],
@@ -25,6 +25,7 @@
         "..\\..\\..\\SharedAssemblyInfo\\SharedVersionInfo.cs",
         "..\\..\\..\\SharedAssemblyInfo\\SharedAssemblyInfo.cs"
       ]
-    }
+    },
+    "xmlDoc": true
   }
 }

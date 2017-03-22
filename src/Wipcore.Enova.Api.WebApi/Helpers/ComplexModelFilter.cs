@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Generator;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Wipcore.Enova.Api.WebApi.Helpers
 {

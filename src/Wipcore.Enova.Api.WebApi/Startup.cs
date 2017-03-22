@@ -18,7 +18,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
-using Swashbuckle.Swagger.Model;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using Wipcore.Core;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.OAuth;
@@ -202,13 +203,13 @@ namespace Wipcore.Enova.Api.WebApi
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
             {
                 app.UseSwagger();
-                app.UseSwaggerUi();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "eNOVA Web API"));
             }
         }
         
         private void ConfigureSwagger(IServiceCollection services)
         {
-            _swaggerDocsFolderPath = Configuration.GetValue<string>("ApiSettings:PathToSwaggerDocs", Path.GetFullPath(Env.ContentRootPath + @".\SwaggerDocs"));
+            _swaggerDocsFolderPath = _swaggerDocsFolderPath ?? Configuration.GetValue<string>("ApiSettings:PathToSwaggerDocs", Path.GetFullPath(Env.ContentRootPath + @".\SwaggerDocs"));
             var docFilePaths = Directory.Exists(_swaggerDocsFolderPath) ? Directory.GetFiles(_swaggerDocsFolderPath, "*.xml").ToList() : new List<string>();
             
             if(!docFilePaths.Any())
@@ -221,16 +222,16 @@ namespace Wipcore.Enova.Api.WebApi
 
             services.AddSwaggerGen(options =>
             {
-                options.SingleApiVersion(new Info
+                options.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
                     Title = AuthService.AuthenticationScheme,
                     Description = "",
                     TermsOfService = ""
                 });
-                options.OperationFilter<ComplexModelFilter>(_swaggerDocsFolderPath);
-                docFilePaths.ForEach(options.IncludeXmlComments);
-                options.DescribeAllEnumsAsStrings();
+                //options.OperationFilter<ComplexModelFilter>(_swaggerDocsFolderPath);
+                //docFilePaths.ForEach(options.IncludeXmlComments);
+                //options.DescribeAllEnumsAsStrings();
 
             });
 

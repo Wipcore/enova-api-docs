@@ -1,0 +1,765 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wipcore.Enova.Api.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:Wipcore.Enova.Api.Abstractions.EnovaApiController">
+            <summary>
+            Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAttributeService.GetAttributes``1(System.String)">
+            <summary>
+            Get attributes of the object with the given identifier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.Login(Wipcore.Enova.Api.Abstractions.Interfaces.ILoginModel,System.Boolean)">
+            <summary>
+            Login user by information in model. Returns a claimprincipal with the claims of the logged in user.
+            </summary>
+            <param name="model"></param>
+            <param name="admin">True to log in as an administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.LoginCustomerAsAdmin(Wipcore.Enova.Api.Abstractions.Interfaces.ILoginCustomerWithAdminCredentialsModel,System.String@)">
+            <summary>
+            Log in a customer with the credentials of an admin, ie inpersonation.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInAlias">
+            <summary>
+            Get the alias of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInName">
+            <summary>
+            Get the name of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInIdentifier">
+            <summary>
+            Get the identifier of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInDefaultCurrency">
+            <summary>
+            Get the default currency of the logged in user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInDefaultLanguage">
+            <summary>
+            Get the default language of the logged in user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInId">
+            <summary>
+            Get the id of an logged in user. Returns null if no-one logged in.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetLoggedInRole">
+            <summary>
+            Get the role of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.IsLoggedInAsAdmin">
+            <summary>
+            Returns true if the logged in user is an admin.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.IsLoggedInAsCustomer">
+            <summary>
+            Returns true if the logged in user is a customer.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetClaim(System.String)">
+            <summary>
+            Get a claim on the logged in user by name.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.GetPasswordHash">
+            <summary>
+            Get hashed value of logged in user.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.LogUser">
+            <summary>
+            Returns a user friendly logging message for the logged in user.. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.AuthorizeAccess(System.String)">
+            <summary>
+            Returns true if the current logged in user is authorized to access, by comparing with the given owner.
+            </summary>
+            <param name="enovaObjectOwnedByIdentifier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.AuthorizeUpdate(System.String,System.String)">
+            <summary>
+            Returns true if the current logged in user is authorized to update, by comparing with the given owner.
+            </summary>
+            <param name="enovaObjectOwnedByIdentifier">The current owner of the object.</param>
+            <param name="specifiedOwner">The owner specified to own the object after update.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IAuthService.ExpireValidator(System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SecurityToken,Microsoft.IdentityModel.Tokens.TokenValidationParameters)">
+            <summary>
+            Validator for when tokens expire.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ICacheService">
+            <summary>
+            Handles caching of queries.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICacheService.GetCache(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Type,Wipcore.Core.SessionObjects.BaseObjectList)">
+            <summary>
+            Get cache entry for a request. Key is built on all in parameters.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICacheService.SetCache(System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}},Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Type,Wipcore.Core.SessionObjects.BaseObjectList)">
+            <summary>
+            Set cache entry for a request. Key is built on all in parameters.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICacheService.ClearCache(System.Type)">
+            <summary>
+            Clear all cache entries with the given type.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICartService.GetCart(System.String,System.Int32)">
+            <summary>
+            Get an existing cart, mapped to a model.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICartService.CalculateCart(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
+            <summary>
+            Maps given model to a cart in Enova and returns a model with prices specified.  
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICartService.MapCart(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaCart,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
+            <summary>
+            Map order rows between cart and model.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICartService.GetCartsByCustomer(System.String)">
+            <summary>
+            Get all carts belonging to given customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICartService.CreateOrderFromCart(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Creates an order from a mapping to cart by given values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel">
+            <summary>
+            Context for requests, specifying culture settings.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel.Market">
+            <summary>
+            Name of a pre-defined market read from configuration.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel.Language">
+            <summary>
+            Identifier of the Enova language to use during the request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel.Currency">
+            <summary>
+            Identifier of the Enova currency used during the request.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IContextService.GetContext">
+            <summary>
+            Get an EnovaContext for the current user.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ICustomerModel">
+            <summary>
+            Model for customer information.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICustomerService.SaveCustomer(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Saves a customer with given values.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ICustomerService.GetAddresses(System.String,System.Nullable{Wipcore.Enova.Core.EnovaCustomerAddress.AddressTypeEnum})">
+            <summary>
+            Get addresses belonging to given customer.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IEnovaApiModule">
+            <summary>
+            Autofac module to register classes in the API.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IEnovaApiModule.Priority">
+            <summary>
+            The priority for loading this module, lower priority is loaded first (which means higher priority can override previous registrations).
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IExceptionService.HandleControllerException(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Handles a controller exception by setting response code, message, and logging it.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IExceptionService.GetStatusCodeForException(System.Exception)">
+            <summary>
+            Get an appropriate status code for the given exception. (I.E 404 for not found object).
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IFilterService.Filter(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+            <summary>
+            Filter the given objects by the given filter string.
+            </summary>
+            <param name="objects"></param>
+            <param name="filter">I.E: Name=myfinename</param>
+            <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginModel">
+            <summary>
+            Model for logging in.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginCustomerWithAdminCredentialsModel">
+            <summary>
+            Model for logging in a customer with the alias and password of an administrator.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginResponseModel">
+            <summary>
+            Response model for an loggin-request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginResponseModel.StatusMessage">
+            <summary>
+            Response message, success or failure.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginResponseModel.UserIdentifier">
+            <summary>
+            Identifier of the customer/admin that logged in.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginResponseModel.AccessToken">
+            <summary>
+            Bearer authentication access token.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginResponseModel.UserId">
+            <summary>
+            ID of the customer/admin that logged in.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.ILoginResponseModel.ContextModel">
+            <summary>
+            Default language/currency context for the user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IMappingFromEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+            <summary>
+            Maps given enova objects with the comma-seperated properties into dictionaries.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IMappingFromEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.String)">
+            <summary>
+            Maps given enova object with the comma-seperated properties into a dictionary of property-value.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IMappingToEnovaService.MapToEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.List{System.Action})">
+            <summary>
+            Maps given properties in dictionary to the given enova object. Returns mappers that must be set after object is saved.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService">
+            <summary>
+            Service for getting, deleting and saving objects to Enova.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,Wipcore.Core.SessionObjects.BaseObjectList)">
+            <summary>
+            Get objects from Enova. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="candidates">Objects to look at, or null to look at all objects.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.String)">
+            <summary>
+            Get an objects from Enova. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="identifier">Object identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Int32)">
+            <summary>
+            Get an objects from Enova. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="id">Object id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Get several objects from Enova.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="ids">List of ids of objects to find.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Get several objects from Enova.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="identifiers">List of identifiers of objects to find.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Save``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Save an object to Enova with the given values.
+            </summary>
+            <typeparam name="T">The most derived type of T is saved.</typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="values">Properties to save on the object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Delete``1(System.Int32)">
+            <summary>
+            Deletes an object of type T and given id from Enova. Returns true if successfull.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IObjectService.Delete``1(System.String)">
+            <summary>
+            Deletes an object of type T and given identifier from Enova. Returns true if successfull.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IOrderService.SaveOrder(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
+            <summary>
+            Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IOrderService.GetOrdersByCustomer(System.String,System.String)">
+            <summary>
+            Get orders owned by given customer.
+            </summary>
+            <param name="customerIdentifier"></param>
+            <param name="shippingStatus">Filter by shippingstatus identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IOrderService.GetValidShippingStatuses(Wipcore.Enova.Core.EnovaOrder,System.Boolean)">
+            <summary>
+            Get a list of identifiers|names of the valid new shipping statuses for the given order.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IPagingService">
+            <summary>
+            Handles pagination of responses with many objects.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IPagingService.Page(Wipcore.Core.SessionObjects.BaseObjectList,System.Int32,System.Int32)">
+            <summary>
+            Get a subset/page of a list of objects.
+            </summary>
+            <param name="objects">Candidate objects to page.</param>
+            <param name="pageNumber">The page numer, i.e. page 2 to view objects 20-40 if pagesize is 20.</param>
+            <param name="pageSize">The number of objects to get per page.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IPaymentService.SavePayment(Wipcore.Enova.Api.Abstractions.Interfaces.IPaymentModel)">
+            <summary>
+            Saves a payment from given model.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IProductService.GetVariants(System.String)">
+            <summary>
+            Get all members of any variant family the given owner is a member of. Null if no family exists.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper">
+            <summary>
+            Implement to provide logic for mapping a property.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.Names">
+            <summary>
+            Names of the properties handled by this mapper.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.Type">
+            <summary>
+            The type of object that this map handles.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.InheritMapper">
+            <summary>
+            True if a derived class can use this mapper to map its property. Usually true.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.GetEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String)">
+            <summary>
+            Map a property from given object.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.SetEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Map a property to given object.        
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.Priority">
+            <summary>
+            Higher number, higher priority for choosing which mapper to use.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.MapType">
+            <summary>
+            Which sort of mapping this mapper handles.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.PostSaveSet">
+            <summary>
+            Set to true if this property should be mapped -after- the object is saved instead of before.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Wipcore.Enova.Api.Abstractions.Interfaces.IPropertyMapper.FlattenMapping" -->
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel">
+            <summary>
+            Parameters for handling a get request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Template">
+            <summary>
+            Identifier of pre-specified settings for request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Properties">
+            <summary>
+            Comma-seperated list of the properties to map.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Page">
+            <summary>
+            Pagination. Index of page to retrieve. 
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Size">
+            <summary>
+            Size of the page; the number of items to retrieve.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Sort">
+            <summary>
+            Sort order. Example: Identifier,Name Desc
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Filter">
+            <summary>
+            Filter the response. Example: Identifier=123 OR Name=pizza*
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel.Cache">
+            <summary>
+            Whether to use cache as response.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ISectionService.GetSubSections(System.String)">
+            <summary>
+            Get any sub-sections to the section with given identifier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ISectionService.GetProducts(System.String)">
+            <summary>
+            Get any products beloning to the section with given identifier.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ISortService">
+            <summary>
+            Handles sorting in responses with many objects.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ISortService.Sort(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+            <summary>
+            Sort the given objects by the given sort string.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.ITemplateService.GetQueryModelFromTemplateConfiguration(System.Type,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel)">
+            <summary>
+            Read template information from configuration - info of how queries should be processed, I.E default languages, properties etc.
+            </summary>
+            <param name="type"></param>
+            <param name="parameters">Parameters direct from query.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IWarehouseService.GetWarehouseCompartments(System.String,System.String)">
+            <summary>
+            Get warehose compartments for the given product. 
+            </summary>
+            <param name="productIdentifier"></param>
+            <param name="warehouseIdentifier">Filter compartments by specific warehose.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel">
+            <summary>
+            Model for a cart/order that has had it's prices calculated.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartRowModel">
+            <summary>
+            Model for a cart/order row with it's prices calculated.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel">
+            <summary>
+            Model for posting a cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.Customer">
+            <summary>
+            Identifier of customer owning the cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.Persist">
+            <summary>
+            Set true to save the cart in the database.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.Status">
+            <summary>
+            Shipping status, applies to orders.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel">
+            <summary>
+            Model for a cart / order row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.Type">
+            <summary>
+            The type of row (product, payment, shipping etc)
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.Identifier">
+            <summary>
+            Identifier of the product, payment, shippingtype etc (depending on which type of row it is).
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.Password">
+            <summary>
+            Password for unlocking a promo row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.RowType">
+            <summary>
+            Type of cart / order row.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CalculatedCartModel">
+            <summary>
+            Model for a cart/order that has had it's prices calculated.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Models.CalculatedCartModel.CreateFrom(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
+            <summary>
+            Copy values from given model to the derived calculated model.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CalculatedCartRowModel">
+            <summary>
+            Model for a cart/order row with it's prices calculated.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CartModel">
+            <summary>
+            Model for posting a cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.Customer">
+            <summary>
+            Identifier of customer owning the cart / order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.Persist">
+            <summary>
+            Set true to save the cart in the database.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.Status">
+            <summary>
+            Shipping status, applies to orders.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CartRowModel">
+            <summary>
+            Model for a cart / order row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.Type">
+            <summary>
+            The type of row (product, payment, shipping etc)
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.Identifier">
+            <summary>
+            Identifier of the product, payment, shippingtype etc (depending on which type of row it is).
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.Password">
+            <summary>
+            Password for unlocking a promo row.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.AdditionalValues">
+            <summary>
+            Dictionary of property-values.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Market">
+            <summary>
+            Identifier of pre-defined market.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Language">
+            <summary>
+            Identifier of language to use.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Currency">
+            <summary>
+            Identifier of currency to use.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.LoginModel">
+            <summary>
+            Model for logging in.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.LoginCustomerWithAdminCredentialsModel">
+            <summary>
+            Model for logging in a customer with the alias and password of an administrator.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel">
+            <summary>
+            Response model for an loggin-request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel.StatusMessage">
+            <summary>
+            Response message, success or failure.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel.UserIdentifier">
+            <summary>
+            Identifier of the customer/admin that logged in.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel.UserId">
+            <summary>
+            ID of the customer/admin that logged in.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel.ContextModel">
+            <summary>
+            Default language/currency context for the user.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel.AccessToken">
+            <summary>
+            Bearer authentication access token.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.PaymentModel">
+            <summary>
+            Model for adding a payment to an order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.PaymentModel.Order">
+            <summary>
+            Identifier of the order to connect the payment to.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.PaymentModel.Status">
+            <summary>
+            Status of the payment, a number that can have meaning outside the system.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Template">
+            <summary>
+            Identifier of pre-specified settings for request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Properties">
+            <summary>
+            Comma-seperated list of the properties to map.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Page">
+            <summary>
+            Pagination. Index of page to retrieve. 
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Size">
+            <summary>
+            Size of the page; the number of items to retrieve.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Sort">
+            <summary>
+            Sort order. Example: Identifier,Name Desc
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Filter">
+            <summary>
+            Filter the response. Example: Identifier=123 OR Name=pizza*
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Cache">
+            <summary>
+            Whether to use cache as response.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Copy">
+            <summary>
+            Creates a copy of the model.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

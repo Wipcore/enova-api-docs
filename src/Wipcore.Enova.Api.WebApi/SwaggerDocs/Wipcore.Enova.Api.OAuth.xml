@@ -20,21 +20,17 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginAdmin(Wipcore.Enova.Api.Models.LoginModel)">
+        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginAdmin(Wipcore.Enova.Api.Abstractions.Models.LoginModel)">
             <summary>
             Login as an administrator.
             </summary>
-            <param name="model"></param>
-            <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomer(Wipcore.Enova.Api.Models.LoginModel)">
+        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomer(Wipcore.Enova.Api.Abstractions.Models.LoginModel)">
             <summary>
             Login as a customer.
             </summary>
-            <param name="model"></param>
-            <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomerWithAdminCredentials(Wipcore.Enova.Api.Models.LoginCustomerWithAdminCredentialsModel)">
+        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomerWithAdminCredentials(Wipcore.Enova.Api.Abstractions.Models.LoginCustomerWithAdminCredentialsModel)">
             <summary>
             Login as a customer by providing a customer identifier, and the alias and password of an administrator.
             </summary>

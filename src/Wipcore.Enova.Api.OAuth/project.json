@@ -27,7 +27,8 @@
         "..\\..\\..\\SharedAssemblyInfo\\SharedVersionInfo.cs",
         "..\\..\\..\\SharedAssemblyInfo\\SharedAssemblyInfo.cs"
       ]
-    }
+    },
+    "xmlDoc": true
   }
 
 }
