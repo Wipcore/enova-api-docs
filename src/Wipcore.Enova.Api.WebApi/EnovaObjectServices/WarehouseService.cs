@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 {
@@ -30,6 +32,28 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 warehouse = EnovaWarehouse.Find(context, warehouseIdentifier);
 
             return product.GetWarehouseCompartments(typeof (EnovaWarehouseCompartment), warehouse);
+        }
+
+        /// <summary>
+        /// Makes sure the order has a valid warehouse, if it doesn't have one already.
+        /// </summary>
+        public void SetDefaultWarehouse(EnovaOrder order)
+        {
+            if(order.Warehouse != null)
+                return;
+
+            var context = order.GetContext();
+            var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
+            var defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
+
+            var isBeingEdited = order.IsBeingEdited;
+            if(!isBeingEdited)
+                order.Edit();
+
+            order.Warehouse = EnovaWarehouse.Find(context, defaultWarehouse);
+
+            if (!isBeingEdited)
+                order.Save();
         }
     }
 }

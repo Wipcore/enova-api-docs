@@ -21,16 +21,18 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         private readonly ICartService _cartService;
         private readonly IConfigurationRoot _configuration;
         private readonly IAuthService _authService;
+        private readonly IWarehouseService _warehouseService;
         private readonly ILogger _logger;
 
         public OrderService( IContextService contextService, IMappingToEnovaService mappingToEnovaService, ICartService cartService, IConfigurationRoot configuration, 
-            IAuthService authService, ILoggerFactory loggerFactory)
+            IAuthService authService, ILoggerFactory loggerFactory, IWarehouseService warehouseService)
         {
             _contextService = contextService;
             _mappingToEnovaService = mappingToEnovaService;
             _cartService = cartService;
             _configuration = configuration;
             _authService = authService;
+            _warehouseService = warehouseService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
         }
 
@@ -115,9 +117,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 enovaOrder.Identifier = calculatedOrder.Identifier = identifier;
                 calculatedOrder.AdditionalValues = additionalValues;
 
-                var warehouseSetting = context.FindObject<EnovaLocalSystemSettings>("LOCAL_PRIMARY_WAREHOUSE");
-                var defaultWarehouse = warehouseSetting?.Value?.Split(';')?.FirstOrDefault() ?? "DEFAULT_WAREHOUSE";
-                enovaOrder.Warehouse = EnovaWarehouse.Find(context, defaultWarehouse);
+                _warehouseService.SetDefaultWarehouse(enovaOrder);
 
                 enovaOrder.Recalculate();
             }
