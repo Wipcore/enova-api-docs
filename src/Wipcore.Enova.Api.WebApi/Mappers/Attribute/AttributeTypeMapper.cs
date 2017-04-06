@@ -51,6 +51,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                 else
                     attributeValue.ValueCode = item.Value;
 
+                if(attributeValue.ID > 0)
+                    attributeValue.Save();
+
                 if(type.Values.Cast<EnovaAttributeValue>().All(x => x.ID != attributeValue.ID))
                     type.AddValue(attributeValue);
             }
