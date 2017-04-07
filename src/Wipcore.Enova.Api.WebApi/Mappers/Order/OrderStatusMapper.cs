@@ -44,7 +44,14 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             _warehouseService.SetDefaultWarehouse(order);//must have a warehouse, or it will fail
 
             var shippingStatus = order.GetContext().FindObject<EnovaShippingStatus>(value.ToString());
-            order.ChangeShippingStatus(shippingStatus, null);//TODO maybe insert paymenthandlers by configuration here
+            if (order.ShippingStatus == null)
+            {
+                order.Edit();
+                order.ShippingStatus = shippingStatus;
+                order.Save();
+            }
+            else
+                order.ChangeShippingStatus(shippingStatus, null);//TODO maybe insert paymenthandlers by configuration here
         }
     }
 }
