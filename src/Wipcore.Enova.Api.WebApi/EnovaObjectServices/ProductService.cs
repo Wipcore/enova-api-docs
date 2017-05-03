@@ -81,21 +81,21 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             var context = _contextService.GetContext();
             var ownerfamily = variantOwner.GetVariantFamily();
 
-            if (ownerfamily == null)
-            {
-                var ownerFamilyIdentifier = variantOwner.Identifier + "_Family";
-                ownerfamily = context.FindObject<EnovaVariantFamily>(ownerFamilyIdentifier);
-                if (ownerfamily != null) //found a family that is not connected
-                {
-                    ownerfamily.Owner = variantOwner;
-                }
-                else
-                {
-                    ownerfamily = new EnovaVariantFamily(context) { Identifier = ownerFamilyIdentifier };
-                    ownerfamily.Save();
+            if (ownerfamily != null)
+                return ownerfamily;
 
-                    ownerfamily.Owner = variantOwner;
-                }
+            var ownerFamilyIdentifier = variantOwner.Identifier + "_Family";
+            ownerfamily = context.FindObject<EnovaVariantFamily>(ownerFamilyIdentifier);
+            if (ownerfamily != null) //found a family that is not connected
+            {
+                ownerfamily.Owner = variantOwner;
+            }
+            else
+            {
+                ownerfamily = new EnovaVariantFamily(context) { Identifier = ownerFamilyIdentifier };
+                ownerfamily.Save();
+
+                ownerfamily.Owner = variantOwner;
             }
             return ownerfamily;
         }
