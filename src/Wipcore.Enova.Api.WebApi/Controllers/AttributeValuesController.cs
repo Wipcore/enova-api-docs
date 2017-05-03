@@ -18,11 +18,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     public class AttributeValuesController : EnovaApiController
     {
         private readonly IObjectService _objectService;
+        private readonly IAttributeService _attributeService;
 
-        public AttributeValuesController(IExceptionService exceptionService, IObjectService objectService)
+        public AttributeValuesController(IExceptionService exceptionService, IObjectService objectService, IAttributeService attributeService)
             : base(exceptionService)
         {
             _objectService = objectService;
+            _attributeService = attributeService;
         }
 
         /// <summary>
@@ -71,6 +73,17 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
             return _objectService.Get<EnovaAttributeValue>(requestContext, query, listIdentifiers);
         }
+
+        /// <summary>
+        /// Get objects with attribute value.
+        /// </summary>
+        [HttpGet("id-{id}/objectsWithThisAttribute")]
+        public IEnumerable<IDictionary<string, object>> GetWithAttribute(ContextModel requestContext, int id)
+        {
+            var objects = _attributeService.GetObjectsWithAttributeValue(id);
+            return objects;
+        }
+
 
         /// <summary>
         /// Delete an attributevalue.
