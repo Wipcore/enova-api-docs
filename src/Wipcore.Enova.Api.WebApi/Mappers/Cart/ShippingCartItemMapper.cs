@@ -37,6 +37,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                 x.Identifier,
                 x.Name,
                 ShippingIdentifier = x.ShippingType?.Identifier,
+                ShippingID = x.ShippingType?.ID,
                 PriceExlTax = x.GetPrice(false),
                 PriceInclTax = x.GetPrice(true),
             }).FirstOrDefault();
