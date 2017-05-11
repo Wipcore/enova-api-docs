@@ -66,7 +66,6 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
             {
                 Identifier = x.Identifier,
                 ID = x.ID,
-                Name = x.Name,
                 Value = !String.IsNullOrEmpty(x.ValueCode) ? x.ValueCode : x.Name,
                 LanguageDependant = String.IsNullOrEmpty(x.ValueCode),
                 ObjectCount = x.Objects.Count

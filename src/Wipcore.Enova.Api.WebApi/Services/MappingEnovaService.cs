@@ -46,13 +46,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 properties = "identifier";
 
             var dynamicObject = new Dictionary<string, object>();
+            var objType = obj.GetType();
             
             foreach (var property in properties.Split(',').Distinct())
             {
-                var mapper = GetMapper(obj.GetType(), property, MapType.MapFromEnovaAllowed);
+                var mapper = GetMapper(objType, property, MapType.MapFromEnovaAllowed);
                 var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);
 
-                if (mapper?.FlattenMapping == true)//add values directly to object instead of as a subvalue.
+                if (mapper?.FlattenMapping == true)//add values directly to object instead of as a subvalue. AttributesAsProperties for example.
                 {
                     var subValues = (IDictionary<string, string>) value;
                     subValues.ForEach(x => dynamicObject.Add(x.Key, x.Value));
