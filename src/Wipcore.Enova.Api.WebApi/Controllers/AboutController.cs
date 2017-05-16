@@ -7,17 +7,19 @@ using Microsoft.Extensions.Configuration;
 using NLog;
 using NLog.Targets;
 using Wipcore.Core;
+using Wipcore.Enova.Api.Abstractions;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Services;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("")]
-    public class AboutController : Controller
+    public class AboutController : EnovaApiController
     {
         private readonly IConfigurationRoot _configurationRoot;
 
-        public AboutController(IConfigurationRoot configurationRoot)
+        public AboutController(IConfigurationRoot configurationRoot, IExceptionService exceptionService) : base(exceptionService)
         {
             _configurationRoot = configurationRoot;
         }

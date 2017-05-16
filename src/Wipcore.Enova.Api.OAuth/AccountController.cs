@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdentityModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 
@@ -12,12 +13,12 @@ namespace Wipcore.Enova.Api.OAuth
     /// This controller is used to login customers and admins into Enova. It should put a cookie in the response, which should be sent back by the client on subsequent requests. 
     /// </summary>
     [Route("[controller]")]
-    public class AccountController : Controller
+    public class AccountController : EnovaApiController
     {
         private readonly IAuthService _authService;
         private readonly IConfigurationRoot _configuration;
 
-        public AccountController(IAuthService authService, IConfigurationRoot configuration)
+        public AccountController(IAuthService authService, IConfigurationRoot configuration, IExceptionService exceptionService) : base(exceptionService)
         {
             _authService = authService;
             _configuration = configuration;
