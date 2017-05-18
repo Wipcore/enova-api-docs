@@ -23,24 +23,25 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         public Type Type => typeof(EnovaCart);
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             if (propertyName.Equals("NewShippingType", StringComparison.InvariantCultureIgnoreCase))
                 return "";
 
             var cart = (EnovaCart)obj;
-            var shippingItem = cart.GetCartItems<EnovaShippingTypeCartItem>();
+            var shippingItem = cart.GetCartItems<EnovaShippingTypeCartItem>().FirstOrDefault();
 
-            return shippingItem.Select(x => new
+            if (shippingItem == null)
+                return null;
+
+            return new Dictionary<string, object>()
             {
-                x.ID,
-                x.Identifier,
-                x.Name,
-                ShippingIdentifier = x.ShippingType?.Identifier,
-                ShippingID = x.ShippingType?.ID,
-                PriceExlTax = x.GetPrice(false),
-                PriceInclTax = x.GetPrice(true),
-            }).FirstOrDefault();
+                {"ID", shippingItem.ID},
+                {"Identifier", shippingItem.Identifier},
+                {"ShippingIdentifier", shippingItem.ShippingType?.Identifier ?? String.Empty},
+                {"PriceExlTax", shippingItem.GetPrice(false)},
+                {"PriceInclTax", shippingItem.GetPrice(true)}
+            }.MapLanguageProperty("Name", mappingLanguages, obj.GetName);
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)

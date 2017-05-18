@@ -35,7 +35,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public MapType MapType => MapType.MapFromEnovaAllowed;
 
         
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var defaultPriceList = GetDefaultPriceList();
             var product = (EnovaBaseProduct)obj;

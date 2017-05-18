@@ -19,23 +19,22 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public Type Type => typeof(EnovaOrder);
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             Currency currency;
             var order = (EnovaOrder)obj;
 
             var orderItems =    from item in order.GetOrderItems<EnovaPaymentTypeOrderItem>()
                                 let payment = obj.GetContext().FindObject<EnovaPayment>(item.PaymentId)
-                                select new 
+                                select new Dictionary<string, object>()
                                 {
-                                    ID = item.ID,
-                                    Identifier = item.Identifier,
-                                    Name = item.Name,
-                                    PaymentIdentifier = item.PaymentType?.Identifier,
-                                    Amount = item.GetAmount(out currency),
-                                    PaymentDate = payment?.PaymentDate.ToString(),
-                                    Paid = payment != null && item.Paid
-                                };
+                                    { "ID",  item.ID},
+                                    { "Identifier", item.Identifier},
+                                    { "PaymentIdentifier", item.PaymentType?.Identifier ?? String.Empty},
+                                    { "Amount", item.GetAmount(out currency)},
+                                    { "PaymentDate", payment?.PaymentDate.ToString() ?? String.Empty},
+                                    { "Paid", payment != null && item.Paid}
+                                }.MapLanguageProperty("Name", mappingLanguages, item.GetName);
                                 
 
             return orderItems.FirstOrDefault();

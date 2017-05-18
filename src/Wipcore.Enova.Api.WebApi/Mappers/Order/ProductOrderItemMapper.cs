@@ -20,7 +20,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public Type Type => typeof(EnovaOrder);
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder)obj;
             var orderItems = order.GetOrderItems<EnovaProductOrderItem>().Select(x => new

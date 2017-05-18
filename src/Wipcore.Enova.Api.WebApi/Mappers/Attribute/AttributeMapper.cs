@@ -17,11 +17,51 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public List<string> Names => new List<string>() { "Attributes" };
         public Type Type => typeof(BaseObject);
         public bool InheritMapper => true;
-        public bool FlattenMapping  => false;
+        public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
         public bool PostSaveSet => false;
+        
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
+        {
+            var values = new List<object>();
+
+            foreach (var attributeValue in obj.AttributeValues.OfType<EnovaAttributeValue>())
+            {
+                var attribute = new Dictionary<string, object>()
+                    {
+                        {"Identifier", attributeValue.Identifier},
+                        { "ID", attributeValue.ID }
+                    }.
+                    MapLanguageProperty("Value", mappingLanguages, language => !String.IsNullOrEmpty(attributeValue.ValueCode) ? attributeValue.ValueCode : attributeValue.GetName(language));
+
+                var attributeType = attributeValue.AttributeType as EnovaAttributeType;
+                if (attributeType != null)
+                {
+                    attribute.Add("AttributeType", new Dictionary<string, object>()
+                        {
+                            { "ID", attributeType.ID},
+                            { "Identifier", attributeType.Identifier},
+                            { "IsContinuous", attributeType.IsContinuous},
+                            { "Values", attributeType.Values.OfType<EnovaAttributeValue>().Select(x => new Dictionary<string, object>()
+                                {
+                                    { "Identifier", x.Identifier},
+                                    { "ID", x.ID },
+                                    { "LanguageDependant",  String.IsNullOrEmpty(x.ValueCode)}
+                                }.
+                                MapLanguageProperty("Value", mappingLanguages, language => !String.IsNullOrEmpty(x.ValueCode) ? x.ValueCode : x.GetName(language)))
+                            }
+                        }
+                        .MapLanguageProperty("Name", mappingLanguages,language => attributeType.GetName(language))
+                        .MapLanguageProperty("TypeDescription", mappingLanguages,language => attributeType.GetTypeDescription(language)));
+                }
+
+                values.Add(attribute);
+            }
+            
+            return values;
+        }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
@@ -33,7 +73,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
             dynamic attributes = value;
             foreach (var a in attributes)
             {
-                var attribute = JsonConvert.DeserializeAnonymousType(a.ToString(), new {
+                var attribute = JsonConvert.DeserializeAnonymousType(a.ToString(), new
+                {
                     Identifier = "",
                     ID = 0,
                     Value = "",
@@ -47,7 +88,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                         Name = "",
                         TypeDescription = "",
                         IsContinuous = false,
-                        Values = new []{ new {
+                        Values = new[]{ new {
                             Identifier = "",
                             ID = 0,
                             Value = "",
@@ -102,8 +143,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     if (!requestedNewValue.Equals(currentValue)) //if the value is changed
                     {
                         //then find the correct attribute
-                        var attributeType = (EnovaAttributeType) (context.FindObject(Convert.ToInt32(attribute.AttributeType.ID), typeof (EnovaAttributeType), false) ??
-                            context.FindObject(attribute.AttributeType.Identifier, typeof (EnovaAttributeType), true));
+                        var attributeType = (EnovaAttributeType)(context.FindObject(Convert.ToInt32(attribute.AttributeType.ID), typeof(EnovaAttributeType), false) ??
+                            context.FindObject(attribute.AttributeType.Identifier, typeof(EnovaAttributeType), true));
 
                         var newAttributeValue = attributeType.Values.OfType<EnovaAttributeValue>().
                             First(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
@@ -115,42 +156,6 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     }
                 }
             }
-        }
-    
-
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
-        {
-            var values = new List<object>();
-            foreach (var attributeValue in obj.AttributeValues.OfType<EnovaAttributeValue>())
-            {
-                var value = !String.IsNullOrEmpty(attributeValue.ValueCode) ? attributeValue.ValueCode : attributeValue.Name;
-                var attribute = new 
-                {
-                    Identifier = attributeValue.Identifier,
-                    ID = attributeValue.ID,
-                    Value = value,
-                    ValueDescription = attributeValue.ValueDescription,
-                    AttributeType = new
-                        {
-                            ID = attributeValue.AttributeType?.ID,
-                            Identifier = attributeValue.AttributeType?.Identifier,
-                            Name = attributeValue.AttributeType?.Name,
-                            TypeDescription = (attributeValue.AttributeType as EnovaAttributeType)?.TypeDescription,
-                            IsContinuous = (attributeValue.AttributeType as EnovaAttributeType)?.IsContinuous,
-                            Values = attributeValue.AttributeType?.Values.OfType<EnovaAttributeValue>().Select(x => new
-                            {
-                                Identifier = x.Identifier,
-                                ID = x.ID,
-                                Value = !String.IsNullOrEmpty(x.ValueCode) ? x.ValueCode : x.Name,
-                                LanguageDependant = String.IsNullOrEmpty(x.ValueCode)
-                            })
-                        }
-                    };
-
-                values.Add(attribute);
-            }
-
-            return values;
         }
     }
 }

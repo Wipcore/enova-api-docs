@@ -54,7 +54,8 @@
     ],
 
     "emitEntryPoint": true,
-    "xmlDoc": true
+    "xmlDoc": true,
+    "nowarn": [ "1591" ]
   },
   "publishOptions": {
 

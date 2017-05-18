@@ -21,13 +21,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var section = (EnovaBaseProductSection) obj;
             var parent = section.Parent;
 
-            return parent == null ? new { ID = 0, Identifier = "", Name = "" } : 
-                new { ID = parent.ID, Identifier = parent.Identifier, Name = parent.Name};
+            return parent == null ? new Dictionary<string, object>(){ { "ID", ""}, {"Identifier", ""}, {"Name", ""} } : 
+                new Dictionary<string, object>(){ { "ID", parent.ID}, {"Identifier", parent.Identifier}}.MapLanguageProperty("Name", mappingLanguages, parent.GetName);
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)

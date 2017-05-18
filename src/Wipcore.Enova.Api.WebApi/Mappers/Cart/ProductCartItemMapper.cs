@@ -23,19 +23,19 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         public Type Type => typeof(EnovaCart);
 
         public bool FlattenMapping => false;
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var cart = (EnovaCart)obj;
-            var cartItems = cart.GetCartItems<EnovaProductCartItem>().Select(x => new
-            {
-                ID = x.ID,
-                Identifier = x.Identifier,
-                Name = x.Name,
-                ProductIdentifier = x.ProductIdentifier,
-                PriceExclTax = x.GetPrice(false),
-                PriceInclTax = x.GetPrice(true),
-                Quantity = x.Quantity
-            });
+
+            var cartItems = cart.GetCartItems<EnovaProductCartItem>().Select(x => new Dictionary<string, object>()
+                {
+                    {"ID", x.ID },
+                    {"Identifier", x.Identifier },
+                    {"ProductIdentifier", x.ProductIdentifier },
+                    {"PriceExclTax", x.GetPrice(false) },
+                    {"PriceInclTax", x.GetPrice(true) },
+                    {"Quantity", x.Quantity },
+                }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
             return cartItems;
         }
 

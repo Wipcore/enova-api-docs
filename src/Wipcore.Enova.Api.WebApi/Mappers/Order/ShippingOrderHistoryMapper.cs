@@ -20,23 +20,22 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public Type Type => typeof (EnovaOrder);
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder) obj;
             var context = order.GetContext();
             var history = from h in context.SearchInDatabase<EnovaOrderMovementLog>("OrderID = " + obj.ID) 
                           let fro = context.FindObject<EnovaShippingStatus>(h.FromStatusID)
                           let to = context.FindObject<EnovaShippingStatus>(h.ToStatusID)
-                          select new
+                          select new Dictionary<string, object>()
                             {
-                                ID = h.ID,
-                                Identifier = h.Identifier,
-                                CreatedAt = h.CreatedAt,
-                                fromStatusIdentifier = fro?.Identifier,
-                                fromStatusName = fro?.Name,
-                                toStatusIdentifier = to?.Identifier,
-                                toStatusName = to?.Name,
-                            };
+                               {"ID", h.ID},
+                               {"Identifier", h.Identifier},
+                               {"CreatedAt", h.CreatedAt},
+                               {"fromStatusIdentifier", fro?.Identifier ?? String.Empty},
+                               {"toStatusIdentifier", to?.Identifier ?? String.Empty},
+                            }.MapLanguageProperty("fromStatusName", mappingLanguages, language => fro?.GetName(language) ?? String.Empty)
+                             .MapLanguageProperty("toStatusName", mappingLanguages, language => to?.GetName(language) ?? String.Empty); ;
 
             return history;
         }

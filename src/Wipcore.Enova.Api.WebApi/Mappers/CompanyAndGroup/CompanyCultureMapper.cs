@@ -17,7 +17,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.CompanyAndGroup
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var company = (EnovaCompany)obj;
             return company.CountryIsoCode;

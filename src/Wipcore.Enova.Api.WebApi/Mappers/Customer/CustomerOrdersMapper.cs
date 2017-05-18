@@ -18,22 +18,22 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
         public MapType MapType => MapType.MapFromEnovaAllowed;
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var orders = new List<object>();
             var customer = (EnovaCustomer) obj;
 
             foreach (var order in customer.Orders.OfType<EnovaOrder>().OrderByDescending(x => x.CreatedAt))
             {
-                var miniOrder = new 
+                var miniOrder = new Dictionary<string, object>()
                 {
-                    OrderId = order.ID,
-                    OrderIdentifier = order.Identifier,
-                    OrderDate = order.CreatedAt,
-                    NumberOfItems = order.GetOrderItems<EnovaProductOrderItem>().Sum(i => i.OrderedQuantity),
-                    ShippingStatus = order.ShippingStatus != null ? order.ShippingStatus.Name : String.Empty,
-                    TotalPriceInclTax = PriceHelper.TotalPriceInclTax(order)
-                };
+                    {"OrderId", order.ID},
+                    {"OrderIdentifier", order.Identifier},
+                    {"NumberOfItems", order.GetOrderItems<EnovaProductOrderItem>().Sum(i => i.OrderedQuantity)},
+                    {"TotalPriceInclTax", PriceHelper.TotalPriceInclTax(order)},
+                    {"OrderDate", order.CreatedAt},
+                }.MapLanguageProperty("ShippingStatus", mappingLanguages, language => order.ShippingStatus != null ? order.ShippingStatus.GetName(language) : String.Empty);
+
                 orders.Add(miniOrder);
             }
 

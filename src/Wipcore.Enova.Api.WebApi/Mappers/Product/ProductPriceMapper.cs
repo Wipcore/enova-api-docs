@@ -25,7 +25,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
         public Type CmoType => typeof(CmoEnovaBaseProduct);
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var outputAsString = propertyName.EndsWith("String", StringComparison.InvariantCultureIgnoreCase);
             var includeTax = String.Equals(propertyName, "PriceInclTax", StringComparison.InvariantCultureIgnoreCase) || 

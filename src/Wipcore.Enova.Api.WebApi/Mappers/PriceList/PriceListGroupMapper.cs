@@ -26,6 +26,21 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
+        {
+            var context = _contextService.GetContext();
+            var priceList = (EnovaPriceList)obj;
+            var lists = priceList.GetObjectsWithSpecificAccess(context, typeof(CustomerGroup)).Cast<CustomerGroup>();
+
+            return lists.Select(x => new Dictionary<string, object>()
+            {
+                {"ID", x.ID},
+                {"Identifier", x.Identifier},
+                {"Type", x.GetType().Name},
+                {"MarkForDelete", false}
+            }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
+        }
+
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             if(value == null)
@@ -46,22 +61,6 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
                 if (priceList.GetSpecificAccess(customerGroup) < (BaseObject.AccessUse | BaseObject.AccessRead))
                     priceList.SetSpecificAccess(customerGroup, BaseObject.AccessUse | BaseObject.AccessRead);
             }
-        }
-
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
-        {
-            var context = _contextService.GetContext();
-            var priceList = (EnovaPriceList) obj;
-            var lists = priceList.GetObjectsWithSpecificAccess(context, typeof (CustomerGroup)).Cast<CustomerGroup>();
-
-            return lists.Select(x => new
-            {
-                ID = x.ID,
-                Identifier = x.Identifier,
-                Name = x.Name,
-                Type = x.GetType().Name,
-                MarkForDelete = false
-            });
         }
     }
 }

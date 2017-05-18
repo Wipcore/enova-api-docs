@@ -22,7 +22,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         public Type Type => typeof(EnovaBaseProduct);
 
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var product = (EnovaBaseProduct)obj;
             var priceLists = product.GetPriceLists<EnovaPriceList>();
@@ -37,11 +37,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
                     PriceListIdentifier = priceList.Identifier,
                     PriceExclTax = priceList.GetPrice(product, false),
                     PriceInclTax = priceList.GetPrice(product, true),
-                    GroupsWithAccessToPrice = accessGroups.Select(x => new
+                    GroupsWithAccessToPrice = accessGroups.Select(x => new Dictionary<string, object>()
                     {
-                        Identifier = x.Identifier,
-                        Name = x.Name
-                    }),
+                        {"Identifier", x.Identifier},
+                    }.MapLanguageProperty("Name", mappingLanguages, x.GetName)),
                     Currency = priceList.Currency?.Identifier
                 };
                 prices.Add(price);

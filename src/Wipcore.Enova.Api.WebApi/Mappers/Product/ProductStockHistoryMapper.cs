@@ -23,7 +23,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Product
         {
         }
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var context = obj.GetContext();
             var searchExpression = String.Format("ProductID='{0}'", obj.ID);

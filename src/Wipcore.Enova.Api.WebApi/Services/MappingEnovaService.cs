@@ -10,6 +10,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 using Wipcore.Library;
 
 namespace Wipcore.Enova.Api.WebApi.Services
@@ -47,24 +48,78 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             var dynamicObject = new Dictionary<string, object>();
             var objType = obj.GetType();
+            var context = _contextService.GetContext();
             
             foreach (var property in properties.Split(',').Distinct())
             {
                 var mapper = GetMapper(objType, property, MapType.MapFromEnovaAllowed);
-                var value = mapper != null ? mapper.GetEnovaProperty(obj, property) : MapProperty(property, obj);
-
-                if (mapper?.FlattenMapping == true)//add values directly to object instead of as a subvalue. AttributesAsProperties for example.
+                if (mapper == null)
                 {
-                    var subValues = (IDictionary<string, string>) value;
-                    subValues.ForEach(x => dynamicObject.Add(x.Key, x.Value));
+                    var value = MapPropertyDirect(property, obj);
+                    dynamicObject.Add(property, value);
                 }
                 else
                 {
-                    dynamicObject.Add(property, value);
+                    MapPropertyFromMapper(property, obj, mapper, context, dynamicObject);
                 }
             }
             
             return dynamicObject;
+        }
+
+        private void MapPropertyFromMapper(string property, BaseObject obj, IPropertyMapper mapper, Context context, IDictionary<string, object> dynamicObject)
+        {
+            var propertyAndLanguage = property.Split('-');//if language specified, for example name-en for english name
+            var languages = propertyAndLanguage.Length == 1 ? null : context.FindObjects<EnovaLanguage>(propertyAndLanguage[1].Split(';')).ToList();
+
+            var value = mapper.GetEnovaProperty(obj, propertyAndLanguage[0], languages);
+
+            if (mapper.FlattenMapping)//add values directly to object instead of as a subvalue. AttributesAsProperties for example.
+            {
+                var subValues = (IDictionary<string, object>)value;
+                subValues.ForEach(x => dynamicObject.Add(x.Key, x.Value));
+            }
+            else
+            {
+                dynamicObject.Add(propertyAndLanguage[0], value);
+            }
+        }
+
+        private object MapPropertyDirect(string property, BaseObject obj)
+        {
+            var properties = property.Split('.'); //splitting ex. Manufacturer.Identifier into its parts
+            for (var i = 0; i < properties.Length; i++)
+            {
+                if (i == properties.Length - 1) //the last name (Identifier in example above) is returned directly
+                {
+                    var propertyAndLanguage = properties[i].Split('-');
+                    return propertyAndLanguage.Length == 1 ?
+                        obj.GetProperty(properties[i]) :
+                        obj.GetProperty(propertyAndLanguage[0], EnovaLanguage.Find(obj.GetContext(), propertyAndLanguage[1]));
+                }
+
+                //nested properties are retrieved from the object. In example obj is set to Manufacturer
+                obj = obj.GetPropertyValue(properties[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
+
+                if (obj == null)
+                    break;
+            }
+            return null;
+        }
+
+
+        private IPropertyMapper GetMapper(Type type, string propertyName, MapType mapType)
+        {
+            var propertyNameSansLanguage = propertyName.Split('-').First();
+            var mapper = _resolvedMappers.GetOrAdd(type.FullName + propertyNameSansLanguage + mapType, k =>
+            {
+                return _mappers.Where(x => x.MapType == MapType.MapFromAndToEnovaAllowed || x.MapType == mapType).
+                Where(x => x.Names.Any(n => n.Equals(propertyNameSansLanguage, StringComparison.CurrentCultureIgnoreCase))).
+                Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
+                OrderBy(x => x.Priority).FirstOrDefault();
+            });
+
+            return mapper;
         }
 
         /// <summary>
@@ -115,42 +170,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             });
         }
 
-        private object MapProperty(string property, BaseObject obj)
-        {
-            var properties = property.Split('.'); //splitting ex. Manufacturer.Identifier into its parts
-            for (var i = 0; i < properties.Length; i++)
-            {
-                if (i == properties.Length - 1) //the last name (Identifier in example above) is returned directly
-                {
-                    var propertyAndLanguage = properties[i].Split('-');//if language specified, for example name-en for english name
-                    return propertyAndLanguage.Length == 1 ? 
-                        obj.GetProperty(properties[i]) :
-                        obj.GetProperty(propertyAndLanguage[0], EnovaLanguage.Find(obj.GetContext(), propertyAndLanguage[1]));
-
-                }
-
-                //nested properties are retrieved from the object. In example obj is set to Manufacturer
-                obj = obj.GetPropertyValue(properties[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) as BaseObject;
-
-                if (obj == null)
-                    break;
-            }
-            return null;
-        }
         
-
-        private IPropertyMapper GetMapper(Type type, string propertyName, MapType mapType)
-        {
-            var mapper = _resolvedMappers.GetOrAdd(type.FullName + propertyName + mapType, k =>
-            {
-                return _mappers.Where(x => x.MapType == MapType.MapFromAndToEnovaAllowed || x.MapType == mapType).
-                Where(x => x.Names.Any(n => n.Equals(propertyName, StringComparison.CurrentCultureIgnoreCase))).
-                Where(x => x.Type == type || (x.InheritMapper && x.Type.IsAssignableFrom(type))).
-                OrderBy(x => x.Priority).FirstOrDefault();
-            });
-
-            return mapper;
-        }
         
     }
 }

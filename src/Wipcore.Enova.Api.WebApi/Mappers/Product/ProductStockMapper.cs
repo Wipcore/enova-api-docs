@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
@@ -24,7 +25,36 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
-        
+
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
+        {
+            var product = (EnovaBaseProduct) obj;
+            var compartments = product.GetWarehouseCompartments(typeof (EnovaWarehouseCompartment)).Cast<EnovaWarehouseCompartment>();
+
+            if (propertyName.Equals("TotalStock", StringComparison.InvariantCultureIgnoreCase))
+                return compartments.Sum(x => x.Stock);
+            if (propertyName.Equals("TotalReserved", StringComparison.InvariantCultureIgnoreCase))
+                return compartments.Sum(x => x.Reserved);
+
+            return compartments.Select(x => new Dictionary<string, object>()
+            {
+                {"ID", x.ID},
+                {"Quantity", x.Stock},
+                {"ReservedQuantity", x.Reserved},
+            }.MapLanguageProperty("WarehouseName", mappingLanguages, language => x.Warehouse?.GetName(language) ?? String.Empty)
+             .MapLanguageProperty("CompartmentName", mappingLanguages, x.GetName));
+        }
+
+        public object GetProperty(CmoDbObject obj, CmoContext context, string propertyName, CmoLanguage language)
+        {
+            var product = (CmoEnovaBaseProduct)obj;
+            var arrayList = new ArrayList();
+            product.GetWarehouseCompartments(context, arrayList, typeof(CmoEnovaWarehouseCompartment), null);
+            return propertyName.Equals("TotalStock", StringComparison.InvariantCultureIgnoreCase) ? 
+                arrayList.Cast<CmoEnovaWarehouseCompartment>().Sum(x => x.Stock) : 
+                arrayList.Cast<CmoEnovaWarehouseCompartment>().Sum(x => x.Reserved);
+        }
+
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             if (value == null)
@@ -37,10 +67,10 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             dynamic compartments = value;
             foreach (var c in compartments)
             {
-                var compartment = (Dictionary < string, object>)JsonConvert.DeserializeObject(c.ToString(), typeof (Dictionary<string, object>));
+                var compartment = (Dictionary<string, object>)JsonConvert.DeserializeObject(c.ToString(), typeof(Dictionary<string, object>));
 
                 var enovaCompartment = EnovaWarehouseCompartment.Find(context, compartment.GetOrDefault<int>("Id"));
-                if(enovaCompartment.Stock == compartment.GetOrDefault<double>("Quantity"))
+                if (enovaCompartment.Stock == compartment.GetOrDefault<double>("Quantity"))
                     continue;
 
                 var stockIn = enovaCompartment.Stock;
@@ -62,36 +92,6 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                 stockLog.Save();
                 enovaCompartment.Save();
             }
-        }
-
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
-        {
-            var product = (EnovaBaseProduct) obj;
-            var compartments = product.GetWarehouseCompartments(typeof (EnovaWarehouseCompartment)).Cast<EnovaWarehouseCompartment>();
-
-            if (propertyName.Equals("TotalStock", StringComparison.InvariantCultureIgnoreCase))
-                return compartments.Sum(x => x.Stock);
-            if (propertyName.Equals("TotalReserved", StringComparison.InvariantCultureIgnoreCase))
-                return compartments.Sum(x => x.Reserved);
-
-            return compartments.Select(x => new
-            {
-                ID = x.ID,
-                Quantity = x.Stock,
-                ReservedQuantity = x.Reserved,
-                WarehouseName = x.Warehouse?.Name,
-                CompartmentName = x.Name
-            });
-        }
-
-        public object GetProperty(CmoDbObject obj, CmoContext context, string propertyName, CmoLanguage language)
-        {
-            var product = (CmoEnovaBaseProduct)obj;
-            var arrayList = new ArrayList();
-            product.GetWarehouseCompartments(context, arrayList, typeof(CmoEnovaWarehouseCompartment), null);
-            return propertyName.Equals("TotalStock", StringComparison.InvariantCultureIgnoreCase) ? 
-                arrayList.Cast<CmoEnovaWarehouseCompartment>().Sum(x => x.Stock) : 
-                arrayList.Cast<CmoEnovaWarehouseCompartment>().Sum(x => x.Reserved);
         }
     }
 }

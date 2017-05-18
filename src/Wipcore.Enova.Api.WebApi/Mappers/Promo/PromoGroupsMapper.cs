@@ -18,7 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var groups = new List<object>();
             var promo = (EnovaPromo) obj;
@@ -26,12 +26,11 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
 
             foreach (var group in promo.GetObjectsWithSpecificAccess(context, typeof(EnovaCustomerGroup)).Cast<EnovaCustomerGroup>())
             {
-                var customerGroup = new
+                var customerGroup = new Dictionary<string, object>()
                 {
-                    ID = group.ID,
-                    Identifier = group.Identifier,
-                    Name = group.Name
-                };
+                    {"ID", group.ID},
+                    {"Identifier", group.Identifier},
+                }.MapLanguageProperty("Name", mappingLanguages, group.GetName);
                 groups.Add(customerGroup);
             }
 

@@ -21,7 +21,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var promo = (EnovaPromo) obj;
             var amountCondition = promo.GetConditions(typeof (EnovaOrderAmountPromoCondition)).Cast<EnovaOrderAmountPromoCondition>().FirstOrDefault();

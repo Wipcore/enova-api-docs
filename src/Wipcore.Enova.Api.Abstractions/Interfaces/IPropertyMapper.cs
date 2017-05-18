@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.Abstractions.Interfaces
 {
@@ -27,7 +28,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <summary>
         /// Map a property from given object.
         /// </summary>
-        object GetEnovaProperty(BaseObject obj, string propertyName);
+        object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> languages);
 
         /// <summary>
         /// Map a property to given object.        

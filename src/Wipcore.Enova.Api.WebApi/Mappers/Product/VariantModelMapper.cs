@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
@@ -30,6 +31,36 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public bool FlattenMapping => false;
         public int Priority => 0;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
+
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
+        {
+            var product = (EnovaBaseProduct)obj;
+
+            if (String.Equals(propertyName, "Variants", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return product.GetVariantMembers().Where(x => x.ID != product.ID).Select(x => new Dictionary<string, object>()
+                {
+                    {"ID", x.ID},
+                    {"Identifier", x.Identifier}
+                }.MapLanguageProperty("Name", mappingLanguages, x.GetName)
+                 .MapLanguageProperty("Attributes", mappingLanguages, language => x.GetAttributeValues().Cast<EnovaAttributeValue>()
+                    .Select(a => $"{a.AttributeType?.Identifier ?? ""} : {(!String.IsNullOrEmpty(a.ValueCode) ? a.ValueCode : a.GetName(language))}")));
+            }
+
+            var owner = product.GetVariantOwner();
+            if (owner == null || owner.ID == product.ID)
+                return null;
+
+            var ownerAttributes = owner.GetAttributeValues().Cast<EnovaAttributeValue>();
+            return new Dictionary<string, object>()
+            {
+                {"ID", owner.ID},
+                { "Identifier", owner.Identifier}
+            }.MapLanguageProperty("Name", mappingLanguages, owner.GetName)
+             .MapLanguageProperty("Attributes", mappingLanguages, language => 
+                ownerAttributes.Select(a => $"{a.AttributeType?.Identifier ?? ""} : {(!String.IsNullOrEmpty(a.ValueCode) ? a.ValueCode : a.GetName(language))}"));
+
+        }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
@@ -80,36 +111,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
         }
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
-        {
-            var product = (EnovaBaseProduct)obj;
-
-            if (String.Equals(propertyName, "Variants", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return product.GetVariantMembers().Where(x => x.ID != product.ID).Select(x => new
-                {
-                    x.ID,
-                    x.Identifier,
-                    x.Name,
-                    Attributes = x.GetAttributeValues().Cast<EnovaAttributeValue>().Select(a =>
-                     $"{a.AttributeType?.Identifier ?? ""} : {(!String.IsNullOrEmpty(a.ValueCode) ? a.ValueCode : a.Name)}")
-                });
-            }
-
-            var owner = product.GetVariantOwner();
-            if (owner == null || owner.ID == product.ID)
-                return null;
-
-            return new
-            {
-                owner.ID,
-                owner.Identifier,
-                owner.Name,
-                Attributes = owner.GetAttributeValues().Cast<EnovaAttributeValue>().Select(a =>
-                    $"{a.AttributeType?.Identifier ?? ""} : {(!String.IsNullOrEmpty(a.ValueCode) ? a.ValueCode : a.Name)}")
-            };
-
-        }
+        
 
         
     }

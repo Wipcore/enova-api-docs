@@ -118,7 +118,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         {
             if (String.IsNullOrEmpty(languageIdentifier))
                 return;
-
+            
             var language = EnovaLanguage.Find(enovaContext, languageIdentifier);
             enovaContext.CurrentLanguage = language;
         }
