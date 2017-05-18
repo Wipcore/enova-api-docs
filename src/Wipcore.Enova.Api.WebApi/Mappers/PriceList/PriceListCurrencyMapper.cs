@@ -18,7 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
         public bool FlattenMapping => false;
 
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var pricelist = (EnovaPriceList) obj;
             return pricelist.Currency?.Identifier;

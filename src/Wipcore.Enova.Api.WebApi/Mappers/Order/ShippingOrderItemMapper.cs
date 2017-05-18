@@ -21,18 +21,17 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public Type Type => typeof(EnovaOrder);
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder)obj;
-            var orderItems = order.GetOrderItems<EnovaShippingTypeOrderItem>().Select(x => new
+            var orderItems = order.GetOrderItems<EnovaShippingTypeOrderItem>().Select(x => new Dictionary<string, object>()
             {
-                ID = x.ID,
-                Identifier = x.Identifier,
-                Name = x.Name,
-                ShippingIdentifier = x.ShippingType?.Identifier,
-                PriceExclTax = x.GetPrice(false),
-                PriceInclTax = x.GetPrice(true)
-            }).FirstOrDefault();
+                {"ID",  x.ID},
+                {"Identifier", x.Identifier},
+                {"ShippingIdentifier", x.ShippingType?.Identifier ?? String.Empty},
+                {"PriceExclTax", x.GetPrice(false)},
+                {"PriceInclTax", x.GetPrice(true)}
+            }.MapLanguageProperty("Name", mappingLanguages, x.GetName)).FirstOrDefault();
             return orderItems;
         }
 

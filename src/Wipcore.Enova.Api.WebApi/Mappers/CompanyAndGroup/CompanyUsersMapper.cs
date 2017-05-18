@@ -19,7 +19,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.CompanyAndGroup
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var group = (CustomerGroup)obj;
             var users = group.GetUsers(typeof (EnovaCustomer)).Cast<EnovaCustomer>().Select(x => new {x.ID, x.Identifier, x.FirstName, x.LastName, x.Alias});

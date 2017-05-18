@@ -25,7 +25,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public bool PostSaveSet => true;
         
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder)obj;
             return order.ShippingStatus?.Identifier;

@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using NLog.Internal;
+using Wipcore.eNova.Api.WebApi.Mappers;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 {
@@ -28,7 +29,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var product = (EnovaBaseProduct)obj;
 
@@ -36,13 +37,12 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             if (pictureFamily == null)
                 return new ArrayList();
 
-            return pictureFamily.GetObjects().Cast<EnovaPictureLinkObject>().Select(x => new
+            return pictureFamily.GetObjects().Cast<EnovaPictureLinkObject>().Select(x => new Dictionary<string, object>()
             {
-                x.ID,
-                x.Identifier,
-                Path = x.ImageFilePath,
-                x.Name
-            });
+                {"ID", x.ID},
+                {"Identifier", x.Identifier},
+                {"Path", x.ImageFilePath}
+            }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)

@@ -20,7 +20,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public bool FlattenMapping => false;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
         
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var context = obj.GetContext();
             var status = (EnovaShippingStatus)obj;
@@ -29,7 +29,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
                 : context.Search($"Allow = 1 AND DestinationStatus = '{status.Identifier}' ", typeof (EnovaConfigShippingStatusRule)).Cast<EnovaConfigShippingStatusRule>()
                     .Select(x => context.FindObject<EnovaShippingStatus>(x.SourceStatus)).Where(x => x != null);
 
-            return relations.Select(x => new {x.ID, x.Identifier, x.Name, MarkForDelete = false});
+            return relations.Select(x => new Dictionary<string, object>() {{"ID", x.ID}, {"Identifier", x.Identifier}, {"MarkForDelete", false}}.MapLanguageProperty("Name", mappingLanguages, x.GetName));
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)

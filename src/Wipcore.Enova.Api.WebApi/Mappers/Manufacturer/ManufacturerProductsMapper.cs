@@ -17,10 +17,14 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Manufacturer
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var manufacturer = (EnovaManufacturer)obj;
-            return manufacturer.GetItems(typeof (EnovaBaseProduct)).Cast<EnovaBaseProduct>().Select(x => new {x.ID, x.Identifier, x.Name});
+            return manufacturer.GetItems(typeof (EnovaBaseProduct)).Cast<EnovaBaseProduct>().Select(x => new Dictionary<string, object>()
+            {
+                {"ID", x.ID }, {"Identifier", x.Identifier}
+                
+            }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)

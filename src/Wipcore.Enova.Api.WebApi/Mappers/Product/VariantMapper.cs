@@ -88,7 +88,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             }
         }
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var product = (EnovaBaseProduct)obj;
             var family = product.GetVariantFamily(true, true);

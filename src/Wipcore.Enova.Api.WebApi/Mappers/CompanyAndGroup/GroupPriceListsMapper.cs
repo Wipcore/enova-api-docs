@@ -17,7 +17,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.CompanyAndGroup
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var priceListModels = new List<object>();
             var group = (CustomerGroup)obj;
@@ -25,13 +25,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.CompanyAndGroup
 
             foreach (var priceList in priceLists)
             {
-                var priceModel = new
+                var price = new Dictionary<string, object>()
                 {
-                    ID = priceList.ID,
-                    Identifier = priceList.Identifier,
-                    Name = priceList.Name
-                };
-                priceListModels.Add(priceModel);
+                    {"ID", priceList.ID},
+                    {"Identifier", priceList.Identifier},
+                }.MapLanguageProperty("Name", mappingLanguages, priceList.GetName);
+
+                priceListModels.Add(price);
             }
 
             return priceListModels;

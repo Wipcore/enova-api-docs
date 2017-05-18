@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
@@ -18,13 +19,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
         public bool FlattenMapping => false;
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var section = (EnovaBaseProductSection)obj;
             
-            return section?.Items.OfType<EnovaBaseProduct>().Select(x => new {ID = x.ID, Identifier = x.Identifier, Name = x.Name, MarkForDelete = false});
+            return section?.Items.OfType<EnovaBaseProduct>().Select(x => new Dictionary<string, object>() { {"ID", x.ID}, {"Identifier", x.Identifier}, { "MarkForDelete", false } }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
         }
-
+      
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             if (value == null)

@@ -16,7 +16,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             return String.Empty;
         }

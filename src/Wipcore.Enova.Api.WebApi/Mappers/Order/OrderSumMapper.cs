@@ -27,13 +27,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
-
-        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder) obj;
             decimal taxAmount;
@@ -60,6 +55,11 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
             var sum = order.GetSum(cmoContext, out decimals, ref currency, includeTax, true);
             return sum;
+        }
+
+        public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
+        {
+            throw new NotImplementedException();
         }
     }
 }

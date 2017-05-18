@@ -16,9 +16,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
         public MapType MapType => MapType.MapFromEnovaAllowed;
         public bool PostSaveSet => false;
         public bool FlattenMapping => true;
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
-            var values = new Dictionary<string, string>();
+            var values = new Dictionary<string, object>();
             foreach (var attributeValue in obj.AttributeValues.OfType<EnovaAttributeValue>())
             {
                 var value = !String.IsNullOrEmpty(attributeValue.ValueCode) ? attributeValue.ValueCode : attributeValue.Name;

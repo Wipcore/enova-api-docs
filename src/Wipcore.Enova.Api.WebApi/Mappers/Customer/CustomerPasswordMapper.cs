@@ -16,7 +16,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
         public MapType MapType => MapType.MapFromAndToEnovaAllowed;
         public bool FlattenMapping => false;
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             return String.Empty; //passwords can't be retrived
         }

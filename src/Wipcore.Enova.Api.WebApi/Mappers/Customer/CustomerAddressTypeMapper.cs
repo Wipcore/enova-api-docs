@@ -25,7 +25,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
             throw new NotImplementedException();
         }
 
-        public object GetEnovaProperty(BaseObject obj, string propertyName)
+        public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var address = (EnovaCustomerAddress) obj;
             return ((EnovaCustomerAddress.AddressTypeEnum) address.AddressType).ToString();
