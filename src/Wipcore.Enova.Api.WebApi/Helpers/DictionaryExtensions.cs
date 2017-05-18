@@ -47,5 +47,26 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 
             return defaultValue == null ? default(T) : (T)Convert.ChangeType(defaultValue, typeof(T));
         }
+
+        public static bool ContainsKeyInsensitive(this IDictionary<string, object> dictionary, string key)
+        {
+            return dictionary.Keys.Any(x => String.Equals(key, x, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static T GetValueInsensitive<T>(this IDictionary<string, object> dictionary, string key)
+        {
+            var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
+            if (entry.Value == null)
+                return default(T);
+            return (T) entry.Value;
+        }
+
+        public static T GetValueInsensitive<T>(this IDictionary<string, object> dictionary, string key, T defaultValue)
+        {
+            var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
+            if (entry.Value == null)
+                return defaultValue;
+            return (T)entry.Value;
+        }
     }
 }

@@ -29,14 +29,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
 
             foreach (var attributeValue in obj.AttributeValues.OfType<EnovaAttributeValue>())
             {
+                var attributeType = attributeValue.AttributeType as EnovaAttributeType;
+                var languageDependant = attributeType?.Values.Cast<EnovaAttributeValue>().All(x => String.IsNullOrEmpty(x.ValueCode)) == true;
+
                 var attribute = new Dictionary<string, object>()
                     {
                         {"Identifier", attributeValue.Identifier},
                         { "ID", attributeValue.ID }
                     }.
-                    MapLanguageProperty("Value", mappingLanguages, language => !String.IsNullOrEmpty(attributeValue.ValueCode) ? attributeValue.ValueCode : attributeValue.GetName(language));
-
-                var attributeType = attributeValue.AttributeType as EnovaAttributeType;
+                    MapLanguageProperty("Value", mappingLanguages, language => languageDependant ? attributeValue.GetName(language) : attributeValue.ValueCode);
+                
                 if (attributeType != null)
                 {
                     attribute.Add("AttributeType", new Dictionary<string, object>()
@@ -44,13 +46,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                             { "ID", attributeType.ID},
                             { "Identifier", attributeType.Identifier},
                             { "IsContinuous", attributeType.IsContinuous},
+                            { "LanguageDependant", languageDependant},
                             { "Values", attributeType.Values.OfType<EnovaAttributeValue>().Select(x => new Dictionary<string, object>()
                                 {
                                     { "Identifier", x.Identifier},
                                     { "ID", x.ID },
-                                    { "LanguageDependant",  String.IsNullOrEmpty(x.ValueCode)}
                                 }.
-                                MapLanguageProperty("Value", mappingLanguages, language => !String.IsNullOrEmpty(x.ValueCode) ? x.ValueCode : x.GetName(language)))
+                                MapLanguageProperty("Value", mappingLanguages, language => languageDependant ? x.GetName(language) : x.ValueCode))
                             }
                         }
                         .MapLanguageProperty("Name", mappingLanguages,language => attributeType.GetName(language))
