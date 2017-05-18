@@ -26,7 +26,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
             var section = (EnovaBaseProductSection) obj;
             var parent = section.Parent;
 
-            return parent == null ? new Dictionary<string, object>(){ { "ID", ""}, {"Identifier", ""}, {"Name", ""} } : 
+            return parent == null ? new Dictionary<string, object>(){ { "ID", 0}, {"Identifier", ""}, {"Name", ""} } : 
                 new Dictionary<string, object>(){ { "ID", parent.ID}, {"Identifier", parent.Identifier}}.MapLanguageProperty("Name", mappingLanguages, parent.GetName);
         }
 
