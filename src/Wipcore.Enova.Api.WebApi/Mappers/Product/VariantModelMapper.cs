@@ -7,6 +7,7 @@ using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -85,7 +86,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                 }
 
                 //should be owner if there are variants and no specified owner
-                var shouldBeOwner = variants.Count > 0 && (!otherValues.ContainsKey("VariantOwner") || otherValues["VariantOwner"] == null);
+                var shouldBeOwner = variants.Count > 0 && otherValues.GetValueInsensitive<object>("VariantOwner") == null;
 
                 if (!shouldBeOwner && product.IsVariantOwner) //if you shouldn't be an owner, but are, then stop it!
                 {

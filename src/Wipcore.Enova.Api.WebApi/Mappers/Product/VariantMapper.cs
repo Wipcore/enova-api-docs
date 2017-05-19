@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -49,9 +50,8 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                     : (IList)JsonConvert.DeserializeObject<List<string>>(value.ToString());
                 
                 //should be owner if there are variant ids and no specified owner
-                var shouldBeOwner = variants?.Count > 0 && 
-                    (!otherValues.ContainsKey("VariantOwnerId") || Convert.ToInt32(otherValues["VariantOwnerId"]) == default(int)) &&
-                    (!otherValues.ContainsKey("VariantOwnerIdentifier") || String.IsNullOrEmpty(Convert.ToString(otherValues["VariantOwnerIdentifier"])));
+                var shouldBeOwner = variants?.Count > 0 && otherValues.GetValueInsensitive<int>("VariantOwnerId") == default(int) &&
+                    String.IsNullOrEmpty(Convert.ToString(otherValues.GetValueInsensitive<int>("VariantOwnerIdentifier")));
 
                 if (!shouldBeOwner && product.IsVariantOwner) //if you shouldn't be an owner, but are, then stop it!
                 {
