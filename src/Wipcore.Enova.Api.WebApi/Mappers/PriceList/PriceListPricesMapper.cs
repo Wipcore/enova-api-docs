@@ -70,7 +70,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
 
                     if (item.MarkForDelete)
                         pricelist.RemoveProduct(product);
-                    else
+                    else if(pricelist.GetPrice(product) != price)
                         pricelist.SetPrice(product, price);
                 }
             }
@@ -83,7 +83,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
                 {
                     var product = EnovaBaseProduct.Find(context, item.Key);
                     var price = includeTax ? PriceHelper.RemoveTax(item.Value, tax) : item.Value;
-                    pricelist.SetPrice(product, price);
+                    if(pricelist.GetPrice(product) != price)
+                        pricelist.SetPrice(product, price);
                 }
             }
         }
