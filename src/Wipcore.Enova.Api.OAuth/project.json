@@ -13,7 +13,7 @@
       "version": "6.4.0.215-*",
       "target": "project"
     },
-    "Wipcore.Enova.Connectivity.Package": "6.4.0.241-dev"
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.242-dev"
   },
 
   "frameworks": {
