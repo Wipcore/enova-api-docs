@@ -13,7 +13,7 @@
     "NETStandard.Library": "1.6.1",
     "Autofac": "4.1.1",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
-    "Wipcore.Enova.Core.Package": "6.4.0.215-*",
+    "Wipcore.Enova.Core.Package": "6.4.0.241-dev",
     "Microsoft.AspNetCore.Mvc.DataAnnotations": "1.1.0",
     "Newtonsoft.Json": "9.0.1-*",
     "IdentityServer4": "1.0.0-rc5"
