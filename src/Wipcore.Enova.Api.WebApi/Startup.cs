@@ -86,6 +86,12 @@ namespace Wipcore.Enova.Api.WebApi
             EnovaSystemFacade.Current.Start();
         }
 
+        public void OnShutdown()
+        {
+            EnovaSystemFacade.Current.Stop();
+        }
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -131,8 +137,10 @@ namespace Wipcore.Enova.Api.WebApi
         
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
