@@ -1,0 +1,33 @@
+{
+  "version": "6.4.0.215-dev",
+  "description": "Wipcore.Enova.Api.Tests Class Library",
+  "authors": [ "henrik.eliasson" ],
+
+  "dependencies": {
+    "NETStandard.Library": "2.0.0-preview1-25301-01",
+    "xunit": "2.2.0",
+    "dotnet-test-xunit": "2.2.0-*",
+    "NetEscapades.AspNetCore.SecurityHeaders": "0.3.1",
+    "Microsoft.AspNetCore.TestHost": "1.1.2",
+    "Wipcore.Enova.Api.WebApi": "6.4.0.215-dev",
+    "Wipcore.Enova.Api.Abstractions": "6.4.0.215-dev",
+    "Wipcore.Enova.Api.OAuth": "6.4.0.215-dev",
+    "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
+    "Wipcore.Enova.Connectivity.Package": "6.4.0.243-dev",
+    "Wipcore.Enova.Core.Package": "6.4.0.243-dev"
+  },
+
+  "frameworks": {
+    "net461": {
+    }
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": false,
+    "copyToOutput": {
+      "include": [ "Configs" ]
+    }
+  },
+
+  "testRunner": "xunit"
+}
