@@ -4,7 +4,7 @@
   "authors": [ "henrik.eliasson" ],
 
   "dependencies": {
-    "NETStandard.Library": "2.0.0-preview1-25301-01",
+    "NETStandard.Library": "1.6.1",
     "xunit": "2.2.0",
     "dotnet-test-xunit": "2.2.0-*",
     "NetEscapades.AspNetCore.SecurityHeaders": "0.3.1",
