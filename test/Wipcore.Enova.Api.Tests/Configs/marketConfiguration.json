@@ -12,6 +12,11 @@
   "eu": {
     "language": "en",
     "currency": "euro",
-    "taxrule": "STANDARD_EN"
+    "taxrule": "STANDARD_TAX"
+  },
+  "danskjavel": {
+    "language": "da",
+    "currency": "dkk",
+    "taxrule": "STANDARD_TAX"
   }
 }

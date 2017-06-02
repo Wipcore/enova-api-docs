@@ -20,32 +20,64 @@ using Xunit;
 
 namespace Wipcore.Enova.Api.Tests
 {
+    [CollectionDefinition("WebApiCollection")]
+    public class EnovaApiAccessCollection : ICollectionFixture<TestService>, IDisposable
+    {
+        public void Dispose() { }
+    }
+
+    [Collection("WebApiCollection")]
     public class TestService : IDisposable
     {
-        public IConfigurationRoot Configuration { get; } 
-        public TestServer Server { get; }
+        private static readonly object Lock = new object();//Locking as workaround for test collections not working
+        private static int TestClasses = 0;
+        private static TestServer _server;
+        private static HttpClient _adminClient;
 
-        public HttpClient AdminClient { get; }
+        public static IConfigurationRoot Configuration { get; set; }
+
+        public TestServer Server => _server;
+
+        public HttpClient AdminClient => _adminClient;
 
         public TestService()
         {
-            try
+            lock (Lock)
             {
-                var builder = new ConfigurationBuilder().AddJsonFile(@"Configs\appsettings.json").AddJsonFile(@"Configs\localappsettings.json", true);
-                Configuration = builder.Build();
-                Server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-                AdminClient = GetNewClient(true);
+                TestClasses++;
+                if (Server != null)
+                    return;
+
+                try
+                {
+                    var builder = new ConfigurationBuilder().AddJsonFile(@"Configs\appsettings.json").AddJsonFile(@"Configs\localappsettings.json", true);
+                    Configuration = builder.Build();
+                    _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+                    _adminClient = GetNewClient(true);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+
+            
         }
 
         public void Dispose()
         {
-            Server.Dispose();
+            lock (Lock)
+            {
+                TestClasses--;
+                if (TestClasses == 0)
+                {
+                    _server.Dispose();
+                    _server = null;
+                }
+                    
+            }
+            
         }
 
         public HttpClient GetNewClient(bool login = false)

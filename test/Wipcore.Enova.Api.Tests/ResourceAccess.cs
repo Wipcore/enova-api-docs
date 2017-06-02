@@ -8,6 +8,7 @@ using Xunit.Extensions;
 
 namespace Wipcore.Enova.Api.Tests
 {
+    [Collection("WebApiCollection")]
     public class ResourceAccess : IClassFixture<TestService>
     {
         private readonly TestService _testService;
