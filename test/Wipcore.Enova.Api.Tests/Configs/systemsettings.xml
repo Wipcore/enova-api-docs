@@ -28,7 +28,7 @@
   <setting name="PriceListCacheTime" value="0" />
   <setting name="PromoCartItemType" value="Wipcore.Enova.Core.CmoEnovaPromoCartItem" />
   <setting name="PromoProductCartItemType" value="Wipcore.Enova.Core.CmoEnovaPromoProductCartItem" />
-  <setting name="RemoveFromDatabaseOnDelete" value="False" />
+  <setting name="RemoveFromDatabaseOnDelete" value="True" />
   <setting name="RoundingOrderItemType" value="Wipcore.Enova.Core.CmoEnovaRoundingOrderItem" />
   <setting name="SynchronizeCarts" value="False" />
   <setting name="SystemIDRangeFirst" value="1" />
