@@ -104,17 +104,25 @@ namespace Wipcore.Enova.Api.Tests
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + loginResponse.AccessToken);
         }
 
-        public void LoginCustomer(HttpClient client, string alias, string password)
+        public void LoginCustomer(HttpClient client, string alias, string password, bool loginShouldBeValid = true)
         {
             var model = new LoginModel() { Alias = alias, Password = password };
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, new UTF8Encoding(), "application/json");
 
             var response = client.PostAsync("/Account/LoginCustomer", content).Result;
-            Assert.True(response.IsSuccessStatusCode, $"Failed to login customer with alias: {alias} and password: {password}");
 
-            var loginResponse = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + loginResponse.AccessToken);
+            if (loginShouldBeValid)
+            {
+                Assert.True(response.IsSuccessStatusCode, $"Failed to login customer with alias: {alias} and password: {password}");
+
+                var loginResponse = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + loginResponse.AccessToken);
+            }
+            else
+            {
+                Assert.False(response.IsSuccessStatusCode);    
+            }
         }
     }
 }

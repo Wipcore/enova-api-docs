@@ -46,12 +46,12 @@ namespace Wipcore.Enova.Api.Tests
             if(resource == "customers")
                 model.Add("Alias", identifier);
 
-            var createdResource = UpdateOrCreateResource(resource, identifier, _testService.AdminClient, model);//create
+            var createdResource = UpdateOrCreateResource(resource, _testService.AdminClient, model);//create
             Assert.NotNull(createdResource);
 
             var newRandomSortOrder = Rand.Next();
             model["SortOrder"] = newRandomSortOrder;
-            var updatedResource = UpdateOrCreateResource(resource, identifier, _testService.AdminClient, model);//update
+            var updatedResource = UpdateOrCreateResource(resource, _testService.AdminClient, model);//update
             
             Assert.NotNull(updatedResource);
             Assert.Equal(newRandomSortOrder, Convert.ToInt32(updatedResource["SortOrder"]));
@@ -72,11 +72,11 @@ namespace Wipcore.Enova.Api.Tests
                 model.Add("Alias", identifier);
 
             //create using non admin client, should fail
-            UpdateOrCreateResource(resource, identifier, _client, model);
+            UpdateOrCreateResource(resource, _client, model);
             Assert.Null(GetResource(resource, identifier, _testService.AdminClient));
 
             //create with admin client and then delete with normal client, should also fail
-            var createdResource = UpdateOrCreateResource(resource, identifier, _testService.AdminClient, model);
+            var createdResource = UpdateOrCreateResource(resource, _testService.AdminClient, model);
             Assert.NotNull(createdResource);
             DeleteResource(resource, identifier, _client);
             Assert.NotNull(GetResource(resource, identifier, _testService.AdminClient));
@@ -85,6 +85,9 @@ namespace Wipcore.Enova.Api.Tests
         [Theory, MemberData(nameof(AllUpdateableResources))]
         public void CannotCrudResourceAsCustomer(string resource, bool auth)
         {
+            if(resource == "orders" || resource == "carts")
+                return; //allowed
+
             _testService.LoginCustomer(_client, "69990001", "stygg");
             CannotCrudResourceWithoutAuth(resource, auth);
         }
@@ -92,9 +95,44 @@ namespace Wipcore.Enova.Api.Tests
         [Theory]
         [InlineData(new object[] { "69990001", "69990001", "stygg", "29990005", "testcart", true })]
         [InlineData(new object[] { "69990001", "997545", "notstygg", "29990005", "testcart", false })]
-        public void CustomerCanCrudItself(string customerIdentifier, string customerAlias, string customerPassword, string orderIdentifier, string cartIdentifier, bool isOwner)
+        public void CustomerCanCruItself(string customerIdentifier, string customerAlias, string customerPassword, string orderIdentifier, string cartIdentifier, bool isOwner)
         {
-            
+            _testService.LoginCustomer(_client, customerAlias, customerPassword);
+
+            //update customer
+            var newRandomSortOrder = Rand.Next();
+            var model = new Dictionary<string, object>() { { "Identifier", customerIdentifier }, {"SortOrder", newRandomSortOrder} };
+            var updatedModel = UpdateOrCreateResource("customers", _client, model);
+
+            if (isOwner)
+                Assert.Equal(newRandomSortOrder, Convert.ToInt32(updatedModel["SortOrder"]));
+            else
+                Assert.Null(updatedModel);
+
+            //update cart
+            newRandomSortOrder = Rand.Next();
+            model = new Dictionary<string, object>() { { "Identifier", cartIdentifier }, { "SortOrder", newRandomSortOrder } };
+            updatedModel = UpdateOrCreateResource("carts", _client, model);
+
+            if (isOwner)
+                Assert.Equal(newRandomSortOrder, Convert.ToInt32(updatedModel["SortOrder"]));
+            else
+                Assert.Null(updatedModel);
+
+            //update order
+            newRandomSortOrder = Rand.Next();
+            model = new Dictionary<string, object>() { { "Identifier", orderIdentifier }, { "SortOrder", newRandomSortOrder } };
+            updatedModel = UpdateOrCreateResource("orders", _client, model);
+
+            if (isOwner)
+                Assert.Equal(newRandomSortOrder, Convert.ToInt32(updatedModel["SortOrder"]));
+            else
+                Assert.Null(updatedModel);
+
+            //delete should never work
+            Assert.False(DeleteResource("orders", orderIdentifier, _client));
+            Assert.False(DeleteResource("carts", cartIdentifier, _client));
+            Assert.False(DeleteResource("customers", customerIdentifier, _client));
         }
 
 
@@ -114,7 +152,7 @@ namespace Wipcore.Enova.Api.Tests
             }
         }
 
-        private IDictionary<string, object> UpdateOrCreateResource(string resource, string identifier, HttpClient client, IDictionary<string, object> model)
+        private IDictionary<string, object> UpdateOrCreateResource(string resource, HttpClient client, IDictionary<string, object> model)
         {
             try
             {
