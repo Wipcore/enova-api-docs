@@ -51,7 +51,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         bool PostSaveSet { get; }
 
         /// <summary>
-        /// Set to true to flatten structure, meaning adding properties from mapping directly to parent. Attributes as properties for example. Mapping returned must be IDictionary<string, value>
+        /// Set to true to flatten structure, meaning adding properties from mapping directly to parent. Attributes as properties for example. Mapping returned must be IDictionary (string, value)
         /// </summary>
         bool FlattenMapping { get; }
     }
