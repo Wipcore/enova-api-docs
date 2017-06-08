@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Library;
 
 namespace Wipcore.eNova.Api.WebApi.Services
@@ -44,6 +45,14 @@ namespace Wipcore.eNova.Api.WebApi.Services
         }
 
         /// <summary>
+        /// Get all cache keys for a type. Null to get all.
+        /// </summary>
+        public IEnumerable<string> GetCacheKeys(string typeName = null)
+        {
+            return _cache.Where(x => typeName == null || x.Key.StartsWith(typeName + "-")).Select(x => x.Key);
+        }
+
+        /// <summary>
         /// Set cache entry for a request. Key is built on all in parameters.
         /// </summary>
         public void SetCache(IEnumerable<IDictionary<string, object>> value, IContextModel requestContext, IQueryModel query, Type type, BaseObjectList candidates = null)
@@ -61,18 +70,34 @@ namespace Wipcore.eNova.Api.WebApi.Services
         }
 
         /// <summary>
-        /// Clear all cache entries with the given type.
+        /// Clear all cache entries with the given type. Null to clear all.
         /// </summary>
-        public void ClearCache(Type type)
+        public void ClearCache(Type type = null)
         {
-            var keys = _cache.Where(x => x.Key.StartsWith(type.Name)).Select(x => x.Key);
+            ClearCache(type?.Name);   
+        }
+
+        /// <summary>
+        /// Clear all cache entries with the given type. Null to clear all.
+        /// </summary>
+        public void ClearCache(string typeName = null)
+        {
+            var keys = _cache.Where(x => typeName == null || x.Key.StartsWith(typeName + "-", StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Key);
             keys.ForEach(x => _cache.Remove(x));
+        }
+
+        /// <summary>
+        /// Remove cache entry by key.
+        /// </summary>
+        public void RemoveFromCache(string key)
+        {
+            _cache.Remove(key);
         }
 
 
         private string Key(IContextModel requestContext, IQueryModel query, Type type, BaseObjectList candidates = null)
         {
-            var key = $"{type.Name}{_authService.GetLoggedInAlias() ?? String.Empty}{requestContext.Currency}{requestContext.Language}{requestContext.Market}{query.Filter}{query.Page}{query.Properties}{query.Size}{query.Sort}{query.Template}";
+            var key = $"{type.Name}-{_authService.GetLoggedInAlias() ?? String.Empty}{requestContext.Currency}{requestContext.Language}{requestContext.Market}{query.Filter}{query.Page}{query.Properties}{query.Size}{query.Sort}{query.Template}";
             if (candidates != null)
                 key += String.Join(String.Empty, candidates.Cast<BaseObject>().Select(x => x.ID.ToString()));
 
