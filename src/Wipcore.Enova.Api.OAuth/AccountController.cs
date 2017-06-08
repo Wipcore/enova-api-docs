@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
@@ -48,6 +51,7 @@ namespace Wipcore.Enova.Api.OAuth
         public async Task<IActionResult> Logout()
         {
             await HttpContext.Authentication.SignOutAsync(AuthService.AuthenticationScheme);
+            
             return Ok("Successful logout.");
         }
 
@@ -72,7 +76,7 @@ namespace Wipcore.Enova.Api.OAuth
             var contextModel = new ContextModel() {Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value, 
-                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken, contextModel));
+                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
         }
 
         /// <summary>
@@ -95,7 +99,7 @@ namespace Wipcore.Enova.Api.OAuth
             var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
-                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken, contextModel));
+                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
         }
 
         /// <summary>
@@ -122,7 +126,7 @@ namespace Wipcore.Enova.Api.OAuth
 
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
-                claimsPrincipal.FindFirst(AuthService.IdClaim).Value, bearerToken, contextModel));
+                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
         }
     }
 }

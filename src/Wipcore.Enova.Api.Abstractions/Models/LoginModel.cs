@@ -46,7 +46,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// <summary>
         /// ID of the customer/admin that logged in.
         /// </summary>
-        public string UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// Default language/currency context for the user.
@@ -58,7 +58,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// </summary>
         public string AccessToken { get; set; }
         
-        public LoginResponseModel(string message, string identifier = null, string id = null, string accessToken = null, ContextModel contextModel = null)
+        public LoginResponseModel(string message, string identifier = null, int? id = null, string accessToken = null, ContextModel contextModel = null)
         {
             StatusMessage = message;
             ContextModel = contextModel;

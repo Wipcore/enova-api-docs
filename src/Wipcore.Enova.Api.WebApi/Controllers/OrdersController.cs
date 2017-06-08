@@ -123,9 +123,12 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Create or update an order.
         /// </summary>
         [HttpPut()]
-        [Authorize(Roles = AuthService.AdminRole)]
+        [Authorize()]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
+            if (!_authService.AuthorizeAccess<EnovaOrder>(_contextService.GetContext(), values, x => x.Customer?.ID))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
+
             return _objectService.Save<EnovaOrder>(requestContext, values);
         }
 

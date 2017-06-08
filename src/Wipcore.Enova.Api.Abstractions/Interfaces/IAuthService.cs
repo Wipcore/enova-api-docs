@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using Wipcore.Core.SessionObjects;
 
 namespace Wipcore.Enova.Api.Abstractions.Interfaces
 {
@@ -53,7 +55,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <summary>
         /// Get the id of an logged in user. Returns null if no-one logged in.
         /// </summary>
-        string GetLoggedInId();
+        int? GetLoggedInId();
 
         /// <summary>
         /// Get the role of any logged in user. Returns null if no-one logged in.
@@ -104,6 +106,10 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="specifiedOwner">The owner specified to own the object after update.</param>
         bool AuthorizeUpdate(string enovaObjectOwnedByIdentifier, string specifiedOwner);
 
+        /// <summary>
+        /// Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser.
+        /// </summary>
+        bool AuthorizeAccess<T>(Context context, Dictionary<string, object> values, Func<T, int?> getOwnerFunc) where T : BaseObject;
 
         /// <summary>
         /// Validator for when tokens expire.

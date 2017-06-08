@@ -125,9 +125,12 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Create or update a cart.
         /// </summary>
         [HttpPut()]
-        [Authorize(Roles = AuthService.AdminRole)]
+        [Authorize]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
+            if (!_authService.AuthorizeAccess<EnovaCart>(_contextService.GetContext(), values, x => x.Customer?.ID))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
+
             return _objectService.Save<EnovaCart>(requestContext, values);
         }
 
@@ -135,9 +138,12 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Create an order from given cart information. Returns order id.
         /// </summary>
         [HttpPut("createorder")]
-        [Authorize(Roles = AuthService.AdminRole)]
+        [Authorize]
         public int PutOrder([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
+            if (!_authService.AuthorizeAccess<EnovaCart>(_contextService.GetContext(), values, x => x.Customer?.ID))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
+
             return _cartService.CreateOrderFromCart(requestContext, values);
         }
 

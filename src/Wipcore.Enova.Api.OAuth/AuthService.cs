@@ -165,7 +165,7 @@ namespace Wipcore.Enova.Api.OAuth
 
         public string GetLoggedInIdentifier() => GetClaim(IdentifierClaim);
 
-        public string GetLoggedInId() => GetClaim(IdClaim);
+        public int? GetLoggedInId() => Convert.ToInt32(GetClaim(IdClaim));
 
         public string GetLoggedInDefaultCurrency() => GetClaim(DefaultCurrencyClaim);
 
@@ -214,6 +214,26 @@ namespace Wipcore.Enova.Api.OAuth
         }
 
         /// <summary>
+        /// Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser.
+        /// </summary>
+        public bool AuthorizeAccess<T>(Context context, Dictionary<string, object> values, Func<T, int?> getOwnerFunc) where T : BaseObject
+        {
+            if (IsLoggedInAsAdmin())
+                return true;
+
+            var id = GetValueInsensitive<int?>(values, "id");
+            var identifier = GetValueInsensitive<string>(values, "identifier") ?? "";
+
+            var item = id.HasValue ? context.FindObject<T>(id.Value) : context.FindObject<T>(identifier);
+
+            if (item == null)
+                return true;
+
+            var owner = getOwnerFunc.Invoke(item);
+            return owner == null || owner == GetLoggedInId();
+        }
+
+        /// <summary>
         /// Returns true if the logged in user is an adminstrator, 
         /// or if the logged in user is the same as the user owning the object, and the same as the user being set to own the object.
         /// </summary>
@@ -235,6 +255,14 @@ namespace Wipcore.Enova.Api.OAuth
                 return false;
 
             return true;
+        }
+
+        private static T GetValueInsensitive<T>(IDictionary<string, object> dictionary, string key)
+        {
+            var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
+            if (entry.Value == null)
+                return default(T);
+            return (T)entry.Value;
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <summary>
         /// ID of the customer/admin that logged in.
         /// </summary>
-        string UserId { get; }
+        int? UserId { get; }
 
         /// <summary>
         /// Default language/currency context for the user.
