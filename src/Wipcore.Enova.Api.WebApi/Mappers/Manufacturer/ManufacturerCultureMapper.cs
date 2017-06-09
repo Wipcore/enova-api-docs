@@ -24,10 +24,14 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Manufacturer
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if(String.IsNullOrEmpty(value?.ToString()))
+                return;
+
             var manufacturer = (EnovaManufacturer)obj;
-            var country = obj.GetContext().FindObject<EnovaCountry>(value?.ToString());
-            manufacturer.CountryIsoCode = country?.Identifier;
-            manufacturer.CountryName = country?.Name;
+            var country = EnovaCountry.Find(obj.GetContext(), value.ToString());
+            
+            manufacturer.CountryIsoCode = country.Identifier;
+            manufacturer.CountryName = country.Name;
         }
 
     }

@@ -24,12 +24,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             var promo = (EnovaPromo) obj;
             var context = promo.GetContext();
 
-            foreach (var group in promo.GetObjectsWithSpecificAccess(context, typeof(EnovaCustomerGroup)).Cast<EnovaCustomerGroup>())
+            foreach (var group in promo.GetObjectsWithSpecificAccess(context, typeof(CustomerGroup)).Cast<CustomerGroup>())
             {
                 var customerGroup = new Dictionary<string, object>()
                 {
                     {"ID", group.ID},
                     {"Identifier", group.Identifier},
+                    {"Type", group.GetType().Name},
                 }.MapLanguageProperty("Name", mappingLanguages, group.GetName);
                 groups.Add(customerGroup);
             }
@@ -45,10 +46,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             var promo = (EnovaPromo)obj;
             var context = promo.GetContext();
 
-            var groups = JsonConvert.DeserializeAnonymousType(value.ToString(), new [] { new {ID = 0, MarkForDelete = false } });
+            var groups = JsonConvert.DeserializeAnonymousType(value.ToString(), new [] { new {ID = 0, Identifier = "", Type = "", MarkForDelete = false } });
             foreach (var group in groups)
             {
-                var customerGroup = EnovaCustomerGroup.Find(context, group.ID);
+                var customerGroup = (CustomerGroup)(context.FindObject(group.ID, typeof(CustomerGroup), false) ?? context.FindObject(group.Identifier, typeof(CustomerGroup), true));
                 if (group.MarkForDelete == true)
                 {
                     promo.RemoveSpecificAccess(customerGroup);
