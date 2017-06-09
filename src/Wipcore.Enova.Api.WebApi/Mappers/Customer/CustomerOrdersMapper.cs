@@ -11,7 +11,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
 {
     public class CustomerOrdersMapper : IPropertyMapper
     {
-        public List<string> Names => new List<string>() { "Orders" };
+        public List<string> Names => new List<string>() { "Orders", "OrderCount" };
         public Type Type => typeof(EnovaCustomer);
         public bool InheritMapper => true;
         public int Priority => 0;
@@ -20,9 +20,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
         public bool FlattenMapping => false;
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
-            var orders = new List<object>();
-            var customer = (EnovaCustomer) obj;
+            var customer = (EnovaCustomer)obj;
+            if (propertyName.Equals("OrderCount", StringComparison.InvariantCultureIgnoreCase))
+                return customer.Orders.Count;
 
+
+            var orders = new List<object>();
             foreach (var order in customer.Orders.OfType<EnovaOrder>().OrderByDescending(x => x.CreatedAt))
             {
                 var miniOrder = new Dictionary<string, object>()
