@@ -9,9 +9,18 @@
     "dotnet-test-xunit": "2.2.0-*",
     "NetEscapades.AspNetCore.SecurityHeaders": "0.3.1",
     "Microsoft.AspNetCore.TestHost": "1.1.2",
-    "Wipcore.Enova.Api.WebApi": "6.4.0.215-dev",
-    "Wipcore.Enova.Api.Abstractions": "6.4.0.215-dev",
-    "Wipcore.Enova.Api.OAuth": "6.4.0.215-dev",
+    "Wipcore.Enova.Api.WebApi": {
+      "version": "6.4.0.215-*",
+      "target": "project"
+    },
+    "Wipcore.Enova.Api.Abstractions": {
+      "version": "6.4.0.215-*",
+      "target": "project"
+    },
+    "Wipcore.Enova.Api.OAuth": {
+      "version": "6.4.0.215-*",
+      "target": "project"
+    },
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
     "Wipcore.Enova.Connectivity.Package": "6.4.0.243-dev",
     "Wipcore.Enova.Core.Package": "6.4.0.243-dev"
