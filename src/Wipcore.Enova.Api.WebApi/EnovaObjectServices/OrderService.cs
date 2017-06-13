@@ -23,6 +23,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         private readonly IAuthService _authService;
         private readonly IWarehouseService _warehouseService;
         private readonly ILogger _logger;
+        private readonly int _decimalsInAmountString;
 
         public OrderService( IContextService contextService, IMappingToEnovaService mappingToEnovaService, ICartService cartService, IConfigurationRoot configuration, 
             IAuthService authService, ILoggerFactory loggerFactory, IWarehouseService warehouseService)
@@ -34,6 +35,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             _authService = authService;
             _warehouseService = warehouseService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
+            _decimalsInAmountString = _configuration.GetValue<int>("EnovaSettings:DecimalsInAmountString", 2);
         }
 
         /// <summary>
@@ -76,6 +78,32 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             var statuses = context.FindObjects<EnovaShippingStatus>(destinations).Where(x => x != null).ToDictionary(k => k.Identifier, v => v.Name);
             return statuses;
+        }
+
+        ///<summary>
+        /// Get an existing order, mapped to a model.
+        /// </summary>
+        public ICalculatedCartModel GetOrder(string identifier = null, int id = 0)
+        {
+            var context = _contextService.GetContext();
+            var enovaOrder = context.FindObject<EnovaOrder>(identifier) ?? context.FindObject<EnovaOrder>(id);
+            if (enovaOrder == null)
+                return null;
+
+            var currency = context.CurrentCurrency;
+            decimal taxAmount;
+            double currencyFactor;
+            int decimals;
+            var totalPrice = enovaOrder.GetSum(out taxAmount, out decimals, ref currency, out currencyFactor);
+
+            var model = new CalculatedCartModel(null) { Customer = enovaOrder.Customer?.Identifier, Identifier = enovaOrder.Identifier, TotalPriceExclTax = totalPrice - taxAmount, TotalPriceInclTax = totalPrice };
+            model.TotalPriceExclTaxString = context.AmountToString(model.TotalPriceExclTax, currency, _decimalsInAmountString, true, true);
+            model.TotalPriceInclTaxString = context.AmountToString(model.TotalPriceInclTax, currency, _decimalsInAmountString, true, true);
+            model.Status = enovaOrder.ShippingStatus?.Identifier;
+
+            Map(context, enovaOrder, model);
+
+            return model;
         }
 
         /// <summary>
@@ -184,7 +212,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             
             foreach (var orderItem in orderRows.OfType<EnovaProductOrderItem>())
             {
-                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Product && 
+                var row = (CalculatedCartRowModel)model.Rows?.FirstOrDefault(x => x.Type == RowType.Product && 
                     String.Equals(orderItem.ProductIdentifier, x.Identifier, StringComparison.OrdinalIgnoreCase)) ?? new CalculatedCartRowModel();
                 row.Identifier = orderItem.ProductIdentifier;
                 row.Quantity = orderItem.OrderedQuantity;
@@ -199,7 +227,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             foreach (var orderItem in orderRows.OfType<EnovaShippingTypeOrderItem>())
             {
-                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Shipping &&
+                var row = (CalculatedCartRowModel)model.Rows?.FirstOrDefault(x => x.Type == RowType.Shipping &&
                     String.Equals(orderItem.ShippingType?.Identifier, x.Identifier, StringComparison.OrdinalIgnoreCase)) ?? new CalculatedCartRowModel();
                 row.Identifier = orderItem.ShippingType?.Identifier;
                 row.Quantity = orderItem.OrderedQuantity;
@@ -214,7 +242,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             foreach (var orderItem in orderRows.OfType<EnovaPaymentTypeOrderItem>())
             {
-                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Payment &&
+                var row = (CalculatedCartRowModel)model.Rows?.FirstOrDefault(x => x.Type == RowType.Payment &&
                     String.Equals(orderItem.PaymentType?.Identifier, x.Identifier, StringComparison.OrdinalIgnoreCase)) ?? new CalculatedCartRowModel();
                 row.Identifier = orderItem.PaymentType?.Identifier;
                 row.Quantity = orderItem.OrderedQuantity;
@@ -229,7 +257,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             foreach (var orderItem in orderRows.OfType<EnovaPromoOrderItem>())
             {
-                var row = (CalculatedCartRowModel)model.Rows.FirstOrDefault(x => x.Type == RowType.Promo && (x.Password == orderItem.Promo?.Password ||
+                var row = (CalculatedCartRowModel)model.Rows?.FirstOrDefault(x => x.Type == RowType.Promo && (x.Password == orderItem.Promo?.Password ||
                     String.Equals(orderItem.Promo?.Identifier, x.Identifier, StringComparison.OrdinalIgnoreCase))) ?? new CalculatedCartRowModel();
                 row.Identifier = orderItem.Promo?.Identifier;
                 row.Quantity = orderItem.OrderedQuantity;

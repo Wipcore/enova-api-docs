@@ -102,13 +102,13 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize]
         public ICalculatedCartModel GetCartAsModel(ContextModel requestContext, string identifier = null, int id = 0)
         {
-            var model = _cartService.GetCart(identifier, id);
             var context = _contextService.GetContext();
             var cart = context.FindObject<EnovaCart>(identifier) ?? context.FindObject<EnovaCart>(id);
 
             if (!_authService.AuthorizeAccess(cart?.Customer?.Identifier))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
 
+            var model = _cartService.GetCart(identifier, id);
             return model;
         }
 

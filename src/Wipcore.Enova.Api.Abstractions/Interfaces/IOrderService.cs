@@ -20,6 +20,11 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <returns></returns>
         BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null);
 
+        ///<summary>
+        /// Get an existing order, mapped to a model.
+        /// </summary>
+        ICalculatedCartModel GetOrder(string identifier = null, int id = 0);
+
         /// <summary>
         /// Get a list of identifiers|names of the valid new shipping statuses for the given order.
         /// </summary>

@@ -12,6 +12,7 @@ using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
+using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
@@ -108,6 +109,23 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
                 throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
 
             return _orderService.GetValidShippingStatuses(order, includeCurrentStatus);
+        }
+
+        /// <summary>
+        /// Get an order mapped to a model.
+        /// </summary>
+        [HttpGet("AsModel")]
+        [Authorize]
+        public ICalculatedCartModel GetCartAsModel(ContextModel requestContext, string identifier = null, int id = 0)
+        {
+            var context = _contextService.GetContext();
+            var order = context.FindObject<EnovaOrder>(identifier) ?? context.FindObject<EnovaOrder>(id);
+
+            if (!_authService.AuthorizeAccess(order?.Customer?.Identifier))
+                throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
+
+            var model = _orderService.GetOrder(identifier, id);
+            return model;
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         private readonly IAuthService _authService;
         private readonly IConfigurationRoot _configuration;
         private readonly ILogger _logger;
-        private const int DecimalsInAmountString = 2;
+        private readonly int _decimalsInAmountString;
 
 
         public CartService(IContextService contextService, IMappingToEnovaService mappingToEnovaService, IMappingFromEnovaService mappingFromEnovaService, IAuthService authService, 
@@ -35,6 +35,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             _authService = authService;
             _configuration = configuration;
             _logger = loggerFactory.CreateLogger(GetType().Name);
+            _decimalsInAmountString = _configuration.GetValue<int>("EnovaSettings:DecimalsInAmountString", 2);
         }
 
 
@@ -79,6 +80,8 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             
             var rows = new List<CalculatedCartRowModel>();
             var model = new CalculatedCartModel(rows) {Customer = enovaCart.Customer?.Identifier, Identifier = enovaCart.Identifier, TotalPriceExclTax = totalPrice - taxAmount, TotalPriceInclTax = totalPrice };
+            model.TotalPriceExclTaxString = context.AmountToString(model.TotalPriceExclTax, currency, _decimalsInAmountString, true, true);
+            model.TotalPriceInclTaxString = context.AmountToString(model.TotalPriceInclTax, currency, _decimalsInAmountString, true, true);
 
             var shipping = enovaCart.GetCartItems<EnovaShippingTypeCartItem>().FirstOrDefault();
             if (shipping?.ShippingType?.Identifier != null)
@@ -142,13 +145,13 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
 
             calculatedCart.TotalPriceExclTax = totalPrice - taxAmount;
             calculatedCart.TotalPriceInclTax = totalPrice;
-            calculatedCart.TotalPriceExclTaxString = context.AmountToString(calculatedCart.TotalPriceExclTax, currency, DecimalsInAmountString, true, true);
-            calculatedCart.TotalPriceInclTaxString = context.AmountToString(calculatedCart.TotalPriceInclTax, currency, DecimalsInAmountString, true, true);
+            calculatedCart.TotalPriceExclTaxString = context.AmountToString(calculatedCart.TotalPriceExclTax, currency, _decimalsInAmountString, true, true);
+            calculatedCart.TotalPriceInclTaxString = context.AmountToString(calculatedCart.TotalPriceInclTax, currency, _decimalsInAmountString, true, true);
 
             calculatedCart.Rows.Cast<ICalculatedCartRowModel>().ForEach(x =>
             {
-                x.PriceExclTaxString = context.AmountToString(x.PriceExclTax, currency, DecimalsInAmountString, true, true);
-                x.PriceInclTaxString = context.AmountToString(x.PriceInclTax, currency, DecimalsInAmountString, true, true);
+                x.PriceExclTaxString = context.AmountToString(x.PriceExclTax, currency, _decimalsInAmountString, true, true);
+                x.PriceInclTaxString = context.AmountToString(x.PriceInclTax, currency, _decimalsInAmountString, true, true);
             });
 
             if (currentCart.Persist)
