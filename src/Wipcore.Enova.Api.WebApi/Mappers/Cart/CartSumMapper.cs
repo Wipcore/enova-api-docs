@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
@@ -13,15 +14,17 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
     public class CartSumMapper : IPropertyMapper, ICmoProperty
     {
         private readonly IContextService _contextService;
+        private readonly int _decimalsInAmountString;
 
-        public CartSumMapper(IContextService contextService)
+        public CartSumMapper(IContextService contextService, IConfigurationRoot configuration)
         {
             _contextService = contextService;
+            _decimalsInAmountString = configuration.GetValue<int>("EnovaSettings:DecimalsInAmountString", 2);
         }
 
         public bool PostSaveSet => false;
         public bool FlattenMapping => false;
-        public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax" };
+        public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax", "TotalPriceInclTaxString", "TotalPriceExclTaxString" };
         public Type CmoType => typeof (CmoEnovaCart);
         public Type Type => typeof (EnovaCart);
         public bool InheritMapper => true;
@@ -36,16 +39,21 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var cart = (EnovaCart) obj;
+            var context = obj.GetContext();
             decimal taxAmount;
             int decimals;
             Currency currency = null;
             decimal rounding;
             var sum = cart.GetPrice(out taxAmount, out rounding, out decimals, ref currency);
 
-            if (String.Equals(propertyName, "SumExclTax", StringComparison.InvariantCultureIgnoreCase))
+            if (String.Equals(propertyName, "TotalPriceInclTax", StringComparison.InvariantCultureIgnoreCase))
+                return sum;
+            else if (String.Equals(propertyName, "TotalPriceExclTax", StringComparison.InvariantCultureIgnoreCase))
                 return sum - taxAmount;
-
-            return sum;
+            else if (String.Equals(propertyName, "TotalPriceInclTaxString", StringComparison.InvariantCultureIgnoreCase))
+                return context.AmountToString(sum, currency, _decimalsInAmountString, true, true);
+            else
+                return context.AmountToString(sum - taxAmount, currency, _decimalsInAmountString, true, true);
         }
 
         public object GetProperty(CmoDbObject obj, CmoContext cmoContext, string propertyName, CmoLanguage language)
@@ -61,7 +69,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 
             var sum = cart.GetTotalPrice(cmoContext, out decimals, out taxAmount, out rounding, currency);
 
-            if (String.Equals(propertyName, "SumExclTax", StringComparison.InvariantCultureIgnoreCase))
+            if (String.Equals(propertyName, "TotalPriceExclTax", StringComparison.InvariantCultureIgnoreCase))
                 return sum.Amount - taxAmount;
             return sum.Amount;
         }

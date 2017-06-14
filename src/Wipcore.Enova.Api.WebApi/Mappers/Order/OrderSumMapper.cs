@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
@@ -13,14 +14,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
     public class OrderSumMapper : IPropertyMapper, ICmoProperty
     {
         private readonly IContextService _contextService;
+        private readonly int _decimalsInAmountString;
 
-        public OrderSumMapper(IContextService contextService)
+        public OrderSumMapper(IContextService contextService, IConfigurationRoot configuration)
         {
             _contextService = contextService;
+            _decimalsInAmountString = configuration.GetValue<int>("EnovaSettings:DecimalsInAmountString", 2);
         }
         public bool FlattenMapping => false;
         public bool PostSaveSet => false;
-        public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax" };
+        public List<string> Names => new List<string>() { "TotalPriceExclTax", "TotalPriceInclTax", "TotalPriceInclTaxString", "TotalPriceExclTaxString" };
         public Type CmoType => typeof (CmoEnovaOrder);
         public Type Type => typeof (EnovaOrder);
         public bool InheritMapper => true;
@@ -31,6 +34,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder) obj;
+            var context = obj.GetContext();
             decimal taxAmount;
             int decimals;
             Currency currency = null;
@@ -39,8 +43,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
             if (String.Equals(propertyName, "TotalPriceInclTax", StringComparison.InvariantCultureIgnoreCase))
                 return sum + taxAmount;
-
-            return sum;
+            else if (String.Equals(propertyName, "TotalPriceExclTax", StringComparison.InvariantCultureIgnoreCase))
+                return sum;
+            else if(String.Equals(propertyName, "TotalPriceInclTaxString", StringComparison.InvariantCultureIgnoreCase))
+                return context.AmountToString(sum + taxAmount, currency, _decimalsInAmountString, true, true);
+            else
+                return context.AmountToString(sum, currency, _decimalsInAmountString, true, true);
         }
 
         public object GetProperty(CmoDbObject obj, CmoContext cmoContext, string propertyName, CmoLanguage language)
