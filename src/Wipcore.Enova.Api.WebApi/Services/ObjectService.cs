@@ -167,12 +167,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var newObject = false;
             var context = _contextService.GetContext();
 
-            var identifier = values.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.CurrentCultureIgnoreCase)).Value?.ToString();
-
-            if(String.IsNullOrEmpty(identifier))
-                throw new HttpException(HttpStatusCode.BadRequest, "Cannot save item without identifier.") ;
+            var id = values.GetValueInsensitive<int>("id");
+            var identifier = values.GetValueInsensitive<string>("identifier");
             
-            var obj = context.FindObject<T>(identifier);
+            var obj = id != 0 ? context.FindObject<T>(id) : context.FindObject<T>(identifier);
 
             if (obj == null)
             {
