@@ -4,12 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using Fasterflect;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.Services
@@ -29,10 +31,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IAuthService _authService;
         private readonly ICacheService _cacheService;
         private readonly ILogger _logger;
+        private readonly bool _defaultProductsToNotStockable;
 
 
-        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromEnovaService mappingFromEnovaService, 
-            IMappingToEnovaService mappingToEnovaService, ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService, ICacheService cacheService)
+        public ObjectService(IPagingService pagingService, ISortService sortService, IFilterService filterService, IMappingFromEnovaService mappingFromEnovaService, IMappingToEnovaService mappingToEnovaService, 
+            ITemplateService templateService, IContextService contextService, ILoggerFactory loggerFactory, IAuthService authService, ICacheService cacheService, IConfigurationRoot configuration)
         {
             _pagingService = pagingService;
             _sortService = sortService;
@@ -44,6 +47,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _authService = authService;
             _cacheService = cacheService;
             _logger = loggerFactory.CreateLogger(GetType().Name);
+            _defaultProductsToNotStockable = configuration.GetValue<bool>("EnovaSettings:DefaultProductsToNotStockable", true);
         }
 
         /// <summary>
@@ -174,6 +178,10 @@ namespace Wipcore.Enova.Api.WebApi.Services
             {
                 obj = EnovaObjectCreationHelper.CreateNew<T>(context);
                 newObject = true;
+
+                var product = obj as EnovaBaseProduct;
+                if (_defaultProductsToNotStockable && product != null)
+                    product.IsNotStockable = true;
             }
             else
                 obj.Edit();
