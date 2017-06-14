@@ -26,6 +26,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             var orderItems = order.GetOrderItems<EnovaProductOrderItem>().Select(x => new
             {
                 ID = x.ID,
+                ProductID = x.Product?.ID ?? 0,
                 Identifier = x.Identifier,
                 ProductIdentifier = x.ProductIdentifier,
                 PriceExclTax = x.GetPrice(false),

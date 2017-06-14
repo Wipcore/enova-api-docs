@@ -32,6 +32,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
                                {"ID", h.ID},
                                {"Identifier", h.Identifier},
                                {"CreatedAt", h.CreatedAt},
+                               {"fromStatusId", fro.ID},
+                               {"toStatusId", to.ID},
                                {"fromStatusIdentifier", fro?.Identifier ?? String.Empty},
                                {"toStatusIdentifier", to?.Identifier ?? String.Empty},
                             }.MapLanguageProperty("fromStatusName", mappingLanguages, language => fro?.GetName(language) ?? String.Empty)

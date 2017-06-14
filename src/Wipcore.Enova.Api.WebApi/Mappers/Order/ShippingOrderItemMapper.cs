@@ -27,6 +27,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             var orderItems = order.GetOrderItems<EnovaShippingTypeOrderItem>().Select(x => new Dictionary<string, object>()
             {
                 {"ID",  x.ID},
+                {"ShippingID",  x.ShippingType?.ID ?? 0},
                 {"Identifier", x.Identifier},
                 {"ShippingIdentifier", x.ShippingType?.Identifier ?? String.Empty},
                 {"PriceExclTax", x.GetPrice(false)},

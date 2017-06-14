@@ -29,6 +29,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
                                 select new Dictionary<string, object>()
                                 {
                                     { "ID",  item.ID},
+                                    { "PaymentID",  item.PaymentType?.ID ?? 0},
                                     { "Identifier", item.Identifier},
                                     { "PaymentIdentifier", item.PaymentType?.Identifier ?? String.Empty},
                                     { "Amount", item.GetAmount(out currency)},

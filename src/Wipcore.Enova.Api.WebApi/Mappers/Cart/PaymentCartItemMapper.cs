@@ -37,6 +37,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
             return new Dictionary<string, object>()
             {
                 {"ID", paymentItem.ID},
+                {"PaymentID", paymentItem.PaymentType?.ID ?? 0},
                 {"Identifier", paymentItem.Identifier},
                 {"PaymentIdentifier", paymentItem.PaymentType?.Identifier ?? String.Empty},
                 {"PriceExlTax", paymentItem.GetPrice(false)},

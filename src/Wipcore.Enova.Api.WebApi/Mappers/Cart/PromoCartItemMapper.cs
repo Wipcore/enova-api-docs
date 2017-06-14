@@ -28,6 +28,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
             var cartItems = cart.GetCartItems<EnovaPromoCartItem>().Select(x => new Dictionary<string, object>()
                 {
                     {"ID", x.ID },
+                    {"PromoID", x.Promo?.ID ?? 0 },
                     {"Identifier", x.Identifier },
                     {"PromoIdentifier", x.Promo?.Identifier ?? String.Empty },
                     {"PriceExclTax", x.GetPrice(false) },
