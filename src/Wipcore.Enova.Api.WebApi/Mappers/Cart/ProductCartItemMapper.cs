@@ -51,7 +51,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 
             foreach (var productRow in productRows)
             {
-                var item = cart.GetCartItems<EnovaProductCartItem>().FirstOrDefault(x => x.ID == productRow.ID);
+                var item = cart.GetCartItems<EnovaProductCartItem>().FirstOrDefault(x => x.ProductIdentifier == productRow.ProductIdentifier);
                 if (productRow.MarkForDelete)
                 {
                     if(item != null)
@@ -63,10 +63,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                 {
                     item = EnovaObjectCreationHelper.CreateNew<EnovaProductCartItem>(context);
                     cart.AddCartItem(item);
+                    item.Product = EnovaBaseProduct.Find(context, productRow.ProductIdentifier);
                 }
 
                 item.Quantity = productRow.Quantity > 0 ? productRow.Quantity : 1;
-                item.Product = EnovaBaseProduct.Find(context, productRow.ProductIdentifier);
             }
         }
     }
