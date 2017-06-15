@@ -43,7 +43,6 @@ namespace Wipcore.Enova.Api.Tests
             //get prices of the products directly
             var price1 = GetProductPrice(product1Identifier);
             var price2 = product2Identifier == null ? 0 : GetProductPrice(product2Identifier);
-
             var totalPrice = price1 * product1Quantity + price2 * product2Quantity;
 
             //build and post cart 
@@ -77,23 +76,24 @@ namespace Wipcore.Enova.Api.Tests
             
             if (saveCart)
             {
-                Assert.NotNull(GetCart(cartIdentifier));
+                Assert.NotNull(Get("carts", cartIdentifier));
             }
             else
             {
-                Assert.Null(GetCart(cartIdentifier));
+                Assert.Null(Get("carts",cartIdentifier));
             }
 
         }
 
         [Theory]
+        [InlineData(new object[] { "69990002", "password", "unittestcart", "GF_GPU_880", null, 3, 1, null, null, null })]
         [InlineData(new object[] { "69990002", "password", "unittestcart", "GF_GPU_880", "KarinkjolenArtikel", 3, 1, "kjol", "OrdinaryShipment", "InvoicePaymentIdentifier"})]
         public void CanClearExistingCart(string customerAlias, string customerPassword, string cartIdentifier,string product1Identifier, string product2Identifier, int product1Quantity, int product2Quantity,
             string promoPassword, string shippingType, string paymentType)
         {
             //login
             _testService.LoginCustomer(_client, customerAlias, customerPassword);
-
+            
             //make sure it exists
             var cart = BuildCart(customerAlias, cartIdentifier, product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType);
             PostCart(cart, true);
@@ -111,11 +111,67 @@ namespace Wipcore.Enova.Api.Tests
             Assert.Equal(0, receivedTotalPrice);
         }
 
-        private IDictionary<string, object> GetCart(string identifier)
+        [Theory]
+        [InlineData(new object[] { "69990002", "password", "unittestorder", "GF_GPU_880", null, null, null, null })]
+        [InlineData(new object[] { "69990002", "password", "unittestorder", "GF_GPU_880", "KarinkjolenArtikel", "kjol", "OrdinaryShipment", "InvoicePaymentIdentifier"})]
+        public void CanCreateOrderFromCart(string customerAlias, string customerPassword, string orderIdentifier, string product1Identifier, string product2Identifier, string promoPassword,
+            string shippingType, string paymentType)
+        {
+            var product1Quantity = _random.Next(1, 10);
+            var product2Quantity = _random.Next(1, 10);
+
+            //login
+            _testService.LoginCustomer(_client, customerAlias, customerPassword);
+
+            //get prices of the products directly
+            var price1 = GetProductPrice(product1Identifier);
+            var price2 = product2Identifier == null ? 0 : GetProductPrice(product2Identifier);
+            var totalPrice = price1 * product1Quantity + price2 * product2Quantity;
+            
+            //build cart, create order
+            var cart = BuildCart(customerAlias, "", product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType);
+            var orderId = PostCartAsOrder(cart);
+
+            var properties = "ShippingInfo,PaymentInfo,ProductOrderItems,PromoOrderItems,TotalPriceInclTax";
+            var order = Get("orders", null, orderId, properties);
+            Assert.NotNull(order);
+
+            //verify order
+
+            var recivedShipping = shippingType == null ? null : JsonConvert.DeserializeAnonymousType(order["ShippingInfo"].ToString(), new { ShippingIdentifier = "", PriceInclTax = 0m });
+            var recivedShippingCost = shippingType == null ? 0 : recivedShipping.PriceInclTax;
+            if (shippingType != null)
+                Assert.Equal(shippingType, recivedShipping.ShippingIdentifier);
+
+            var recivedPayment = paymentType == null ? null : JsonConvert.DeserializeAnonymousType(order["PaymentInfo"].ToString(), new { PaymentIdentifier = "", PriceInclTax = 0m });
+            var recivedPaymentCost = paymentType == null ? 0 : recivedPayment.PriceInclTax;
+            if (recivedPayment != null)
+                Assert.Equal(paymentType, recivedPayment.PaymentIdentifier);
+
+            var productRows = JsonConvert.DeserializeAnonymousType(order["ProductOrderItems"].ToString(), new[] { new { ProductIdentifier = "", PriceInclTax = 0m } });
+            var receivedPrice1 = productRows.First(x => x.ProductIdentifier == product1Identifier).PriceInclTax;
+            var receivedPrice2 = product2Identifier == null ? 0 : productRows.First(x => x.ProductIdentifier == product2Identifier).PriceInclTax;
+
+            var promoDiscount = promoPassword == null ? 0 : JsonConvert.DeserializeAnonymousType(order["PromoOrderItems"].ToString(), new[] { new { PriceInclTax = 0m } }).First().PriceInclTax;
+
+            var receivedTotalPrice = Convert.ToDecimal(order["TotalPriceInclTax"]);
+
+            Assert.Equal(receivedPrice1, price1);
+            Assert.Equal(receivedPrice2, price2);
+            Assert.Equal(totalPrice + promoDiscount + recivedShippingCost + recivedPaymentCost, receivedTotalPrice);
+
+            Delete("orders", orderId);
+            Assert.Null(Get("orders", null, orderId));
+        }
+
+        private IDictionary<string, object> Get(string resource, string identifier, int id = 0, string properties = null)
         {
             try
             {
-                var url = $"carts/{identifier}";
+                var url = id > 0 ? $"{resource}/id-{id}" : $"{resource}/{identifier}";
+                if(properties != null)
+                    url += "?properties="+properties;
+
                 var response = _client.GetAsync(url).Result.Content.ReadAsStringAsync().Result;
                 var item = JsonConvert.DeserializeObject<IDictionary<string, object>>(response);
                 return item;
@@ -124,7 +180,20 @@ namespace Wipcore.Enova.Api.Tests
             {
                 return null;
             }
-            
+        }
+
+        private void Delete(string resource, int id)
+        {
+            try
+            {
+                var url = $"{resource}/id-{id}";
+                var response = _testService.AdminClient.DeleteAsync(url).Result;
+                response.EnsureSuccessStatusCode();
+            }
+            catch
+            {
+            }
+
         }
 
         private IDictionary<string, object> PostCart(Dictionary<string, object> cart, bool saveCart)
@@ -136,6 +205,17 @@ namespace Wipcore.Enova.Api.Tests
             var response = _client.PutAsync(url, content).Result.Content.ReadAsStringAsync().Result;
             var item = JsonConvert.DeserializeObject<IDictionary<string, object>>(response);
             return item;
+        }
+
+        private int PostCartAsOrder(Dictionary<string, object> cart)
+        {
+            var json = JsonConvert.SerializeObject(cart);
+            var content = new StringContent(json, new UTF8Encoding(), "application/json");
+
+            var url = $"carts/createorder";
+            var response = _client.PutAsync(url, content).Result.Content.ReadAsStringAsync().Result;
+            var orderId = JsonConvert.DeserializeObject<int>(response);
+            return orderId;
         }
 
         private static Dictionary<string, object> BuildCart(string customerIdentifier, string cartIdentifier, string product1Identifier, string product2Identifier, int product1Quantity, 

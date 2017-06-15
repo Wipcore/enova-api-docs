@@ -45,8 +45,13 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         public int CreateOrderFromCart(ContextModel requestContext, Dictionary<string, object> values)
         {
             var context = _contextService.GetContext();
-            var identifier = values.FirstOrDefault(x => x.Key.Equals("identifier", StringComparison.CurrentCultureIgnoreCase)).Value?.ToString();
-            var cart = context.FindObject<EnovaCart>(identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
+            var id = values.GetValueInsensitive<int>("id");
+            var identifier = values.GetValueInsensitive<string>("identifier");
+
+            if (identifier == String.Empty)
+                identifier = null;
+
+            var cart = context.FindObject<EnovaCart>(id) ?? context.FindObject<EnovaCart>(identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
             cart.Edit();
 
             _mappingToEnovaService.MapToEnovaObject(cart, values);
