@@ -122,16 +122,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
-        /// Create or update a cart.
+        /// Create or update a cart. Set calculateOnly to true to not save the cart.
         /// </summary>
         [HttpPut()]
         [Authorize]
-        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values, bool calculateOnly = false)
         {
             if (!_authService.AuthorizeAccess<EnovaCart>(_contextService.GetContext(), values, x => x.Customer?.ID))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
 
-            return _objectService.Save<EnovaCart>(requestContext, values);
+            return calculateOnly ? _objectService.Calculate<EnovaCart>(requestContext, values) : _objectService.Save<EnovaCart>(requestContext, values);
         }
 
         /// <summary>

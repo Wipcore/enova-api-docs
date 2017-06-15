@@ -158,7 +158,6 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <typeparam name="T">The most derived type of T is saved.</typeparam>
         /// <param name="requestContext">Context for the query, ie language.</param>
         /// <param name="values">Properties to save on the object.</param>
-        /// <returns></returns>
         public IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject
         {
             if (values == null)
@@ -197,9 +196,36 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return _mappingFromEnovaService.MapFromEnovaObject(changedObject, String.Join(",",values.Select(x => x.Key)));//remap to get changed values
         }
 
+        /// <summary>
+        /// Calculate the effects of mapping an object without actually saving it. Useful for carts.
+        /// </summary>
+        /// <typeparam name="T">The most derived type of T is calculated.</typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="values">Properties to calculate on the object.</param>
+        public IDictionary<string, object> Calculate<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject
+        {
+            if (values == null)
+                return null;
+
+            var context = _contextService.GetContext();
+            var id = values.GetValueInsensitive<int>("id");
+            var identifier = values.GetValueInsensitive<string>("identifier");
+
+            var obj = id != 0 ? context.FindObject<T>(id) : context.FindObject<T>(identifier);
+
+            if (obj == null)
+                obj = EnovaObjectCreationHelper.CreateNew<T>(context);
+            else
+                obj.Edit();
+
+            _mappingToEnovaService.MapToEnovaObject(obj, values); //ignore post save mappers when not saving
+
+            return _mappingFromEnovaService.MapFromEnovaObject(obj, String.Join(",", values.Select(x => x.Key)));//remap to get changed values
+        }
+
 
         /// <summary>
-        /// Deletes an object of type T and given id from Enova. Returns true if successfull.
+        /// Deletes an object of type T and given id from Enova. Returns true if successfull. False if the object did not exist.
         /// </summary>
         public bool Delete<T>(int id) where T : BaseObject
         {

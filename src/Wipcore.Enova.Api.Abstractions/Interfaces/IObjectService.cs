@@ -65,7 +65,16 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="requestContext">Context for the query, ie language.</param>
         /// <param name="values">Properties to save on the object.</param>
         /// <returns></returns>
-        IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject; 
+        IDictionary<string, object> Save<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject;
+
+
+        /// <summary>
+        /// Calculate the effects of mapping an object without actually saving it. Useful for carts.
+        /// </summary>
+        /// <typeparam name="T">The most derived type of T is calculated.</typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="values">Properties to calculate on the object.</param>
+        IDictionary<string, object> Calculate<T>(IContextModel requestContext, Dictionary<string, object> values) where T : BaseObject;
 
         /// <summary>
         /// Deletes an object of type T and given id from Enova. Returns true if successfull.
@@ -73,7 +82,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         bool Delete<T>(int id) where T : BaseObject;
 
         /// <summary>
-        /// Deletes an object of type T and given identifier from Enova. Returns true if successfull.
+        /// Deletes an object of type T and given identifier from Enova. Returns true if successfull. False if the object did not exist.
         /// </summary>
         bool Delete<T>(string identifier) where T : BaseObject;
     }
