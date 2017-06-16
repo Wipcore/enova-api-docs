@@ -132,18 +132,18 @@ namespace Wipcore.Enova.Api.Tests
             var cart = BuildCart(customerAlias, "", product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType);
             var orderId = PostCartAsOrder(cart);
 
-            var properties = "ShippingInfo,PaymentInfo,ProductOrderItems,PromoOrderItems,TotalPriceInclTax";
+            var properties = "ShippingOrderItem,PaymentOrderItem,ProductOrderItems,PromoOrderItems,TotalPriceInclTax";
             var order = Get("orders", null, orderId, properties);
             Assert.NotNull(order);
 
             //verify order
 
-            var recivedShipping = shippingType == null ? null : JsonConvert.DeserializeAnonymousType(order["ShippingInfo"].ToString(), new { ShippingIdentifier = "", PriceInclTax = 0m });
+            var recivedShipping = shippingType == null ? null : JsonConvert.DeserializeAnonymousType(order["ShippingOrderItem"].ToString(), new { ShippingIdentifier = "", PriceInclTax = 0m });
             var recivedShippingCost = shippingType == null ? 0 : recivedShipping.PriceInclTax;
             if (shippingType != null)
                 Assert.Equal(shippingType, recivedShipping.ShippingIdentifier);
 
-            var recivedPayment = paymentType == null ? null : JsonConvert.DeserializeAnonymousType(order["PaymentInfo"].ToString(), new { PaymentIdentifier = "", PriceInclTax = 0m });
+            var recivedPayment = paymentType == null ? null : JsonConvert.DeserializeAnonymousType(order["PaymentOrderItem"].ToString(), new { PaymentIdentifier = "", PriceInclTax = 0m });
             var recivedPaymentCost = paymentType == null ? 0 : recivedPayment.PriceInclTax;
             if (recivedPayment != null)
                 Assert.Equal(paymentType, recivedPayment.PaymentIdentifier);

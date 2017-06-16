@@ -33,17 +33,18 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            if (value == null)
+            var newStatus = value?.ToString().Trim();
+            if (String.IsNullOrEmpty(newStatus))
                 return;
 
             var order = (EnovaOrder)obj;
 
-            if (order.ShippingStatus?.Identifier == value.ToString())
+            if (order.ShippingStatus?.Identifier == newStatus)
                 return;
 
             _warehouseService.SetDefaultWarehouse(order);//must have a warehouse, or it will fail
 
-            var shippingStatus = order.GetContext().FindObject<EnovaShippingStatus>(value.ToString());
+            var shippingStatus = order.GetContext().FindObject<EnovaShippingStatus>(newStatus);
             if (order.ShippingStatus == null)
             {
                 order.Edit();

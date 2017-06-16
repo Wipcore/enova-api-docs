@@ -17,7 +17,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public int Priority => 0;
         public MapType MapType => MapType.MapFromEnovaAllowed;
 
-        public List<string> Names => new List<string>() { "ShippingInfo" };
+        public List<string> Names => new List<string>() { "ShippingOrderItem" };
 
         public Type Type => typeof(EnovaOrder);
 
