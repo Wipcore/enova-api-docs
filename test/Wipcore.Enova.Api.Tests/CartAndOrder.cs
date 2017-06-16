@@ -86,7 +86,7 @@ namespace Wipcore.Enova.Api.Tests
         }
 
         [Theory]
-        [InlineData(new object[] { "69990002", "password", "unittestcart", "GF_GPU_880", null, 3, 1, null, null, null })]
+        [InlineData(new object[] { "69990002", "password", "unittestcartslim", "GF_GPU_880", null, 3, 1, null, null, null })]
         [InlineData(new object[] { "69990002", "password", "unittestcart", "GF_GPU_880", "KarinkjolenArtikel", 3, 1, "kjol", "OrdinaryShipment", "InvoicePaymentIdentifier"})]
         public void CanClearExistingCart(string customerAlias, string customerPassword, string cartIdentifier,string product1Identifier, string product2Identifier, int product1Quantity, int product2Quantity,
             string promoPassword, string shippingType, string paymentType)
@@ -160,6 +160,34 @@ namespace Wipcore.Enova.Api.Tests
             Assert.Equal(receivedPrice2, price2);
             Assert.Equal(totalPrice + promoDiscount + recivedShippingCost + recivedPaymentCost, receivedTotalPrice);
 
+            Delete("orders", orderId);
+            Assert.Null(Get("orders", null, orderId));
+        }
+
+        [Fact]
+        public void CanChangeOrderStatus()
+        {
+            const string newStatus = "NEW_INTERNET";
+            const string changedStatus = "VERIFIED_INTERNET";
+            
+            var order = new Dictionary<string, object>() { {"ID", 0}, { "ShippingStatus", newStatus } };
+            var json = JsonConvert.SerializeObject(order);
+            var content = new StringContent(json, new UTF8Encoding(), "application/json");
+            var url = $"orders";
+            var response = _testService.AdminClient.PutAsync(url, content).Result.Content.ReadAsStringAsync().Result;
+            order = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+
+            Assert.Equal(order["ShippingStatus"], newStatus);
+
+            order["ShippingStatus"] = changedStatus;
+            json = JsonConvert.SerializeObject(order);
+            content = new StringContent(json, new UTF8Encoding(), "application/json");
+            response = _testService.AdminClient.PutAsync(url, content).Result.Content.ReadAsStringAsync().Result;
+            order = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+
+            Assert.Equal(order["ShippingStatus"], changedStatus);
+
+            var orderId = Convert.ToInt32(order["ID"]);
             Delete("orders", orderId);
             Assert.Null(Get("orders", null, orderId));
         }
