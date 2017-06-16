@@ -28,6 +28,6 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <summary>
         /// Get a list of identifiers|names of the valid new shipping statuses for the given order.
         /// </summary>
-        IDictionary<string, string> GetValidShippingStatuses(EnovaOrder order, bool includeCurrentStatus);
+        IDictionary<string, string> GetValidShippingStatuses(EnovaOrder order, bool includeCurrentStatus, bool allValidIfNoStatus);
     }
 }

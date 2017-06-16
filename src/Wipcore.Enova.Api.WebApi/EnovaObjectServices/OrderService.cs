@@ -64,19 +64,19 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         /// <summary>
         /// Get a list of identifiers|names of the valid new shipping statuses for the given order.
         /// </summary>
-        public IDictionary<string, string> GetValidShippingStatuses(EnovaOrder order, bool includeCurrentStatus)
+        public IDictionary<string, string> GetValidShippingStatuses(EnovaOrder order, bool includeCurrentStatus, bool allValidIfNoStatus)
         {
+            var context = _contextService.GetContext();
             var currentStatus = order.ShippingStatus?.Identifier;
             if (currentStatus == null)
-                return new Dictionary<string, string>();
-
-            var context = _contextService.GetContext();
+                return allValidIfNoStatus ? context.GetAllObjects<EnovaShippingStatus>().Where(x => !String.IsNullOrEmpty(x?.Identifier)).ToDictionary(k => k.Identifier, v => v.Name) : new Dictionary<string, string>();
+            
             var destinations = context.Search<EnovaConfigShippingStatusRule>("Allow = 1 AND Enabled = 1 AND SourceStatus = "+currentStatus).Select(x => x.DestinationStatus).ToList();
 
             if(includeCurrentStatus)
                 destinations.Add(order.ShippingStatus.Identifier);
 
-            var statuses = context.FindObjects<EnovaShippingStatus>(destinations).Where(x => x != null).ToDictionary(k => k.Identifier, v => v.Name);
+            var statuses = context.FindObjects<EnovaShippingStatus>(destinations).Where(x => !String.IsNullOrEmpty(x?.Identifier)).ToDictionary(k => k.Identifier, v => v.Name);
             return statuses;
         }
 

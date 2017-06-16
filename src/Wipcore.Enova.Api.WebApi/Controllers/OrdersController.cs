@@ -101,14 +101,14 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [HttpGet("{identifier}/ValidStatusChanges")]
         [HttpGet("id-{id}/ValidStatusChanges")]
         [Authorize]
-        public IDictionary<string, string> ValidShippingMoves([FromUri]ContextModel requestContext, string identifier = null, int id = 0, bool includeCurrentStatus = false)
+        public IDictionary<string, string> ValidShippingMoves([FromUri]ContextModel requestContext, string identifier = null, int id = 0, bool includeCurrentStatus = false, bool allValidIfNoStatus = true)
         {
             var order = String.IsNullOrEmpty(identifier) ? EnovaOrder.Find(_contextService.GetContext(), id) : EnovaOrder.Find(_contextService.GetContext(), identifier);
 
             if (!_authService.AuthorizeAccess(order.Customer?.Identifier))
                 throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
 
-            return _orderService.GetValidShippingStatuses(order, includeCurrentStatus);
+            return _orderService.GetValidShippingStatuses(order, includeCurrentStatus, allValidIfNoStatus);
         }
 
         /// <summary>
