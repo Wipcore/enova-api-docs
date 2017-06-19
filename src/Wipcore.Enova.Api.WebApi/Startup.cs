@@ -140,11 +140,7 @@ namespace Wipcore.Enova.Api.WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             ConfigureNlog(env,loggerFactory);
@@ -164,7 +160,7 @@ namespace Wipcore.Enova.Api.WebApi
                 DataProtectionProvider = dataProtectionProvider,
                 AuthenticationScheme = AuthService.AuthenticationScheme,
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", false),
+                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
                 LoginPath = Configuration.GetValue<string>("Auth:LoginPath", String.Empty),
                 LogoutPath = Configuration.GetValue<string>("Auth:LogoutPath", String.Empty),
                 ReturnUrlParameter = Configuration.GetValue<string>("Auth:ReturnUrlParameter", String.Empty),
@@ -184,7 +180,7 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", false),
+                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
                 TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,

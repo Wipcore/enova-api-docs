@@ -28,20 +28,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
             if (context.Exception == null || context.ExceptionHandled)
                 return;
 
-            var statusCode = GetStatusCodeForException(context.Exception);
-            var isDevelopment = _environment.IsDevelopment();
-            if (isDevelopment) //if in development, only set status code, as full error page is shown by default
-            {
-                context.HttpContext.Response.StatusCode = (int)statusCode;
-                return;
-            }
-                
-
             _log.LogError(context.Exception.ToString());
 
+            var statusCode = GetStatusCodeForException(context.Exception);
+            
             context.ExceptionHandled = true;
-            context.Result = new ContentResult() {Content = $"{context.Exception.GetType().Name}\n{context.Exception.Message}",
-                StatusCode = (int)statusCode };
+            context.Result = new ContentResult() {Content = $"{context.Exception.GetType().Name} : {context.Exception.Message}", StatusCode = (int)statusCode };
         }
 
         /// <summary>
