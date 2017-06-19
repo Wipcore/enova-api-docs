@@ -50,6 +50,25 @@ namespace Wipcore.Enova.Api.WebApi.Services
             _defaultProductsToNotStockable = configuration.GetValue<bool>("EnovaSettings:DefaultProductsToNotStockable", true);
         }
 
+
+        /// <summary>
+        /// Returns true if object with identifier was found.
+        /// </summary>
+        public bool Exists<T>(string identifier)
+        {
+            var context = _contextService.GetContext();
+            return context.FindObject(identifier, typeof(T), throwExceptionIfNotFound: false) != null;
+        }
+
+        /// <summary>
+        /// Returns true if object with id was found.
+        /// </summary>
+        public bool Exists<T>(int id)
+        {
+            var context = _contextService.GetContext();
+            return context.FindObject(id, typeof(T), throwExceptionIfNotFound: false) != null;
+        }
+
         /// <summary>
         /// Get an objects from Enova. 
         /// </summary>
@@ -93,7 +112,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <param name="requestContext">Context for the query, ie language.</param>
         /// <param name="query">Query parameters.</param>
         /// <param name="ids">List of ids of objects to find.</param>
-        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids) where T : BaseObject
+        public IEnumerable<IDictionary<string, object>> GetMany<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids) where T : BaseObject
         {
             return this.Get<T>(requestContext, query, ids, null);
         }
@@ -105,7 +124,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <param name="requestContext">Context for the query, ie language.</param>
         /// <param name="query">Query parameters.</param>
         /// <param name="identifiers">List of identifiers of objects to find.</param>
-        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<string> identifiers) where T : BaseObject
+        public IEnumerable<IDictionary<string, object>> GetMany<T>(IContextModel requestContext, IQueryModel query, IEnumerable<string> identifiers) where T : BaseObject
         {
             return this.Get<T>(requestContext, query, null, identifiers);
         }
@@ -115,7 +134,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var derivedType = typeof(T).GetMostDerivedEnovaType();
             var context = _contextService.GetContext();
             var objectList = ids != null ? context.FindObjects(ids, derivedType) : context.FindObjects(identifiers, derivedType);
-            return this.Get<T>(requestContext, query, objectList);
+            return this.GetMany<T>(requestContext, query, objectList);
         }
 
         /// <summary>
@@ -126,7 +145,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <param name="query">Query parameters.</param>
         /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
         /// <returns></returns>
-        public IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject
+        public IEnumerable<IDictionary<string, object>> GetMany<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject
         {
             var derivedType = typeof(T).GetMostDerivedEnovaType();
             query = _templateService.GetQueryModelFromTemplateConfiguration(derivedType, query);

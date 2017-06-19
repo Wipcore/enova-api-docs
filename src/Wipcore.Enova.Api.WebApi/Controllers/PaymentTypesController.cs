@@ -25,13 +25,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
+        [HttpHead("{identifier}")]
+        public void Head([FromUri]string identifier)
+        {
+            var found = _objectService.Exists<EnovaPaymentType>(identifier);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
+        [HttpHead("id-{id}")]
+        public void Head([FromUri]int id)
+        {
+            var found = _objectService.Exists<EnovaPaymentType>(id);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
         /// <summary>
         /// Get a list of paymenttypes.
         /// </summary>
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaPaymentType>(requestContext, query);
+            return _objectService.GetMany<EnovaPaymentType>(requestContext, query);
         }
 
         /// <summary>
@@ -59,7 +75,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
-            return _objectService.Get<EnovaPaymentType>(requestContext, query, listIds);
+            return _objectService.GetMany<EnovaPaymentType>(requestContext, query, listIds);
         }
 
         /// <summary>
@@ -69,7 +85,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
-            return _objectService.Get<EnovaPaymentType>(requestContext, query, listIdentifiers);
+            return _objectService.GetMany<EnovaPaymentType>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>

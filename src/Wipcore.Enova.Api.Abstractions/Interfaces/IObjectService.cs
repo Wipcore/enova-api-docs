@@ -9,15 +9,15 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
     public interface IObjectService
     {
         /// <summary>
-        /// Get objects from Enova. 
+        /// Returns true if object with identifier was found.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="requestContext">Context for the query, ie language.</param>
-        /// <param name="query">Query parameters.</param>
-        /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
-        /// <returns></returns>
-        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject;
+        bool Exists<T>(string identifier);
 
+        /// <summary>
+        /// Returns true if object with id was found.
+        /// </summary>
+        bool Exists<T>(int id);
+        
         /// <summary>
         /// Get an objects from Enova. 
         /// </summary>
@@ -40,13 +40,23 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
 
 
         /// <summary>
+        /// Get objects from Enova. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestContext">Context for the query, ie language.</param>
+        /// <param name="query">Query parameters.</param>
+        /// <param name="candidates">Objects to look at, or null to look at all objects.</param>
+        /// <returns></returns>
+        IEnumerable<IDictionary<string, object>> GetMany<T>(IContextModel requestContext, IQueryModel query, BaseObjectList candidates = null) where T : BaseObject;
+
+        /// <summary>
         /// Get several objects from Enova.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="requestContext">Context for the query, ie language.</param>
         /// <param name="query">Query parameters.</param>
         /// <param name="ids">List of ids of objects to find.</param>
-        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids) where T : BaseObject;
+        IEnumerable<IDictionary<string, object>> GetMany<T>(IContextModel requestContext, IQueryModel query, IEnumerable<int> ids) where T : BaseObject;
 
         /// <summary>
         /// Get several objects from Enova.
@@ -55,7 +65,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="requestContext">Context for the query, ie language.</param>
         /// <param name="query">Query parameters.</param>
         /// <param name="identifiers">List of identifiers of objects to find.</param>
-        IEnumerable<IDictionary<string, object>> Get<T>(IContextModel requestContext, IQueryModel query, IEnumerable<string> identifiers) where T : BaseObject;
+        IEnumerable<IDictionary<string, object>> GetMany<T>(IContextModel requestContext, IQueryModel query, IEnumerable<string> identifiers) where T : BaseObject;
 
 
         /// <summary>

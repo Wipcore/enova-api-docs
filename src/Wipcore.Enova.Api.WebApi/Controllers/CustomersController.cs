@@ -33,6 +33,24 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _authService = authService;
         }
 
+        [HttpHead("{identifier}")]
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
+        public void Head([FromUri]string identifier)
+        {
+            var found = _objectService.Exists<EnovaCustomer>(identifier);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
+        [HttpHead("id-{id}")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void Head([FromUri]int id)
+        {
+            var found = _objectService.Exists<EnovaCustomer>(id);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
         /// <summary>
         /// Get a list of customers.
         /// </summary>
@@ -40,7 +58,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaCustomer>(requestContext, query);
+            return _objectService.GetMany<EnovaCustomer>(requestContext, query);
         }
 
         /// <summary>
@@ -71,7 +89,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
-            return _objectService.Get<EnovaCustomer>(requestContext, query, listIds);
+            return _objectService.GetMany<EnovaCustomer>(requestContext, query, listIds);
         }
 
         /// <summary>
@@ -82,7 +100,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
-            return _objectService.Get<EnovaCustomer>(requestContext, query, listIdentifiers);
+            return _objectService.GetMany<EnovaCustomer>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>
@@ -93,7 +111,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetOrders([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier, string shippingStatus = null)
         {
             var orders = _orderService.GetOrdersByCustomer(identifier, shippingStatus);
-            return _objectService.Get<EnovaOrder>(requestContext, query, orders);
+            return _objectService.GetMany<EnovaOrder>(requestContext, query, orders);
         }
 
         /// <summary>
@@ -104,7 +122,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetCarts([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier)
         {
             var carts = _cartService.GetCartsByCustomer(identifier);
-            return _objectService.Get<EnovaCart>(requestContext, query, carts);
+            return _objectService.GetMany<EnovaCart>(requestContext, query, carts);
         }
 
         /// <summary>
@@ -115,7 +133,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetAddresses([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier, EnovaCustomerAddress.AddressTypeEnum? addressType = null)
         {
             var addresses = _customerService.GetAddresses(identifier, addressType);
-            return _objectService.Get<EnovaCustomerAddress>(requestContext, query, addresses);
+            return _objectService.GetMany<EnovaCustomerAddress>(requestContext, query, addresses);
         }
 
         /// <summary>

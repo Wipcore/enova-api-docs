@@ -34,13 +34,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _attributeService = attributeService;
         }
 
+        [HttpHead("{identifier}")]
+        public void Head([FromUri]string identifier)
+        {
+            var found = _objectService.Exists<EnovaBaseProduct>(identifier);
+            if (!found)
+                Response.StatusCode = (int) HttpStatusCode.NotFound;
+        }
+
+        [HttpHead("id-{id}")]
+        public void Head([FromUri]int id)
+        {
+            var found = _objectService.Exists<EnovaBaseProduct>(id);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
         /// <summary>
         /// Get a list of products.
         /// </summary>
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaBaseProduct>(requestContext, query);
+            return _objectService.GetMany<EnovaBaseProduct>(requestContext, query);
         }
 
         /// <summary>
@@ -68,7 +84,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
-            return _objectService.Get<EnovaBaseProduct>(requestContext, query, listIds);
+            return _objectService.GetMany<EnovaBaseProduct>(requestContext, query, listIds);
         }
 
         /// <summary>
@@ -78,7 +94,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
-            return _objectService.Get<EnovaBaseProduct>(requestContext, query, listIdentifiers);
+            return _objectService.GetMany<EnovaBaseProduct>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>
@@ -88,7 +104,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, QueryModel query, string identifier)
         {
             var members = _productService.GetVariants(identifier);
-            return members == null ? null : _objectService.Get<EnovaBaseProduct>(requestContext, query, members);
+            return members == null ? null : _objectService.GetMany<EnovaBaseProduct>(requestContext, query, members);
         }
 
         /// <summary>
@@ -98,7 +114,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, QueryModel query, string identifier, string warehouse = null)
         {
             var compartments = _warehouseService.GetWarehouseCompartments(identifier, warehouse);
-            return compartments == null ? null : _objectService.Get<EnovaWarehouseCompartment>(requestContext, query, compartments);
+            return compartments == null ? null : _objectService.GetMany<EnovaWarehouseCompartment>(requestContext, query, compartments);
         }
 
         /// <summary>
@@ -108,7 +124,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetAttributes(ContextModel requestContext, QueryModel query, string identifier)
         {
             var attributes = _attributeService.GetAttributes<EnovaBaseProduct>(identifier);
-            return attributes == null ? null : _objectService.Get<EnovaAttributeValue>(requestContext, query, attributes);
+            return attributes == null ? null : _objectService.GetMany<EnovaAttributeValue>(requestContext, query, attributes);
         }
         
         /// <summary>

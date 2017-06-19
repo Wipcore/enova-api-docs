@@ -27,13 +27,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _sectionService = sectionService;
         }
 
+        [HttpHead("{identifier}")]
+        public void Head([FromUri]string identifier)
+        {
+            var found = _objectService.Exists<EnovaBaseProductSection>(identifier);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
+        [HttpHead("id-{id}")]
+        public void Head([FromUri]int id)
+        {
+            var found = _objectService.Exists<EnovaBaseProductSection>(id);
+            if (!found)
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
         /// <summary>
         /// Get a list of sections.
         /// </summary>
         [HttpGet()]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
-            return _objectService.Get<EnovaBaseProductSection>(requestContext, query);
+            return _objectService.GetMany<EnovaBaseProductSection>(requestContext, query);
         }
 
         /// <summary>
@@ -61,7 +77,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
-            return _objectService.Get<EnovaBaseProductSection>(requestContext, query, listIds);
+            return _objectService.GetMany<EnovaBaseProductSection>(requestContext, query, listIds);
         }
 
         /// <summary>
@@ -71,7 +87,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
-            return _objectService.Get<EnovaBaseProductSection>(requestContext, query, listIdentifiers);
+            return _objectService.GetMany<EnovaBaseProductSection>(requestContext, query, listIdentifiers);
         }
 
         /// <summary>
@@ -81,7 +97,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetSubSections(ContextModel requestContext, QueryModel query, string identifier)
         {
             var children = _sectionService.GetSubSections(identifier);
-            return _objectService.Get<EnovaBaseProductSection>(requestContext, query, children);
+            return _objectService.GetMany<EnovaBaseProductSection>(requestContext, query, children);
         }
 
 
@@ -92,7 +108,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public IEnumerable<IDictionary<string, object>> GetProducts(ContextModel requestContext, QueryModel query, string identifier)
         {
             var items = _sectionService.GetProducts(identifier);
-            return _objectService.Get<EnovaBaseProduct>(requestContext, query, items);
+            return _objectService.GetMany<EnovaBaseProduct>(requestContext, query, items);
         }
 
         /// <summary>
