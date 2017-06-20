@@ -221,10 +221,10 @@ namespace Wipcore.Enova.Api.OAuth
             if (IsLoggedInAsAdmin())
                 return true;
 
-            var id = GetValueInsensitive<int?>(values, "id");
+            var id = GetValueInsensitive<int>(values, "id");
             var identifier = GetValueInsensitive<string>(values, "identifier") ?? "";
 
-            var item = id.HasValue ? context.FindObject<T>(id.Value) : context.FindObject<T>(identifier);
+            var item = id != 0 ? context.FindObject<T>(id) : context.FindObject<T>(identifier);
 
             if (item == null)
                 return true;
