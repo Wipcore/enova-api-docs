@@ -262,7 +262,7 @@ namespace Wipcore.Enova.Api.OAuth
             var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
             if (entry.Value == null)
                 return default(T);
-            return (T)entry.Value;
+            return (T)Convert.ChangeType(entry.Value, typeof(T));
         }
     }
 }

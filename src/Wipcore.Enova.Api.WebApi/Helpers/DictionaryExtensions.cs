@@ -66,7 +66,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
             var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
             if (entry.Value == null)
                 return defaultValue;
-            return (T)entry.Value;
+            return (T)Convert.ChangeType(entry.Value, typeof(T));
         }
     }
 }
