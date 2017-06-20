@@ -23,7 +23,7 @@ namespace Wipcore.Enova.Api.Tests
         public static IEnumerable<object[]> AllResources => new[]
         {
             // name : needsauth
-            new object[] { "attributevalues", false }, new object[] { "carts", true }, new object[] { "companies", false }, new object[] { "countries", false },
+            new object[] { "attributevalues", false }, new object[] { "carts", true }, new object[] { "companies", true }, new object[] { "countries", false },
             new object[] { "currencies", false }, new object[] { "customergroups", true }, new object[] { "customers", true }, new object[] { "languages", false },
             new object[] { "manufacturers", false }, new object[] { "orders", true }, new object[] { "payments", true }, new object[] { "paymenttypes", false },
             new object[] { "pricelists", true }, new object[] { "products", false }, new object[] { "promotions", true }, new object[] { "sections", false },
