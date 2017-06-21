@@ -13,6 +13,10 @@
       "version": "6.4.0.215-*",
       "target": "project"
     },
+    "Wipcore.Enova.Api.Abstractions.Internal": {
+      "target": "project",
+      "version": "6.4.0.215-*"
+    },
     "Wipcore.Enova.Connectivity.Package": "6.4.0.243-dev",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.0"
   },

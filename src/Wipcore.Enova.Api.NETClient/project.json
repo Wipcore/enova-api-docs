@@ -3,7 +3,11 @@
   "description": "Wipcore.Enova.Api.NetClient Class Library",
   "authors": [ "fredrik.astrand" ],
   "dependencies": {
+    "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.1",
+    "System.Net.Http": "4.0.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.1.0",
     "Wipcore.Enova.Api.Abstractions": {
       "target": "project",
       "version": "6.4.0.215-*"
@@ -12,11 +16,6 @@
   "frameworks": {
     "net461": {
       "frameworkAssemblies": {
-        "System": "4.0.0.0",
-        "System.Core": "4.0.0.0",
-        "System.ComponentModel.DataAnnotations": "4.0.0.0",
-        "System.Net.Http": "4.0.0.0",
-        "Microsoft.CSharp": "4.0.0.0"
       }
     }
   },

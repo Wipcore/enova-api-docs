@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList

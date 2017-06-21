@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Cart

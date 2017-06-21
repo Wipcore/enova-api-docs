@@ -6,10 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
+using WipConstants = Wipcore.Enova.Api.Abstractions.WipConstants;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
@@ -34,14 +36,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public Context GetContext()
         {
             //if a context has already been created for the request, then use that one
-            var enovaContext = _httpAccessor.HttpContext.Items[ContextConstants.EnovaContextKey] as Context;
+            var enovaContext = _httpAccessor.HttpContext.Items[WipConstants.EnovaContextKey] as Context;
             if (enovaContext != null)
                 return enovaContext;
             
             enovaContext = EnovaSystemFacade.Current.Connection.CreateContext();
-            _httpAccessor.HttpContext.Items[ContextConstants.EnovaContextKey] = enovaContext;
+            _httpAccessor.HttpContext.Items[WipConstants.EnovaContextKey] = enovaContext;
 
-            var requestContext = _httpAccessor.HttpContext.Items[ContextConstants.ContextModelKey] as ContextModel;
+            var requestContext = _httpAccessor.HttpContext.Items[WipConstants.ContextModelKey] as ContextModel;
             
             //first read any values from market configuration
             if (!String.IsNullOrEmpty(requestContext?.Market))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers.Product

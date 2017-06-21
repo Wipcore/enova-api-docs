@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DBA5494A-A
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Tests", "test\Wipcore.Enova.Api.Tests\Wipcore.Enova.Api.Tests.xproj", "{326B3C11-6785-45C0-9244-F4877CE72A49}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Abstractions.Internal", "src\Wipcore.Enova.Api.Abstractions.Internal\Wipcore.Enova.Api.Abstractions.Internal.xproj", "{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{326B3C11-6785-45C0-9244-F4877CE72A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{326B3C11-6785-45C0-9244-F4877CE72A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{326B3C11-6785-45C0-9244-F4877CE72A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +64,6 @@ Global
 		{842358BA-07F9-4B77-B529-76A15CDF4838} = {12031503-6C3E-4F27-909B-A92746EE6034}
 		{FA46C3E9-ACF3-4098-8BE4-1940AF9C8EC0} = {12031503-6C3E-4F27-909B-A92746EE6034}
 		{326B3C11-6785-45C0-9244-F4877CE72A49} = {DBA5494A-A097-4D3A-8D0B-0BC4CAD3CBB4}
+		{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E} = {12031503-6C3E-4F27-909B-A92746EE6034}
 	EndGlobalSection
 EndGlobal

@@ -22,6 +22,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Wipcore.Core;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Connectivity;

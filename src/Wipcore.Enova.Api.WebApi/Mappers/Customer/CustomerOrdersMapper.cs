@@ -4,6 +4,7 @@ using System.Linq;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {

@@ -14,6 +14,7 @@ using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 using System.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 
 namespace Wipcore.Enova.Api.OAuth
 {
@@ -221,10 +222,10 @@ namespace Wipcore.Enova.Api.OAuth
             if (IsLoggedInAsAdmin())
                 return true;
 
-            var id = GetValueInsensitive<int?>(values, "id");
+            var id = GetValueInsensitive<int>(values, "id");
             var identifier = GetValueInsensitive<string>(values, "identifier") ?? "";
 
-            var item = id.HasValue ? context.FindObject<T>(id.Value) : context.FindObject<T>(identifier);
+            var item = id != 0 ? context.FindObject<T>(id) : context.FindObject<T>(identifier);
 
             if (item == null)
                 return true;
@@ -262,7 +263,7 @@ namespace Wipcore.Enova.Api.OAuth
             var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
             if (entry.Value == null)
                 return default(T);
-            return (T)entry.Value;
+            return (T)Convert.ChangeType(entry.Value, typeof(T));
         }
     }
 }

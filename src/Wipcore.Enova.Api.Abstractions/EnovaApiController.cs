@@ -26,7 +26,7 @@ namespace Wipcore.Enova.Api.Abstractions
             context.ActionArguments.TryGetValue("requestContext", out requestContext);
 
             if (requestContext is IContextModel)
-                context.HttpContext.Items[ContextConstants.ContextModelKey] = requestContext;
+                context.HttpContext.Items[WipConstants.ContextModelKey] = requestContext;
         }
         
         public override void OnActionExecuted(ActionExecutedContext context)

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Interfaces.Cart;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
