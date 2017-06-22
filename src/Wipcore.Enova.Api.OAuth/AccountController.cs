@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 
 namespace Wipcore.Enova.Api.OAuth

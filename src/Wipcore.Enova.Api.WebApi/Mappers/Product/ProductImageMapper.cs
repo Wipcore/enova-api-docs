@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using NLog.Internal;
 using Wipcore.eNova.Api.WebApi.Mappers;
+using Wipcore.Enova.Api.Abstractions.Internal;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 {

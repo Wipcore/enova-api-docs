@@ -14,6 +14,7 @@ using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 using System.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 
 namespace Wipcore.Enova.Api.OAuth
 {

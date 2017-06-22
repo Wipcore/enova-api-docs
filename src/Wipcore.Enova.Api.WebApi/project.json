@@ -21,10 +21,14 @@
     "Microsoft.Extensions.Logging.Debug": "1.1.0",
     "NLog": "4.4.0-*",
     "NLog.Extensions.Logging": "1.0.0-rtm-alpha4",
-    "Swashbuckle.AspNetCore": "1.0.0-rc3",    
+    "Swashbuckle.AspNetCore": "1.0.0-rc3",
     "Wipcore.Enova.Api.Abstractions": {
       "version": "6.4.0.215-*",
       "target": "project"
+    },
+    "Wipcore.Enova.Api.Abstractions.Internal": {
+      "target": "project",
+      "version": "6.4.0.215-*"
     },
     "Wipcore.Enova.Api.OAuth": {
       "version": "6.4.0.215-*",

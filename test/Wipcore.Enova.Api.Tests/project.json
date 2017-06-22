@@ -17,6 +17,10 @@
       "version": "6.4.0.215-*",
       "target": "project"
     },
+    "Wipcore.Enova.Api.Abstractions.Internal": {
+      "target": "project",
+      "version": "6.4.0.215-*"
+    },
     "Wipcore.Enova.Api.OAuth": {
       "version": "6.4.0.215-*",
       "target": "project"

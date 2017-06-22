@@ -5,6 +5,7 @@ using System.Runtime.Caching;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
 
