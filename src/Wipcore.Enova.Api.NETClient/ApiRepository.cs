@@ -225,7 +225,7 @@ namespace Wipcore.eNova.Api.NETClient
                     
                     if (languageProperty && languagesToIndex != null)
                     {
-                        if (type.Namespace == typeof(object).Namespace) //base type
+                        if (modelProperty.PropertyType.Namespace == typeof(object).Namespace) //base type
                         {
                             foreach (var language in languagesToIndex)
                             {
