@@ -237,10 +237,10 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         /// <summary>
         /// Get all carts belonging to given customer.
         /// </summary>
-        public BaseObjectList GetCartsByCustomer(string customerIdentifier)
+        public BaseObjectList GetCartsByCustomer(string customerIdentifier = null, int customerId = 0)
         {
             var context = _contextService.GetContext();
-            var customer = EnovaCustomer.Find(context, customerIdentifier);
+            var customer = customerId > 0 ? EnovaCustomer.Find(context, customerId) : EnovaCustomer.Find(context, customerIdentifier);
             
             var type = typeof(EnovaCart).GetMostDerivedEnovaType();
             var carts = context.Search("CustomerID = " + customer.ID, type, null, 0, null, false);

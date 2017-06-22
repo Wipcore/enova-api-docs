@@ -27,7 +27,7 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         /// <summary>
         /// Get all carts belonging to given customer.
         /// </summary>
-        BaseObjectList GetCartsByCustomer(string customerIdentifier);
+        BaseObjectList GetCartsByCustomer(string customerIdentifier = null, int customerId = 0);
 
         /// <summary>
         /// Creates an order from a mapping to cart by given values.

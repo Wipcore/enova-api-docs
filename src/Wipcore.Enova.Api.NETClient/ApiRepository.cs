@@ -66,18 +66,18 @@ namespace Wipcore.eNova.Api.NETClient
         /// <summary>
         /// Get an object by id, serialized into TModel.
         /// </summary>
-        public TModel GetObject<TModel>(int id, QueryModel queryModel = null, ContextModel contextModel = null) where TModel : BaseModel 
-            => GetObject<TModel>(null, id, queryModel, contextModel);
+        public TModel GetObject<TModel>(int id, QueryModel queryModel = null, ContextModel contextModel = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel 
+            => GetObject<TModel>(null, id, queryModel, contextModel, extraParameters);
         
 
         /// <summary>
         /// Get an object by identifier, seralized into TModel. 
         /// </summary>
-        public TModel GetObject<TModel>(string identifier, QueryModel queryModel = null, ContextModel contextModel = null) where TModel : BaseModel 
-            => GetObject<TModel>(identifier, 0, queryModel, contextModel);
+        public TModel GetObject<TModel>(string identifier, QueryModel queryModel = null, ContextModel contextModel = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel 
+            => GetObject<TModel>(identifier, 0, queryModel, contextModel, extraParameters);
         
 
-        private TModel GetObject<TModel>(string identifier, int id, QueryModel queryModel = null, ContextModel contextModel = null) where TModel : BaseModel
+        private TModel GetObject<TModel>(string identifier, int id, QueryModel queryModel = null, ContextModel contextModel = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel
         {
             var apiClient = _apiClientMaker.Invoke();
             var model = _serviceProvider.GetService(typeof(TModel)) as TModel;
@@ -96,21 +96,21 @@ namespace Wipcore.eNova.Api.NETClient
             var resource = model.GetResourceName();
             SetupQueryModel(ref queryModel, modelType, null);
 
-            var obj = id != 0 ? apiClient.GetOne(modelType, resource, id, queryModel: queryModel, contextModel:contextModel) :
-                                apiClient.GetOne(modelType, resource, identifier, queryModel: queryModel, contextModel:contextModel);
+            var obj = id != 0 ? apiClient.GetOne(modelType, resource, id, queryModel: queryModel, contextModel:contextModel, extraParameters:extraParameters) :
+                                apiClient.GetOne(modelType, resource, identifier, queryModel: queryModel, contextModel:contextModel, extraParameters:extraParameters);
             return (TModel)obj;
         }
 
         /// <summary>
         /// Get many objects, serialized into TModel. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
         /// </summary>
-        public IEnumerable<TModel> GetMany<TModel>(QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, List<string> languages = null) 
-            => GetMany(typeof(TModel), queryModel, headers, contextModel, languages).Cast<TModel>();
+        public IEnumerable<TModel> GetMany<TModel>(QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, List<string> languages = null, IDictionary<string, object> extraParameters = null) 
+            => GetMany(typeof(TModel), queryModel, headers, contextModel, languages, extraParameters).Cast<TModel>();
 
         /// <summary>
         /// Get many objects, untyped. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
         /// </summary>
-        public IEnumerable<object> GetMany(Type modelType, QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, List<string> languages = null)
+        public IEnumerable<object> GetMany(Type modelType, QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, List<string> languages = null, IDictionary<string, object> extraParameters = null)
         {
             var apiClient = _apiClientMaker.Invoke();
             var model = _serviceProvider.GetService(modelType) as BaseModel;
@@ -126,7 +126,7 @@ namespace Wipcore.eNova.Api.NETClient
 
             SetupQueryModel(ref queryModel, registeredModelType, languages);
 
-            var objects = apiClient.GetMany(resource, queryModel, headers: headers, contextModel: contextModel);
+            var objects = apiClient.GetMany(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters:extraParameters);
             return objects;
         }
 
@@ -153,7 +153,7 @@ namespace Wipcore.eNova.Api.NETClient
         /// <summary>
         /// Saves an object. Specify specific action in url, responsetype to serialize the response into, and context/culture, as needed.
         /// </summary>
-        public object SaveObject<TModel>(JObject jsonItem, string action = null, Type responseType = null, ContextModel contextModel = null, bool verifyIdentifierNotTaken = true) where TModel : BaseModel
+        public object SaveObject<TModel>(JObject jsonItem, string action = null, Type responseType = null, ContextModel contextModel = null, bool verifyIdentifierNotTaken = true, IDictionary<string, object> extraParameters = null) where TModel : BaseModel
         {
             var apiClient = _apiClientMaker.Invoke();
             var model = _serviceProvider.GetService(typeof(TModel)) as TModel;
@@ -171,7 +171,7 @@ namespace Wipcore.eNova.Api.NETClient
                 VerifyIdentifierNotTaken<TModel>(jsonItem, resource);
 
             var stringItem = JsonConvert.SerializeObject(jsonItem);
-            var obj = apiClient.SaveOne(resource, stringItem, responseType ?? registeredModelType, action, contextModel:contextModel);
+            var obj = apiClient.SaveOne(resource, stringItem, responseType ?? registeredModelType, action, contextModel:contextModel, extraParameters:extraParameters);
             
             return obj;
         }
