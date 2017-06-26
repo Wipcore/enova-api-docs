@@ -234,10 +234,9 @@ namespace Wipcore.Enova.Api.WebApi
                     Description = "",
                     TermsOfService = ""
                 });
-                //options.OperationFilter<ComplexModelFilter>(_swaggerDocsFolderPath);
-                //docFilePaths.ForEach(options.IncludeXmlComments);
-                //options.DescribeAllEnumsAsStrings();
-
+                options.OperationFilter<ComplexModelFilter>(_swaggerDocsFolderPath);
+                docFilePaths.ForEach(options.IncludeXmlComments);
+                options.DescribeAllEnumsAsStrings();
             });
 
         }

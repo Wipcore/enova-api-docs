@@ -23,7 +23,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         {
             for (var i = 0; i < context.ApiDescription.ParameterDescriptions.Count; i++)
             {
-                var complexType = context.ApiDescription.ParameterDescriptions[i].ModelMetadata?.ContainerType;
+                var complexType = context.ApiDescription.ParameterDescriptions[i].ModelMetadata?.ModelType;
                 if (complexType == null || complexType.Namespace == "System")
                     continue;
 
@@ -37,7 +37,6 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
                 var xmlSummary = xml.XPathEvaluate($"string(/doc/members/member[@name='{fullPropertyName}']/summary)").ToString().Trim();
 
                 operation.Parameters[i].Description = xmlSummary;
-                operation.Parameters[i].In = "query";
             }
         }
     }

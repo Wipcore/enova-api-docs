@@ -26,6 +26,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _objectService = objectService;
         }
 
+        /// <summary>
+        /// Check if the attributetype exists.
+        /// </summary>
         [HttpHead("{identifier}")]
         public void Head([FromUri]string identifier)
         {
@@ -34,6 +37,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
         }
 
+        /// <summary>
+        /// Check if the attributetype exists.
+        /// </summary>
         [HttpHead("id-{id}")]
         public void Head([FromUri]int id)
         {

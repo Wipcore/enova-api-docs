@@ -28,16 +28,22 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             _attributeService = attributeService;
         }
 
+        /// <summary>
+        /// Check if the attributetype exists.
+        /// </summary>
         [HttpHead("{identifier}")]
-        public void Head([FromUri]string identifier)
+        public void Head(string identifier)
         {
             var found = _objectService.Exists<EnovaAttributeValue>(identifier);
             if (!found)
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
         }
 
+        /// <summary>
+        /// Check if the attributetype exists.
+        /// </summary>
         [HttpHead("id-{id}")]
-        public void Head([FromUri]int id)
+        public void Head(int id)
         {
             var found = _objectService.Exists<EnovaAttributeValue>(id);
             if (!found)

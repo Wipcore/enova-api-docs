@@ -1,0 +1,445 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wipcore.Enova.Api.Abstractions.Internal</name>
+    </assembly>
+    <members>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAttributeService.GetAttributes``1(System.String)">
+            <summary>
+            Get attributes of the object with the given identifier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAttributeService.GetObjectsWithAttributeValue(System.Int32)">
+            <summary>
+            Get all objects that has an attributevalue.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.Login(Wipcore.Enova.Api.Abstractions.Interfaces.ILoginModel,System.Boolean)">
+            <summary>
+            Login user by information in model. Returns a claimprincipal with the claims of the logged in user.
+            </summary>
+            <param name="model"></param>
+            <param name="admin">True to log in as an administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.LoginCustomerAsAdmin(Wipcore.Enova.Api.Abstractions.Interfaces.ILoginCustomerWithAdminCredentialsModel,System.String@)">
+            <summary>
+            Log in a customer with the credentials of an admin, ie inpersonation.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInAlias">
+            <summary>
+            Get the alias of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInName">
+            <summary>
+            Get the name of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInIdentifier">
+            <summary>
+            Get the identifier of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInDefaultCurrency">
+            <summary>
+            Get the default currency of the logged in user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInDefaultLanguage">
+            <summary>
+            Get the default language of the logged in user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInId">
+            <summary>
+            Get the id of an logged in user. Returns null if no-one logged in.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetLoggedInRole">
+            <summary>
+            Get the role of any logged in user. Returns null if no-one logged in.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.IsLoggedInAsAdmin">
+            <summary>
+            Returns true if the logged in user is an admin.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.IsLoggedInAsCustomer">
+            <summary>
+            Returns true if the logged in user is a customer.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetClaim(System.String)">
+            <summary>
+            Get a claim on the logged in user by name.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.GetPasswordHash">
+            <summary>
+            Get hashed value of logged in user.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.LogUser">
+            <summary>
+            Returns a user friendly logging message for the logged in user.. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.AuthorizeAccess(System.String)">
+            <summary>
+            Returns true if the current logged in user is authorized to access, by comparing with the given owner.
+            </summary>
+            <param name="enovaObjectOwnedByIdentifier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.AuthorizeUpdate(System.String,System.String)">
+            <summary>
+            Returns true if the current logged in user is authorized to update, by comparing with the given owner.
+            </summary>
+            <param name="enovaObjectOwnedByIdentifier">The current owner of the object.</param>
+            <param name="specifiedOwner">The owner specified to own the object after update.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.AuthorizeAccess``1(Wipcore.Core.SessionObjects.Context,System.Collections.Generic.Dictionary{System.String,System.Object},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.ExpireValidator(System.Nullable{System.DateTime},System.Nullable{System.DateTime},Microsoft.IdentityModel.Tokens.SecurityToken,Microsoft.IdentityModel.Tokens.TokenValidationParameters)">
+            <summary>
+            Validator for when tokens expire.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.ICacheService">
+            <summary>
+            Handles caching of queries.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.GetCache(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Type,Wipcore.Core.SessionObjects.BaseObjectList)">
+            <summary>
+            Get cache entry for a request. Key is built on all in parameters.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.GetCacheKeys(System.String)">
+            <summary>
+            Get all cache keys for a type. Null to get all.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.SetCache(System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}},Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Type,Wipcore.Core.SessionObjects.BaseObjectList)">
+            <summary>
+            Set cache entry for a request. Key is built on all in parameters.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.ClearCache(System.Type)">
+            <summary>
+            Clear all cache entries with the given type.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.ClearCache(System.String)">
+            <summary>
+            Clear all cache entries with the given type.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.RemoveFromCache(System.String)">
+            <summary>
+            Remove cache entry by key.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.GetCart(System.String,System.Int32)">
+            <summary>
+            Get an existing cart, mapped to a model.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.CalculateCart(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
+            <summary>
+            Maps given model to a cart in Enova and returns a model with prices specified.  
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.MapCart(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaCart,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
+            <summary>
+            Map order rows between cart and model.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.GetCartsByCustomer(System.String,System.Int32)">
+            <summary>
+            Get all carts belonging to given customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.CreateOrderFromCart(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Creates an order from a mapping to cart by given values.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IContextService.GetContext">
+            <summary>
+            Get an EnovaContext for the current user.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICustomerService.SaveCustomer(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Saves a customer with given values.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICustomerService.GetAddresses(System.String,System.Nullable{Wipcore.Enova.Core.EnovaCustomerAddress.AddressTypeEnum})">
+            <summary>
+            Get addresses belonging to given customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IFilterService.Filter(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+            <summary>
+            Filter the given objects by the given filter string.
+            </summary>
+            <param name="objects"></param>
+            <param name="filter">I.E: Name=myfinename</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IMappingFromEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+            <summary>
+            Maps given enova objects with the comma-seperated properties into dictionaries.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IMappingFromEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.String)">
+            <summary>
+            Maps given enova object with the comma-seperated properties into a dictionary of property-value.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IMappingToEnovaService.MapToEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.List{System.Action})">
+            <summary>
+            Maps given properties in dictionary to the given enova object. Returns mappers that must be set after object is saved.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IObjectService">
+            <summary>
+            Service for getting, deleting and saving objects to Enova.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Exists``1(System.String)">
+            <summary>
+            Returns true if object with identifier was found.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Exists``1(System.Int32)">
+            <summary>
+            Returns true if object with id was found.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.String)">
+            <summary>
+            Get an objects from Enova. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="identifier">Object identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Get``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Int32)">
+            <summary>
+            Get an objects from Enova. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="id">Object id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.GetMany``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,Wipcore.Core.SessionObjects.BaseObjectList)">
+            <summary>
+            Get objects from Enova. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="candidates">Objects to look at, or null to look at all objects.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.GetMany``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Get several objects from Enova.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="ids">List of ids of objects to find.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.GetMany``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Get several objects from Enova.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="query">Query parameters.</param>
+            <param name="identifiers">List of identifiers of objects to find.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Save``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Save an object to Enova with the given values.
+            </summary>
+            <typeparam name="T">The most derived type of T is saved.</typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="values">Properties to save on the object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Calculate``1(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Calculate the effects of mapping an object without actually saving it. Useful for carts.
+            </summary>
+            <typeparam name="T">The most derived type of T is calculated.</typeparam>
+            <param name="requestContext">Context for the query, ie language.</param>
+            <param name="values">Properties to calculate on the object.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Delete``1(System.Int32)">
+            <summary>
+            Deletes an object of type T and given id from Enova. Returns true if successfull.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Delete``1(System.String)">
+            <summary>
+            Deletes an object of type T and given identifier from Enova. Returns true if successfull. False if the object did not exist.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.SaveOrder(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
+            <summary>
+            Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetOrdersByCustomer(System.String,System.String)">
+            <summary>
+            Get orders owned by given customer.
+            </summary>
+            <param name="customerIdentifier"></param>
+            <param name="shippingStatus">Filter by shippingstatus identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetOrder(System.String,System.Int32)">
+            <summary>
+             Get an existing order, mapped to a model.
+             </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetValidShippingStatuses(Wipcore.Enova.Core.EnovaOrder,System.Boolean,System.Boolean)">
+            <summary>
+            Get a list of identifiers|names of the valid new shipping statuses for the given order.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IPagingService">
+            <summary>
+            Handles pagination of responses with many objects.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IPagingService.Page(Wipcore.Core.SessionObjects.BaseObjectList,System.Int32,System.Int32)">
+            <summary>
+            Get a subset/page of a list of objects.
+            </summary>
+            <param name="objects">Candidate objects to page.</param>
+            <param name="pageNumber">The page numer, i.e. page 2 to view objects 20-40 if pagesize is 20.</param>
+            <param name="pageSize">The number of objects to get per page.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IProductService.GetVariants(System.String)">
+            <summary>
+            Get all members of any variant family the given owner is a member of. Null if no family exists.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper">
+            <summary>
+            Implement to provide logic for mapping a property.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.Names">
+            <summary>
+            Names of the properties handled by this mapper.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.Type">
+            <summary>
+            The type of object that this map handles.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.InheritMapper">
+            <summary>
+            True if a derived class can use this mapper to map its property. Usually true.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.GetEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String,System.Collections.Generic.List{Wipcore.Enova.Core.EnovaLanguage})">
+            <summary>
+            Map a property from given object.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.SetEnovaProperty(Wipcore.Core.SessionObjects.BaseObject,System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Map a property to given object.        
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.Priority">
+            <summary>
+            Higher number, higher priority for choosing which mapper to use.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.MapType">
+            <summary>
+            Which sort of mapping this mapper handles.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.PostSaveSet">
+            <summary>
+            Set to true if this property should be mapped -after- the object is saved instead of before.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Internal.IPropertyMapper.FlattenMapping">
+            <summary>
+            Set to true to flatten structure, meaning adding properties from mapping directly to parent. Attributes as properties for example. Mapping returned must be IDictionary (string, value)
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ISectionService.GetSubSections(System.String)">
+            <summary>
+            Get any sub-sections to the section with given identifier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ISectionService.GetProducts(System.String)">
+            <summary>
+            Get any products beloning to the section with given identifier.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.ISortService">
+            <summary>
+            Handles sorting in responses with many objects.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ISortService.Sort(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
+            <summary>
+            Sort the given objects by the given sort string.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ITemplateService.GetQueryModelFromTemplateConfiguration(System.Type,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel)">
+            <summary>
+            Read template information from configuration - info of how queries should be processed, I.E default languages, properties etc.
+            </summary>
+            <param name="type"></param>
+            <param name="parameters">Parameters direct from query.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IWarehouseService.GetWarehouseCompartments(System.String,System.String)">
+            <summary>
+            Get warehose compartments for the given product. 
+            </summary>
+            <param name="productIdentifier"></param>
+            <param name="warehouseIdentifier">Filter compartments by specific warehose.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IWarehouseService.SetDefaultWarehouse(Wipcore.Enova.Core.EnovaOrder)">
+            <summary>
+            Makes sure the order has a valid warehouse, if it doesn't have one already.
+            </summary>
+        </member>
+    </members>
+</doc>

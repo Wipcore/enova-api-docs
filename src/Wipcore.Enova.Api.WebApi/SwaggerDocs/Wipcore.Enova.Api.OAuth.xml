@@ -52,6 +52,11 @@
             Returns true if the logged in user is an administrator, or if enovaObjectOwnedByIdentifier is the same as the logged in user. 
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.OAuth.AuthService.AuthorizeAccess``1(Wipcore.Core.SessionObjects.Context,System.Collections.Generic.Dictionary{System.String,System.Object},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AuthService.AuthorizeUpdate(System.String,System.String)">
             <summary>
             Returns true if the logged in user is an adminstrator, 

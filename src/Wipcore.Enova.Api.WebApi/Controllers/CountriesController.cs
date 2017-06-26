@@ -61,7 +61,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get an attribute type specified by id.
+        /// Get a country type specified by id.
         /// </summary>
         [HttpGet("id-{id}")]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
