@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Fasterflect;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -276,7 +277,7 @@ namespace Wipcore.Enova.Api.WebApi
                     //extract module types and add them to be registered
                     var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x)).ToList();
                     moduleTypes.ForEach(x => Console.WriteLine("Found addin IEnovaApiModule module in assembly: " + x.Assembly.FullName));
-                    autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule) Activator.CreateInstance(x)));
+                    autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule) x.CreateInstance()));
                 }
             }
         }

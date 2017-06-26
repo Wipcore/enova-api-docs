@@ -14,6 +14,7 @@ using Wipcore.Enova.Api.Abstractions.Attributes;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes;
+using Fasterflect;
 
 namespace Wipcore.eNova.Api.NETClient
 {
@@ -53,7 +54,7 @@ namespace Wipcore.eNova.Api.NETClient
             if (model == null)
             {
                 _log.LogWarning("Found no registered model for {0}. Using default.", typeof(TModel));
-                model = Activator.CreateInstance<TModel>();
+                model = (TModel)typeof(TModel).CreateInstance();
             }
 
             if (String.IsNullOrEmpty(identifier) && id == 0)
@@ -85,7 +86,7 @@ namespace Wipcore.eNova.Api.NETClient
             if (model == null)
             {
                 _log.LogWarning("Found no registered model for {0}. Using default.", typeof(TModel));
-                model = Activator.CreateInstance<TModel>();
+                model = (TModel)typeof(TModel).CreateInstance();
             }
 
             if (String.IsNullOrEmpty(identifier) && id == 0) //must have id or identifier
@@ -118,7 +119,7 @@ namespace Wipcore.eNova.Api.NETClient
             if (model == null)
             {
                 _log.LogWarning("Found no registered model for {0}. Using default.", modelType);
-                model = (BaseModel)Activator.CreateInstance(modelType);
+                 model = (BaseModel)modelType.CreateInstance();
             }
 
             var registeredModelType = model.GetType();
@@ -161,7 +162,7 @@ namespace Wipcore.eNova.Api.NETClient
             if (model == null)
             {
                 _log.LogWarning("Found no registered model for {0}. Using default.", typeof(TModel));
-                model = Activator.CreateInstance<TModel>();
+                model = (TModel)typeof(TModel).CreateInstance();
             }
 
             var registeredModelType = model.GetType();

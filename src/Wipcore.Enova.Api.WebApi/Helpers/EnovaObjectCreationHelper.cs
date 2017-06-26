@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Fasterflect;
 using Wipcore.Core.SessionObjects;
 
 namespace Wipcore.Enova.Api.WebApi.Helpers
@@ -21,7 +22,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         {
             var type = t.GetMostDerivedEnovaType();
             var allArgs = new[] { context }.Union(args).ToArray();
-            var item = Activator.CreateInstance(type, allArgs);
+            var item = type.CreateInstance(allArgs);
             return item;
         }
     }
