@@ -68,7 +68,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                     item = EnovaObjectCreationHelper.CreateNew<EnovaProductCartItem>(context);
                     cart.AddCartItem(item);
                     item.Product = EnovaBaseProduct.Find(context, productRow.ProductIdentifier);
-                    item.Identifier = productRow.Identifier;
+                    item.Identifier = productRow.Identifier ?? String.Empty;
                 }
 
                 item.Quantity = productRow.Quantity > 0 ? productRow.Quantity : 1;
