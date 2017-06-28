@@ -48,11 +48,14 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 
             var context = obj.GetContext();
             var cart = (EnovaCart)obj;
-            var productRows = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { ID = 0, ProductIdentifier = "", Quantity = 0d, MarkForDelete = false } });
+            var productRows = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { ID = 0, Identifier = "", ProductIdentifier = "", Quantity = 0d, MarkForDelete = false } });
 
             foreach (var productRow in productRows)
             {
-                var item = cart.GetCartItems<EnovaProductCartItem>().FirstOrDefault(x => x.ProductIdentifier == productRow.ProductIdentifier);
+                var item = !String.IsNullOrEmpty(productRow.Identifier) ? 
+                    cart.GetCartItems<EnovaProductCartItem>().FirstOrDefault(x => x.Identifier == productRow.Identifier) : 
+                    cart.GetCartItems<EnovaProductCartItem>().FirstOrDefault(x => String.IsNullOrEmpty(x.Identifier) && x.ProductIdentifier == productRow.ProductIdentifier);
+
                 if (productRow.MarkForDelete)
                 {
                     if(item != null)
@@ -65,6 +68,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                     item = EnovaObjectCreationHelper.CreateNew<EnovaProductCartItem>(context);
                     cart.AddCartItem(item);
                     item.Product = EnovaBaseProduct.Find(context, productRow.ProductIdentifier);
+                    item.Identifier = productRow.Identifier;
                 }
 
                 item.Quantity = productRow.Quantity > 0 ? productRow.Quantity : 1;
