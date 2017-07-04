@@ -41,6 +41,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 return enovaContext;
             
             enovaContext = EnovaSystemFacade.Current.Connection.CreateContext();
+            enovaContext.AddGroup("DEFAULT");
             _httpAccessor.HttpContext.Items[WipConstants.EnovaContextKey] = enovaContext;
 
             var requestContext = _httpAccessor.HttpContext.Items[WipConstants.ContextModelKey] as ContextModel;
