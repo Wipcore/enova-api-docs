@@ -14,7 +14,7 @@ using Wipcore.Enova.Api.Abstractions.Models;
 namespace Wipcore.Enova.Api.OAuth
 {
     /// <summary>
-    /// This controller is used to login customers and admins into Enova. It should put a cookie in the response, which should be sent back by the client on subsequent requests. 
+    /// This controller is used to login customers and admins into Enova. It should put a cookie and token in the response, which should be sent back by the client on subsequent requests. 
     /// </summary>
     [Route("[controller]")]
     public class AccountController : EnovaApiController

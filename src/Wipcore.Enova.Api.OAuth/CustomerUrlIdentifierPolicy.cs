@@ -36,4 +36,33 @@ namespace Wipcore.Enova.Api.OAuth
             return Task.FromResult(0);
         }
     }
+
+    /// <summary>
+    /// This policy specifices that a logged in customer can only see it's own information. User taken from id parameter in url.
+    /// Admins can see all information.
+    /// </summary>
+    public class CustomerUrlIdPolicy : AuthorizationHandler<CustomerUrlIdPolicy>, IAuthorizationRequirement
+    {
+        public const string Name = "UrlId";
+
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerUrlIdPolicy requirement)
+        {
+            if (context.User.HasClaim(x => (x.Type == JwtClaimTypes.Role || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
+            {
+                context.Succeed(requirement);
+                return Task.FromResult(0);
+            }
+            var resource = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext);
+            var id = resource?.RouteData?.Values?.FirstOrDefault(x => x.Key.Equals("id", StringComparison.InvariantCultureIgnoreCase)).Value;
+
+            var userId = context.User.FindFirst(AuthService.IdClaim)?.Value;
+
+            if (userId == id?.ToString())
+                context.Succeed(requirement);
+            else
+                context.Fail();
+
+            return Task.FromResult(0);
+        }
+    }
 }

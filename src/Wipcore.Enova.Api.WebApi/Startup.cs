@@ -121,6 +121,7 @@ namespace Wipcore.Enova.Api.WebApi
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
+                options.AddPolicy(CustomerUrlIdPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdPolicy()));
                 options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
             });
 
