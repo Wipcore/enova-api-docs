@@ -41,9 +41,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 return enovaContext;
             
             enovaContext = EnovaSystemFacade.Current.Connection.CreateContext();
-            enovaContext.AddGroup("DEFAULT");
             _httpAccessor.HttpContext.Items[WipConstants.EnovaContextKey] = enovaContext;
 
+            var defaultGroups = _configuration["EnovaSettings:DefaultContextGroups"]?.Split(',').Select(x => x.Trim()).Where(x => x != String.Empty).ToList();
+            defaultGroups?.ForEach(x => enovaContext.AddGroup(x.Trim()));
+            
             var requestContext = _httpAccessor.HttpContext.Items[WipConstants.ContextModelKey] as ContextModel;
             
             //first read any values from market configuration
