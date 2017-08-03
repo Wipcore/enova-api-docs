@@ -132,3 +132,6 @@ FakesAssemblies/
 
 #Logging
 LogFiles/
+
+#Authentication keys
+/src/Wipcore.Enova.Api.WebApi/Configs/key-*.xml
