@@ -15,12 +15,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
     public class OrderSumMapper : IPropertyMapper, ICmoProperty
     {
         private readonly IContextService _contextService;
-        private readonly int _decimalsInAmountString;
+        private readonly IConfigService _configService;
 
-        public OrderSumMapper(IContextService contextService, IConfigurationRoot configuration)
+        public OrderSumMapper(IContextService contextService, IConfigService configService)
         {
             _contextService = contextService;
-            _decimalsInAmountString = configuration.GetValue<int>("EnovaSettings:DecimalsInAmountString", 2);
+            _configService = configService;
         }
         public bool FlattenMapping => false;
         public bool PostSaveSet => false;
@@ -47,9 +47,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
             else if (String.Equals(propertyName, "TotalPriceExclTax", StringComparison.InvariantCultureIgnoreCase))
                 return sum;
             else if(String.Equals(propertyName, "TotalPriceInclTaxString", StringComparison.InvariantCultureIgnoreCase))
-                return context.AmountToString(sum + taxAmount, currency, _decimalsInAmountString, true, true);
+                return context.AmountToString(sum + taxAmount, currency, _configService.DecimalsInAmountString(), true, true);
             else
-                return context.AmountToString(sum, currency, _decimalsInAmountString, true, true);
+                return context.AmountToString(sum, currency, _configService.DecimalsInAmountString(), true, true);
         }
 
         public object GetProperty(CmoDbObject obj, CmoContext cmoContext, string propertyName, CmoLanguage language)

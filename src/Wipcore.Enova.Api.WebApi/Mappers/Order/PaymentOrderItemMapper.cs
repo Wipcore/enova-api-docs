@@ -11,6 +11,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 {
     public class PaymentOrderItemMapper : IPropertyMapper
     {
+        private readonly IConfigService _configService;
+
+        public PaymentOrderItemMapper(IConfigService configService)
+        {
+            _configService = configService;
+        }
+
         public bool PostSaveSet => false;
         public bool InheritMapper => true;
         public bool FlattenMapping => false;
@@ -24,6 +31,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         {
             Currency currency;
             var order = (EnovaOrder)obj;
+            var context = obj.GetContext();
 
             var orderItems =    from item in order.GetOrderItems<EnovaPaymentTypeOrderItem>()
                                 let payment = obj.GetContext().FindObject<EnovaPayment>(item.PaymentId)
@@ -34,6 +42,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
                                     { "Identifier", item.Identifier},
                                     { "PaymentIdentifier", item.PaymentType?.Identifier ?? String.Empty},
                                     { "Amount", item.GetAmount(out currency)},
+                                    { "AmountString", context.AmountToString(item.GetAmount(out currency), currency, _configService.DecimalsInAmountString())},
                                     { "PaymentDate", payment?.PaymentDate.ToString() ?? String.Empty},
                                     { "Paid", payment != null && item.Paid}
                                 }.MapLanguageProperty("Name", mappingLanguages, item.GetName);

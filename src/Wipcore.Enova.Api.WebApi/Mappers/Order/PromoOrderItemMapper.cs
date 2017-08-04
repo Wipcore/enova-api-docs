@@ -11,6 +11,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 {
     public class PromoOrderItemMapper : IPropertyMapper
     {
+        private readonly IConfigService _configService;
+
+        public PromoOrderItemMapper(IConfigService configService)
+        {
+            _configService = configService;
+        }
+
         public bool PostSaveSet => false;
         public bool InheritMapper => true;
         public bool FlattenMapping => false;
@@ -24,6 +31,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder)obj;
+            var context = obj.GetContext();
             var orderItems = order.GetOrderItems<EnovaPromoOrderItem>().Select(x => new Dictionary<string, object>()
             {
                 { "ID", x.ID},
@@ -32,6 +40,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
                 { "PromoIdentifier", x.Promo?.Identifier ?? String.Empty},
                 { "PriceExclTax", x.GetPrice(false)},
                 { "PriceInclTax", x.GetPrice(true)},
+                { "PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                { "PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
                 { "OrderedQuantity", x.OrderedQuantity}
             }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
 

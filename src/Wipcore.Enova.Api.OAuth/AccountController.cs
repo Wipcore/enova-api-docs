@@ -20,12 +20,10 @@ namespace Wipcore.Enova.Api.OAuth
     public class AccountController : EnovaApiController
     {
         private readonly IAuthService _authService;
-        private readonly IConfigurationRoot _configuration;
 
-        public AccountController(IAuthService authService, IConfigurationRoot configuration, IExceptionService exceptionService) : base(exceptionService)
+        public AccountController(IAuthService authService, IExceptionService exceptionService) : base(exceptionService)
         {
             _authService = authService;
-            _configuration = configuration;
         }
 
         /// <summary>

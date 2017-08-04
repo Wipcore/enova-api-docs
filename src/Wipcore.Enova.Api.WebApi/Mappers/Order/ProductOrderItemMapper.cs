@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
@@ -11,6 +12,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
 {
     public class ProductOrderItemMapper : IPropertyMapper
     {
+        private readonly IConfigService _configService;
+
+        public ProductOrderItemMapper(IConfigService configService)
+        {
+            _configService = configService;
+        }
+
         public bool PostSaveSet => false;
         public bool InheritMapper => true;
 
@@ -24,6 +32,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var order = (EnovaOrder)obj;
+            var context = obj.GetContext();
             var orderItems = order.GetOrderItems<EnovaProductOrderItem>().Select(x => new Dictionary<string, object>()
             {
                 {"ID", x.ID},
@@ -32,6 +41,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
                 {"ProductIdentifier", x.ProductIdentifier},
                 {"PriceExclTax", x.GetPrice(false)},
                 {"PriceInclTax", x.GetPrice(true)},
+                {"PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                {"PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
                 {"OrderedQuantity", x.OrderedQuantity}
             }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
            

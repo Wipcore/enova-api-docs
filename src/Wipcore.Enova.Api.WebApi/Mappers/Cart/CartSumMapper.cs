@@ -15,12 +15,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
     public class CartSumMapper : IPropertyMapper, ICmoProperty
     {
         private readonly IContextService _contextService;
-        private readonly int _decimalsInAmountString;
+        private readonly IConfigService _configService;
 
-        public CartSumMapper(IContextService contextService, IConfigurationRoot configuration)
+        public CartSumMapper(IContextService contextService, IConfigService configService)
         {
             _contextService = contextService;
-            _decimalsInAmountString = configuration.GetValue<int>("EnovaSettings:DecimalsInAmountString", 2);
+            _configService = configService;
         }
 
         public bool PostSaveSet => false;
@@ -52,9 +52,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
             else if (String.Equals(propertyName, "TotalPriceExclTax", StringComparison.InvariantCultureIgnoreCase))
                 return sum - taxAmount;
             else if (String.Equals(propertyName, "TotalPriceInclTaxString", StringComparison.InvariantCultureIgnoreCase))
-                return context.AmountToString(sum, currency, _decimalsInAmountString, true, true);
+                return context.AmountToString(sum, currency, _configService.DecimalsInAmountString(), true, true);
             else
-                return context.AmountToString(sum - taxAmount, currency, _decimalsInAmountString, true, true);
+                return context.AmountToString(sum - taxAmount, currency, _configService.DecimalsInAmountString(), true, true);
         }
 
         public object GetProperty(CmoDbObject obj, CmoContext cmoContext, string propertyName, CmoLanguage language)

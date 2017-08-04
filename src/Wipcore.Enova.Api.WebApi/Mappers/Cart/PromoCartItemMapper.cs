@@ -11,6 +11,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 {
     public class PromoCartItemMapper : IPropertyMapper
     {
+        private readonly IConfigService _configService;
+
+        public PromoCartItemMapper(IConfigService configService)
+        {
+            _configService = configService;
+        }
+
         public bool PostSaveSet => false;
         public bool InheritMapper => true;
 
@@ -25,6 +32,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var cart = (EnovaCart)obj;
+            var context = obj.GetContext();
 
             var cartItems = cart.GetCartItems<EnovaPromoCartItem>().Select(x => new Dictionary<string, object>()
                 {
@@ -34,6 +42,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                     {"PromoIdentifier", x.Promo?.Identifier ?? String.Empty },
                     {"PriceExclTax", x.GetPrice(false) },
                     {"PriceInclTax", x.GetPrice(true) },
+                    {"PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                    {"PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
                     {"Quantity", x.Quantity },
                 }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
             return cartItems;

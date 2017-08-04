@@ -13,6 +13,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 {
     public class ShippingCartItemMapper : IPropertyMapper
     {
+        private readonly IConfigService _configService;
+
+        public ShippingCartItemMapper(IConfigService configService)
+        {
+            _configService = configService;
+        }
+
         public bool PostSaveSet => false;
         public bool InheritMapper => true;
 
@@ -30,6 +37,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                 return "";
 
             var cart = (EnovaCart)obj;
+            var context = obj.GetContext();
             var shippingItem = cart.GetCartItems<EnovaShippingTypeCartItem>().FirstOrDefault();
 
             if (shippingItem == null)
@@ -42,7 +50,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                 {"Identifier", shippingItem.Identifier},
                 {"ShippingIdentifier", shippingItem.ShippingType?.Identifier ?? String.Empty},
                 {"PriceExlTax", shippingItem.GetPrice(false)},
-                {"PriceInclTax", shippingItem.GetPrice(true)}
+                {"PriceInclTax", shippingItem.GetPrice(true)},
+                {"PriceExclTaxString", context.AmountToString(shippingItem.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                {"PriceInclTaxString", context.AmountToString(shippingItem.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
             }.MapLanguageProperty("Name", mappingLanguages, obj.GetName);
         }
 
