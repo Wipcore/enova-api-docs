@@ -115,6 +115,28 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get carts belonging to a customer.
+        /// </summary>
+        [HttpGet("ofcustomer-{identifier}")]
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
+        public IEnumerable<IDictionary<string, object>> GetCustomersCartsByIdentifier([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifier)
+        {
+            var carts = _cartService.GetCartsByCustomer(identifier);
+            return _objectService.GetMany<EnovaCart>(requestContext, query, carts);
+        }
+
+        /// <summary>
+        /// Get carts belonging to a customer.
+        /// </summary>
+        [HttpGet("ofcustomerid-{id}")]
+        [Authorize(Policy = CustomerUrlIdPolicy.Name)]
+        public IEnumerable<IDictionary<string, object>> GetCustomersCartsById([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]int id)
+        {
+            var carts = _cartService.GetCartsByCustomer(null, id);
+            return _objectService.GetMany<EnovaCart>(requestContext, query, carts);
+        }
+
+        /// <summary>
         /// Get a cart mapped to a model.
         /// </summary>
         [HttpGet("AsModel")]

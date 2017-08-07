@@ -225,6 +225,17 @@ namespace Wipcore.Enova.Api.OAuth
             var id = GetValueInsensitive<int>(values, "id");
             var identifier = GetValueInsensitive<string>(values, "identifier") ?? "";
 
+            return AuthorizeAccess(context, identifier, id, getOwnerFunc);
+        }
+
+        /// <summary>
+        /// Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser by identifier OR id. 
+        /// </summary>
+        public bool AuthorizeAccess<T>(Context context, string identifier, int id, Func<T, int?> getOwnerFunc) where T : BaseObject
+        {
+            if (IsLoggedInAsAdmin())
+                return true;
+            
             var item = id != 0 ? context.FindObject<T>(id) : context.FindObject<T>(identifier);
 
             if (item == null)

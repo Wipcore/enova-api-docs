@@ -101,6 +101,11 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         bool AuthorizeAccess(string enovaObjectOwnedByIdentifier);
 
         /// <summary>
+        /// Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser by identifier OR id. 
+        /// </summary>
+        bool AuthorizeAccess<T>(Context context, string identifier, int id, Func<T, int?> getOwnerFunc) where T : BaseObject;
+
+        /// <summary>
         /// Returns true if the current logged in user is authorized to update, by comparing with the given owner.
         /// </summary>
         /// <param name="enovaObjectOwnedByIdentifier">The current owner of the object.</param>
