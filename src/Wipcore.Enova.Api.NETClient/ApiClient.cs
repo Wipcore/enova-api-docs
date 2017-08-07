@@ -23,25 +23,28 @@ namespace Wipcore.eNova.Api.NETClient
     public class ApiClient : IApiClient
     {
         private const string TokenKey = "ApiToken";
-        private readonly IConfigurationRoot _root;
         private readonly IHttpContextAccessor _httpAccessor;
-        private readonly HttpClient _client;
+        
         private readonly IDataProtector _protector;
         private readonly ILogger _log;
 
         public ApiClient(IConfigurationRoot root, IHttpContextAccessor httpAccessor, IDataProtectionProvider protectionProvider, ILoggerFactory loggerFactory)
         {
-            _root = root;
             _httpAccessor = httpAccessor;
             _protector = protectionProvider.CreateProtector("CookieEncrypter");
-            _client = new HttpClient { BaseAddress = new Uri(root["API:Url"] ?? "http://localhost:5000/api/") };
+            InternalHttpClient = new HttpClient { BaseAddress = new Uri(root["API:Url"] ?? "http://localhost:5000/api/") };
             _log = loggerFactory.CreateLogger(GetType().Namespace);
 
             //if the end user has a token cookie, then place the token in the header for requests made by this client
             var tokenCookie = _httpAccessor.HttpContext?.Request.Cookies[TokenKey];
             if (!String.IsNullOrEmpty(tokenCookie))
-                _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenCookie);
+                InternalHttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenCookie);
         }
+
+        /// <summary>
+        /// Access the internal http client used to communicate with the API. 
+        /// </summary>
+        public HttpClient InternalHttpClient { get; set; }
 
         /// <summary>
         /// Check if one object exists.
@@ -52,7 +55,7 @@ namespace Wipcore.eNova.Api.NETClient
         {
             identifier = identifier ?? String.Empty;
             var url = $"{controller}/{identifier}";
-            var response = _client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
+            var response = InternalHttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
@@ -63,7 +66,7 @@ namespace Wipcore.eNova.Api.NETClient
             throw new HttpResponseException(new HttpResponseMessage()
             {
                 StatusCode = response.StatusCode,
-                ReasonPhrase = $"Head url {_client.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                ReasonPhrase = $"Head url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
             });
         }
 
@@ -144,38 +147,21 @@ namespace Wipcore.eNova.Api.NETClient
             action = action == null ? string.Empty : "/" + action;
             identifier = identifier ?? String.Empty;
             var url = $"{controller}/{identifier}{action}{BuildParameters(contextModel, queryModel, extraParameters)}";
-            var response = _client.GetAsync(url).Result;
+            var response = InternalHttpClient.GetAsync(url).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {_client.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             SetResponseHeaders(response, headers);
             var model = JsonConvert.DeserializeObject(responseContent, resonseType);
             return model;
         }
-
-        /// <summary>
-        /// Get many objects from the api, serialized to model type.
-        /// </summary>
-        /// <typeparam name="TModel">The type to serialize the items into.</typeparam>
-        /// <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
-        /// <param name="queryModel">Paging, size, sort, filter etc.</param>
-        /// <param name="contextModel">Context/culture values such as language.</param>
-        /// <param name="action">Action part of the url if there is one.</param>
-        /// <param name="extraParameters">Any extra query parameters.</param>
-        /// <param name="headers">Recived headers if object is given.</param>
-        /// <returns></returns>
-        public IEnumerable<TModel> GetMany<TModel>(string controller, IQueryModel queryModel = null, IContextModel contextModel = null, string action = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null)
-        {
-            return GetMany(controller, queryModel, contextModel, action, extraParameters, headers).Cast<TModel>();
-        }
-
+        
         /// <summary>
         /// Get many objects from the api, untyped.
         /// </summary>
@@ -188,20 +174,36 @@ namespace Wipcore.eNova.Api.NETClient
         public IEnumerable<object> GetMany(string controller, IQueryModel queryModel = null, IContextModel contextModel = null, string action = null,
             IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null)
         {
+            return GetMany<object>(controller, queryModel, contextModel, action, extraParameters, headers);
+        }
+
+        /// <summary>
+        /// Get many objects from the api, serialized to model type.
+        /// </summary>
+        /// <typeparam name="TModel">The type to serialize the items into.</typeparam>
+        /// <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
+        /// <param name="queryModel">Paging, size, sort, filter etc.</param>
+        /// <param name="contextModel">Context/culture values such as language.</param>
+        /// <param name="action">Action part of the url if there is one.</param>
+        /// <param name="extraParameters">Any extra query parameters.</param>
+        /// <param name="headers">Recived headers if object is given.</param>
+        public IEnumerable<TModel> GetMany<TModel>(string controller, IQueryModel queryModel = null, IContextModel contextModel = null, string action = null,
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null)
+        {
             action = action == null ? string.Empty : "/" + action;
             var url = $"{controller}{action}{BuildParameters(contextModel, queryModel, extraParameters)}";
-            var response = _client.GetAsync(url).Result;
+            var response = InternalHttpClient.GetAsync(url).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {_client.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             SetResponseHeaders(response, headers);
-            var models = JsonConvert.DeserializeObject<IEnumerable<object>>(responseContent);
+            var models = JsonConvert.DeserializeObject<IEnumerable<TModel>>(responseContent);
 
             return models;
         }
@@ -215,7 +217,7 @@ namespace Wipcore.eNova.Api.NETClient
         public bool DeleteOne(string controller, int id)
         {
             var url = $"{controller}/id-{id}";
-            var response = _client.DeleteAsync(url).Result;
+            var response = InternalHttpClient.DeleteAsync(url).Result;
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -224,7 +226,7 @@ namespace Wipcore.eNova.Api.NETClient
             throw new HttpResponseException(new HttpResponseMessage()
             {
                 StatusCode = response.StatusCode,
-                ReasonPhrase = $"Delete url {_client.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                ReasonPhrase = $"Delete url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
             });
         }
 
@@ -236,7 +238,7 @@ namespace Wipcore.eNova.Api.NETClient
         public bool DeleteOne(string controller, string identifier)
         {
             var url = $"{controller}/{identifier}";
-            var response = _client.DeleteAsync(url).Result;
+            var response = InternalHttpClient.DeleteAsync(url).Result;
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -245,7 +247,7 @@ namespace Wipcore.eNova.Api.NETClient
             throw new HttpResponseException(new HttpResponseMessage()
             {
                 StatusCode = response.StatusCode,
-                ReasonPhrase = $"Delete url {_client.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                ReasonPhrase = $"Delete url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
             });
         }
 
@@ -265,14 +267,14 @@ namespace Wipcore.eNova.Api.NETClient
             action = action == null ? string.Empty : action + "/";
             var url = $"{controller}/{action}{BuildParameters(contextModel, null, extraParameters)}";
             var stringContent = new StringContent(item, Encoding.UTF8, "application/json");
-            var response = put ? _client.PutAsync(url, stringContent).Result : _client.PostAsync(url, stringContent).Result;
+            var response = put ? InternalHttpClient.PutAsync(url, stringContent).Result : InternalHttpClient.PostAsync(url, stringContent).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Save url {_client.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase = $"Save url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             var result = response.Content.ReadAsStringAsync().Result;
@@ -288,7 +290,7 @@ namespace Wipcore.eNova.Api.NETClient
         {
             try
             {
-                var response = _client.GetAsync("/IsEnovaAlive").Result;
+                var response = InternalHttpClient.GetAsync("/IsEnovaAlive").Result;
                 return Convert.ToBoolean(response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception e)
@@ -312,14 +314,14 @@ namespace Wipcore.eNova.Api.NETClient
         /// </summary>
         public IDictionary<string, string> GetLoggedInUserInfo()
         {
-            var response = _client.GetAsync("/Account/LoggedInAs").Result;
+            var response = InternalHttpClient.GetAsync("/Account/LoggedInAs").Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {_client.BaseAddress}/Account/LoggedInAs gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}/Account/LoggedInAs gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(responseContent);
@@ -331,14 +333,14 @@ namespace Wipcore.eNova.Api.NETClient
         /// </summary>
         public IDictionary<string, string> GetEnovaNodeInfo()
         {
-            var response = _client.GetAsync("/NodeInfo").Result;
+            var response = InternalHttpClient.GetAsync("/NodeInfo").Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {_client.BaseAddress}/NodeInfo gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}/NodeInfo gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(responseContent);
@@ -350,13 +352,13 @@ namespace Wipcore.eNova.Api.NETClient
         /// </summary>
         public bool Logout()
         {
-            var response = _client.PostAsync("/Account/Logout", null).Result;
+            var response = InternalHttpClient.PostAsync("/Account/Logout", null).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Post url {_client.BaseAddress}/Account/Logout gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase = $"Post url {InternalHttpClient.BaseAddress}/Account/Logout gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             //clean up cookies
@@ -386,16 +388,25 @@ namespace Wipcore.eNova.Api.NETClient
             return Login(new LoginModel() { Alias = alias, Password = password }, "/Account/LoginCustomer");
         }
 
+        /// <summary>
+        /// Login a customer as admin
+        /// </summary>
+        public ILoginResponseModel LoginCustomerAsAdmin(string customerAlias, string adminAlias, string adminPassword)
+        {
+            return Login(new LoginCustomerWithAdminCredentialsModel() {Alias = customerAlias, Password = adminPassword, CustomerIdentifier = customerAlias}, "/Account/LoginCustomerWithAdminCredentials");
+        }
+
         private ILoginResponseModel Login(LoginModel model, string url)
         {
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, new UTF8Encoding(), "application/json");
 
-            var response = _client.PostAsync(url, content).Result;
+            var response = InternalHttpClient.PostAsync(url, content).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage() { StatusCode = response.StatusCode, ReasonPhrase = $"Login gave error {response.ReasonPhrase} for user {model?.Alias ?? "null"} . Details: {responseContent}" });
+                throw new HttpResponseException(new HttpResponseMessage()
+                { StatusCode = response.StatusCode, ReasonPhrase = $"Login gave error {response.ReasonPhrase} for user {model?.Alias ?? "null"} . Details: {responseContent}. Url: {url}" });
 
             var loginModel = JsonConvert.DeserializeObject<LoginResponseModel>(responseContent);
 

@@ -24,22 +24,22 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <summary>
         /// Get an object by id, serialized into TModel.
         /// </summary>
-        TModel GetObject<TModel>(int id, QueryModel queryModel = null, ContextModel contextModel = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel;
+        TModel GetObject<TModel>(int id, QueryModel queryModel = null, ContextModel contextModel = null, string action = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel;
 
         /// <summary>
         /// Get an object by identifier, seralized into TModel. 
         /// </summary>
-        TModel GetObject<TModel>(string identifier, QueryModel queryModel = null, ContextModel contextModel = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel;
+        TModel GetObject<TModel>(string identifier, QueryModel queryModel = null, ContextModel contextModel = null, string action = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel;
 
         /// <summary>
         /// Get many objects, serialized into TModel. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
         /// </summary>
-        IEnumerable<object> GetMany(Type modelType, QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, List<string> languages = null, IDictionary<string, object> extraParameters = null);
+        IEnumerable<object> GetMany(Type modelType, QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, string action = null, List<string> languages = null, IDictionary<string, object> extraParameters = null);
 
         /// <summary>
         /// Get many objects, untyped. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
         /// </summary>
-        IEnumerable<TModel> GetMany<TModel>(QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, List<string> languages = null, IDictionary<string, object> extraParameters = null);
+        IEnumerable<TModel> GetMany<TModel>(QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, string action = null, List<string> languages = null, IDictionary<string, object> extraParameters = null);
 
         /// <summary>
         /// Deletes an object by id.

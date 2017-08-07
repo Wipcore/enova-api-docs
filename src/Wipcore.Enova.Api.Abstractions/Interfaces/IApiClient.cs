@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using Wipcore.Enova.Api.Abstractions.Models;
 
 namespace Wipcore.Enova.Api.Abstractions.Interfaces
@@ -9,6 +10,10 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
     /// </summary>
     public interface IApiClient
     {
+        /// <summary>
+        /// Access the internal http client used to communicate with the API. 
+        /// </summary>
+        HttpClient InternalHttpClient { get; set; }
 
         /// <summary>
         /// Check if one object exists.
@@ -159,6 +164,11 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// Login a customer
         /// </summary>
         ILoginResponseModel LoginCustomer(string alias, string password);
+
+        /// <summary>
+        /// Login a customer as admin
+        /// </summary>
+        ILoginResponseModel LoginCustomerAsAdmin(string customerAlias, string adminAlias, string adminPassword);
 
         /// <summary>
         /// Logout the user.
