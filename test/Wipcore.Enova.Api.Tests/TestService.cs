@@ -8,15 +8,25 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
+using Wipcore.eNova.Api.NETClient;
+using Wipcore.Enova.Api.Abstractions;
+using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.WebApi;
 using Wipcore.Enova.Connectivity;
 using Xunit;
+using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
+using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;
 
 namespace Wipcore.Enova.Api.Tests
 {
@@ -40,6 +50,8 @@ namespace Wipcore.Enova.Api.Tests
 
         public HttpClient AdminClient => _adminClient;
 
+        public IApiClient ApiClient { get; private set; }
+
         public TestService()
         {
             lock (Lock)
@@ -50,9 +62,11 @@ namespace Wipcore.Enova.Api.Tests
 
                 try
                 {
+
+
                     var builder = new ConfigurationBuilder().AddJsonFile(@"Configs\appsettings.json").AddJsonFile(@"Configs\localappsettings.json", true);
                     Configuration = builder.Build();
-                    _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+                    _server = new TestServer(new WebHostBuilder().UseStartup<Startup>().ConfigureServices(ConfigureTestServices()));
                     _adminClient = GetNewClient(true);
                 }
                 catch (Exception e)
@@ -63,6 +77,46 @@ namespace Wipcore.Enova.Api.Tests
             }
 
             
+        }
+
+        private Action<IServiceCollection> ConfigureTestServices()
+        {
+            return x =>
+            {
+                x.AddTransient(typeof(IApiClient), s => //NOTE only used for repository tests
+                    {
+                        if (ApiClient != null)
+                        {
+                            //if the end user has a token cookie, then place the token in the header for requests made by this client
+                            var accessor = (IHttpContextAccessor)s.GetService(typeof(IHttpContextAccessor));
+                            var tokenCookie = accessor.HttpContext.Request.Cookies["ApiToken"];
+                            if (!String.IsNullOrEmpty(tokenCookie))
+                            {
+                                ApiClient.InternalHttpClient.DefaultRequestHeaders.Remove("Authorization");
+                                ApiClient.InternalHttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenCookie);
+                            }
+
+                            return ApiClient;
+                        }
+
+                        ApiClient = new ApiClient(s.GetService<IConfigurationRoot>(),
+                            s.GetService<IHttpContextAccessor>(), s.GetService<IDataProtectionProvider>(),
+                            s.GetService<ILoggerFactory>());
+
+                        var serverClient = _server.CreateClient();
+
+                        serverClient.BaseAddress = new Uri(Configuration["API:Url"] ?? "http://localhost:5000/api/");
+                        ApiClient.InternalHttpClient = serverClient;
+
+                        return ApiClient;
+                    }
+                );
+                x.AddSingleton(typeof(IApiRepository), typeof(ApiRepository));
+                x.AddTransient(typeof(CustomerModel));
+                x.AddTransient(typeof(CartModel));
+                x.AddTransient(typeof(OrderModel));
+                x.AddSingleton(typeof(CustomerRepository< CustomerModel, CartModel, OrderModel >));
+            };
         }
 
         public void Dispose()
