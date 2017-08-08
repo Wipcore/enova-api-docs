@@ -15,10 +15,10 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         /// <summary>
         /// Get orders owned by given customer.
         /// </summary>
-        /// <param name="customerIdentifier"></param>
+        /// <param name="customerIdentifier">Identifier of the customer. Not used if customerId is set.</param>
+        /// <param name="customerId"></param>
         /// <param name="shippingStatus">Filter by shippingstatus identifier.</param>
-        /// <returns></returns>
-        BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null);
+        BaseObjectList GetOrdersByCustomer(int customerId = 0, string customerIdentifier = null, string shippingStatus = null);
 
         ///<summary>
         /// Get an existing order, mapped to a model.

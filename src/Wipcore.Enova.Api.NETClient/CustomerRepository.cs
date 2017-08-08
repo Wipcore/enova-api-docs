@@ -52,14 +52,22 @@ namespace Wipcore.eNova.Api.NETClient
             return _apiRepository.GetMany<TCartModel>(queryModel, headers, contextModel, $"ofcustomer-{customerIdentifier}").ToList();
         }
 
-        public List<TOrderModel> GetOrders(int customerId, ApiResponseHeadersModel headers = null, QueryModel queryModel = null, ContextModel contextModel = null)
+        public List<TOrderModel> GetOrders(int customerId, ApiResponseHeadersModel headers = null, QueryModel queryModel = null, ContextModel contextModel = null, string shippingStatusIdentifier = null)
         {
-            return null;
+            var statusFilter = String.IsNullOrEmpty(shippingStatusIdentifier) ? null : new Dictionary<string, object>() { { "shippingStatus", shippingStatusIdentifier } };
+
+            return _apiRepository.GetMany<TOrderModel>(queryModel, headers, contextModel, $"ofcustomerid-{customerId}", extraParameters: statusFilter).ToList();
         }
 
-        public List<TOrderModel> GetOrders(string customerIdentifier, ApiResponseHeadersModel headers = null, QueryModel queryModel = null, ContextModel contextModel = null)
+        public List<TOrderModel> GetOrders(string customerIdentifier, ApiResponseHeadersModel headers = null, QueryModel queryModel = null, ContextModel contextModel = null, string shippingStatusIdentifier = null)
         {
-            return null;
+            var statusFilter = String.IsNullOrEmpty(shippingStatusIdentifier) ? null : new Dictionary<string, object>() { { "shippingStatus", shippingStatusIdentifier } };
+
+            return _apiRepository.GetMany<TOrderModel>(queryModel, headers, contextModel, $"ofcustomer-{customerIdentifier}", extraParameters:statusFilter).ToList();
         }
+
+        public bool DeleteCustomer(string customerIdentifier) => _apiRepository.DeleteObject<TCustomerModel>(customerIdentifier);
+
+        public bool DeleteCustomer(int customerId) => _apiRepository.DeleteObject<TCustomerModel>(customerId);
     }
 }

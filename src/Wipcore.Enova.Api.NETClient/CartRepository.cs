@@ -24,7 +24,7 @@ namespace Wipcore.Enova.Api.NetClient
 
         public TCartModel Calculate(TCartModel cart, ContextModel contextModel = null)
         {
-            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel:contextModel, extraParameters: new Dictionary<string, object>() { { "calculateOnly", true } });
+            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel:contextModel, extraParameters: new Dictionary<string, object>() { { "calculateOnly", true } }, verifyIdentifierNotTaken:false);
         }
 
         public TOrderModel TurnCartIntoOrder(TCartModel cart, ContextModel contextModel = null)
@@ -43,9 +43,13 @@ namespace Wipcore.Enova.Api.NetClient
             return _apiRepository.GetObject<TCartModel>(identifier, queryModel, contextModel);
         }
 
-        public TCartModel CreateOrUpdateCart(TCartModel cart, ContextModel contextModel = null)
+        public TCartModel CreateOrUpdateCart(TCartModel cart, ContextModel contextModel = null, bool verifyIdentifierNotTaken = true)
         {
-            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel);
+            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel, verifyIdentifierNotTaken:verifyIdentifierNotTaken);
         }
+
+        public bool DeleteCart(string cartIdentifier) => _apiRepository.DeleteObject<TCartModel>(cartIdentifier);
+
+        public bool DeleteCart(int cartId) => _apiRepository.DeleteObject<TCartModel>(cartId);
     }
 }

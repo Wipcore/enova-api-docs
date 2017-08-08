@@ -42,13 +42,13 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         /// <summary>
         /// Get orders owned by given customer.
         /// </summary>
-        /// <param name="customerIdentifier"></param>
+        /// <param name="customerIdentifier">Identifier of the customer. Not used if customerId is set.</param>
+        /// <param name="customerId"></param>
         /// <param name="shippingStatus">Filter by shippingstatus identifier.</param>
-        /// <returns></returns>
-        public BaseObjectList GetOrdersByCustomer(string customerIdentifier, string shippingStatus = null)
+        public BaseObjectList GetOrdersByCustomer(int customerId = 0, string customerIdentifier = null, string shippingStatus = null)
         {
             var context = _contextService.GetContext();
-            var customer = EnovaCustomer.Find(context, customerIdentifier);
+            var customer = customerId > 0 ? EnovaCustomer.Find(context, customerId) : EnovaCustomer.Find(context, customerIdentifier);
 
             var shippingFilter = String.Empty;
             if (!String.IsNullOrEmpty(shippingStatus))

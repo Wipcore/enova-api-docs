@@ -111,7 +111,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
         public IEnumerable<IDictionary<string, object>> GetOrders([FromUri]ContextModel requestContext, [FromUri] QueryModel query, string identifier, string shippingStatus = null)
         {
-            var orders = _orderService.GetOrdersByCustomer(identifier, shippingStatus);
+            var orders = _orderService.GetOrdersByCustomer(0, identifier, shippingStatus);
             return _objectService.GetMany<EnovaOrder>(requestContext, query, orders);
         }
 

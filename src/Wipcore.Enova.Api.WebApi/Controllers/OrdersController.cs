@@ -113,7 +113,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
             return _objectService.GetMany<EnovaOrder>(requestContext, query, listIdentifiers);
         }
-        
+
+        /// <summary>
+        /// Get orders belonging to a customer.
+        /// </summary>
+        [HttpGet("ofcustomer-{identifier}")]
+        [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
+        public IEnumerable<IDictionary<string, object>> GetCustomersCartsByIdentifier([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifier, [FromUri]string shippingStatus)
+        {
+            var orders = _orderService.GetOrdersByCustomer(0, identifier, shippingStatus);
+            return _objectService.GetMany<EnovaOrder>(requestContext, query, orders);
+        }
+
+        /// <summary>
+        /// Get orders belonging to a customer.
+        /// </summary>
+        [HttpGet("ofcustomerid-{id}")]
+        [Authorize(Policy = CustomerUrlIdPolicy.Name)]
+        public IEnumerable<IDictionary<string, object>> GetCustomersCartsById([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]int id, [FromUri]string shippingStatus)
+        {
+            var orders = _orderService.GetOrdersByCustomer(id, null, shippingStatus);
+            return _objectService.GetMany<EnovaOrder>(requestContext, query, orders);
+        }
+
         /// <summary>
         /// Get valid new shipping statuses for an order.
         /// </summary>
