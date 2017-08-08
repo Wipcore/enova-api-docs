@@ -23,13 +23,14 @@ namespace Wipcore.Enova.Api.Tests
         private readonly CustomerRepository<CustomerModel, CartModel, OrderModel> _customerRepository;
         private readonly Random _random = new Random();
         private readonly CartRepository<CartModel, OrderModel> _cartRepository;
+        private readonly OrderRepository<OrderModel> _orderRepository;
 
         public Repositories(TestService testService)
         {
             _testService = testService;
             _customerRepository = (CustomerRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CustomerRepository<CustomerModel, CartModel, OrderModel>));
             _cartRepository = (CartRepository<CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CartRepository<CartModel, OrderModel>));
-
+            _orderRepository = (OrderRepository<OrderModel>)_testService.Server.Host.Services.GetService(typeof(OrderRepository<OrderModel>));
         }
 
         private void SetupHttpContext(HttpContext context)
@@ -125,10 +126,16 @@ namespace Wipcore.Enova.Api.Tests
             //get
             Assert.NotNull(_cartRepository.GetSavedCart(cartIdentifier));
 
+            //turn into order
+            var order = _cartRepository.TurnCartIntoOrder(cart);
+            Assert.NotEqual(0, order.TotalPriceExclTax);
+            
             //delete
             _cartRepository.DeleteCart(cartIdentifier);
             Assert.Null(_cartRepository.GetSavedCart(cartIdentifier));
 
+            _orderRepository.DeleteOrder(order.ID);
+            Assert.Null(_orderRepository.GetSavedOrder(order.ID));
         }
 
     }

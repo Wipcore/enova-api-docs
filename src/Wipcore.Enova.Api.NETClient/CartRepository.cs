@@ -29,7 +29,7 @@ namespace Wipcore.Enova.Api.NetClient
 
         public TOrderModel TurnCartIntoOrder(TCartModel cart, ContextModel contextModel = null)
         {
-            var orderId = (int)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel, action: "createorder", responseType:typeof(int));
+            var orderId = (int)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel, action: "createorder", responseType:typeof(int), verifyIdentifierNotTaken:false);
             return _apiRepository.GetObject<TOrderModel>(orderId, null, contextModel);
         }
 
