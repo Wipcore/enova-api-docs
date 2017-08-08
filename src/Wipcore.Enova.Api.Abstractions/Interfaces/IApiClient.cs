@@ -40,8 +40,9 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         object GetOne(Type resonseType, string controller, int id, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null);
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false);
 
         /// <summary>
         /// Get one object, serialized into TModel.
@@ -54,8 +55,9 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         object GetOne(Type resonseType, string controller, string identifier = null, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-           IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null);
+           IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false);
 
         /// <summary>
         /// Get one object, untyped.
@@ -67,8 +69,9 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         TModel GetOne<TModel>(string controller, string identifier = null, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null) where TModel : class;
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false) where TModel : class;
 
         /// <summary>
         /// Get one object,  serialized into TModel.
@@ -80,8 +83,9 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         TModel GetOne<TModel>(string controller, int id, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null) where TModel : class;
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false) where TModel : class;
 
         /// <summary>
         /// Get many objects from the api, serialized to model type.
@@ -113,15 +117,16 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
         /// <param name="id">ID of the object to delete.</param>
-        /// <returns></returns>
-        bool DeleteOne(string controller, int id);
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        bool DeleteOne(string controller, int id, bool throwIfNotFound = false);
 
         /// <summary>
         /// Delete one object.
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
         /// <param name="identifier">Identifier of the object to delete.</param>
-        bool DeleteOne(string controller, string identifier);
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        bool DeleteOne(string controller, string identifier, bool throwIfNotFound = false);
 
         /// <summary>
         /// Saves one item.

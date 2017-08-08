@@ -91,10 +91,11 @@ namespace Wipcore.eNova.Api.NETClient
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         public object GetOne(Type resonseType, string controller, int id, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null)
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false)
         {
-            return GetOne(resonseType, controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers);
+            return GetOne(resonseType, controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound);
         }
 
         /// <summary>
@@ -107,10 +108,11 @@ namespace Wipcore.eNova.Api.NETClient
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         public TModel GetOne<TModel>(string controller, string identifier = null, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null) where TModel : class
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false) where TModel : class
         {
-            return (TModel)GetOne(typeof(TModel), controller, identifier, action, queryModel, contextModel, extraParameters, headers);
+            return (TModel)GetOne(typeof(TModel), controller, identifier, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound);
         }
 
         /// <summary>
@@ -123,11 +125,11 @@ namespace Wipcore.eNova.Api.NETClient
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         public TModel GetOne<TModel>(string controller, int id, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null) where TModel : class
+            IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false) where TModel : class
         {
-
-            return (TModel)GetOne(typeof(TModel), controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers);
+            return (TModel)GetOne(typeof(TModel), controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound);
         }
 
         /// <summary>
@@ -141,14 +143,18 @@ namespace Wipcore.eNova.Api.NETClient
         /// <param name="contextModel">Context/culture values such as language.</param>
         /// <param name="extraParameters">Any extra query parameters.</param>
         /// <param name="headers">Recived headers if object is given.</param>
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         public object GetOne(Type resonseType, string controller, string identifier = null, string action = null, QueryModel queryModel = null, IContextModel contextModel = null,
-           IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null)
+           IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false)
         {
             action = action == null ? string.Empty : "/" + action;
             identifier = identifier ?? String.Empty;
             var url = $"{controller}/{identifier}{action}{BuildParameters(contextModel, queryModel, extraParameters)}";
             var response = InternalHttpClient.GetAsync(url).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (!throwIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
+                return null;
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
@@ -209,18 +215,21 @@ namespace Wipcore.eNova.Api.NETClient
         }
 
         /// <summary>
-        /// Delete one object.
+        /// Delete one object. Returns true if deleted, false if not found (unless set to throw exception when not found). 
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
         /// <param name="id">ID of the object to delete.</param>
-        /// <returns></returns>
-        public bool DeleteOne(string controller, int id)
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        public bool DeleteOne(string controller, int id, bool throwIfNotFound = false)
         {
             var url = $"{controller}/id-{id}";
             var response = InternalHttpClient.DeleteAsync(url).Result;
 
             if (response.IsSuccessStatusCode)
                 return true;
+
+            if (!throwIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
+                return false;
 
             var responseContent = response.Content.ReadAsStringAsync().Result;
             throw new HttpResponseException(new HttpResponseMessage()
@@ -231,17 +240,21 @@ namespace Wipcore.eNova.Api.NETClient
         }
 
         /// <summary>
-        /// Delete one object.
+        /// Delete one object. Returns true if deleted, false if not found (unless set to throw exception when not found). 
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
         /// <param name="identifier">Identifier of the object to delete.</param>
-        public bool DeleteOne(string controller, string identifier)
+        /// <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        public bool DeleteOne(string controller, string identifier, bool throwIfNotFound = false)
         {
             var url = $"{controller}/{identifier}";
             var response = InternalHttpClient.DeleteAsync(url).Result;
 
             if (response.IsSuccessStatusCode)
                 return true;
+
+            if (!throwIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
+                return false;
 
             var responseContent = response.Content.ReadAsStringAsync().Result;
             throw new HttpResponseException(new HttpResponseMessage()
