@@ -11,6 +11,7 @@ using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
+using Wipcore.Enova.Api.NetClient;
 using Xunit;
 
 namespace Wipcore.Enova.Api.Tests
@@ -21,12 +22,13 @@ namespace Wipcore.Enova.Api.Tests
         private readonly TestService _testService;
         private readonly CustomerRepository<CustomerModel, CartModel, OrderModel> _customerRepository;
         private readonly Random _random = new Random();
-        private IApiClient _apiClient;
+        private readonly CartRepository<CartModel, OrderModel> _cartRepository;
 
         public Repositories(TestService testService)
         {
             _testService = testService;
             _customerRepository = (CustomerRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CustomerRepository<CustomerModel, CartModel, OrderModel>));
+            _cartRepository = (CartRepository<CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CartRepository<CartModel, OrderModel>));
 
         }
 
@@ -61,16 +63,72 @@ namespace Wipcore.Enova.Api.Tests
             _customerRepository.LoginCustomer(customerIdentifier, password);
             var customer = _customerRepository.GetSavedCustomer(customerIdentifier);
             
-            var carts2 = _customerRepository.GetCarts(customer.Identifier);
-            var carts = _customerRepository.GetCarts(customer.ID);
+            var cartsByIdentifier = _customerRepository.GetCarts(customer.Identifier);
+            var cartsById = _customerRepository.GetCarts(customer.ID);
 
-            Assert.NotEqual(carts.Count, 0);
-            carts.ForEach(x => Assert.NotEqual(x.ID, 0));
+            Assert.NotEqual(cartsById.Count, 0);
+            cartsById.ForEach(x => Assert.NotEqual(x.ID, 0));
 
-            Assert.NotEqual(carts2.Count, 0);
-            carts2.ForEach(x => Assert.NotEqual(x.ID, 0));
+            Assert.NotEqual(cartsByIdentifier.Count, 0);
+            cartsByIdentifier.ForEach(x => Assert.NotEqual(x.ID, 0));
 
-            Assert.Equal(carts.Count, carts2.Count);
+            Assert.Equal(cartsById.Count, cartsByIdentifier.Count);
+        }
+
+        [Theory]
+        [InlineData(new object[] { "69990002", "password" })]
+        public void CanGetCustomerOrdersByRepo(string customerIdentifier, string password)
+        {
+            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
+
+            _customerRepository.LoginCustomer(customerIdentifier, password);
+            var customer = _customerRepository.GetSavedCustomer(customerIdentifier);
+            
+            var ordersById = _customerRepository.GetOrders(customer.ID);
+            var ordersByIdentifier = _customerRepository.GetOrders(customer.Identifier);
+            var ordersWithStatus = _customerRepository.GetOrders(customer.Identifier, shippingStatusIdentifier: "NEW_INTERNET");
+
+            Assert.NotEqual(ordersById.Count, 0);
+            ordersById.ForEach(x => Assert.NotEqual(x.ID, 0));
+
+            Assert.NotEqual(ordersByIdentifier.Count, 0);
+            ordersByIdentifier.ForEach(x => Assert.NotEqual(x.ID, 0));
+
+            Assert.Equal(ordersById.Count, ordersByIdentifier.Count);
+
+            Assert.NotEqual(ordersWithStatus.Count, 0);
+            Assert.True(ordersWithStatus.Count < ordersByIdentifier.Count);
+        }
+
+        [Theory]
+        [InlineData(new object[] { "69990002", "GF_GPU_880", "KarinkjolenArtikel" })]
+        public void CanUpdateAndCreateACartByRepo(string customerIdentifier, string productIdentifier1, string productIdentifier2)
+        {
+            var cartIdentifier = "unittestcartrep";
+            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
+
+            var client = (IApiClient)_testService.Server.Host.Services.GetService(typeof(IApiClient));
+            client.LoginAdmin("wadmin", "wadmin");
+
+            //calculate
+            var cart = new CartModel() {Identifier = cartIdentifier, CustomerIdentifier = customerIdentifier, ProductCartItems = new List<ProductCartItemModel>()
+            { new ProductCartItemModel() {ProductIdentifier = productIdentifier1, Quantity = 3}, new ProductCartItemModel() {ProductIdentifier = productIdentifier2, Quantity = 2} } };
+
+            var calculatedCart = _cartRepository.Calculate(cart);
+            Assert.NotEqual(0, calculatedCart.TotalPriceExclTax);
+            Assert.NotEqual(0, calculatedCart.ProductCartItems.Count);
+            calculatedCart.ProductCartItems.ForEach(x => Assert.NotEqual(0, x.PriceExclTax));
+
+            //save
+            _cartRepository.CreateOrUpdateCart(cart, verifyIdentifierNotTaken:false);
+
+            //get
+            Assert.NotNull(_cartRepository.GetSavedCart(cartIdentifier));
+
+            //delete
+            _cartRepository.DeleteCart(cartIdentifier);
+            Assert.Null(_cartRepository.GetSavedCart(cartIdentifier));
+
         }
 
     }

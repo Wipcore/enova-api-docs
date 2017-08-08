@@ -22,6 +22,7 @@ using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
+using Wipcore.Enova.Api.NetClient;
 using Wipcore.Enova.Api.WebApi;
 using Wipcore.Enova.Connectivity;
 using Xunit;
@@ -40,7 +41,7 @@ namespace Wipcore.Enova.Api.Tests
     public class TestService : IDisposable
     {
         private static readonly object Lock = new object();//Locking as workaround for test collections not working
-        private static int TestClasses = 0;
+        private static int _testClasses = 0;
         private static TestServer _server;
         private static HttpClient _adminClient;
 
@@ -50,13 +51,13 @@ namespace Wipcore.Enova.Api.Tests
 
         public HttpClient AdminClient => _adminClient;
 
-        public IApiClient ApiClient { get; private set; }
+        public IApiClient ApiClient { get; set; }
 
         public TestService()
         {
             lock (Lock)
             {
-                TestClasses++;
+                _testClasses++;
                 if (Server != null)
                     return;
 
@@ -116,6 +117,7 @@ namespace Wipcore.Enova.Api.Tests
                 x.AddTransient(typeof(CartModel));
                 x.AddTransient(typeof(OrderModel));
                 x.AddSingleton(typeof(CustomerRepository< CustomerModel, CartModel, OrderModel >));
+                x.AddSingleton(typeof(CartRepository<CartModel, OrderModel>));
             };
         }
 
@@ -123,8 +125,8 @@ namespace Wipcore.Enova.Api.Tests
         {
             lock (Lock)
             {
-                TestClasses--;
-                if (TestClasses == 0)
+                _testClasses--;
+                if (_testClasses == 0)
                 {
                     _server.Dispose();
                     _server = null;
@@ -155,6 +157,7 @@ namespace Wipcore.Enova.Api.Tests
             Assert.True(response.IsSuccessStatusCode, "Failed to login admin.");
 
             var loginResponse = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
+            client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + loginResponse.AccessToken);
         }
 
