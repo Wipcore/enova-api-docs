@@ -120,6 +120,9 @@ namespace Wipcore.Enova.Api.Tests
             var product1Quantity = _random.Next(1, 10);
             var product2Quantity = _random.Next(1, 10);
 
+            var product1Comment = _random.Next(1, 1000).ToString();
+            var product2Comment = _random.Next(1, 1000).ToString();
+
             //login
             _testService.LoginCustomer(_client, customerAlias, customerPassword);
 
@@ -129,7 +132,7 @@ namespace Wipcore.Enova.Api.Tests
             var totalPrice = price1 * product1Quantity + price2 * product2Quantity;
             
             //build cart, create order
-            var cart = BuildCart(customerAlias, "", product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType);
+            var cart = BuildCart(customerAlias, "", product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType, false, product1Comment, product2Comment);
             var orderId = PostCartAsOrder(cart);
 
             var properties = "ShippingOrderItem,PaymentOrderItem,ProductOrderItems,PromoOrderItems,TotalPriceInclTax";
@@ -148,17 +151,21 @@ namespace Wipcore.Enova.Api.Tests
             if (recivedPayment != null)
                 Assert.Equal(paymentType, recivedPayment.PaymentIdentifier);
 
-            var productRows = JsonConvert.DeserializeAnonymousType(order["ProductOrderItems"].ToString(), new[] { new { ProductIdentifier = "", PriceInclTax = 0m } });
+            var productRows = JsonConvert.DeserializeAnonymousType(order["ProductOrderItems"].ToString(), new[] { new { ProductIdentifier = "", PriceInclTax = 0m, Comment = "" } });
             var receivedPrice1 = productRows.First(x => x.ProductIdentifier == product1Identifier).PriceInclTax;
             var receivedPrice2 = product2Identifier == null ? 0 : productRows.First(x => x.ProductIdentifier == product2Identifier).PriceInclTax;
 
             var promoDiscount = promoPassword == null ? 0 : JsonConvert.DeserializeAnonymousType(order["PromoOrderItems"].ToString(), new[] { new { PriceInclTax = 0m } }).First().PriceInclTax;
 
             var receivedTotalPrice = Convert.ToDecimal(order["TotalPriceInclTax"]);
-
+            
             Assert.Equal(receivedPrice1, price1);
             Assert.Equal(receivedPrice2, price2);
             Assert.Equal(totalPrice + promoDiscount + recivedShippingCost + recivedPaymentCost, receivedTotalPrice);
+
+            Assert.Equal(product1Comment, productRows.First(x => x.ProductIdentifier == product1Identifier).Comment);
+            if(product2Identifier != null)
+                Assert.Equal(product2Comment, productRows.First(x => x.ProductIdentifier == product2Identifier).Comment);
 
             Delete("orders", orderId);
             Assert.Null(Get("orders", null, orderId));
@@ -247,15 +254,15 @@ namespace Wipcore.Enova.Api.Tests
         }
 
         private static Dictionary<string, object> BuildCart(string customerIdentifier, string cartIdentifier, string product1Identifier, string product2Identifier, int product1Quantity, 
-            int product2Quantity, string promoPassword, string shippingType, string paymentType, bool deleteItems = false)
+            int product2Quantity, string promoPassword, string shippingType, string paymentType, bool deleteItems = false, string product1Comment = null, string product2Comment = null)
         {
             var products = new List<object>();
             var cart = new Dictionary<string, object>(){{"Identifier", cartIdentifier},{"CustomerIdentifier", customerIdentifier},{"ProductCartItems", products}, { "TotalPriceInclTax", 0 },
                 { "PromoCartItems", null }, {"ShippingCartItem", null}, {"PaymentCartItem", null} };
 
-            products.Add(new Dictionary<string, object>(){{"ProductIdentifier", product1Identifier},{"Quantity", product1Quantity}, {"MarkForDelete", deleteItems} });
+            products.Add(new Dictionary<string, object>(){{"ProductIdentifier", product1Identifier},{"Quantity", product1Quantity}, {"MarkForDelete", deleteItems}, {"Comment", product1Comment ?? String.Empty} });
             if (product2Identifier != null)
-                products.Add(new Dictionary<string, object>(){{"ProductIdentifier", product2Identifier},{"Quantity", product2Quantity}, { "MarkForDelete", deleteItems } });
+                products.Add(new Dictionary<string, object>(){{"ProductIdentifier", product2Identifier},{"Quantity", product2Quantity}, { "MarkForDelete", deleteItems }, { "Comment", product2Comment ?? String.Empty } });
 
             if (shippingType != null)
             {

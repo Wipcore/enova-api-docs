@@ -43,7 +43,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
                 {"PriceInclTax", x.GetPrice(true)},
                 {"PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
                 {"PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
-                {"OrderedQuantity", x.OrderedQuantity}
+                {"OrderedQuantity", x.OrderedQuantity},
+                {"Comment", x.Comment }
             }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
            
             return orderItems;

@@ -47,6 +47,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                     {"PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
                     {"PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
                     {"Quantity", x.Quantity },
+                    {"Comment", x.Comment }
                 }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
             return cartItems;
         }
@@ -58,7 +59,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 
             var context = obj.GetContext();
             var cart = (EnovaCart)obj;
-            var productRows = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { ID = 0, Identifier = "", ProductIdentifier = "", Quantity = 0d, MarkForDelete = false } });
+            var productRows = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { ID = 0, Identifier = "", ProductIdentifier = "", Quantity = 0d, Comment = "", MarkForDelete = false } });
 
             foreach (var productRow in productRows)
             {
@@ -82,6 +83,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
                 }
 
                 item.Quantity = productRow.Quantity > 0 ? productRow.Quantity : 1;
+                item.Comment = productRow.Comment ?? item.Comment;
             }
         }
     }
