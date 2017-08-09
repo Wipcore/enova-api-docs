@@ -22,5 +22,9 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order
 
         [PropertyPresentation("NumberString", "Ordered quantity", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 8600)]
         public double OrderedQuantity { get; set; }
+
+        [PropertyPresentation("String", null, isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 8600)]
+        public string Comment { get; set; }
+
     }
 }
