@@ -43,9 +43,14 @@ namespace Wipcore.Enova.Api.NetClient
             return _apiRepository.GetObject<TCartModel>(identifier, queryModel, contextModel);
         }
 
-        public TCartModel CreateOrUpdateCart(TCartModel cart, ContextModel contextModel = null, bool verifyIdentifierNotTaken = true)
+        public TCartModel CreateCart(TCartModel cart, ContextModel contextModel = null)
         {
-            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel, verifyIdentifierNotTaken:verifyIdentifierNotTaken);
+            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel, verifyIdentifierNotTaken: true);
+        }
+
+        public TCartModel UpdateCart(TCartModel cart, ContextModel contextModel = null)
+        {
+            return (TCartModel)_apiRepository.SaveObject<TCartModel>(JObject.FromObject(cart), contextModel: contextModel, verifyIdentifierNotTaken: false);
         }
 
         public bool DeleteCart(string cartIdentifier) => _apiRepository.DeleteObject<TCartModel>(cartIdentifier);

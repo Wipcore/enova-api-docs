@@ -37,9 +37,14 @@ namespace Wipcore.eNova.Api.NETClient
             return _apiRepository.GetObject<TCustomerModel>(identifier, queryModel, contextModel);
         }
 
-        public TCustomerModel CreateOrUpdateCustomer(TCustomerModel customer, ContextModel contextModel = null, bool verifyIdentifierNotTaken = true)
+        public TCustomerModel CreateCustomer(TCustomerModel customer, ContextModel contextModel = null)
         {
-            return (TCustomerModel) _apiRepository.SaveObject<TCustomerModel>(JObject.FromObject(customer), contextModel: contextModel, verifyIdentifierNotTaken: verifyIdentifierNotTaken);
+            return (TCustomerModel) _apiRepository.SaveObject<TCustomerModel>(JObject.FromObject(customer), contextModel: contextModel, verifyIdentifierNotTaken: true);
+        }
+
+        public TCustomerModel UpdateCustomer(TCustomerModel customer, ContextModel contextModel = null)
+        {
+            return (TCustomerModel)_apiRepository.SaveObject<TCustomerModel>(JObject.FromObject(customer), contextModel: contextModel, verifyIdentifierNotTaken: false);
         }
 
         public List<TCartModel> GetCarts(int customerId, ApiResponseHeadersModel headers = null, QueryModel queryModel = null, ContextModel contextModel = null)

@@ -22,6 +22,7 @@ using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 using Wipcore.Enova.Api.NetClient;
 using Wipcore.Enova.Api.WebApi;
 using Wipcore.Enova.Connectivity;
@@ -116,9 +117,11 @@ namespace Wipcore.Enova.Api.Tests
                 x.AddTransient(typeof(CustomerModel));
                 x.AddTransient(typeof(CartModel));
                 x.AddTransient(typeof(OrderModel));
+                x.AddTransient(typeof(ProductModel));
                 x.AddSingleton(typeof(CustomerRepository< CustomerModel, CartModel, OrderModel >));
                 x.AddSingleton(typeof(CartRepository<CartModel, OrderModel>));
                 x.AddSingleton(typeof(OrderRepository<OrderModel>));
+                x.AddSingleton(typeof(ProductRepository<ProductModel>));
             };
         }
 

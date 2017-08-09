@@ -28,9 +28,14 @@ namespace Wipcore.eNova.Api.NETClient
             return _apiRepository.GetObject<TOrderModel>(identifier, queryModel, contextModel);
         }
 
-        public TOrderModel CreateOrUpdateOrder(TOrderModel order, ContextModel contextModel = null, bool verifyIdentifierNotTaken = true)
+        public TOrderModel CreateOrder(TOrderModel order, ContextModel contextModel = null)
         {
-            return (TOrderModel)_apiRepository.SaveObject<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: verifyIdentifierNotTaken);
+            return (TOrderModel)_apiRepository.SaveObject<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: false);
+        }
+
+        public TOrderModel UpdateOrder(TOrderModel order, ContextModel contextModel = null)
+        {
+            return (TOrderModel)_apiRepository.SaveObject<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: true);
         }
 
         public bool DeleteOrder(string orderIdentifier) => _apiRepository.DeleteObject<TOrderModel>(orderIdentifier);

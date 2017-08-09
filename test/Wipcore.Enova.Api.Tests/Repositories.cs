@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Wipcore.eNova.Api.NETClient;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Attribute;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 using Wipcore.Enova.Api.NetClient;
 using Xunit;
 
@@ -24,6 +26,7 @@ namespace Wipcore.Enova.Api.Tests
         private readonly Random _random = new Random();
         private readonly CartRepository<CartModel, OrderModel> _cartRepository;
         private readonly OrderRepository<OrderModel> _orderRepository;
+        private readonly ProductRepository<ProductModel> _productRepository;
 
         public Repositories(TestService testService)
         {
@@ -31,6 +34,7 @@ namespace Wipcore.Enova.Api.Tests
             _customerRepository = (CustomerRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CustomerRepository<CustomerModel, CartModel, OrderModel>));
             _cartRepository = (CartRepository<CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CartRepository<CartModel, OrderModel>));
             _orderRepository = (OrderRepository<OrderModel>)_testService.Server.Host.Services.GetService(typeof(OrderRepository<OrderModel>));
+            _productRepository = (ProductRepository<ProductModel>)_testService.Server.Host.Services.GetService(typeof(ProductRepository<ProductModel>));
         }
 
         private void SetupHttpContext(HttpContext context)
@@ -50,7 +54,7 @@ namespace Wipcore.Enova.Api.Tests
             var newSortOrder = _random.Next(1000);
             var model = new CustomerModel() { Identifier = customerIdentifier, SortOrder = newSortOrder, Alias = customerIdentifier };
 
-            _customerRepository.CreateOrUpdateCustomer(model, verifyIdentifierNotTaken: false);
+            _customerRepository.UpdateCustomer(model);
             var savedModel = _customerRepository.GetSavedCustomer(customerIdentifier);
             Assert.Equal(newSortOrder, savedModel.SortOrder);
         }
@@ -121,7 +125,7 @@ namespace Wipcore.Enova.Api.Tests
             calculatedCart.ProductCartItems.ForEach(x => Assert.NotEqual(0, x.PriceExclTax));
 
             //save
-            _cartRepository.CreateOrUpdateCart(cart, verifyIdentifierNotTaken:false);
+            _cartRepository.CreateCart(cart);
 
             //get
             Assert.NotNull(_cartRepository.GetSavedCart(cartIdentifier));
@@ -136,6 +140,32 @@ namespace Wipcore.Enova.Api.Tests
 
             _orderRepository.DeleteOrder(order.ID);
             Assert.Null(_orderRepository.GetSavedOrder(order.ID));
+        }
+
+        [Theory]
+        [InlineData(new object[] {"unittestrepoprod", "GF_GPU_880", "KarinkjolenArtikel" })]
+        public void CanCrudProductsByRepo(string productIdentifier1, string productIdentifier2, string productIdentifier3)
+        {
+            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
+
+            var client = (IApiClient)_testService.Server.Host.Services.GetService(typeof(IApiClient));
+            client.LoginAdmin("wadmin", "wadmin");
+
+            //create
+            var unittestprod = new ProductModel() { Identifier = productIdentifier1, Attributes = new List<AttributeValueModel>()
+                { new AttributeValueModel() { Value = "UnGood", AttributeType = new AttributeTypeSimpleModel() {Identifier = "Attribute_smak" } } }};
+            _productRepository.CreateProduct(unittestprod);
+
+            //get
+            var products = _productRepository.GetProducts(new List<string>() { productIdentifier1, productIdentifier2, productIdentifier3 });
+            Assert.Equal(3, products.Count);
+            Assert.Contains(productIdentifier1, products.Select(x => x.Identifier));
+            Assert.Contains(productIdentifier2, products.Select(x => x.Identifier));
+            Assert.Contains(productIdentifier3, products.Select(x => x.Identifier));
+
+            //delete
+            Assert.True(_productRepository.DeleteProduct(productIdentifier1));
+            Assert.Null(_productRepository.GetProduct(productIdentifier1));
         }
 
     }
