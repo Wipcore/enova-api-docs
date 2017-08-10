@@ -42,6 +42,16 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         IEnumerable<TModel> GetMany<TModel>(QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, string action = null, List<string> languages = null, IDictionary<string, object> extraParameters = null);
 
         /// <summary>
+        /// Get the next page of items from a previous request.
+        /// </summary>
+        IEnumerable<TModel> GetNextPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest);
+
+        /// <summary>
+        /// Get the previous page of items from a previous request.
+        /// </summary>
+        IEnumerable<TModel> GetPreviousPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest);
+
+        /// <summary>
         /// Deletes an object by id.
         /// </summary>
         bool DeleteObject<TModel>(int id) where TModel : BaseModel;

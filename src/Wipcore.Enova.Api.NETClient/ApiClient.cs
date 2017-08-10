@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -198,6 +199,33 @@ namespace Wipcore.eNova.Api.NETClient
         {
             action = action == null ? string.Empty : "/" + action;
             var url = $"{controller}{action}{BuildParameters(contextModel, queryModel, extraParameters)}";
+            return GetManyRequest<TModel>(headers, url);
+        }
+
+        /// <summary>
+        /// Get the next page of items from a previous request.
+        /// </summary>
+        /// <typeparam name="TModel">The type to serialize the items into.</typeparam>
+        /// <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        public IEnumerable<TModel> GetNextPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
+        {
+            var url = headersOfPreviousRequest.NextPageLink;
+            return GetManyRequest<TModel>(headersOfPreviousRequest, url);
+        }
+
+        /// <summary>
+        /// Get the previous page of items from a previous request.
+        /// </summary>
+        /// <typeparam name="TModel">The type to serialize the items into.</typeparam>
+        /// <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        public IEnumerable<TModel> GetPreviousPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
+        {
+            var url = headersOfPreviousRequest.PreviousPageLink;
+            return GetManyRequest<TModel>(headersOfPreviousRequest, url);
+        }
+
+        private IEnumerable<TModel> GetManyRequest<TModel>(ApiResponseHeadersModel headers, string url)
+        {
             var response = InternalHttpClient.GetAsync(url).Result;
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
@@ -205,7 +233,8 @@ namespace Wipcore.eNova.Api.NETClient
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
                     StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                    ReasonPhrase =
+                        $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
                 });
 
             SetResponseHeaders(response, headers);
@@ -213,6 +242,7 @@ namespace Wipcore.eNova.Api.NETClient
 
             return models;
         }
+
 
         /// <summary>
         /// Delete one object. Returns true if deleted, false if not found (unless set to throw exception when not found). 
@@ -457,6 +487,10 @@ namespace Wipcore.eNova.Api.NETClient
                 headers.PageCount = Convert.ToInt32(values.First());
             if (response.Headers.TryGetValues("X-Paging-TotalRecordCount", out values))
                 headers.TotalRecordsCount = Convert.ToInt32(values.First());
+            if (response.Headers.TryGetValues("X-Paging-PreviousPage", out values))
+                headers.PreviousPageLink = values.First();
+            if (response.Headers.TryGetValues("X-Paging-NextPage", out values))
+                headers.NextPageLink = values.First();
         }
 
         private string BuildParameters(IContextModel context, IQueryModel queryModel, IDictionary<string, object> extraParameters)

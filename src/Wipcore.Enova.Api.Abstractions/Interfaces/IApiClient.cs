@@ -113,6 +113,21 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
             IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null);
 
         /// <summary>
+        /// Get the next page of items from a previous request.
+        /// </summary>
+        /// <typeparam name="TModel">The type to serialize the items into.</typeparam>
+        /// <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        IEnumerable<TModel> GetNextPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest);
+
+        /// <summary>
+        /// Get the previous page of items from a previous request.
+        /// </summary>
+        /// <typeparam name="TModel">The type to serialize the items into.</typeparam>
+        /// <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        IEnumerable<TModel> GetPreviousPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest);
+        
+
+        /// <summary>
         /// Delete one object.
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>

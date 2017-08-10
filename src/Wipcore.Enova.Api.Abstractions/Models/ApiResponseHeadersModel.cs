@@ -9,5 +9,9 @@
         public int PageSize { get; set; }
 
         public int PageCount { get; set; }
+
+        public string PreviousPageLink { get; set; }
+
+        public string NextPageLink { get; set; }
     }
 }

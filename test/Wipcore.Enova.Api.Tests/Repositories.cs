@@ -8,13 +8,15 @@ using Microsoft.AspNetCore.Http;
 using Wipcore.eNova.Api.NETClient;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Attribute;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
-using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 using Wipcore.Enova.Api.NetClient;
 using Xunit;
+using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
+using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;
 
 namespace Wipcore.Enova.Api.Tests
 {
@@ -166,6 +168,30 @@ namespace Wipcore.Enova.Api.Tests
             //delete
             Assert.True(_productRepository.DeleteProduct(productIdentifier1));
             Assert.Null(_productRepository.GetProduct(productIdentifier1));
+        }
+
+        [Fact]
+        public void CanPaginateByRepo()
+        {
+            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
+
+            var respondsHeaders = new ApiResponseHeadersModel();
+            var query = new QueryModel() {Size = 5, Properties = "ID"};
+            var products = _productRepository.GetProducts(query, null, respondsHeaders);
+            var page1Ids = products.Select(x => x.ID).OrderBy(x => x).ToList();
+
+            //next page
+            products = _productRepository.GetNextProductPage(respondsHeaders);
+            var page2Ids = products.Select(x => x.ID).OrderBy(x => x).ToList();
+
+            //previous page
+            products = _productRepository.GetPreviousProductPage(respondsHeaders);
+            var page1IdsAagain = products.Select(x => x.ID).OrderBy(x => x).ToList();
+
+            page1Ids.ForEach(x => Assert.DoesNotContain(x, page2Ids));
+
+            page1Ids.ForEach(x => Assert.Contains(x, page1IdsAagain));
+
         }
 
     }

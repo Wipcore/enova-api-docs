@@ -38,6 +38,17 @@ namespace Wipcore.eNova.Api.NETClient
             return _apiRepository.GetMany<TProductModel>(queryModel, headers, contextModel, action).ToList();
         }
 
+        public List<TProductModel> GetProducts(QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null) => 
+            _apiRepository.GetMany<TProductModel>(queryModel, headers, contextModel).ToList();
+        
+
+        public List<TProductModel> GetNextProductPage(ApiResponseHeadersModel previousRequestHeaders)
+            => _apiRepository.GetNextPage<TProductModel>(previousRequestHeaders).ToList();
+
+        public List<TProductModel> GetPreviousProductPage(ApiResponseHeadersModel previousRequestHeaders)
+            => _apiRepository.GetPreviousPage<TProductModel>(previousRequestHeaders).ToList();
+
+
         public TProductModel CreateProduct(TProductModel product, ContextModel contextModel = null)
         {
             return (TProductModel)_apiRepository.SaveObject<TProductModel>(JObject.FromObject(product), contextModel: contextModel, verifyIdentifierNotTaken: false);

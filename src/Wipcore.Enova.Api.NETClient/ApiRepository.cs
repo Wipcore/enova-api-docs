@@ -147,6 +147,19 @@ namespace Wipcore.eNova.Api.NETClient
         }
 
         /// <summary>
+        /// Get the next page of items from a previous request.
+        /// </summary>
+        public IEnumerable<TModel> GetNextPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
+            => _apiClientMaker.Invoke().GetNextPage<TModel>(headersOfPreviousRequest);
+
+        /// <summary>
+        /// Get the previous page of items from a previous request.
+        /// </summary>
+        public IEnumerable<TModel> GetPreviousPage<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
+            => _apiClientMaker.Invoke().GetPreviousPage<TModel>(headersOfPreviousRequest);
+        
+
+        /// <summary>
         /// Deletes an object by id.
         /// </summary>
         public bool DeleteObject<TModel>(int id) where TModel : BaseModel => DeleteObject<TModel>(id, null);
