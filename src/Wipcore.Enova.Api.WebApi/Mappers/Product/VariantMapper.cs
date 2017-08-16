@@ -52,7 +52,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                 
                 //should be owner if there are variant ids and no specified owner
                 var shouldBeOwner = variants?.Count > 0 && otherValues.GetValueInsensitive<int>("VariantOwnerId") == default(int) &&
-                    String.IsNullOrEmpty(Convert.ToString(otherValues.GetValueInsensitive<int>("VariantOwnerIdentifier")));
+                    String.IsNullOrEmpty(Convert.ToString(otherValues.GetValueInsensitive<string>("VariantOwnerIdentifier")));
 
                 if (!shouldBeOwner && product.IsVariantOwner) //if you shouldn't be an owner, but are, then stop it!
                 {

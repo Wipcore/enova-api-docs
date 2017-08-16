@@ -87,7 +87,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                 }
 
                 //should be owner if there are variants and no specified owner
-                var shouldBeOwner = variants.Count > 0 && otherValues.GetValueInsensitive<object>("VariantOwner") == null;
+                var shouldBeOwner = variants.Count > 0 && otherValues.GetValueInsensitive("VariantOwner") == null;
 
                 if (!shouldBeOwner && product.IsVariantOwner) //if you shouldn't be an owner, but are, then stop it!
                 {
