@@ -255,7 +255,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
             if (obj == null)
                 return false;
 
+            _cacheService.ClearCache(obj.GetType());
             obj.Delete();
+
+            _logger.LogInformation($"{_authService.LogUser()} deleted object with ID {obj.ID} and identifier {obj.Identifier} of type {obj.GetType().Name}");
+
             return true;
         }
 
@@ -270,7 +274,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
             if (obj == null)
                 return false;
 
+            _cacheService.ClearCache(obj.GetType());
             obj.Delete();
+
+            _logger.LogInformation($"{_authService.LogUser()} deleted object with ID {obj.ID} and identifier {obj.Identifier} of type {obj.GetType().Name}");
+
             return true;
         }
 
