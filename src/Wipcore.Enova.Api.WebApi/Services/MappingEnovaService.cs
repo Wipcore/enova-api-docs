@@ -166,7 +166,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         {
             return _settableEnovaProperties.GetOrAdd(type.FullName + propertyName, k =>
             {
-                var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+                var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                 return property != null && property.CanWrite;
             });
         }
