@@ -143,5 +143,11 @@
     "default": {
       "properties": "Identifier,Value"
     }
+  },
+  "enovatextdocument": {
+    "default": {
+      "properties": "Identifier,Name,FileName,Description"
+    }
   }
+
 }
