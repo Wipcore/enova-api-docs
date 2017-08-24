@@ -72,7 +72,6 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                 return;
 
             var context = obj.GetContext();
-            var product = (EnovaBaseProduct)obj;
             dynamic attributes = value;
             foreach (var a in attributes)
             {
@@ -108,7 +107,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     if (isNew)
                         continue;
 
-                    product.RemoveAttributeValue(enovaAttribute);
+                    obj.RemoveAttributeValue(enovaAttribute);
                     continue;
                 }
 
@@ -135,7 +134,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     {
                         var attributeType = EnovaAttributeType.Find(context, Convert.ToInt32(attribute.AttributeType.ID));
                         attributeType.AddValue(enovaAttribute);
-                        product.AddAttributeValue(enovaAttribute);
+                        obj.AddAttributeValue(enovaAttribute);
                     }
                 }
                 else //if not contineous then add the new attribute and remove the old
@@ -153,9 +152,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                             First(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
 
                         if (enovaAttribute != null)
-                            product.RemoveAttributeValue(enovaAttribute);
+                            obj.RemoveAttributeValue(enovaAttribute);
 
-                        product.AddAttributeValue(newAttributeValue);
+                        obj.AddAttributeValue(newAttributeValue);
                     }
                 }
             }

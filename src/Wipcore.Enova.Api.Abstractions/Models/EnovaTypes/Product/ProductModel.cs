@@ -40,7 +40,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product
         [PropertyPresentation("ProductVariants", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
         public List<VariantModel> Variants { get; set; }
 
-        [PropertyPresentation("AttributesOnProduct", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
+        [PropertyPresentation("AttributesOnObject", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
         public List<AttributeValueModel> Attributes { get; set; }
 
         [PropertyPresentation("Boolean", "Is not stockable", description: "Set true if this product should not have any stock in Enova.", isEditable: true, isFilterable: true, isGridColumn: false, languageDependant: false, sortOrder: 300)]
