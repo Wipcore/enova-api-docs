@@ -24,11 +24,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Customer
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
-            if(value == null)
+            var password = value?.ToString();
+            if (String.IsNullOrEmpty(password))
                 return;
 
             var customer = (EnovaCustomer) obj;
-            customer.Password = value.ToString();
+            customer.Password = password;
         }
      
     }
