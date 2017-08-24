@@ -13,6 +13,12 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
     [IndexModel]
     public class DocumentModel : BaseModel
     {
+        public DocumentModel()
+        {
+            StartAt = WipConstants.DefaultStartAtDateTime;
+            EndAt = WipConstants.DefaultEndAtDateTime;
+        }
+
         [PropertyPresentation("String", null, languageDependant: true, isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 300)]
         public string Name { get; set; }
 
