@@ -70,7 +70,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get EnovaLanguage specified by ids. 
+        /// Get languages specified by ids. 
         /// </summary>
         [HttpGet("ids/{ids}")]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
@@ -80,7 +80,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
-        /// Get EnovaLanguage specified by identifiers. 
+        /// Get languages specified by identifiers. 
         /// </summary>
         [HttpGet("identifiers/{identifiers}")]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)

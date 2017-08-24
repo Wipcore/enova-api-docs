@@ -38,7 +38,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             sb.AppendLine("Welcome to Enova API. Version " + Startup.ApiVersion);
             sb.AppendLine("Enova is: " + (IsEnovaAlive() ? "Online" : "Offline"));
             sb.AppendLine();
-            sb.AppendLine("API documentation: " + baseurl + "/swagger/ui");
+            sb.AppendLine("API documentation: " + baseurl + "/swagger/");
             
 
             return Content(sb.ToString());
