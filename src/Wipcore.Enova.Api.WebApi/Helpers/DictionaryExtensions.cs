@@ -55,7 +55,8 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 
         public static object GetValueInsensitive(this IDictionary<string, object> dictionary, string key)
         {
-            return dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
+            var entry = dictionary.FirstOrDefault(x => String.Equals(key, x.Key, StringComparison.InvariantCultureIgnoreCase));
+            return entry.Value;
         }
 
         public static T GetValueInsensitive<T>(this IDictionary<string, object> dictionary, string key)
