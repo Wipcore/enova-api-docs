@@ -73,20 +73,20 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <summary>
         /// Get EnovaSystemText specified by ids. 
         /// </summary>
-        [HttpGet("ids/{ids}")]
-        public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string ids)
+        [HttpGet("ids")]
+        public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
-            var listIds = ids.Split(',').Select(x => Convert.ToInt32(x));
+            var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
             return _objectService.GetMany<EnovaSystemText>(requestContext, query, listIds);
         }
 
         /// <summary>
         /// Get EnovaSystemText specified by identifiers. 
         /// </summary>
-        [HttpGet("identifiers/{identifiers}")]
-        public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifiers)
+        [HttpGet("identifiers")]
+        public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
-            var listIdentifiers = identifiers.Split(',').Select(x => x.Trim());
+            var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();
             return _objectService.GetMany<EnovaSystemText>(requestContext, query, listIdentifiers);
         }
 
