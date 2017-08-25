@@ -27,15 +27,17 @@ namespace Wipcore.eNova.Api.NETClient
         public List<TProductModel> GetProducts(IEnumerable<int> ids, QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null)
         {
             var idsString = String.Join(",", ids);
-            var action = $"ids/{idsString}";
-            return _apiRepository.GetMany<TProductModel>(queryModel, headers, contextModel, action).ToList();
+            var action = "ids";
+            var extraParameters = new Dictionary<string, object>() { { "ids", idsString } };
+            return _apiRepository.GetMany<TProductModel>(queryModel, headers, contextModel, action, extraParameters: extraParameters).ToList();
         }
 
         public List<TProductModel> GetProducts(IEnumerable<string> identifiers, QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null)
         {
             var idsString = String.Join(",", identifiers);
-            var action = $"identifiers/{idsString}";
-            return _apiRepository.GetMany<TProductModel>(queryModel, headers, contextModel, action).ToList();
+            var action = "identifiers";
+            var extraParameters = new Dictionary<string, object>() { { "identifiers", idsString } };
+            return _apiRepository.GetMany<TProductModel>(queryModel, headers, contextModel, action, extraParameters: extraParameters).ToList();
         }
 
         public List<TProductModel> GetProducts(QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null) => 
