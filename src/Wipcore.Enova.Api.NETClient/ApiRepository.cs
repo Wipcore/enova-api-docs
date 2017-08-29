@@ -16,7 +16,7 @@ using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes;
 using Fasterflect;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     /// <summary>
     /// A repository for access to Enova through the API. 

@@ -9,7 +9,7 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.NetClient;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class NetClientModule : Autofac.Module, IEnovaApiModule
     {

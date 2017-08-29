@@ -7,7 +7,7 @@ using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class OrderRepository<TOrderModel> where TOrderModel : OrderModel
     {

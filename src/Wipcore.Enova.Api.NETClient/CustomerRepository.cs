@@ -9,7 +9,7 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
 using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class CustomerRepository<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
     {

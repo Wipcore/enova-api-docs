@@ -16,7 +16,7 @@ using Wipcore.Enova.Api.Abstractions.Models;
 using System.Web.Http;
 using Wipcore.Enova.Api.Abstractions;
 
-namespace Wipcore.eNova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     /// <summary>
     /// Client for sending requests to an API.
