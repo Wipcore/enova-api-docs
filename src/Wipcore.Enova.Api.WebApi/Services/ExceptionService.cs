@@ -29,6 +29,12 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 return;
 
             _log.LogError(context.Exception.ToString());
+            var innerException = context.Exception.InnerException;
+            while (innerException != null)
+            {
+                _log.LogError("InnerException: " +innerException);
+                innerException = innerException.InnerException;
+            }
 
             var statusCode = GetStatusCodeForException(context.Exception);
             
