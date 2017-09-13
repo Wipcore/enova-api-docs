@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
-using Wipcore.Enova.Api.Abstractions.Interfaces.Cart;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
-using Wipcore.Enova.Generics;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -134,32 +132,6 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             var carts = _cartService.GetCartsByCustomer(null, id);
             return _objectService.GetMany<EnovaCart>(requestContext, query, carts);
-        }
-
-        /// <summary>
-        /// Get a cart mapped to a model.
-        /// </summary>
-        [HttpGet("AsModel")]
-        [Authorize]
-        public ICalculatedCartModel GetCartAsModel(ContextModel requestContext, string identifier = null, int id = 0)
-        {
-            var context = _contextService.GetContext();
-            var cart = context.FindObject<EnovaCart>(identifier) ?? context.FindObject<EnovaCart>(id);
-
-            if (!_authService.AuthorizeAccess(cart?.Customer?.Identifier))
-                throw new HttpException(HttpStatusCode.Unauthorized, "This cart belongs to another customer.");
-
-            var model = _cartService.GetCart(identifier, id);
-            return model;
-        }
-
-        /// <summary>
-        /// Create or update a cart.
-        /// </summary>
-        [HttpPost()]
-        public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
-        {
-            return _cartService.CalculateCart(cart);
         }
 
         /// <summary>

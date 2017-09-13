@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
-using Wipcore.Enova.Api.Abstractions.Interfaces.Cart;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.OAuth;
@@ -151,33 +150,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
 
             return _orderService.GetValidShippingStatuses(order, includeCurrentStatus, allValidIfNoStatus);
         }
-
-        /// <summary>
-        /// Get an order mapped to a model.
-        /// </summary>
-        [HttpGet("AsModel")]
-        [Authorize]
-        public ICalculatedCartModel GetCartAsModel(ContextModel requestContext, string identifier = null, int id = 0)
-        {
-            var context = _contextService.GetContext();
-            var order = context.FindObject<EnovaOrder>(identifier) ?? context.FindObject<EnovaOrder>(id);
-
-            if (!_authService.AuthorizeAccess(order?.Customer?.Identifier))
-                throw new HttpException(HttpStatusCode.Unauthorized, "This order belongs to another customer.");
-
-            var model = _orderService.GetOrder(identifier, id);
-            return model;
-        }
-
-        /// <summary>
-        /// Create or update an order. Already existing orders cannot have basic order rows changed (quantity, types); instead create a new order.
-        /// </summary>
-        [HttpPost()]
-        public ICartModel Post([FromUri] ContextModel requestContext, [FromBody]CartModel cart)
-        {
-            return _orderService.SaveOrder(cart);
-        }
-
+        
         /// <summary>
         /// Create or update an order.
         /// </summary>
