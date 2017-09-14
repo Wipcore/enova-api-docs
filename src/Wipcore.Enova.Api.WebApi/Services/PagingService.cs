@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Library;
 
 namespace Wipcore.Enova.Api.WebApi.Services
 {
@@ -17,6 +20,30 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public PagingService(IHttpContextAccessor httpAccessor)
         {
             _httpAccessor = httpAccessor;
+        }
+
+        /// <summary>
+        /// Get all response headers.
+        /// </summary>
+        public IDictionary<string, string> GetHeaders()
+        {
+            var httpContext = _httpAccessor.HttpContext;
+            return httpContext.Response.Headers.ToDictionary(k => k.Key, v => v.Value.ToString());
+        }
+
+        /// <summary>
+        /// Set given values into the response headers.
+        /// </summary>
+        public void SetHeaders(IDictionary<string, string> headers)
+        {
+            if(headers == null)
+                return;
+
+            var httpContext = _httpAccessor.HttpContext;
+            foreach (var header in headers)
+            {
+                httpContext.Response.Headers[header.Key] = header.Value;
+            }
         }
 
         /// <summary>

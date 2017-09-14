@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
@@ -20,29 +21,47 @@ namespace Wipcore.eNova.Api.WebApi.Services
         private readonly IConfigurationRoot _configuration;
         private readonly ObjectCache _cache;
         private readonly IAuthService _authService;
+        private readonly IPagingService _pagingService;
+        private readonly IHttpContextAccessor _httpAccessor;
+        private readonly string _headersSuffix = "-headers";
 
-        public CacheService(IConfigurationRoot configuration, ObjectCache cache, IAuthService authService)
+        public CacheService(IConfigurationRoot configuration, ObjectCache cache, IAuthService authService, IPagingService pagingService, IHttpContextAccessor httpAccessor)
         {
             _configuration = configuration;
             _cache = cache;
             _authService = authService;
+            _pagingService = pagingService;
+            _httpAccessor = httpAccessor;
         }
 
 
         /// <summary>
-        /// Get cache entry for a request. Key is built on all in parameters.
+        /// Get cache entry for a request. Key is built on all in parameters. Also puts cached header values into response.
         /// </summary>
         public IEnumerable<IDictionary<string, object>> GetCache(IContextModel requestContext, IQueryModel query, Type type, BaseObjectList candidates = null)
         {
             if (query.Cache == false)
+            {
+                _httpAccessor.HttpContext.Response.Headers["X-Cache"] = "bypass";
                 return null;
-
+            }
+            
             if (query.Cache != true && !Convert.ToBoolean(_configuration["Cache:Enabled"] ?? "true"))
+            {
+                _httpAccessor.HttpContext.Response.Headers["X-Cache"] = "defaultoff";
                 return null;
+            }
 
             var key = Key(requestContext, query, type, candidates);
 
-            return _cache.Get(key) as IEnumerable<IDictionary<string, object>>;
+            var headers = _cache.Get(key + _headersSuffix) as IDictionary<string, string>;
+            _pagingService.SetHeaders(headers);
+
+            var cacheData = _cache.Get(key) as IEnumerable<IDictionary<string, object>>;
+
+            _httpAccessor.HttpContext.Response.Headers["X-Cache"] = cacheData == null ? "miss"  : "hit";
+
+            return cacheData;
         }
 
         /// <summary>
@@ -68,6 +87,10 @@ namespace Wipcore.eNova.Api.WebApi.Services
             var key = Key(requestContext, query, type, candidates);
 
             _cache.Set(key, value, DateTime.Now.AddMinutes(cacheMinutes));
+
+            //also set header values in cache, to repeat back at next request
+            var headers = _pagingService.GetHeaders();
+            _cache.Set(key + _headersSuffix, headers, DateTime.Now.AddMinutes(cacheMinutes));
         }
 
         /// <summary>
