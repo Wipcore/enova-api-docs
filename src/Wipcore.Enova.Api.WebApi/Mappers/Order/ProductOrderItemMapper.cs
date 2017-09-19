@@ -33,20 +33,25 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Order
         {
             var order = (EnovaOrder)obj;
             var context = obj.GetContext();
-            var orderItems = order.GetOrderItems<EnovaProductOrderItem>().Select(x => new Dictionary<string, object>()
-            {
-                {"ID", x.ID},
-                {"ProductID", x.Product?.ID ?? 0},
-                {"Identifier", x.Identifier},
-                {"ProductIdentifier", x.ProductIdentifier},
-                {"PriceExclTax", x.GetPrice(false)},
-                {"PriceInclTax", x.GetPrice(true)},
-                {"PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
-                {"PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
-                {"OrderedQuantity", x.OrderedQuantity},
-                {"Comment", x.Comment }
-            }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
-           
+
+            var orderItems = from x in order.GetOrderItems<EnovaProductOrderItem>()
+                             let priceExclTax = x.GetPrice(false)
+                             let priceInclTax = x.GetPrice(true)
+                             select new Dictionary<string, object>() {
+                                {"ID", x.ID},
+                                {"ProductID", x.Product?.ID ?? 0},
+                                {"Identifier", x.Identifier},
+                                {"ProductIdentifier", x.ProductIdentifier},
+                                {"PriceExclTax", priceExclTax},
+                                {"PriceInclTax", priceInclTax},
+                                {"PriceExclTaxString", context.AmountToString(priceExclTax, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"PriceInclTaxString", context.AmountToString(priceInclTax, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"TotalPriceExclTaxString", context.AmountToString(priceExclTax * (decimal)x.OrderedQuantity, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"TotalPriceInclTaxString", context.AmountToString(priceInclTax * (decimal)x.OrderedQuantity, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"OrderedQuantity", x.OrderedQuantity},
+                                {"Comment", x.Comment }
+                            }.MapLanguageProperty("Name", mappingLanguages, x.GetName);
+
             return orderItems;
         }
 

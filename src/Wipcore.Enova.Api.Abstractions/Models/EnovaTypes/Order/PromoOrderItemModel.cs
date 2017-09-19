@@ -20,6 +20,24 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order
         [PropertyPresentation("NumberString", "Promo price incl tax", isEditable: false, isFilterable: true, isGridColumn: true, sortOrder: 11600)]
         public decimal PriceInclTax { get; set; }
 
+        [PropertyPresentation("String", "Promo price excl tax", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 8600)]
+        public string PriceExclTaxString { get; set; }
+
+        [PropertyPresentation("String", "Promo price incl tax", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 8700)]
+        public string PriceInclTaxString { get; set; }
+
+        [PropertyPresentation("String", "Total promo price excl tax", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 8800)]
+        public string TotalPriceExclTaxString { get; set; }
+
+        [PropertyPresentation("String", "Total promo price incl tax", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 8900)]
+        public string TotalPriceInclTaxString { get; set; }
+
+        [PropertyPresentation("NumberString", "Quantity", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 9000)]
         public double OrderedQuantity { get; set; }
+
+        [PropertyPresentation("String", null, isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 9100)]
+        public string Comment { get; set; }
+
+
     }
 }

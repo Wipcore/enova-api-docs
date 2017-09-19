@@ -36,19 +36,24 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
             var cart = (EnovaCart)obj;
             var context = obj.GetContext();
 
-            var cartItems = cart.GetCartItems<EnovaProductCartItem>().Select(x => new Dictionary<string, object>()
-                {
-                    {"ID", x.ID },
-                    {"ProductID", x.Product?.ID ?? 0 },
-                    {"Identifier", x.Identifier },
-                    {"ProductIdentifier", x.ProductIdentifier },
-                    {"PriceExclTax", x.GetPrice(false) },
-                    {"PriceInclTax", x.GetPrice(true) },
-                    {"PriceExclTaxString", context.AmountToString(x.GetPrice(false), context.CurrentCurrency, _configService.DecimalsInAmountString())},
-                    {"PriceInclTaxString", context.AmountToString(x.GetPrice(true), context.CurrentCurrency, _configService.DecimalsInAmountString())},
-                    {"Quantity", x.Quantity },
-                    {"Comment", x.Comment }
-                }.MapLanguageProperty("Name", mappingLanguages, x.GetName));
+            var cartItems = from x in cart.GetCartItems<EnovaProductCartItem>()
+                             let priceExclTax = x.GetPrice(false)
+                             let priceInclTax = x.GetPrice(true)
+                             select new Dictionary<string, object>() {
+                                {"ID", x.ID},
+                                {"ProductID", x.Product?.ID ?? 0},
+                                {"Identifier", x.Identifier},
+                                {"ProductIdentifier", x.ProductIdentifier},
+                                {"PriceExclTax", priceExclTax},
+                                {"PriceInclTax", priceInclTax},
+                                {"PriceExclTaxString", context.AmountToString(priceExclTax, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"PriceInclTaxString", context.AmountToString(priceInclTax, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"TotalPriceExclTaxString", context.AmountToString(priceExclTax * (decimal)x.Quantity, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"TotalPriceInclTaxString", context.AmountToString(priceInclTax * (decimal)x.Quantity, context.CurrentCurrency, _configService.DecimalsInAmountString())},
+                                {"Quantity", x.Quantity},
+                                {"Comment", x.Comment }
+                            }.MapLanguageProperty("Name", mappingLanguages, x.GetName);
+            
             return cartItems;
         }
 
