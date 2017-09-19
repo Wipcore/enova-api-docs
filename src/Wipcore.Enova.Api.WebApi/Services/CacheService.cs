@@ -121,7 +121,8 @@ namespace Wipcore.eNova.Api.WebApi.Services
 
         private string Key(IContextModel requestContext, IQueryModel query, Type type, BaseObjectList candidates = null)
         {
-            var key = $"{type.Name}-{_authService.GetLoggedInAlias() ?? String.Empty}{requestContext.Currency}{requestContext.Language}{requestContext.Market}{query.Filter}{query.Page}{query.Properties}{query.Size}{query.Sort}{query.Template}";
+            var key = $"{type.Name}-{_authService.GetLoggedInAlias() ?? String.Empty}{requestContext.Currency}{requestContext.Language}{requestContext.Market}{requestContext.DecimalSeparator}{requestContext.ThousandSeparator}" +
+                      $"{query.Filter}{query.Page}{query.Properties}{query.Size}{query.Sort}{query.Template}";
             if (candidates != null)
                 key += String.Join(String.Empty, candidates.Cast<BaseObject>().Select(x => x.ID.ToString()));
 

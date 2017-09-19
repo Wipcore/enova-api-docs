@@ -59,6 +59,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
                     SetLanguage(enovaContext, settings.FirstOrDefault(x => x.Key == "language")?.Value);
                     SetCurrency(enovaContext, settings.FirstOrDefault(x => x.Key == "currency")?.Value);
                     SetTaxRule(enovaContext, settings.FirstOrDefault(x => x.Key == "taxrule")?.Value);
+                    SetThousandsSeparator(enovaContext, settings.FirstOrDefault(x => x.Key == "thousandseparator")?.Value);
+                    SetDecimalSeparator(enovaContext, settings.FirstOrDefault(x => x.Key == "decimalseparator")?.Value);
                 }
             }
             
@@ -96,6 +98,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 //then override by url specified values
                 SetLanguage(enovaContext, requestContext.Language);
                 SetCurrency(enovaContext, requestContext.Currency);
+                SetThousandsSeparator(enovaContext, requestContext.ThousandSeparator);
+                SetDecimalSeparator(enovaContext, requestContext.DecimalSeparator);
             }
 
             return enovaContext;
@@ -137,12 +141,32 @@ namespace Wipcore.Enova.Api.WebApi.Services
             enovaContext.CurrentCurrency = currency;
         }
 
+        private void SetDecimalSeparator(Context enovaContext, string separator)
+        {
+            if (String.IsNullOrEmpty(separator))
+                return;
+
+            enovaContext.CurrentDecimalSeparator = separator;
+        }
+
+        private void SetThousandsSeparator(Context enovaContext, string separator)
+        {
+            if (String.IsNullOrEmpty(separator))
+                return;
+
+            enovaContext.CurrentThousandsSeparator = separator;
+        }
+
         private void ClearSpecifiedContextValues(Context enovaContext, User user)
         {
             if (user.Language != null)
                 enovaContext.CurrentLanguage = null;
             if (user.Currency != null)
                 enovaContext.CurrentCurrency = null;
+            if (!String.IsNullOrEmpty(user.DecimalSeparator))
+                enovaContext.CurrentDecimalSeparator = null;
+            if (!String.IsNullOrEmpty(user.ThousandsSeparator))
+                enovaContext.CurrentThousandsSeparator = null;
         }
     }
 }

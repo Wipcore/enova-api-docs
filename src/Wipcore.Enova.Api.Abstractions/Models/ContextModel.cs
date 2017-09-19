@@ -19,6 +19,16 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// </summary>
         public string Currency { get; set; }
 
+        /// <summary>
+        /// Seperator between thousands in currency strings.
+        /// </summary>
+        public string ThousandSeparator { get; set; }
+
+        /// <summary>
+        /// Seperator for decimals in currency strings.
+        /// </summary>
+        public string DecimalSeparator { get; set; }
+
         public override string ToString()
         {
             return $"ContextModel: (Market: {Market}, Language: {Language}, Currency: {Currency})";

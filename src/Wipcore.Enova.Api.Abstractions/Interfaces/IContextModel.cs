@@ -19,5 +19,15 @@
         /// Identifier of the Enova currency used during the request.
         /// </summary>
         string Currency { get; set; }
+
+        /// <summary>
+        /// Seperator between thousands in currency strings.
+        /// </summary>
+        string ThousandSeparator { get; set; }
+
+        /// <summary>
+        /// Seperator for decimals in currency strings.
+        /// </summary>
+        string DecimalSeparator { get; set; }
     }
 }
