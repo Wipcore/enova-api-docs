@@ -28,6 +28,7 @@ using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Connectivity;
 using EnumerableExtensions = Wipcore.Library.EnumerableExtensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -123,7 +124,67 @@ namespace Wipcore.Enova.Api.WebApi
                 options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
                 options.AddPolicy(CustomerUrlIdPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdPolicy()));
                 options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
+            });                     
+
+            var dataProtectionProvider = DataProtectionProvider.Create(new DirectoryInfo(_configFolderPath), configuration =>
+            {
+                configuration.SetApplicationName(AuthService.AuthenticationScheme + ApiVersion);
+                if (Configuration.GetValue<bool>("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems or an older OS
+                    configuration.ProtectKeysWithDpapiNG();
             });
+
+            var cookieOptions = new Action<CookieAuthenticationOptions>(options => {
+                options.DataProtectionProvider = dataProtectionProvider;
+                //AuthenticationScheme = AuthService.AuthenticationScheme,
+                //AutomaticAuthenticate = true,
+                //AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
+                options.LoginPath = Configuration.GetValue<string>("Auth:LoginPath", String.Empty);
+                options.LogoutPath = Configuration.GetValue<string>("Auth:LogoutPath", String.Empty);
+                options.ReturnUrlParameter = Configuration.GetValue<string>("Auth:ReturnUrlParameter", String.Empty);
+                options.CookieHttpOnly = Configuration.GetValue<bool>("Auth:CookieHttpOnly", false);
+                options.CookieSecure = Configuration.GetValue<bool>("Auth:CookieSecure", false) ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest;
+                options.CookiePath = Configuration.GetValue<string>("Auth:CookiePath", "/");
+                options.ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 360), 0);
+                options.SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true);
+
+                if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieDomain", String.Empty)))
+                    options.CookieDomain = Configuration.GetValue<string>("Auth:CookieDomain");
+                if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieName", String.Empty)))
+                    options.CookieName = Configuration.GetValue<string>("Auth:CookieName");
+
+            });
+
+            var jwtOptions = new Action<JwtBearerOptions>(options => {
+                //options.AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.AutomaticAuthenticate = true;
+                //options.AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true);
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey))),
+                    ValidateIssuer = Configuration.GetValue<bool>("Auth:ValidateIssuer", true),
+                    ValidIssuer = AuthService.AuthenticationScheme,
+                    ValidateAudience = Configuration.GetValue<bool>("Auth:ValidateAudience", true),
+                    ValidAudience = Configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
+                    ValidateLifetime = Configuration.GetValue<bool>("Auth:ValidateLifetime", true),
+                    ClockSkew = TimeSpan.Zero,
+                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme,                    
+                };
+                if (Configuration.GetValue<bool>("Auth:UseAuthTimeValidation", true))
+                    options.TokenValidationParameters.LifetimeValidator = Container.Resolve<IAuthService>().ExpireValidator;                
+            });
+
+
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions);
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwtOptions);
+            //services.AddAuthentication(options => {
+            //    options.DefaultScheme = AuthService.AuthenticationScheme;
+            //    options.DefaultAuthenticateScheme = AuthService.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = AuthService.AuthenticationScheme;                
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(cookieOptions)/*.AddJwtBearer(jwtOptions)*/;
+
+            //services.AddAuthentication(AuthService.AuthenticationScheme).AddJwtBearer(jwtOptions);
 
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
                 ConfigureSwagger(services);
@@ -151,60 +212,11 @@ namespace Wipcore.Enova.Api.WebApi
             app.UseStaticFiles();
             app.UseStatusCodePages();
 
-            var dataProtectionProvider = DataProtectionProvider.Create(new DirectoryInfo(_configFolderPath), configuration =>
-                {
-                    configuration.SetApplicationName(AuthService.AuthenticationScheme + ApiVersion);
-                    if (Configuration.GetValue<bool>("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems or an older OS
-                        configuration.ProtectKeysWithDpapiNG();
-                });
-            
-            var cookieOptions = new CookieAuthenticationOptions()
-            {
-                DataProtectionProvider = dataProtectionProvider,
-                AuthenticationScheme = AuthService.AuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
-                LoginPath = Configuration.GetValue<string>("Auth:LoginPath", String.Empty),
-                LogoutPath = Configuration.GetValue<string>("Auth:LogoutPath", String.Empty),
-                ReturnUrlParameter = Configuration.GetValue<string>("Auth:ReturnUrlParameter", String.Empty),
-                CookieHttpOnly = Configuration.GetValue<bool>("Auth:CookieHttpOnly", false),
-                CookieSecure = Configuration.GetValue<bool>("Auth:CookieSecure", false) ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest,
-                CookiePath = Configuration.GetValue<string>("Auth:CookiePath", "/"),
-                ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 360), 0),
-                SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true)
-            };
+            //app.UseJwtBearerAuthentication(jwtBearer);
 
-            if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieDomain", String.Empty)))
-                cookieOptions.CookieDomain = Configuration.GetValue<string>("Auth:CookieDomain");
-            if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieName", String.Empty)))
-                cookieOptions.CookieName = Configuration.GetValue<string>("Auth:CookieName");
+            //app.UseCookieAuthentication(cookieOptions);
 
-            var jwtBearer = new JwtBearerOptions()
-            {
-                AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
-                TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey))),
-                    ValidateIssuer = Configuration.GetValue<bool>("Auth:ValidateIssuer", true),
-                    ValidIssuer = AuthService.AuthenticationScheme,
-                    ValidateAudience = Configuration.GetValue<bool>("Auth:ValidateAudience", true),
-                    ValidAudience = Configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
-                    ValidateLifetime = Configuration.GetValue<bool>("Auth:ValidateLifetime", true),
-                    ClockSkew = TimeSpan.Zero,
-                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme
-                }
-            };
-
-            if(Configuration.GetValue<bool>("Auth:UseAuthTimeValidation", true))
-                jwtBearer.TokenValidationParameters.LifetimeValidator = Container.Resolve<IAuthService>().ExpireValidator;
-
-            app.UseJwtBearerAuthentication(jwtBearer);
-
-            app.UseCookieAuthentication(cookieOptions);
-
+            app.UseAuthentication();
             app.UseMvc();
             
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
