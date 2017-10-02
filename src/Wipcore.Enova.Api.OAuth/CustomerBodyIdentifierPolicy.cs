@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 
@@ -19,7 +18,7 @@ namespace Wipcore.Enova.Api.OAuth
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerBodyIdentifierPolicy requirement)
         {
-            if (context.User.HasClaim(x => (x.Type == JwtClaimTypes.Role || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
+            if (context.User.HasClaim(x => (x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
             {
                 context.Succeed(requirement);
                 return Task.FromResult(0);

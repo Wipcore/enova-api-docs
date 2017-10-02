@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core.SessionObjects;
+using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;

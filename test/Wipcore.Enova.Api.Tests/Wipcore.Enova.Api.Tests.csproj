@@ -12,6 +12,8 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,5 +42,6 @@
     <ProjectReference Include="..\..\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.csproj" />
     <ProjectReference Include="..\..\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.csproj" />
   </ItemGroup>
-
+  
+ 
 </Project>

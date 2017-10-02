@@ -152,6 +152,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Create or update a customer.
         /// </summary>
         [HttpPut()]
+        [AllowAnonymous]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
             return _customerService.SaveCustomer(requestContext, values);

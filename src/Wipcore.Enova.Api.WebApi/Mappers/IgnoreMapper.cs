@@ -18,7 +18,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
     {
         public IgnoreMapper(IConfigurationRoot configurationRoot)
         {
-            var setting = configurationRoot.GetValue("ApiSettings:MappingIgnoreProperties", "");
+            var setting = configurationRoot["ApiSettings:MappingIgnoreProperties"] ?? String.Empty;
             Names = setting.Split(',').Select(x => x.Trim()).ToList();
         }
 

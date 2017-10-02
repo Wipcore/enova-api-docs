@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Wipcore.Enova.Api.OAuth
@@ -18,7 +15,7 @@ namespace Wipcore.Enova.Api.OAuth
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerUrlIdentifierPolicy requirement)
         {
-            if (context.User.HasClaim(x => (x.Type == JwtClaimTypes.Role || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
+            if (context.User.HasClaim(x => (x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
             {
                 context.Succeed(requirement);
                 return Task.FromResult(0);
@@ -47,7 +44,7 @@ namespace Wipcore.Enova.Api.OAuth
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerUrlIdPolicy requirement)
         {
-            if (context.User.HasClaim(x => (x.Type == JwtClaimTypes.Role || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
+            if (context.User.HasClaim(x => (x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role") && x.Value == AuthService.AdminRole))
             {
                 context.Succeed(requirement);
                 return Task.FromResult(0);
