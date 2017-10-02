@@ -102,6 +102,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Add a payment to an order.
         /// </summary>
         [HttpPost()]
+        [AllowAnonymous]
         public IPaymentModel Post([FromUri] ContextModel requestContext, [FromBody]PaymentModel payment)
         {
             return _paymentService.SavePayment(payment);

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Wipcore.Enova.Api.Abstractions.Internal
 {

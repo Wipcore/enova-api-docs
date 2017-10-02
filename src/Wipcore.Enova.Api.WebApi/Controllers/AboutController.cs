@@ -48,6 +48,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Returns true if Enova is running.
         /// </summary>
         [HttpGet("IsEnovaAlive")]
+        [AllowAnonymous]
         public bool IsEnovaAlive()
         {
             var heartbeat = DateTime.MinValue;
@@ -67,9 +68,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get information about this Enova node.
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = AuthService.AdminRole)]
         [HttpGet("NodeInfo")]
         [HttpGet("api/NodeInfo")]
+        [Authorize(Roles = AuthService.AdminRole)]
         public IDictionary<string, object> NodeInfo()
         {
             var info = new Dictionary<string, object>();
@@ -82,8 +83,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             }
 
             info.Add("IsAlive", IsEnovaAlive());
-            info.Add("Database", _configurationRoot.GetValue<String>("Enova:ConnectionString"));
-            info.Add("EnovaLogging", _configurationRoot.GetValue<String>("Enova:LogPath"));
+            info.Add("Database", _configurationRoot["Enova:ConnectionString"]);
+            info.Add("EnovaLogging", _configurationRoot["Enova:LogPath"]);
             info.Add("NlogLogging", GetNlogLogFile());
 
 

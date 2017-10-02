@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using IdentityModel;
+using Microsoft.IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +10,8 @@ using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Wipcore.Enova.Api.OAuth
 {
@@ -30,6 +32,7 @@ namespace Wipcore.Enova.Api.OAuth
         /// Get information about any logged in user.
         /// </summary>
         [HttpGet("LoggedInAs")]
+        [AllowAnonymous]
         public IDictionary<string, object> LoggedInAs()
         {
             return _authService.GetLoggedInAlias() == null ?
@@ -37,7 +40,7 @@ namespace Wipcore.Enova.Api.OAuth
                 new Dictionary<string, object>()
                 {
                     { "LoggedIn", true }, { "Alias", _authService.GetLoggedInAlias() }, { "Identifier", _authService.GetLoggedInIdentifier() }, { "Name", _authService.GetLoggedInName() },
-                    { "LoginTime", _authService.GetClaim(JwtClaimTypes.AuthenticationTime) },  { "Role", _authService.GetLoggedInRole() }, { "Id", _authService.GetLoggedInId() },
+                    { "LoginTime", _authService.GetClaim("auth_time") },  { "Role", _authService.GetLoggedInRole() }, { "Id", _authService.GetLoggedInId() },
                     { "Currency", _authService.GetLoggedInDefaultCurrency() }, { "Language", _authService.GetLoggedInDefaultLanguage() }
                 };
         }
@@ -47,10 +50,11 @@ namespace Wipcore.Enova.Api.OAuth
         /// </summary>
         /// <returns></returns>
         [HttpPost("Logout")]
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.Authentication.SignOutAsync(AuthService.AuthenticationScheme);
-            
+            await HttpContext.SignOutAsync();
+
             return Ok("Successful logout.");
         }
 
@@ -58,6 +62,7 @@ namespace Wipcore.Enova.Api.OAuth
         /// Login as an administrator.
         /// </summary>
         [HttpPost("LoginAdmin")]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginAdmin([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
@@ -69,7 +74,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (claimsPrincipal == null)
                 return BadRequest(new LoginResponseModel("Invalid alias or password."));
 
-            await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
+            await HttpContext.SignInAsync(claimsPrincipal);
             
             var bearerToken = _authService.BuildToken(claimsPrincipal);
             var contextModel = new ContextModel() {Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
@@ -82,6 +87,7 @@ namespace Wipcore.Enova.Api.OAuth
         /// Login as a customer.
         /// </summary>
         [HttpPost("LoginCustomer")]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
@@ -92,7 +98,7 @@ namespace Wipcore.Enova.Api.OAuth
             if (claimsPrincipal == null)
                 return BadRequest(new LoginResponseModel("Invalid alias or password."));
 
-            await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
+            await HttpContext.SignInAsync(claimsPrincipal);
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
             var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
@@ -107,18 +113,18 @@ namespace Wipcore.Enova.Api.OAuth
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("LoginCustomerWithAdminCredentials")]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginCustomerWithAdminCredentials([FromBody]LoginCustomerWithAdminCredentialsModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new LoginResponseModel("Alias and password required."));
-            
-            string errorMessage;
-            var claimsPrincipal = _authService.LoginCustomerAsAdmin(model, out errorMessage);
+
+            var claimsPrincipal = _authService.LoginCustomerAsAdmin(model, out var errorMessage);
 
             if (claimsPrincipal == null)
                 return BadRequest(new LoginResponseModel(errorMessage));
 
-            await HttpContext.Authentication.SignInAsync(AuthService.AuthenticationScheme, claimsPrincipal);
+            await HttpContext.SignInAsync(claimsPrincipal);
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
             var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };

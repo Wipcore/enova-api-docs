@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using IdentityModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -33,8 +32,7 @@ namespace Wipcore.Enova.Api.OAuth
         public const string RoleClaim = "role";
         public const string DefaultCurrencyClaim = "currency";
         public const string DefaultLanguageClaim = "language";
-
-        public const string AuthenticationScheme = "EnovaApi";
+        
         public const string DefaultSignKey = "317aff46-2ed0-4e82-9f43-47d94663887b";
 
         private readonly IHttpContextAccessor _httpAccessor;
@@ -47,7 +45,7 @@ namespace Wipcore.Enova.Api.OAuth
             _httpAccessor = httpAccessor;
             _configuration = configuration;
             _log = loggerFactory.CreateLogger(GetType().Name);
-            var secretKey = configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey);
+            var secretKey = configuration["Auth:IssuerSigningKey"] ?? AuthService.DefaultSignKey;
             _signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)), SecurityAlgorithms.HmacSha256);
         }
@@ -76,7 +74,6 @@ namespace Wipcore.Enova.Api.OAuth
                 var user = admin ? (User)context.Login(model.Alias, model.Password)
                     : context.CustomerLogin(model.Alias, model.Password);
 
-                //contextModel = new ContextModel() {Currency = user.Currency?.Identifier, Language = user.Language?.Identifier};
                 var claimsPrincipal = BuildClaimsPrincipal(user, admin, model.Password);
                 return claimsPrincipal;
             }
@@ -123,11 +120,11 @@ namespace Wipcore.Enova.Api.OAuth
         public string BuildToken(ClaimsPrincipal claimsPrincipal)
         {
             var jwt = new JwtSecurityToken(
-                     issuer: AuthService.AuthenticationScheme, // Needs to be same as when checking authorization - no good error message when missaligned.
-                     audience: _configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
+                     issuer: "EnovaAPI", // Needs to be same as when checking authorization - no good error message when missaligned.
+                     audience: _configuration["Auth:ValidAudience"] ?? "http://localhost:5000/",
                      claims: claimsPrincipal.Claims.ToList(),
                      notBefore: DateTime.UtcNow,
-                     expires: DateTime.UtcNow.AddMinutes(_configuration.GetValue<int>("Auth:ExpireTimeMinutes", 60)),
+                     expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(_configuration["Auth:ExpireTimeMinutes"] ?? "60")),
                      signingCredentials: _signingCredentials
                  );
 
@@ -144,7 +141,7 @@ namespace Wipcore.Enova.Api.OAuth
             {
                 new Claim(SubjectClaim, user.Alias),
                 new Claim(NameClaim, user.FirstNameLastName),
-                new Claim(JwtClaimTypes.AuthenticationTime, DateTime.Now.ToString()),
+                new Claim("auth_time", DateTime.Now.ToString()),
                 new Claim(IdentifierClaim, user.Identifier),
                 new Claim(IdClaim, user.ID.ToString()),
                 new Claim(RoleClaim, admin ? AdminRole : CustomerRole),

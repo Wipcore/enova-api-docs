@@ -36,6 +36,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         [HttpHead("{identifier}")]
+        [AllowAnonymous]
         public void Head([FromUri]string identifier)
         {
             var found = _objectService.Exists<EnovaBaseProduct>(identifier);
@@ -44,6 +45,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         [HttpHead("id-{id}")]
+        [AllowAnonymous]
         public void Head([FromUri]int id)
         {
             var found = _objectService.Exists<EnovaBaseProduct>(id);
@@ -55,6 +57,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get a list of products.
         /// </summary>
         [HttpGet()]
+        [AllowAnonymous]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaBaseProduct>(requestContext, query);
@@ -64,6 +67,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get a product specified by identifier. 
         /// </summary>
         [HttpGet("{identifier}")]
+        [AllowAnonymous]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
             return _objectService.Get<EnovaBaseProduct>(requestContext, query, identifier);
@@ -73,6 +77,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get a product specified by id. 
         /// </summary>
         [HttpGet("id-{id}")]
+        [AllowAnonymous]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
         {
             return _objectService.Get<EnovaBaseProduct>(requestContext, query, id);
@@ -82,6 +87,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get products specified by ids. 
         /// </summary>
         [HttpGet("ids")]
+        [AllowAnonymous]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -92,6 +98,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get products specified by identifiers. 
         /// </summary>
         [HttpGet("identifiers")]
+        [AllowAnonymous]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct().Distinct();
@@ -102,6 +109,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get all variants of the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/variants")]
+        [AllowAnonymous]
         public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, QueryModel query, string identifier)
         {
             var members = _productService.GetVariants(identifier);
@@ -112,6 +120,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get stock information for the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/stock")]
+        [AllowAnonymous]
         public IEnumerable<IDictionary<string, object>> GetStock(ContextModel requestContext, QueryModel query, string identifier, string warehouse = null)
         {
             var compartments = _warehouseService.GetWarehouseCompartments(identifier, warehouse);
@@ -122,6 +131,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get attributes for the product specified by identifier.
         /// </summary>
         [HttpGet("{identifier}/attributes")]
+        [AllowAnonymous]
         public IEnumerable<IDictionary<string, object>> GetAttributes(ContextModel requestContext, QueryModel query, string identifier)
         {
             var attributes = _attributeService.GetAttributes<EnovaBaseProduct>(identifier);

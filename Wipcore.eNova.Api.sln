@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{12031503-6C3E-4F27-909B-A92746EE6034}"
 EndProject
@@ -10,19 +10,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.NetClient", "src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NetClient.xproj", "{9093C2B9-F0C5-4641-AD58-DC4EC7FF9AFA}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.OAuth", "src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.xproj", "{C25684EF-23F2-4262-8227-6116CD799B6F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.WebApi", "src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.xproj", "{842358BA-07F9-4B77-B529-76A15CDF4838}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Abstractions", "src\Wipcore.Enova.Api.Abstractions\Wipcore.Enova.Api.Abstractions.xproj", "{FA46C3E9-ACF3-4098-8BE4-1940AF9C8EC0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DBA5494A-A097-4D3A-8D0B-0BC4CAD3CBB4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Tests", "test\Wipcore.Enova.Api.Tests\Wipcore.Enova.Api.Tests.xproj", "{326B3C11-6785-45C0-9244-F4877CE72A49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wipcore.Enova.Api.NETClient", "src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NETClient.csproj", "{9093C2B9-F0C5-4641-AD58-DC4EC7FF9AFA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Wipcore.Enova.Api.Abstractions.Internal", "src\Wipcore.Enova.Api.Abstractions.Internal\Wipcore.Enova.Api.Abstractions.Internal.xproj", "{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wipcore.Enova.Api.OAuth", "src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.csproj", "{C25684EF-23F2-4262-8227-6116CD799B6F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wipcore.Enova.Api.WebApi", "src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.csproj", "{842358BA-07F9-4B77-B529-76A15CDF4838}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wipcore.Enova.Api.Abstractions", "src\Wipcore.Enova.Api.Abstractions\Wipcore.Enova.Api.Abstractions.csproj", "{FA46C3E9-ACF3-4098-8BE4-1940AF9C8EC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wipcore.Enova.Api.Tests", "test\Wipcore.Enova.Api.Tests\Wipcore.Enova.Api.Tests.csproj", "{326B3C11-6785-45C0-9244-F4877CE72A49}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wipcore.Enova.Api.Abstractions.Internal", "src\Wipcore.Enova.Api.Abstractions.Internal\Wipcore.Enova.Api.Abstractions.Internal.csproj", "{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,5 +65,8 @@ Global
 		{FA46C3E9-ACF3-4098-8BE4-1940AF9C8EC0} = {12031503-6C3E-4F27-909B-A92746EE6034}
 		{326B3C11-6785-45C0-9244-F4877CE72A49} = {DBA5494A-A097-4D3A-8D0B-0BC4CAD3CBB4}
 		{F29C84AD-7FD7-4203-AFA2-70FA78A6D15E} = {12031503-6C3E-4F27-909B-A92746EE6034}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A22FDAB6-D8C6-4DBF-B948-8E65AB8400C0}
 	EndGlobalSection
 EndGlobal

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Wipcore.Enova.Api.NetClient;
 using Wipcore.Enova.Api.Abstractions;
@@ -13,7 +10,6 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Attribute;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
-using Wipcore.Enova.Api.NetClient;
 using Xunit;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
 using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;

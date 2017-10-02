@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Wipcore.Enova.Api.Tests Class Library</Description>
+    <VersionPrefix>6.4.0.215-dev</VersionPrefix>
+    <Authors>henrik.eliasson</Authors>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Wipcore.Enova.Api.Tests</AssemblyName>
+    <OutputType>Library</OutputType>
+    <PackageId>Wipcore.Enova.Api.Tests</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Configs\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.0.0" />    
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.Abstractions.Internal\Wipcore.Enova.Api.Abstractions.Internal.csproj" />
+    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.Abstractions\Wipcore.Enova.Api.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NETClient.csproj" />
+    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.csproj" />
+    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.csproj" />
+  </ItemGroup>
+  
+ 
+</Project>

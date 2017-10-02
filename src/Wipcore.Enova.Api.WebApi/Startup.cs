@@ -28,6 +28,10 @@ using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Connectivity;
 using EnumerableExtensions = Wipcore.Library.EnumerableExtensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Wipcore.Enova.Api.Abstractions;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -61,7 +65,7 @@ namespace Wipcore.Enova.Api.WebApi
 
             Configuration = builder.Build();
 
-            _addInFolderPath = Configuration.GetValue<String>("ApiSettings:PathToAddins");
+            _addInFolderPath = Configuration["ApiSettings:PathToAddins"];
             if (String.IsNullOrEmpty(_addInFolderPath))
                 _addInFolderPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, @".\AddIn"));
 
@@ -72,14 +76,14 @@ namespace Wipcore.Enova.Api.WebApi
         {
             var settings = new InMemoryConnectionSettings
             {
-                DatabaseConnection = Configuration.GetValue<String>("Enova:ConnectionString"),
-                HistoryDatabaseConnection = Configuration.GetValue<String>("Enova:RevisionConnectionString"),
-                CertificateKey = Configuration.GetValue<String>("Enova:CertificateKey"),
-                CertificatePassword = Configuration.GetValue<String>("Enova:CertificatePassword"),
-                UserName = Configuration.GetValue<String>("Enova:Alias"),
-                Password = Configuration.GetValue<String>("Enova:Password"),
-                LogPath = Configuration.GetValue<String>("Enova:LogPath"),
-                LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel) Convert.ToInt32(Configuration.GetValue<String>("Enova:LogLevel")),
+                DatabaseConnection = Configuration["Enova:ConnectionString"],
+                HistoryDatabaseConnection = Configuration["Enova:RevisionConnectionString"],
+                CertificateKey = Configuration["Enova:CertificateKey"],
+                CertificatePassword = Configuration["Enova:CertificatePassword"],
+                UserName = Configuration["Enova:Alias"],
+                Password = Configuration["Enova:Password"],
+                LogPath = Configuration["Enova:LogPath"],
+                LogLevel = (Wipcore.Library.Diagnostics.Log.LogLevel) Convert.ToInt32(Configuration["Enova:LogLevel"]),
                 PathToConfigurationFiles = _configFolderPath,
                 PathToAddinDlls = _addInFolderPath
             };
@@ -107,7 +111,14 @@ namespace Wipcore.Enova.Api.WebApi
             autofacModules.OrderBy(x => x.Priority).ToList().ForEach(x => containerBuilder.RegisterModule(x));
 
             // Add framework services.
-            var builder = services.AddMvc();
+            var builder = services.AddMvc(config =>
+            {
+                //default policy that specifies that we are using both cookie and bearer auth
+                var defaultAuthPolicy = new AuthorizationPolicyBuilder(new[] { JwtBearerDefaults.AuthenticationScheme,
+                    CookieAuthenticationDefaults.AuthenticationScheme }).RequireAuthenticatedUser().Build();
+                config.Filters.Add(new AuthorizeFilter(defaultAuthPolicy));
+            });
+
             foreach (var assembly in apiAssemblies)
             {
                 Console.WriteLine("Looking for controllers in assembly: {0}", assembly.FullName);
@@ -123,8 +134,56 @@ namespace Wipcore.Enova.Api.WebApi
                 options.AddPolicy(CustomerUrlIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdentifierPolicy()));
                 options.AddPolicy(CustomerUrlIdPolicy.Name, policy => policy.Requirements.Add(new CustomerUrlIdPolicy()));
                 options.AddPolicy(CustomerBodyIdentifierPolicy.Name, policy => policy.Requirements.Add(new CustomerBodyIdentifierPolicy()));
+            });                     
+
+            var dataProtectionProvider = DataProtectionProvider.Create(new DirectoryInfo(_configFolderPath), configuration =>
+            {
+                configuration.SetApplicationName("EnovaAPI" + ApiVersion);
+                if (Configuration.GetValue("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems or an older OS
+                    configuration.ProtectKeysWithDpapiNG();
             });
 
+            var cookieOptions = new Action<CookieAuthenticationOptions>(options => {
+                options.DataProtectionProvider = dataProtectionProvider;
+                options.LoginPath = Configuration.GetValue<string>("Auth:LoginPath", String.Empty);
+                options.LogoutPath = Configuration.GetValue<string>("Auth:LogoutPath", String.Empty);
+                options.ReturnUrlParameter = Configuration.GetValue<string>("Auth:ReturnUrlParameter", String.Empty);                               
+                options.ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 360), 0);
+                options.SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true);
+                options.Cookie = new CookieBuilder()
+                {
+                    HttpOnly = Configuration.GetValue<bool>("Auth:CookieHttpOnly", false),
+                    SecurePolicy = Configuration.GetValue<bool>("Auth:CookieSecure", false) ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest,
+                    Path = Configuration.GetValue<string>("Auth:CookiePath", "/")
+                };
+                if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieDomain", String.Empty)))
+                    options.Cookie.Domain = Configuration.GetValue<string>("Auth:CookieDomain");
+                if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieName", String.Empty)))
+                    options.Cookie.Name = Configuration.GetValue<string>("Auth:CookieName");
+            });
+            
+            var jwtOptions = new Action<JwtBearerOptions>(options => {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey))),
+                    ValidateIssuer = Configuration.GetValue<bool>("Auth:ValidateIssuer", true),
+                    ValidIssuer = "EnovaAPI",
+                    ValidateAudience = Configuration.GetValue<bool>("Auth:ValidateAudience", true),
+                    ValidAudience = Configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
+                    ValidateLifetime = Configuration.GetValue<bool>("Auth:ValidateLifetime", true),
+                    ClockSkew = TimeSpan.Zero,
+                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme,                    
+                };
+                if (Configuration.GetValue<bool>("Auth:UseAuthTimeValidation", true))
+                    options.TokenValidationParameters.LifetimeValidator = Container.Resolve<IAuthService>().ExpireValidator;                
+            });
+            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, cookieOptions);
+            
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
                 ConfigureSwagger(services);
 
@@ -150,61 +209,8 @@ namespace Wipcore.Enova.Api.WebApi
 
             app.UseStaticFiles();
             app.UseStatusCodePages();
-
-            var dataProtectionProvider = DataProtectionProvider.Create(new DirectoryInfo(_configFolderPath), configuration =>
-                {
-                    configuration.SetApplicationName(AuthService.AuthenticationScheme + ApiVersion);
-                    if (Configuration.GetValue<bool>("Auth:UseDpapiProtection", true))//turn off if having problems in clustered systems or an older OS
-                        configuration.ProtectKeysWithDpapiNG();
-                });
             
-            var cookieOptions = new CookieAuthenticationOptions()
-            {
-                DataProtectionProvider = dataProtectionProvider,
-                AuthenticationScheme = AuthService.AuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
-                LoginPath = Configuration.GetValue<string>("Auth:LoginPath", String.Empty),
-                LogoutPath = Configuration.GetValue<string>("Auth:LogoutPath", String.Empty),
-                ReturnUrlParameter = Configuration.GetValue<string>("Auth:ReturnUrlParameter", String.Empty),
-                CookieHttpOnly = Configuration.GetValue<bool>("Auth:CookieHttpOnly", false),
-                CookieSecure = Configuration.GetValue<bool>("Auth:CookieSecure", false) ? CookieSecurePolicy.Always : CookieSecurePolicy.SameAsRequest,
-                CookiePath = Configuration.GetValue<string>("Auth:CookiePath", "/"),
-                ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 360), 0),
-                SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true)
-            };
-
-            if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieDomain", String.Empty)))
-                cookieOptions.CookieDomain = Configuration.GetValue<string>("Auth:CookieDomain");
-            if (!String.IsNullOrEmpty(Configuration.GetValue<string>("Auth:CookieName", String.Empty)))
-                cookieOptions.CookieName = Configuration.GetValue<string>("Auth:CookieName");
-
-            var jwtBearer = new JwtBearerOptions()
-            {
-                AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = Configuration.GetValue<bool>("Auth:AutomaticChallenge", true),
-                TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:IssuerSigningKey", AuthService.DefaultSignKey))),
-                    ValidateIssuer = Configuration.GetValue<bool>("Auth:ValidateIssuer", true),
-                    ValidIssuer = AuthService.AuthenticationScheme,
-                    ValidateAudience = Configuration.GetValue<bool>("Auth:ValidateAudience", true),
-                    ValidAudience = Configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
-                    ValidateLifetime = Configuration.GetValue<bool>("Auth:ValidateLifetime", true),
-                    ClockSkew = TimeSpan.Zero,
-                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme
-                }
-            };
-
-            if(Configuration.GetValue<bool>("Auth:UseAuthTimeValidation", true))
-                jwtBearer.TokenValidationParameters.LifetimeValidator = Container.Resolve<IAuthService>().ExpireValidator;
-
-            app.UseJwtBearerAuthentication(jwtBearer);
-
-            app.UseCookieAuthentication(cookieOptions);
-
+            app.UseAuthentication();
             app.UseMvc();
             
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
@@ -232,7 +238,7 @@ namespace Wipcore.Enova.Api.WebApi
                 options.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
-                    Title = AuthService.AuthenticationScheme,
+                    Title = "Enova API",
                     Description = "",
                     TermsOfService = ""
                 });

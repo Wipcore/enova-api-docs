@@ -22,7 +22,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public RepeaterMapper(IConfigurationRoot configurationRoot, ObjectCache cache)
         {
             _cache = cache;
-            var setting = configurationRoot.GetValue("ApiSettings:MappingRepeaterProperties", "");
+            var setting = configurationRoot["ApiSettings:MappingRepeaterProperties"] ?? "";
             Names = setting.Split(',').Select(x => x.Trim()).ToList();
         }
 
