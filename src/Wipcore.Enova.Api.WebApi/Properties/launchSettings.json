@@ -22,7 +22,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "sdkVersion": "1.0.0-preview2-003121"
+      "sdkVersion": "2.0.0"
     }
   }
 }
