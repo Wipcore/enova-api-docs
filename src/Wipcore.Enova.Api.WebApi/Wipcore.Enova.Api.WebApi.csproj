@@ -8,6 +8,7 @@
     <AssemblyName>Wipcore.Enova.Api.WebApi</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Wipcore.Enova.Api.WebApi</PackageId>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
