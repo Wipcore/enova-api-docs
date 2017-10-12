@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Services
@@ -12,11 +13,13 @@ namespace Wipcore.Enova.Api.WebApi.Services
     public class ExceptionService : IExceptionService
     {
         private readonly IHostingEnvironment _environment;
+        private readonly IAuthService _authService;
         private readonly ILogger _log;
 
-        public ExceptionService(IHostingEnvironment environment, ILoggerFactory loggerFactory)
+        public ExceptionService(IHostingEnvironment environment, ILoggerFactory loggerFactory, IAuthService authService)
         {
             _environment = environment;
+            _authService = authService;
             _log = loggerFactory.CreateLogger(GetType().Namespace);
         }
 
@@ -102,6 +105,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 case "ParentObjectAccessDeniedException":
                 case "ObjectIsNotVisibleException":
                 case "ObjectIsAPreviewObjectException":
+                    statusCode = _authService.GetLoggedInAlias() == null ? HttpStatusCode.Unauthorized : HttpStatusCode.Forbidden;
+                    break;
                 case "NotLoggedInException":
                     statusCode = HttpStatusCode.Unauthorized;
                     break;

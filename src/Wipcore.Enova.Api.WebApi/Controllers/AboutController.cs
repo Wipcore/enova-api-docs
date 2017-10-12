@@ -30,6 +30,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("/")]
         [HttpGet("/api")]
+        [AllowAnonymous]
         public ContentResult About()
         {
             var baseurl = HttpContext.Request.Host;
