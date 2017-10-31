@@ -19,7 +19,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer
         [PropertyPresentation("Password", "Password", isEditable: true, isFilterable: false, isGridColumn: false)]
         public string UserPassword { get; set; }
 
-        [PropertyPresentation("String", "First name", isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 100)]
+        [PropertyPresentation("String", "First name", isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 150)]
         public string FirstName { get; set; }
 
         [PropertyPresentation("String", "Last name", isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 200)]

@@ -13,7 +13,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
     [IndexModel]
     public class CompanyModel : BaseModel
     {
-        [PropertyPresentation("String", "Name", isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 100)]
+        [PropertyPresentation("String", "Name", isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 150)]
         public string Name { get; set; }
 
         [PropertyPresentation("String", null, isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 200)]
