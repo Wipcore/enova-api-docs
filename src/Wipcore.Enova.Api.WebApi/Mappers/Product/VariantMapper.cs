@@ -62,8 +62,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 
                 if (shouldBeOwner)
                 {
-                    var variantIds = variants as List<int>;
-                    if (variantIds != null)
+                    if (variants is List<int> variantIds)
                         _productService.SetupVariantFamily(product, variantIds);
                     else
                         _productService.SetupVariantFamily(product, (List<string>) variants);

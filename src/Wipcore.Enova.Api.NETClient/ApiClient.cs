@@ -478,8 +478,7 @@ namespace Wipcore.Enova.Api.NetClient
             if (headers == null)
                 return;
 
-            IEnumerable<string> values;
-            if (response.Headers.TryGetValues("X-Paging-PageNo", out values))
+            if (response.Headers.TryGetValues("X-Paging-PageNo", out var values))
                 headers.PageNumber = Convert.ToInt32(values.First());
             if (response.Headers.TryGetValues("X-Paging-PageSize", out values))
                 headers.PageSize = Convert.ToInt32(values.First());

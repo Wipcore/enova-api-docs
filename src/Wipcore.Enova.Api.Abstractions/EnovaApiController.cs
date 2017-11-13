@@ -22,8 +22,7 @@ namespace Wipcore.Enova.Api.Abstractions
             base.OnActionExecuting(context);
 
             //put any avaliable requestContext in cache for the request, so it can be retrived from anywhere
-            object requestContext;
-            context.ActionArguments.TryGetValue("requestContext", out requestContext);
+            context.ActionArguments.TryGetValue("requestContext", out var requestContext);
 
             if (requestContext is IContextModel)
                 context.HttpContext.Items[WipConstants.ContextModelKey] = requestContext;

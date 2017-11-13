@@ -109,8 +109,7 @@ namespace Wipcore.Enova.Api.NetClient
         public IEnumerable<TModel> GetMany<TModel>(QueryModel queryModel = null, ApiResponseHeadersModel headers = null,ContextModel contextModel = null, 
             string action = null, List<string> languages = null, IDictionary<string, object> extraParameters = null)
         {
-            string resource;
-            var apiClient = GetManyInit(typeof(TModel), ref queryModel, languages, out resource);
+            var (apiClient, resource) = GetManyInit(typeof(TModel), ref queryModel, languages);
 
             var objects = apiClient.GetMany<TModel>(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters: extraParameters, action: action);
             return objects;
@@ -121,14 +120,13 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public IEnumerable<object> GetMany(Type modelType, QueryModel queryModel = null, ApiResponseHeadersModel headers = null, ContextModel contextModel = null, string action = null, List<string> languages = null, IDictionary<string, object> extraParameters = null)
         {
-            string resource;
-            var apiClient = GetManyInit(modelType, ref queryModel, languages, out resource);
+            var (apiClient, resource) = GetManyInit(modelType, ref queryModel, languages);
 
             var objects = apiClient.GetMany(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters: extraParameters, action: action);
             return objects;
         }
 
-        private IApiClient GetManyInit(Type modelType, ref QueryModel queryModel, List<string> languages, out string resource)
+        private (IApiClient apiClient, string resource) GetManyInit(Type modelType, ref QueryModel queryModel, List<string> languages)
         {
             var apiClient = _apiClientMaker.Invoke();
             var model = _serviceProvider.GetService(modelType) as BaseModel;
@@ -140,10 +138,10 @@ namespace Wipcore.Enova.Api.NetClient
             }
 
             var registeredModelType = model.GetType();
-            resource = model.GetResourceName();
+            var resource = model.GetResourceName();
 
             SetupQueryModel(ref queryModel, registeredModelType, languages);
-            return apiClient;
+            return (apiClient, resource);
         }
 
         /// <summary>
@@ -206,15 +204,13 @@ namespace Wipcore.Enova.Api.NetClient
 
         private void VerifyIdentifierNotTaken<TModel>(JObject jsonItem, string resource) where TModel : BaseModel
         {
-            JToken id;
-            if (jsonItem.TryGetValue("ID", StringComparison.CurrentCultureIgnoreCase, out id))
+            if (jsonItem.TryGetValue("ID", StringComparison.CurrentCultureIgnoreCase, out var id))
             {
                 if (Convert.ToInt32(id) != 0)
                     return;//if id specified, then it won't become a new item regardless
             }
 
-            JToken identifierToken;
-            if (!jsonItem.TryGetValue("Identifier", StringComparison.CurrentCultureIgnoreCase, out identifierToken))
+            if (!jsonItem.TryGetValue("Identifier", StringComparison.CurrentCultureIgnoreCase, out var identifierToken))
                 return; //if no identifier, then fine
 
             var identifier = identifierToken.ToString();
