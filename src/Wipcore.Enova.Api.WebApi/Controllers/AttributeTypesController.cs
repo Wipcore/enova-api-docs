@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
@@ -134,6 +135,26 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             var success = _objectService.Delete<EnovaAttributeType>(identifier);
             if (!success)
                 throw new HttpException(HttpStatusCode.NotFound, "The object does not exist.");
+        }
+
+        /// <summary>
+        /// Add a dynamic property to a attributetype.
+        /// </summary>
+        [HttpPost("AddProperty")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void AddProperty(string propertyName, BaseObject.PropertyType propertyType, bool languageDependant = false, int maxStringLength = 255)
+        {
+            _objectService.AddProperty<EnovaAttributeType>(propertyName, propertyType, languageDependant, maxStringLength);
+        }
+
+        /// <summary>
+        /// Remove a dynamic property from a attributetype.
+        /// </summary>
+        [HttpPost("RemoveProperty")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public void RemoveProperty(string propertyName)
+        {
+            _objectService.RemoveProperty<EnovaAttributeType>(propertyName);
         }
     }
 }

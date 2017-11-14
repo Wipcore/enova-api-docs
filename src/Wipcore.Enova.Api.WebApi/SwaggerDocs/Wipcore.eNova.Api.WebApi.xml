@@ -27,6 +27,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Head(System.String)">
+            <summary>
+            Check if the attributetype exists.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Head(System.Int32)">
+            <summary>
+            Check if the attributetype exists.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of attribute types.
@@ -65,6 +75,26 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Delete(System.String)">
             <summary>
             Delete a attributetype.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a attributetype.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a attributetype.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.Head(System.String)">
+            <summary>
+            Check if the attributetype exists.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.Head(System.Int32)">
+            <summary>
+            Check if the attributetype exists.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -107,6 +137,16 @@
             Delete a attributevalue.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a attributevalue.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a attributevalue.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of carts.
@@ -132,14 +172,14 @@
             Get EnovaCart specified by identifiers. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.GetCartAsModel(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Int32)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.GetCustomersCartsByIdentifier(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            Get a cart mapped to a model.
+            Get carts belonging to a customer.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Post(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.CartModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.GetCustomersCartsById(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
             <summary>
-            Create or update a cart.
+            Get carts belonging to a customer.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
@@ -160,6 +200,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Delete(System.String)">
             <summary>
             Deletes the cart.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a cart.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a cart.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CompaniesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -202,6 +252,16 @@
             Delete a company.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CompaniesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a company.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CompaniesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a company.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of countries.
@@ -214,7 +274,7 @@
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
             <summary>
-            Get an attribute type specified by id.
+            Get a country type specified by id.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.Delete(System.Int32)">
@@ -235,6 +295,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.Delete(System.String)">
             <summary>
             Delete a country.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a country.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a country.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CurrenciesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -270,6 +340,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CurrenciesController.Delete(System.String)">
             <summary>
             Delete a currency.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CurrenciesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a currency.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CurrenciesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a currency.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomerGroupsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -310,6 +390,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomerGroupsController.Delete(System.String)">
             <summary>
             Delete a customergroup.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomerGroupsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a customergroup.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomerGroupsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a customergroup.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -372,6 +462,16 @@
             Delete a customer.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CustomersController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a customer.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of languages.
@@ -389,12 +489,12 @@
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.GetManyIds(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            Get EnovaLanguage specified by ids. 
+            Get languages specified by ids. 
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.GetManyIdentifiers(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            Get EnovaLanguage specified by identifiers. 
+            Get languages specified by identifiers. 
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.Delete(System.Int32)">
@@ -405,6 +505,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.Delete(System.String)">
             <summary>
             Delete a language.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a language.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a language.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ManufacturersController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -447,6 +557,16 @@
             Delete a manufacturer.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ManufacturersController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a manufacturer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ManufacturersController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a manufacturer.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of orders.
@@ -472,19 +592,19 @@
             Get EnovaOrder specified by identifiers. 
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.GetCustomersCartsByIdentifier(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String,System.String)">
+            <summary>
+            Get orders belonging to a customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.GetCustomersCartsById(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32,System.String)">
+            <summary>
+            Get orders belonging to a customer.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.ValidShippingMoves(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Get valid new shipping statuses for an order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.GetCartAsModel(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Int32)">
-            <summary>
-            Get an order mapped to a model.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Post(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.CartModel)">
-            <summary>
-            Create or update an order. Already existing orders cannot have basic order rows changed (quantity, types); instead create a new order.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
@@ -500,6 +620,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Delete(System.String)">
             <summary>
             Delete an order. Note: it is usually better to put it in scrap status.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a order.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a order.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -547,6 +677,16 @@
             Delete a payment.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a payment.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a payment.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentTypesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of paymenttypes.
@@ -587,6 +727,16 @@
             Delete a paymenttype.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentTypesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a paymenttype.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentTypesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a paymenttype.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PriceListsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of pricelists.
@@ -625,6 +775,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PriceListsController.Delete(System.String)">
             <summary>
             Delete a pricelist.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PriceListsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a pricelist.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PriceListsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a pricelist.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -682,6 +842,16 @@
             Delete a product.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a product.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ProductsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a product.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromotionsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of promos.
@@ -720,6 +890,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromotionsController.Delete(System.String)">
             <summary>
             Delete a promo.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromotionsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a promo.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PromotionsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a promo.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SectionsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -772,6 +952,16 @@
             Delete a section.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SectionsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a section.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SectionsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a section.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingStatusesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of shippingstatuses.
@@ -812,6 +1002,16 @@
             Delete a shippingstatus.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingStatusesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a shippingstatus.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingStatusesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a shippingstatus.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypeCostsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of shippingtypecosts.
@@ -845,6 +1045,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypeCostsController.Delete(System.String)">
             <summary>
             Delete a shippingtypecost.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypeCostsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a shippingtypecost.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypeCostsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a shippingtypecost.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -887,6 +1097,16 @@
             Delete a shippingtype.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypesController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a shippingtype.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.ShippingTypesController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a shippingtype.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SuppliersController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of suppliers.
@@ -920,6 +1140,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SuppliersController.Delete(System.String)">
             <summary>
             Delete a supplier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SuppliersController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a supplier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SuppliersController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a supplier.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SystemSettingsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -1157,21 +1387,6 @@
             Creates an order from a mapping to cart by given values.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.GetCart(System.String,System.Int32)">
-            <summary>
-            Get an existing cart, mapped to a model.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.CalculateCart(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Maps given model to a cart in Enova and returns a model with prices specified.  
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.MapCart(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaCart,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
-            <summary>
-            Map order rows between cart and model.
-            </summary>
-        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.GetCartsByCustomer(System.String,System.Int32)">
             <summary>
             Get all carts belonging to given customer.
@@ -1187,32 +1402,17 @@
             Saves a customer with given values.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetOrdersByCustomer(System.String,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetOrdersByCustomer(System.Int32,System.String,System.String)">
             <summary>
             Get orders owned by given customer.
             </summary>
-            <param name="customerIdentifier"></param>
+            <param name="customerIdentifier">Identifier of the customer. Not used if customerId is set.</param>
+            <param name="customerId"></param>
             <param name="shippingStatus">Filter by shippingstatus identifier.</param>
-            <returns></returns>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetValidShippingStatuses(Wipcore.Enova.Core.EnovaOrder,System.Boolean,System.Boolean)">
             <summary>
             Get a list of identifiers|names of the valid new shipping statuses for the given order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetOrder(System.String,System.Int32)">
-            <summary>
-             Get an existing order, mapped to a model.
-             </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.SaveOrder(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.Map(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaOrder,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
-            <summary>
-            Mapping order. Maps extra properties (additional values) on order and orderrows. Does not otherwise change orderrows.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.PaymentService.SavePayment(Wipcore.Enova.Api.Abstractions.Interfaces.IPaymentModel)">
@@ -1362,6 +1562,11 @@
             Maps connection to a variant family for a product - if the product is an owner or has an owner.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Services.ArrayNlogTarget">
+            <summary>
+            A target for nlog to log to the memory, for quick reading without file buffering.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.ContextService.GetContext">
             <summary>
             Get an EnovaContext for the current user.
@@ -1398,6 +1603,11 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaService.MapToEnovaObject(Wipcore.Core.SessionObjects.BaseObject,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.List{System.Action})">
             <summary>
             Maps given properties in dictionary to the given enova object. Returns mappers that must be set after object is saved.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaService.ClearSettablePropertyCache(System.Type,System.String)">
+            <summary>
+            Clear the cache of a property that has been removed.
             </summary>
         </member>
         <member name="T:Wipcore.Enova.Api.WebApi.Services.ObjectService">
@@ -1489,9 +1699,29 @@
             Deletes an object of type T and given identifier from Enova. Returns true if successfull.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.ObjectService.AddProperty``1(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Adds a dynamic property to a type.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.ObjectService.RemoveProperty``1(System.String)">
+            <summary>
+            Removes a dynamic property from a type.
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.WebApi.Services.PagingService">
             <summary>
             Handles pagination of responses with many objects.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.PagingService.GetHeaders">
+            <summary>
+            Get all response headers.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.PagingService.SetHeaders(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Set given values into the response headers.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.PagingService.Page(Wipcore.Core.SessionObjects.BaseObjectList,System.Int32,System.Int32)">
@@ -1562,14 +1792,54 @@
             </summary>
             <param name="key">The type for which to remove. Null to remove all.</param>
         </member>
-        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.IgnoreMapper">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
-            This mapper is used to ignore properties in mapping, which avoids PropertyNotFound exceptions.
+            Get a list of documents.
             </summary>
         </member>
-        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.RepeaterMapper">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            This mapper is used to avoid saving a property directly on the Enova object (if the property actually dosen't exist for example) and instead saves it in the cache to be returned at next get request. WIP.
+            Get a document specified by identifier. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
+            <summary>
+            Get a document specified by id.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.GetManyIds(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get a document specified by ids. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.GetManyIdentifiers(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get documents specified by identifiers. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Create or update a document.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Delete(System.Int32)">
+            <summary>
+            Delete a document.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Delete(System.String)">
+            <summary>
+            Delete a document.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.AddProperty(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Add a dynamic property to a document.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.RemoveProperty(System.String)">
+            <summary>
+            Remove a dynamic property from a document.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Attribute.AttributeMapper">
@@ -1587,6 +1857,11 @@
             Maps addresstype enum for a customer address.
             </summary>
         </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.IgnoreMapper">
+            <summary>
+            This mapper is used to ignore properties in mapping, which avoids PropertyNotFound exceptions.
+            </summary>
+        </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Order.OrderSumMapper">
             <summary>
             Maps the order sum for a order, with and without tax.
@@ -1595,6 +1870,11 @@
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.PriceList.PriceListPriceMapper">
             <summary>
             Maps all prices on a pricelist, with and without tax.
+            </summary>
+        </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.RepeaterMapper">
+            <summary>
+            This mapper is used to avoid saving a property directly on the Enova object (if the property actually dosen't exist for example) and instead saves it in the cache to be returned at next get request. WIP.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Section.SectionParentMapper">
@@ -1609,7 +1889,7 @@
         </member>
         <member name="M:Wipcore.eNova.Api.WebApi.Services.CacheService.GetCache(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Type,Wipcore.Core.SessionObjects.BaseObjectList)">
             <summary>
-            Get cache entry for a request. Key is built on all in parameters.
+            Get cache entry for a request. Key is built on all in parameters. Also puts cached header values into response.
             </summary>
         </member>
         <member name="M:Wipcore.eNova.Api.WebApi.Services.CacheService.GetCacheKeys(System.String)">

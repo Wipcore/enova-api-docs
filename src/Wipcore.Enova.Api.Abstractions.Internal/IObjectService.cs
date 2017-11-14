@@ -96,5 +96,15 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         /// Deletes an object of type T and given identifier from Enova. Returns true if successfull. False if the object did not exist.
         /// </summary>
         bool Delete<T>(string identifier) where T : BaseObject;
+
+        /// <summary>
+        /// Adds a dynamic property to a type.
+        /// </summary>
+        void AddProperty<T>(string propertyName, BaseObject.PropertyType propertyType, bool languageDependent, int maxStringLength);
+
+        /// <summary>
+        /// Removes a dynamic property from a type.
+        /// </summary>
+        void RemoveProperty<T>(string propertyName);
     }
 }
