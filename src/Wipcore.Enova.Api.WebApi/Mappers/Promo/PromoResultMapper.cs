@@ -34,14 +34,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             var sectionDiscount = promo.GetResults(typeof(EnovaSectionDiscountPromoResult)).Cast<EnovaSectionDiscountPromoResult>().FirstOrDefault();
 
             Currency orderDiscountCurrency = null;
-            int decimals;
-            var orderDiscountAmount = orderDiscountResult == null ? 0m : orderDiscountResult.GetAmount(out decimals, ref orderDiscountCurrency);
+            var orderDiscountAmount = orderDiscountResult == null ? 0m : orderDiscountResult.GetAmount(out _, ref orderDiscountCurrency);
 
             Currency productDiscountCurrency = null;
-            var productDiscountPrice = productDiscountResult == null ? 0m : productDiscountResult.GetPrice(out decimals, ref productDiscountCurrency);
+            var productDiscountPrice = productDiscountResult == null ? 0m : productDiscountResult.GetPrice(out _, ref productDiscountCurrency);
 
             Currency fixedPriceCurrency = null;
-            var fixedPrice = fixedPriceResult == null ? 0m : fixedPriceResult.GetPrice(out decimals, ref fixedPriceCurrency);
+            var fixedPrice = fixedPriceResult == null ? 0m : fixedPriceResult.GetPrice(out _, ref fixedPriceCurrency);
 
             var resultModel = new
             {

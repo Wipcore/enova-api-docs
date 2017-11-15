@@ -31,11 +31,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             var categoryCondition = promo.GetConditions(typeof(EnovaSectionQuantityPromoCondition)).Cast<EnovaSectionQuantityPromoCondition>().FirstOrDefault();
 
             Currency amountCurrency = null;
-            int decimals;
-            var amount = amountCondition == null ? 0m : amountCondition.GetAmount(out decimals, ref amountCurrency);
+            var amount = amountCondition == null ? 0m : amountCondition.GetAmount(out _, ref amountCurrency);
 
             Currency categoryAountCurrency = null;
-            var categoryAmount = amountCategoryCondition == null ? 0m : amountCategoryCondition.GetAmount(out decimals, ref categoryAountCurrency);
+            var categoryAmount = amountCategoryCondition == null ? 0m : amountCategoryCondition.GetAmount(out _, ref categoryAountCurrency);
 
             var conditionsModel = new
             {

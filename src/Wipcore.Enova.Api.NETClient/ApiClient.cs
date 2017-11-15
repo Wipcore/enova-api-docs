@@ -76,10 +76,7 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
         /// <param name="id">ID of the object to check.</param>
-        public bool ObjectExists(string controller, int id)
-        {
-            return ObjectExists(controller, "id-" + id);
-        }
+        public bool ObjectExists(string controller, int id) => ObjectExists(controller, "id-" + id);
 
         /// <summary>
         /// Get one object, untyped.
