@@ -21,7 +21,7 @@
   },
   "enovacart": {
     "default": {
-      "properties": "Identifier,CustomerComment,Customer.Identifier,TotalPriceInclTax"
+      "properties": "Identifier,CustomerComment,Customer.Identifier,ProductCartItems,TotalPriceInclTax"
     }
   },
   "enovabaseproductsection": {

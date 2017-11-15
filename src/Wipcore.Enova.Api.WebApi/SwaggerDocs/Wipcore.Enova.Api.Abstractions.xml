@@ -4,11 +4,6 @@
         <name>Wipcore.Enova.Api.Abstractions</name>
     </assembly>
     <members>
-        <member name="T:Wipcore.Enova.Api.Abstractions.EnovaApiController">
-            <summary>
-            Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
-            </summary>
-        </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Attributes.GroupPresentationAttribute">
             <summary>
             This attribute is used to give information of how a properties should be grouped.
@@ -94,9 +89,19 @@
             Whether this property changes depending on the language.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.EnovaApiController">
+            <summary>
+            Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient">
             <summary>
             Client for sending requests to an API.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.InternalHttpClient">
+            <summary>
+            Access the internal http client used to communicate with the API. 
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.ObjectExists(System.String,System.String)">
@@ -113,7 +118,7 @@
             <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
             <param name="id">ID of the object to check.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne(System.Type,System.String,System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne(System.Type,System.String,System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
             <summary>
             Get one object, untyped.
             </summary>
@@ -125,8 +130,9 @@
             <param name="contextModel">Context/culture values such as language.</param>
             <param name="extraParameters">Any extra query parameters.</param>
             <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne(System.Type,System.String,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne(System.Type,System.String,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
             <summary>
             Get one object, serialized into TModel.
             </summary>
@@ -138,8 +144,9 @@
             <param name="contextModel">Context/culture values such as language.</param>
             <param name="extraParameters">Any extra query parameters.</param>
             <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne``1(System.String,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne``1(System.String,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
             <summary>
             Get one object, untyped.
             </summary>
@@ -150,8 +157,9 @@
             <param name="contextModel">Context/culture values such as language.</param>
             <param name="extraParameters">Any extra query parameters.</param>
             <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne``1(System.String,System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetOne``1(System.String,System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
             <summary>
             Get one object,  serialized into TModel.
             </summary>
@@ -162,6 +170,7 @@
             <param name="contextModel">Context/culture values such as language.</param>
             <param name="extraParameters">Any extra query parameters.</param>
             <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetMany``1(System.String,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
             <summary>
@@ -186,20 +195,35 @@
             <param name="extraParameters">Any extra query parameters.</param>
             <param name="headers">Recived headers if object is given.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.DeleteOne(System.String,System.Int32)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetNextPage``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the next page of items from a previous request.
+            </summary>
+            <typeparam name="TModel">The type to serialize the items into.</typeparam>
+            <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.GetPreviousPage``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the previous page of items from a previous request.
+            </summary>
+            <typeparam name="TModel">The type to serialize the items into.</typeparam>
+            <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.DeleteOne(System.String,System.Int32,System.Boolean)">
             <summary>
             Delete one object.
             </summary>
             <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
             <param name="id">ID of the object to delete.</param>
-            <returns></returns>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.DeleteOne(System.String,System.String)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.DeleteOne(System.String,System.String,System.Boolean)">
             <summary>
             Delete one object.
             </summary>
             <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
             <param name="identifier">Identifier of the object to delete.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.SaveOne(System.String,System.String,System.Type,System.String,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},System.Boolean)">
             <summary>
@@ -243,6 +267,11 @@
             Login a customer
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.LoginCustomerAsAdmin(System.String,System.String,System.String)">
+            <summary>
+            Login a customer as admin
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient.Logout">
             <summary>
             Logout the user.
@@ -263,24 +292,34 @@
             Check if object with given id exists.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetObject``1(System.Int32,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetObject``1(System.Int32,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Get an object by id, serialized into TModel.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetObject``1(System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetObject``1(System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Get an object by identifier, seralized into TModel. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetMany(System.Type,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.List{System.String},System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetMany(System.Type,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Get many objects, serialized into TModel. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetMany``1(Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.List{System.String},System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetMany``1(Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Get many objects, untyped. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetNextPage``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the next page of items from a previous request.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.GetPreviousPage``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the previous page of items from a previous request.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.DeleteObject``1(System.Int32)">
@@ -316,6 +355,16 @@
         <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel.Currency">
             <summary>
             Identifier of the Enova currency used during the request.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel.ThousandSeparator">
+            <summary>
+            Seperator between thousands in currency strings.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel.DecimalSeparator">
+            <summary>
+            Seperator for decimals in currency strings.
             </summary>
         </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.ICustomerModel">
@@ -429,136 +478,6 @@
             Whether to use cache as response.
             </summary>
         </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel">
-            <summary>
-            Model for a cart/order that has had it's prices calculated.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartRowModel">
-            <summary>
-            Model for a cart/order row with it's prices calculated.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel">
-            <summary>
-            Model for posting a cart / order.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.Customer">
-            <summary>
-            Identifier of customer owning the cart / order.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.Persist">
-            <summary>
-            Set true to save the cart in the database.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.Status">
-            <summary>
-            Shipping status, applies to orders.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel.AdditionalValues">
-            <summary>
-            Dictionary of property-values.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel">
-            <summary>
-            Model for a cart / order row.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.Type">
-            <summary>
-            The type of row (product, payment, shipping etc)
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.Identifier">
-            <summary>
-            Identifier of the product, payment, shippingtype etc (depending on which type of row it is).
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.Password">
-            <summary>
-            Password for unlocking a promo row.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartRowModel.AdditionalValues">
-            <summary>
-            Dictionary of property-values.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.Cart.RowType">
-            <summary>
-            Type of cart / order row.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CalculatedCartModel">
-            <summary>
-            Model for a cart/order that has had it's prices calculated.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Models.CalculatedCartModel.CreateFrom(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Copy values from given model to the derived calculated model.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CalculatedCartRowModel">
-            <summary>
-            Model for a cart/order row with it's prices calculated.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CartModel">
-            <summary>
-            Model for posting a cart / order.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.Customer">
-            <summary>
-            Identifier of customer owning the cart / order.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.Persist">
-            <summary>
-            Set true to save the cart in the database.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.Status">
-            <summary>
-            Shipping status, applies to orders.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartModel.AdditionalValues">
-            <summary>
-            Dictionary of property-values.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Models.CartRowModel">
-            <summary>
-            Model for a cart / order row.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.Type">
-            <summary>
-            The type of row (product, payment, shipping etc)
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.Identifier">
-            <summary>
-            Identifier of the product, payment, shippingtype etc (depending on which type of row it is).
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.Password">
-            <summary>
-            Password for unlocking a promo row.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.CartRowModel.AdditionalValues">
-            <summary>
-            Dictionary of property-values.
-            </summary>
-        </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Market">
             <summary>
             Identifier of pre-defined market.
@@ -573,6 +492,22 @@
             <summary>
             Identifier of currency to use.
             </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.ThousandSeparator">
+            <summary>
+            Seperator between thousands in currency strings.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.DecimalSeparator">
+            <summary>
+            Seperator for decimals in currency strings.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.BaseModel.GetDefaultPropertiesInGrid">
+            <summary>
+            Get the names of the properties that should be shown in the default 'all' tab in the admin.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Models.LoginModel">
             <summary>
@@ -667,12 +602,6 @@
         <member name="M:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Copy">
             <summary>
             Creates a copy of the model.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.BaseModel.GetDefaultPropertiesInGrid">
-            <summary>
-            Get the names of the properties that should be shown in the default 'all' tab in the admin.
             </summary>
             <returns></returns>
         </member>
