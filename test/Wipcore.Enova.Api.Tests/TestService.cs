@@ -23,6 +23,7 @@ using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 using Wipcore.Enova.Api.NetClient;
+using Wipcore.Enova.Api.NETClient;
 using Wipcore.Enova.Api.WebApi;
 using Wipcore.Enova.Connectivity;
 using Xunit;
@@ -100,9 +101,9 @@ namespace Wipcore.Enova.Api.Tests
                             return ApiClient;
                         }
 
-                        ApiClient = new ApiClient(s.GetService<IConfigurationRoot>(),
+                        ApiClient = new ApiClient(new ApiClientAsync(s.GetService<IConfigurationRoot>(),
                             s.GetService<IHttpContextAccessor>(), s.GetService<IDataProtectionProvider>(),
-                            s.GetService<ILoggerFactory>());
+                            s.GetService<ILoggerFactory>()));
 
                         var serverClient = _server.CreateClient();
 
