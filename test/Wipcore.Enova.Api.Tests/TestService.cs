@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Fasterflect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -85,7 +86,7 @@ namespace Wipcore.Enova.Api.Tests
         {
             return x =>
             {
-                x.AddTransient(typeof(IApiClient), s => //NOTE only used for repository tests
+                x.AddTransient(typeof(IApiClientAsync), s => //NOTE only used for repository tests
                     {
                         if (ApiClient != null)
                         {
@@ -98,21 +99,25 @@ namespace Wipcore.Enova.Api.Tests
                                 ApiClient.InternalHttpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenCookie);
                             }
 
-                            return ApiClient;
+                            return ApiClient.GetFieldValue("_apiClientAsync");
                         }
 
-                        ApiClient = new ApiClient(new ApiClientAsync(s.GetService<IConfigurationRoot>(),
+                        var asyncClient = new ApiClientAsync(s.GetService<IConfigurationRoot>(),
                             s.GetService<IHttpContextAccessor>(), s.GetService<IDataProtectionProvider>(),
-                            s.GetService<ILoggerFactory>()));
+                            s.GetService<ILoggerFactory>());
+
+                        ApiClient = new ApiClient(asyncClient);
 
                         var serverClient = _server.CreateClient();
 
                         serverClient.BaseAddress = new Uri(Configuration["API:Url"] ?? "http://localhost:5000/api/");
                         ApiClient.InternalHttpClient = serverClient;
 
-                        return ApiClient;
+                        return asyncClient;
                     }
                 );
+                x.AddTransient(typeof(IApiClient), typeof(ApiClient));
+                x.AddSingleton(typeof(IApiRepositoryAsync), typeof(ApiRepositoryAsync));
                 x.AddSingleton(typeof(IApiRepository), typeof(ApiRepository));
                 x.AddTransient(typeof(CustomerModel));
                 x.AddTransient(typeof(CartModel));
