@@ -8,6 +8,7 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.NetClient;
+using Wipcore.Enova.Api.NETClient;
 
 namespace Wipcore.Enova.Api.NetClient
 {
@@ -15,7 +16,9 @@ namespace Wipcore.Enova.Api.NetClient
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<ApiClientAsync>().AsImplementedInterfaces();
             builder.RegisterType<ApiClient>().AsImplementedInterfaces();
+            builder.RegisterType<ApiRepositoryAsync>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ApiRepository>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CartRepository<CartModel, OrderModel>>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CustomerRepository<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().SingleInstance();
