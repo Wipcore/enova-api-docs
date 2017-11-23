@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Fasterflect;
@@ -32,6 +34,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Wipcore.Enova.Api.Abstractions;
+using Wipcore.Enova.Api.WebApi.Services;
 
 namespace Wipcore.Enova.Api.WebApi
 {
@@ -45,6 +48,8 @@ namespace Wipcore.Enova.Api.WebApi
         private IHostingEnvironment Env { get; }
 
         private IContainer Container { get; set; }
+
+        private static IWebHost _webhost;
 
 
         public Startup(IHostingEnvironment env)
@@ -96,8 +101,7 @@ namespace Wipcore.Enova.Api.WebApi
         {
             EnovaSystemFacade.Current.Stop();
         }
-
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -219,6 +223,8 @@ namespace Wipcore.Enova.Api.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "eNOVA Web API"));
             }
+
+            new Task(() => MonitorEnovaShutdown(loggerFactory)).Start();
         }
         
         private void ConfigureSwagger(IServiceCollection services)
@@ -290,17 +296,48 @@ namespace Wipcore.Enova.Api.WebApi
             }
         }
 
+        /// <summary>
+        /// This thread monitors Enovas heartbeat and shuts down the webhost if the heartbeat is dead.
+        /// </summary>
+        private void MonitorEnovaShutdown(ILoggerFactory loggerFactory)
+        {
+            var log = loggerFactory.CreateLogger("MonitorEnovaShutdown");
+            var pollingTime = new TimeSpan(0, 5, 0);
+
+            while (true)
+            {
+                Thread.Sleep(pollingTime);
+
+                var heartbeat = DateTime.MinValue;
+                foreach (WipSystemMonitorDataItem column in SystemMonitorService.Current.ClusterData)
+                {
+                    if (column.Name != "Heartbeat")
+                        continue;
+                    heartbeat = Convert.ToDateTime(column.Value);
+                    break;
+                }
+
+                var alive = heartbeat > DateTime.UtcNow.AddMinutes(-5);
+                if (!alive)
+                {
+                    log.LogCritical($"Heartbeat is {heartbeat}. Enova is no longer responding. Shutting down process.");
+                    _webhost.StopAsync();
+                    break;
+                }
+            }
+        }
+
         // Entry point for the application.
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            _webhost = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 
-            host.Run();
+            _webhost.Run();
         }
     }
 }
