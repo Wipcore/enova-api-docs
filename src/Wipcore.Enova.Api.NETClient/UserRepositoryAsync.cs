@@ -11,16 +11,42 @@ using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.
 
 namespace Wipcore.Enova.Api.NetClient
 {
-    public class CustomerRepositoryAsync<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
+    public class UserRepositoryAsync<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
     {
         private readonly IApiRepositoryAsync _apiRepository;
         private readonly Func<IApiClientAsync> _apiClient;
 
-        public CustomerRepositoryAsync(IApiRepositoryAsync apiRepository, Func<IApiClientAsync> apiClient)
+        public UserRepositoryAsync(IApiRepositoryAsync apiRepository, Func<IApiClientAsync> apiClient)
         {
             _apiRepository = apiRepository;
             _apiClient = apiClient;
         }
+
+        public async Task<bool> IsLoggedIn()
+        {
+            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+            return Convert.ToBoolean(loggedInInfo["LoggedIn"]);
+        }
+
+        public async Task<bool> IsLoggedInAsCustomer()
+        {
+            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+            return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "customer";
+        }
+
+        public async Task<bool> IsLoggedInAsAdmin()
+        {
+            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+            return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "admin";
+        }
+
+        public async Task<IDictionary<string, string>> GetLoggedInUserInfo()
+        {
+            return await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+        }
+
+        public async Task<ILoginResponseModel> LoginAdmin(string alias, string password) =>
+            await _apiClient.Invoke().LoginAdminAsync(alias, password);
 
         public async Task<ILoginResponseModel> LoginCustomer(string alias, string password) => 
             await _apiClient.Invoke().LoginCustomerAsync(alias, password);

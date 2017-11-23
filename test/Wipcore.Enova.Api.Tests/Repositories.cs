@@ -20,7 +20,7 @@ namespace Wipcore.Enova.Api.Tests
     public class Repositories : IClassFixture<TestService>
     {
         private readonly TestService _testService;
-        private readonly CustomerRepository<CustomerModel, CartModel, OrderModel> _customerRepository;
+        private readonly UserRepository<CustomerModel, CartModel, OrderModel> _userRepository;
         private readonly Random _random = new Random();
         private readonly CartRepository<CartModel, OrderModel> _cartRepository;
         private readonly OrderRepository<OrderModel> _orderRepository;
@@ -29,7 +29,7 @@ namespace Wipcore.Enova.Api.Tests
         public Repositories(TestService testService)
         {
             _testService = testService;
-            _customerRepository = (CustomerRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CustomerRepository<CustomerModel, CartModel, OrderModel>));
+            _userRepository = (UserRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(UserRepository<CustomerModel, CartModel, OrderModel>));
             _cartRepository = (CartRepository<CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CartRepository<CartModel, OrderModel>));
             _orderRepository = (OrderRepository<OrderModel>)_testService.Server.Host.Services.GetService(typeof(OrderRepository<OrderModel>));
             _productRepository = (ProductRepository<ProductModel>)_testService.Server.Host.Services.GetService(typeof(ProductRepository<ProductModel>));
@@ -47,13 +47,13 @@ namespace Wipcore.Enova.Api.Tests
         {
             SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
 
-            _customerRepository.LoginCustomer(customerIdentifier, password);
+            _userRepository.LoginCustomer(customerIdentifier, password);
 
             var newSortOrder = _random.Next(1000);
             var model = new CustomerModel() { Identifier = customerIdentifier, SortOrder = newSortOrder, Alias = customerIdentifier };
 
-            _customerRepository.UpdateCustomer(model);
-            var savedModel = _customerRepository.GetSavedCustomer(customerIdentifier);
+            _userRepository.UpdateCustomer(model);
+            var savedModel = _userRepository.GetSavedCustomer(customerIdentifier);
             Assert.Equal(newSortOrder, savedModel.SortOrder);
         }
 
@@ -63,11 +63,11 @@ namespace Wipcore.Enova.Api.Tests
         {
             SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
 
-            _customerRepository.LoginCustomer(customerIdentifier, password);
-            var customer = _customerRepository.GetSavedCustomer(customerIdentifier);
+            _userRepository.LoginCustomer(customerIdentifier, password);
+            var customer = _userRepository.GetSavedCustomer(customerIdentifier);
             
-            var cartsByIdentifier = _customerRepository.GetCarts(customer.Identifier);
-            var cartsById = _customerRepository.GetCarts(customer.ID);
+            var cartsByIdentifier = _userRepository.GetCarts(customer.Identifier);
+            var cartsById = _userRepository.GetCarts(customer.ID);
 
             Assert.NotEqual(cartsById.Count, 0);
             cartsById.ForEach(x => Assert.NotEqual(x.ID, 0));
@@ -84,12 +84,12 @@ namespace Wipcore.Enova.Api.Tests
         {
             SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
 
-            _customerRepository.LoginCustomer(customerIdentifier, password);
-            var customer = _customerRepository.GetSavedCustomer(customerIdentifier);
+            _userRepository.LoginCustomer(customerIdentifier, password);
+            var customer = _userRepository.GetSavedCustomer(customerIdentifier);
             
-            var ordersById = _customerRepository.GetOrders(customer.ID);
-            var ordersByIdentifier = _customerRepository.GetOrders(customer.Identifier);
-            var ordersWithStatus = _customerRepository.GetOrders(customer.Identifier, shippingStatusIdentifier: "NEW_INTERNET");
+            var ordersById = _userRepository.GetOrders(customer.ID);
+            var ordersByIdentifier = _userRepository.GetOrders(customer.Identifier);
+            var ordersWithStatus = _userRepository.GetOrders(customer.Identifier, shippingStatusIdentifier: "NEW_INTERNET");
 
             Assert.NotEqual(ordersById.Count, 0);
             ordersById.ForEach(x => Assert.NotEqual(x.ID, 0));

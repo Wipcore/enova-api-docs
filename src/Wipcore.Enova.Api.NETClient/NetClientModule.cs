@@ -23,8 +23,8 @@ namespace Wipcore.Enova.Api.NetClient
             builder.RegisterType<ApiRepository>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<CartRepository<CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<CartRepositoryAsync<CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
-            builder.RegisterType<CustomerRepository<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
-            builder.RegisterType<CustomerRepositoryAsync<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<UserRepository<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<UserRepositoryAsync<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ProductRepository<ProductModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ProductRepositoryAsync<ProductModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<OrderRepository<OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();

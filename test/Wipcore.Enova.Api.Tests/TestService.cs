@@ -123,7 +123,7 @@ namespace Wipcore.Enova.Api.Tests
                 x.AddTransient(typeof(CartModel));
                 x.AddTransient(typeof(OrderModel));
                 x.AddTransient(typeof(ProductModel));
-                x.AddSingleton(typeof(CustomerRepository< CustomerModel, CartModel, OrderModel >));
+                x.AddSingleton(typeof(UserRepository< CustomerModel, CartModel, OrderModel >));
                 x.AddSingleton(typeof(CartRepository<CartModel, OrderModel>));
                 x.AddSingleton(typeof(OrderRepository<OrderModel>));
                 x.AddSingleton(typeof(ProductRepository<ProductModel>));

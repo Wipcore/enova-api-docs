@@ -11,16 +11,39 @@ using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.
 
 namespace Wipcore.Enova.Api.NetClient
 {
-    public class CustomerRepository<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
+    public class UserRepository<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
     {
         private readonly IApiRepository _apiRepository;
         private readonly Func<IApiClient> _apiClient;
 
-        public CustomerRepository(IApiRepository apiRepository, Func<IApiClient> apiClient)
+        public UserRepository(IApiRepository apiRepository, Func<IApiClient> apiClient)
         {
             _apiRepository = apiRepository;
             _apiClient = apiClient;
         }
+
+        public bool IsLoggedIn()
+        {
+            var loggedInInfo = _apiClient.Invoke().GetLoggedInUserInfo();
+            return Convert.ToBoolean(loggedInInfo["LoggedIn"]);
+        }
+
+        public bool IsLoggedInAsCustomer()
+        {
+            var loggedInInfo = _apiClient.Invoke().GetLoggedInUserInfo();
+            return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "customer";
+        }
+
+        public bool IsLoggedInAsAdmin()
+        {
+            var loggedInInfo = _apiClient.Invoke().GetLoggedInUserInfo();
+            return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "admin";
+        }
+
+        public IDictionary<string, string> GetLoggedInUserInfo() => _apiClient.Invoke().GetLoggedInUserInfo();
+        
+
+        public ILoginResponseModel LoginAdmin(string alias, string password) => _apiClient.Invoke().LoginAdmin(alias, password);
 
         public ILoginResponseModel LoginCustomer(string alias, string password) => _apiClient.Invoke().LoginCustomer(alias, password);
 
