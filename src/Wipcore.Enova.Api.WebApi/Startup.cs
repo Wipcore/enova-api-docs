@@ -269,7 +269,7 @@ namespace Wipcore.Enova.Api.WebApi
                 logger.LogInformation("Reading swagger docs from: {0}", _swaggerDocsFolderPath);
             logger.LogInformation("Connecting to Enova with: {0}", EnovaSystemFacade.Current.Settings.DatabaseConnection);
         }
-        
+
         private void LoadAddinAssemblies(List<Assembly> assemblies, List<IEnovaApiModule> autofacModules)
         {
             /* Load all dlls/assemblies from the addin folder, where external mappers/services/controllers can be added. */
@@ -279,19 +279,35 @@ namespace Wipcore.Enova.Api.WebApi
             var dllFiles = Directory.GetFiles(_addInFolderPath, "*.dll", SearchOption.AllDirectories);
             foreach (var dllFile in dllFiles)
             {
-                /* Load by byte assembly since load by name might not work if
-                       the assembly has been loaded before */
-                using (Stream stream = File.OpenRead(dllFile))
+                try
                 {
-                    var assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    var assembly = Assembly.Load(assemblyData);
-                    assemblies.Add(assembly);
+                    /* Load by byte assembly since load by name might not work if
+                           the assembly has been loaded before */
+                    using (Stream stream = File.OpenRead(dllFile))
+                    {
+                        var assemblyData = new Byte[stream.Length];
+                        stream.Read(assemblyData, 0, assemblyData.Length);
+                        var assembly = Assembly.Load(assemblyData);
+                        assemblies.Add(assembly);
 
-                    //extract module types and add them to be registered
-                    var moduleTypes = assembly.GetTypes().Where(x => typeof (IEnovaApiModule).IsAssignableFrom(x)).ToList();
-                    moduleTypes.ForEach(x => Console.WriteLine("Found addin IEnovaApiModule module in assembly: " + x.Assembly.FullName));
-                    autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule) x.CreateInstance()));
+                        //extract module types and add them to be registered
+                        var moduleTypes = assembly.GetTypes().Where(x => typeof(IEnovaApiModule).IsAssignableFrom(x)).ToList();
+                        moduleTypes.ForEach(x => Console.WriteLine("Found addin IEnovaApiModule module in assembly: " + x.Assembly.FullName));
+                        autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule)x.CreateInstance()));
+                    }
+                }
+                catch (ReflectionTypeLoadException e)
+                {
+                    var loaderExceptions = e.LoaderExceptions;
+                    foreach (var loaderException in loaderExceptions)
+                    {
+                        //TODO would have been nice with a logfile here
+                        Console.WriteLine($"Loader exception when reading {dllFile} from addin folder {_addInFolderPath}: {loaderException.Message}");
+                    }
+
+                    Console.WriteLine("Press enter to crash due to the loader exceptions.");
+                    Console.ReadLine();
+                    throw;
                 }
             }
         }
