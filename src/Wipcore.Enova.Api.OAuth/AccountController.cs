@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +13,7 @@ using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Wipcore.Enova.Api.OAuth
 {
@@ -105,6 +107,17 @@ namespace Wipcore.Enova.Api.OAuth
 
             return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
                 Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
+        }
+
+        [HttpGet("Forbidden")]
+        [AllowAnonymous]
+        public IActionResult Forbidden(string url)
+        {
+            var isLoggedIn = _authService.GetLoggedInAlias() != null;
+            var message = isLoggedIn ? $"Your account is not permitted to access url {url}" : $"Anonymous access to {url} is denied";
+
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Content(message);
         }
 
         /// <summary>

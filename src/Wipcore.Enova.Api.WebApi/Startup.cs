@@ -149,9 +149,9 @@ namespace Wipcore.Enova.Api.WebApi
 
             var cookieOptions = new Action<CookieAuthenticationOptions>(options => {
                 options.DataProtectionProvider = dataProtectionProvider;
-                options.LoginPath = Configuration.GetValue<string>("Auth:LoginPath", String.Empty);
+                options.LoginPath = Configuration.GetValue<string>("Auth:LoginPath", "/Account/Forbidden");
                 options.LogoutPath = Configuration.GetValue<string>("Auth:LogoutPath", String.Empty);
-                options.AccessDeniedPath = Configuration.GetValue<string>("Auth:AccessDeniedPath", String.Empty);
+                options.AccessDeniedPath = Configuration.GetValue<string>("Auth:AccessDeniedPath", "/Account/Forbidden");
                 options.ReturnUrlParameter = Configuration.GetValue<string>("Auth:ReturnUrlParameter", String.Empty);                               
                 options.ExpireTimeSpan = new TimeSpan(0, Configuration.GetValue<int>("Auth:ExpireTimeMinutes", 360), 0);
                 options.SlidingExpiration = Configuration.GetValue<bool>("Auth:SlidingExpiration", true);
