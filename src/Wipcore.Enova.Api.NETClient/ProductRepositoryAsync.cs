@@ -8,7 +8,7 @@ using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     public class ProductRepositoryAsync<TProductModel> where TProductModel : ProductModel
     {

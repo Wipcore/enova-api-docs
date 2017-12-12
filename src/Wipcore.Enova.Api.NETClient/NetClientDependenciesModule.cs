@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 using Wipcore.Enova.Api.NetClient;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     /// <summary>
     /// This class registers all components that are needed to use NetClient. NOTE: only use this module if you do not want to setup all registrations yourself,

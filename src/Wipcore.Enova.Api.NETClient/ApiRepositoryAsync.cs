@@ -18,7 +18,7 @@ using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes;
 
-namespace Wipcore.Enova.Api.NETClient
+namespace Wipcore.Enova.Api.NetClient
 {
     /// <summary>
     /// A repository for async access to Enova through the API.

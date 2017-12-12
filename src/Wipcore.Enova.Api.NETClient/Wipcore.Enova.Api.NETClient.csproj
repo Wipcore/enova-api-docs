@@ -5,12 +5,13 @@
     <VersionPrefix>6.4.0.215</VersionPrefix>
     <Authors>fredrik.astrand</Authors>
     <TargetFramework>net461</TargetFramework>
-    <AssemblyName>Wipcore.Enova.Api.NETClient</AssemblyName>
+    <AssemblyName>Wipcore.Enova.Api.NetClient</AssemblyName>
     <PackageId>Wipcore.Enova.Api.NETClient</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <RootNamespace>Wipcore.Enova.Api.NetClient</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

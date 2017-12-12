@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
-using Wipcore.Enova.Api.NetClient;
-using Wipcore.Enova.Api.NETClient;
 
 namespace Wipcore.Enova.Api.NetClient
 {

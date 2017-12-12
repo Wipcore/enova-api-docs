@@ -39,7 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Wipcore.Enova.Api.Abstractions.Internal\Wipcore.Enova.Api.Abstractions.Internal.csproj" />
     <ProjectReference Include="..\..\src\Wipcore.Enova.Api.Abstractions\Wipcore.Enova.Api.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NETClient.csproj" />
+    <ProjectReference Include="..\..\src\Wipcore.Enova.Api.NETClient\Wipcore.Enova.Api.NetClient.csproj" />
     <ProjectReference Include="..\..\src\Wipcore.Enova.Api.OAuth\Wipcore.Enova.Api.OAuth.csproj" />
     <ProjectReference Include="..\..\src\Wipcore.Enova.Api.WebApi\Wipcore.Enova.Api.WebApi.csproj" />
   </ItemGroup>
