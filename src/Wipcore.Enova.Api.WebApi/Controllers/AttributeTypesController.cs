@@ -9,6 +9,7 @@ using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Attribute;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
@@ -55,6 +56,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AttributeTypeModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaAttributeType>(requestContext, query);
@@ -65,6 +67,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AttributeTypeModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
             return _objectService.Get<EnovaAttributeType>(requestContext, query, identifier);
@@ -75,6 +78,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("id-{id}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AttributeTypeModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
         {
             return _objectService.Get<EnovaAttributeType>(requestContext, query, id);
@@ -85,6 +89,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AttributeTypeModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -96,6 +101,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AttributeTypeModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();
@@ -107,6 +113,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpPut()]
         [Authorize(Roles = AuthService.AdminRole)]
+        [ProducesResponseType(typeof(AttributeTypeModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
             return _objectService.Save<EnovaAttributeType>(requestContext, values);

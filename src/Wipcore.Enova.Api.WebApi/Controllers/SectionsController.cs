@@ -9,6 +9,8 @@ using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Section;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
@@ -51,6 +53,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaBaseProductSection>(requestContext, query);
@@ -61,6 +64,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
             return _objectService.Get<EnovaBaseProductSection>(requestContext, query, identifier);
@@ -71,6 +75,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("id-{id}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
         {
             return _objectService.Get<EnovaBaseProductSection>(requestContext, query, id);
@@ -81,6 +86,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -92,6 +98,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();
@@ -103,6 +110,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}/children")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetSubSections(ContextModel requestContext, QueryModel query, string identifier)
         {
             var children = _sectionService.GetSubSections(identifier);
@@ -115,6 +123,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}/products")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetProducts(ContextModel requestContext, QueryModel query, string identifier)
         {
             var items = _sectionService.GetProducts(identifier);
@@ -126,6 +135,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpPut()]
         [Authorize(Roles = AuthService.AdminRole)]
+        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
             return _objectService.Save<EnovaBaseProductSection>(requestContext, values);
