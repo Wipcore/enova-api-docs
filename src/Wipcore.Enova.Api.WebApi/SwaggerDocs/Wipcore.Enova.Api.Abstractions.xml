@@ -277,6 +277,189 @@
             Logout the user.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync">
+            <summary>
+            Client for sending async requests to an API.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.InternalHttpClient">
+            <summary>
+            Access the internal http client used to communicate with the API. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.ObjectExistsAsync(System.String,System.String)">
+            <summary>
+            Check if one object exists.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
+            <param name="identifier">Identifier of the object to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.ObjectExistsAsync(System.String,System.Int32)">
+            <summary>
+            Check if one object exists.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
+            <param name="id">ID of the object to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetOneAsync(System.Type,System.String,System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
+            <summary>
+            Get one object, untyped.
+            </summary>
+            <param name="resonseType">Type to serialize the object into.</param>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="id">ID of the object to get.</param>
+            <param name="action">Action part of the url if there is one</param>
+            <param name="queryModel">Paging, size, sort, filter etc.</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetOneAsync(System.Type,System.String,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
+            <summary>
+            Get one object, serialized into TModel.
+            </summary>
+            <param name="resonseType">Type to serialize the object into.</param>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="identifier">Identifier of the object to get.</param>
+            <param name="action">Action part of the url if there is one</param>
+            <param name="queryModel">Paging, size, sort, filter etc.</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetOneAsync``1(System.String,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
+            <summary>
+            Get one object, untyped.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="identifier">Identifier of the object to get.</param>
+            <param name="action">Action part of the url if there is one</param>
+            <param name="queryModel">Paging, size, sort, filter etc.</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetOneAsync``1(System.String,System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,System.Boolean)">
+            <summary>
+            Get one object,  serialized into TModel.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="id">ID of the object to get.</param>
+            <param name="action">Action part of the url if there is one</param>
+            <param name="queryModel">Paging, size, sort, filter etc.</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="headers">Recived headers if object is given.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetManyAsync``1(System.String,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get many objects from the api, serialized to model type.
+            </summary>
+            <typeparam name="TModel">The type to serialize the items into.</typeparam>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="queryModel">Paging, size, sort, filter etc.</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="action">Action part of the url if there is one.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="headers">Recived headers if object is given.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetManyAsync(System.String,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get many objects from the api, untyped.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="queryModel">Paging, size, sort, filter etc.</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="action">Action part of the url if there is one.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="headers">Recived headers if object is given.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetNextPageAsync``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the next page of items from a previous request.
+            </summary>
+            <typeparam name="TModel">The type to serialize the items into.</typeparam>
+            <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetPreviousPageAsync``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the previous page of items from a previous request.
+            </summary>
+            <typeparam name="TModel">The type to serialize the items into.</typeparam>
+            <param name="headersOfPreviousRequest">Headers received from previous request.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.DeleteOneAsync(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Delete one object.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="id">ID of the object to delete.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.DeleteOneAsync(System.String,System.String,System.Boolean)">
+            <summary>
+            Delete one object.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="identifier">Identifier of the object to delete.</param>
+            <param name="throwIfNotFound">Set to true to throw exception if object does not exist.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.SaveOneAsync(System.String,System.String,System.Type,System.String,Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,System.Collections.Generic.IDictionary{System.String,System.Object},System.Boolean)">
+            <summary>
+            Saves one item.
+            </summary>
+            <param name="controller">The controller path of the the request, i.e. "product" in /api/product/</param>
+            <param name="action">Action part of the url if there is one</param>
+            <param name="contextModel">Context/culture values such as language.</param>
+            <param name="extraParameters">Any extra query parameters.</param>
+            <param name="item">String serlialized json item.</param>
+            <param name="responseType">The type to serialize the response into.</param>
+            <param name="put">True for a put request, false for a post.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.IsEnovaAliveAsync">
+            <summary>
+            Returns true if enova is responding through the API.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.IsLoggedInAsync">
+            <summary>
+            Returns true if the current user is logged in. Depends on having a token cookie.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetLoggedInUserInfoAsync">
+            <summary>
+            Get information about the currently logged in user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.GetEnovaNodeInfoAsync">
+            <summary>
+            Get information about the Enova node behind the API.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.LoginAdminAsync(System.String,System.String)">
+            <summary>
+            Login an admin
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.LoginCustomerAsync(System.String,System.String)">
+            <summary>
+            Login a customer
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.LoginCustomerAsAdminAsync(System.String,System.String,System.String)">
+            <summary>
+            Login a customer as admin
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClientAsync.LogoutAsync">
+            <summary>
+            Logout the user.
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository">
             <summary>
             A repository for access to Enova through the API. 
@@ -333,6 +516,66 @@
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepository.SaveObject``1(Newtonsoft.Json.Linq.JObject,System.String,System.Type,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Saves an object. Specify specific action in url, responsetype to serialize the response into, and context/culture, as needed.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync">
+            <summary>
+            A repository for async access to Enova through the API. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.ObjectExistsAsync``1(System.String)">
+            <summary>
+            Check if object with given identifier exists.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.ObjectExistsAsync``1(System.Int32)">
+            <summary>
+            Check if object with given id exists.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.GetObjectAsync``1(System.Int32,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Get an object by id, serialized into TModel.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.GetObjectAsync``1(System.String,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Get an object by identifier, seralized into TModel. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.GetManyAsync(System.Type,Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Get many objects, serialized into TModel. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.GetManyAsync``1(Wipcore.Enova.Api.Abstractions.Models.QueryModel,Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Get many objects, untyped. Query parameters, outputheaders, context/culture and which languages to query for are all optional.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.GetNextPageAsync``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the next page of items from a previous request.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.GetPreviousPageAsync``1(Wipcore.Enova.Api.Abstractions.Models.ApiResponseHeadersModel)">
+            <summary>
+            Get the previous page of items from a previous request.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.DeleteObjectAsync``1(System.Int32)">
+            <summary>
+            Deletes an object by id.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.DeleteObjectAsync``1(System.String)">
+            <summary>
+            Deletes an object by identifier.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Interfaces.IApiRepositoryAsync.SaveObjectAsync``1(Newtonsoft.Json.Linq.JObject,System.String,System.Type,Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Saves an object. Specify specific action in url, responsetype to serialize the response into, and context/culture, as needed.
             </summary>

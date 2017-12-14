@@ -19,6 +19,11 @@
       "properties": "Identifier,FirstName,LastName,Alias,City,CountryName,Street,Email"
     }
   },
+  "enovaadministrator": {
+    "default": {
+      "properties": "Identifier,FirstName,LastName,Alias,City,CountryName,Street,Email"
+    }
+  },
   "enovacart": {
     "default": {
       "properties": "Identifier,CustomerComment,Customer.Identifier,ProductCartItems,TotalPriceInclTax"

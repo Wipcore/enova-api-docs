@@ -102,6 +102,11 @@
             <param name="enovaObjectOwnedByIdentifier"></param>
             <returns></returns>
         </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.AuthorizeAccess``1(Wipcore.Core.SessionObjects.Context,System.String,System.Int32,System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser by identifier OR id. 
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAuthService.AuthorizeUpdate(System.String,System.String)">
             <summary>
             Returns true if the current logged in user is authorized to update, by comparing with the given owner.
@@ -152,21 +157,6 @@
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICacheService.RemoveFromCache(System.String)">
             <summary>
             Remove cache entry by key.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.GetCart(System.String,System.Int32)">
-            <summary>
-            Get an existing cart, mapped to a model.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.CalculateCart(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Maps given model to a cart in Enova and returns a model with prices specified.  
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.MapCart(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaCart,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
-            <summary>
-            Map order rows between cart and model.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.ICartService.GetCartsByCustomer(System.String,System.Int32)">
@@ -308,23 +298,13 @@
             Deletes an object of type T and given identifier from Enova. Returns true if successfull. False if the object did not exist.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.SaveOrder(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetOrdersByCustomer(System.String,System.String)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetOrdersByCustomer(System.Int32,System.String,System.String)">
             <summary>
             Get orders owned by given customer.
             </summary>
-            <param name="customerIdentifier"></param>
+            <param name="customerIdentifier">Identifier of the customer. Not used if customerId is set.</param>
+            <param name="customerId"></param>
             <param name="shippingStatus">Filter by shippingstatus identifier.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetOrder(System.String,System.Int32)">
-            <summary>
-             Get an existing order, mapped to a model.
-             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetValidShippingStatuses(Wipcore.Enova.Core.EnovaOrder,System.Boolean,System.Boolean)">
             <summary>
@@ -344,6 +324,16 @@
             <param name="pageNumber">The page numer, i.e. page 2 to view objects 20-40 if pagesize is 20.</param>
             <param name="pageSize">The number of objects to get per page.</param>
             <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IPagingService.GetHeaders">
+            <summary>
+            Get all response headers.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IPagingService.SetHeaders(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Set given values into the response headers.
+            </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IProductService.GetVariants(System.String)">
             <summary>

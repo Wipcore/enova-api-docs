@@ -27,6 +27,56 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
+            <summary>
+            Get a list of administrators.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get an administrator specified by identifier. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
+            <summary>
+            Get an administrator specified by id. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.GetManyIds(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get administrators specified by ids. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.GetManyIdentifiers(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get administrators specified by identifiers. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Create or update an administrator.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.Delete(System.Int32)">
+            <summary>
+            Delete an administrator.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorController.Delete(System.String)">
+            <summary>
+            Delete an administrator.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Head(System.String)">
+            <summary>
+            Check if the attributetype exists.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Head(System.Int32)">
+            <summary>
+            Check if the attributetype exists.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of attribute types.
@@ -65,6 +115,16 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeTypesController.Delete(System.String)">
             <summary>
             Delete a attributetype.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.Head(System.String)">
+            <summary>
+            Check if the attributetype exists.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.Head(System.Int32)">
+            <summary>
+            Check if the attributetype exists.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AttributeValuesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
@@ -132,14 +192,14 @@
             Get EnovaCart specified by identifiers. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.GetCartAsModel(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Int32)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.GetCustomersCartsByIdentifier(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            Get a cart mapped to a model.
+            Get carts belonging to a customer.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Post(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.CartModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.GetCustomersCartsById(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
             <summary>
-            Create or update a cart.
+            Get carts belonging to a customer.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CartsController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object},System.Boolean)">
@@ -214,7 +274,7 @@
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
             <summary>
-            Get an attribute type specified by id.
+            Get a country type specified by id.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.CountriesController.Delete(System.Int32)">
@@ -389,12 +449,12 @@
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.GetManyIds(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            Get EnovaLanguage specified by ids. 
+            Get languages specified by ids. 
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.GetManyIdentifiers(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            Get EnovaLanguage specified by identifiers. 
+            Get languages specified by identifiers. 
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.LanguagesController.Delete(System.Int32)">
@@ -472,19 +532,19 @@
             Get EnovaOrder specified by identifiers. 
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.GetCustomersCartsByIdentifier(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String,System.String)">
+            <summary>
+            Get orders belonging to a customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.GetCustomersCartsById(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32,System.String)">
+            <summary>
+            Get orders belonging to a customer.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.ValidShippingMoves(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Get valid new shipping statuses for an order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.GetCartAsModel(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.String,System.Int32)">
-            <summary>
-            Get an order mapped to a model.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Post(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.CartModel)">
-            <summary>
-            Create or update an order. Already existing orders cannot have basic order rows changed (quantity, types); instead create a new order.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.OrdersController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
@@ -1157,21 +1217,6 @@
             Creates an order from a mapping to cart by given values.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.GetCart(System.String,System.Int32)">
-            <summary>
-            Get an existing cart, mapped to a model.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.CalculateCart(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Maps given model to a cart in Enova and returns a model with prices specified.  
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.MapCart(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaCart,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
-            <summary>
-            Map order rows between cart and model.
-            </summary>
-        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.CartService.GetCartsByCustomer(System.String,System.Int32)">
             <summary>
             Get all carts belonging to given customer.
@@ -1187,32 +1232,17 @@
             Saves a customer with given values.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetOrdersByCustomer(System.String,System.String)">
+        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetOrdersByCustomer(System.Int32,System.String,System.String)">
             <summary>
             Get orders owned by given customer.
             </summary>
-            <param name="customerIdentifier"></param>
+            <param name="customerIdentifier">Identifier of the customer. Not used if customerId is set.</param>
+            <param name="customerId"></param>
             <param name="shippingStatus">Filter by shippingstatus identifier.</param>
-            <returns></returns>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetValidShippingStatuses(Wipcore.Enova.Core.EnovaOrder,System.Boolean,System.Boolean)">
             <summary>
             Get a list of identifiers|names of the valid new shipping statuses for the given order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.GetOrder(System.String,System.Int32)">
-            <summary>
-             Get an existing order, mapped to a model.
-             </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.SaveOrder(Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICartModel)">
-            <summary>
-            Create a new order or update an order. Updates cannot change price/quantity of orderrows, that requires a new order.
-            </summary>
-        </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.OrderService.Map(Wipcore.Core.SessionObjects.Context,Wipcore.Enova.Core.EnovaOrder,Wipcore.Enova.Api.Abstractions.Interfaces.Cart.ICalculatedCartModel)">
-            <summary>
-            Mapping order. Maps extra properties (additional values) on order and orderrows. Does not otherwise change orderrows.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.EnovaObjectServices.PaymentService.SavePayment(Wipcore.Enova.Api.Abstractions.Interfaces.IPaymentModel)">
@@ -1362,6 +1392,11 @@
             Maps connection to a variant family for a product - if the product is an owner or has an owner.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Services.ArrayNlogTarget">
+            <summary>
+            A target for nlog to log to the memory, for quick reading without file buffering.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.ContextService.GetContext">
             <summary>
             Get an EnovaContext for the current user.
@@ -1494,6 +1529,16 @@
             Handles pagination of responses with many objects.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.PagingService.GetHeaders">
+            <summary>
+            Get all response headers.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.PagingService.SetHeaders(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Set given values into the response headers.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.PagingService.Page(Wipcore.Core.SessionObjects.BaseObjectList,System.Int32,System.Int32)">
             <summary>
             Get a subset/page of a list of objects.
@@ -1539,6 +1584,11 @@
             Get all possible properties on a type.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Startup.MonitorEnovaShutdown(Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            This thread monitors Enovas heartbeat and shuts down the webhost if the heartbeat is dead.
+            </summary>
+        </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Controllers.CacheController">
             <summary>
             This controller is used to view and remove cache entries.
@@ -1562,14 +1612,44 @@
             </summary>
             <param name="key">The type for which to remove. Null to remove all.</param>
         </member>
-        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.IgnoreMapper">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
-            This mapper is used to ignore properties in mapping, which avoids PropertyNotFound exceptions.
+            Get a list of documents.
             </summary>
         </member>
-        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.RepeaterMapper">
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
             <summary>
-            This mapper is used to avoid saving a property directly on the Enova object (if the property actually dosen't exist for example) and instead saves it in the cache to be returned at next get request. WIP.
+            Get a document specified by identifier. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
+            <summary>
+            Get a document specified by id.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.GetManyIds(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get a document specified by ids. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.GetManyIdentifiers(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get documents specified by identifiers. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Create or update a document.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Delete(System.Int32)">
+            <summary>
+            Delete a document.
+            </summary>
+        </member>
+        <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.Delete(System.String)">
+            <summary>
+            Delete a document.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Attribute.AttributeMapper">
@@ -1587,6 +1667,11 @@
             Maps addresstype enum for a customer address.
             </summary>
         </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.IgnoreMapper">
+            <summary>
+            This mapper is used to ignore properties in mapping, which avoids PropertyNotFound exceptions.
+            </summary>
+        </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Order.OrderSumMapper">
             <summary>
             Maps the order sum for a order, with and without tax.
@@ -1595,6 +1680,11 @@
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.PriceList.PriceListPriceMapper">
             <summary>
             Maps all prices on a pricelist, with and without tax.
+            </summary>
+        </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.RepeaterMapper">
+            <summary>
+            This mapper is used to avoid saving a property directly on the Enova object (if the property actually dosen't exist for example) and instead saves it in the cache to be returned at next get request. WIP.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Section.SectionParentMapper">
@@ -1609,7 +1699,7 @@
         </member>
         <member name="M:Wipcore.eNova.Api.WebApi.Services.CacheService.GetCache(Wipcore.Enova.Api.Abstractions.Interfaces.IContextModel,Wipcore.Enova.Api.Abstractions.Interfaces.IQueryModel,System.Type,Wipcore.Core.SessionObjects.BaseObjectList)">
             <summary>
-            Get cache entry for a request. Key is built on all in parameters.
+            Get cache entry for a request. Key is built on all in parameters. Also puts cached header values into response.
             </summary>
         </member>
         <member name="M:Wipcore.eNova.Api.WebApi.Services.CacheService.GetCacheKeys(System.String)">

@@ -6,7 +6,7 @@
     <members>
         <member name="T:Wipcore.Enova.Api.OAuth.AccountController">
             <summary>
-            This controller is used to login customers and admins into Enova. It should put a cookie in the response, which should be sent back by the client on subsequent requests. 
+            This controller is used to login customers and admins into Enova. It should put a cookie and token in the response, which should be sent back by the client on subsequent requests. 
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoggedInAs">
@@ -28,6 +28,11 @@
         <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomer(Wipcore.Enova.Api.Abstractions.Models.LoginModel)">
             <summary>
             Login as a customer.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.OAuth.AccountController.Forbidden(System.String)">
+            <summary>
+            Error message redirect when unauthorized. Don't call directly.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AccountController.LoginCustomerWithAdminCredentials(Wipcore.Enova.Api.Abstractions.Models.LoginCustomerWithAdminCredentialsModel)">
@@ -57,6 +62,11 @@
             Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.OAuth.AuthService.AuthorizeAccess``1(Wipcore.Core.SessionObjects.Context,System.String,System.Int32,System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            Returns true if the logged in user is an administrator, or if the object has ownerproperty that is the same as the loggedinuser by identifier OR id. 
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AuthService.AuthorizeUpdate(System.String,System.String)">
             <summary>
             Returns true if the logged in user is an adminstrator, 
@@ -75,6 +85,12 @@
         <member name="T:Wipcore.Enova.Api.OAuth.CustomerUrlIdentifierPolicy">
             <summary>
             This policy specifices that a logged in customer can only see it's own information. User taken from identifier parameter in url.
+            Admins can see all information.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.OAuth.CustomerUrlIdPolicy">
+            <summary>
+            This policy specifices that a logged in customer can only see it's own information. User taken from id parameter in url.
             Admins can see all information.
             </summary>
         </member>

@@ -109,7 +109,13 @@ namespace Wipcore.Enova.Api.OAuth
                 Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
         }
 
+        /// <summary>
+        /// Error message redirect when unauthorized. Don't call directly.
+        /// </summary>
         [HttpGet("Forbidden")]
+        [HttpPost("Forbidden")]
+        [HttpPut("Forbidden")]
+        [HttpHead("Forbidden")]
         [AllowAnonymous]
         public IActionResult Forbidden(string url)
         {
