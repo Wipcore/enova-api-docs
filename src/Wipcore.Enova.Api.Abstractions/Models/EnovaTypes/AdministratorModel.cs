@@ -10,7 +10,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
 {
     [GroupPresentation("Administrator", new string[] { "Identifier", "Alias", "UserPassword", "FirstName", "LastName"}, sortOrder: 100)]
     [GroupPresentation("Address", new[] { "CoAddress", "Street", "PostalAddress", "PostalCode", "City", "Country", "Phone", "Email" }, sortOrder: 200)]
-    [GroupPresentation("Tax and Currency", new[] { "Taxrule", "Currency" }, sortOrder: 300)]
+    [GroupPresentation("Currency", new[] {"Currency" }, sortOrder: 300)]
     [IndexModel]
     public class AdministratorModel : BaseModel
     {
@@ -50,9 +50,6 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
         [PropertyPresentation("String", null, isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 200)]
         public string CoAddress { get; set; }
        
-        [PropertyPresentation("TaxRules", "Tax rules", isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 200)]
-        public string Taxrule { get; set; }
-
         [PropertyPresentation("Currency", "Currency", isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 200)]
         public string Currency { get; set; }
 

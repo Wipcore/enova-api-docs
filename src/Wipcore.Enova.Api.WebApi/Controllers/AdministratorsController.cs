@@ -17,11 +17,11 @@ using Wipcore.Enova.Core;
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class AdministratorController : EnovaApiController
+    public class AdministratorsController : EnovaApiController
     {
         private readonly IObjectService _objectService;
 
-        public AdministratorController(IExceptionService exceptionService, IObjectService objectService) : base(exceptionService)
+        public AdministratorsController(IExceptionService exceptionService, IObjectService objectService) : base(exceptionService)
         {
             _objectService = objectService;
         }
