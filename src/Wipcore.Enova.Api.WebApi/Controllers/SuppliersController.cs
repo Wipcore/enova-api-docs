@@ -21,10 +21,10 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     {
         private readonly IObjectService _objectService;
 
-        public SuppliersController(IExceptionService exceptionService, IObjectService objectService)
-            : base(exceptionService)
+        public SuppliersController(EnovaApiControllerDependencies dependencies)
+            : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
         }
 
         [HttpHead("{identifier}")]

@@ -260,6 +260,7 @@ namespace Wipcore.Enova.Api.WebApi
         {
             loggerFactory.AddNLog();
             env.ConfigureNLog(Path.Combine(_configFolderPath, "NLog.config"));
+            
 
             //print some useful information, ensuring it's setup correctly
             var logger = loggerFactory.CreateLogger("Startup folders");
@@ -350,6 +351,10 @@ namespace Wipcore.Enova.Api.WebApi
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
+                .ConfigureLogging((host, builder) =>
+                {
+                    builder.SetMinimumLevel(LogLevel.Trace);
+                })
                 .UseStartup<Startup>()
                 .Build();
 

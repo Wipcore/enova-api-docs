@@ -19,7 +19,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
     {
         private readonly ICacheService _cacheService;
 
-        public CacheController(IExceptionService exceptionService, ICacheService cacheService) : base(exceptionService)
+        public CacheController(EnovaApiControllerDependencies dependencies, ICacheService cacheService) : base(dependencies)
         {
             _cacheService = cacheService;
         }

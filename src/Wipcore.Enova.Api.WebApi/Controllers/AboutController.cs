@@ -11,6 +11,7 @@ using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Services;
+using Wipcore.Enova.Api.Abstractions.Internal;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
@@ -19,7 +20,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     {
         private readonly IConfigurationRoot _configurationRoot;
 
-        public AboutController(IConfigurationRoot configurationRoot, IExceptionService exceptionService) : base(exceptionService)
+        public AboutController(IConfigurationRoot configurationRoot, EnovaApiControllerDependencies dependencies) : base(dependencies)
         {
             _configurationRoot = configurationRoot;
         }

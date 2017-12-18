@@ -193,9 +193,9 @@ namespace Wipcore.Enova.Api.OAuth
         public string LogUser()
         {
             if (IsLoggedInAsAdmin())
-                return "Admin with identifier: " + GetLoggedInIdentifier();
+                return "Admin with alias: " + GetLoggedInAlias();
             if (IsLoggedInAsCustomer())
-                return "Customer with identifier: " + GetLoggedInIdentifier();
+                return "Customer with alias: " + GetLoggedInAlias();
 
             return "Anonymous user";
         }

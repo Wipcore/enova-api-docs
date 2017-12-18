@@ -26,10 +26,10 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IAuthService _authService;
         private readonly IContextService _contextService;
 
-        public OrdersController(IExceptionService exceptionService, IObjectService objectService, IOrderService orderService, IAuthService authService, IContextService contextService)
-            : base(exceptionService)
+        public OrdersController(EnovaApiControllerDependencies dependencies, IOrderService orderService, IAuthService authService, IContextService contextService)
+            : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
             _orderService = orderService;
             _authService = authService;
             _contextService = contextService;

@@ -23,9 +23,9 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
     {
         private readonly IObjectService _objectService;
 
-        public DocumentsController(IExceptionService exceptionService, IObjectService objectService) : base(exceptionService)
+        public DocumentsController(EnovaApiControllerDependencies dependencies) : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
         }
 
         [HttpHead("{identifier}")]

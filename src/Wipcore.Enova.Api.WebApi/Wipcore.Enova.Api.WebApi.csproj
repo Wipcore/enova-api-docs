@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\EnovaApiControllerDependencies.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Configs\**\*;SwaggerDocs\**\*;AddIn">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>

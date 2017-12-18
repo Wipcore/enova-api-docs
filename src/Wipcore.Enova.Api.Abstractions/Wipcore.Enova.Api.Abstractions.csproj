@@ -16,6 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EnovaApiController.cs" />
+    <Compile Remove="EnovaApiControllerDependencies.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.0.0" />

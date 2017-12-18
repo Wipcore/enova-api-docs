@@ -28,10 +28,10 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IWarehouseService _warehouseService;
         private readonly IAttributeService _attributeService;
 
-        public ProductsController(IExceptionService exceptionService, ObjectService objectService, IProductService productService, IWarehouseService warehouseService, IAttributeService attributeService)
-            :base(exceptionService)
+        public ProductsController(EnovaApiControllerDependencies dependencies, IProductService productService, IWarehouseService warehouseService, IAttributeService attributeService)
+            :base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
             _productService = productService;
             _warehouseService = warehouseService;
             _attributeService = attributeService;

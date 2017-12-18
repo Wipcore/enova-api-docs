@@ -23,10 +23,10 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IObjectService _objectService;
         private readonly IAttributeService _attributeService;
 
-        public AttributeValuesController(IExceptionService exceptionService, IObjectService objectService, IAttributeService attributeService)
-            : base(exceptionService)
+        public AttributeValuesController(EnovaApiControllerDependencies dependencies, IAttributeService attributeService)
+            : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
             _attributeService = attributeService;
         }
 

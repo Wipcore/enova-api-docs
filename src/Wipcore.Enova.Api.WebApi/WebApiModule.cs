@@ -4,6 +4,8 @@ using System.Runtime.Caching;
 using Autofac;
 using Microsoft.AspNetCore.Http;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Controllers;
 using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi
@@ -13,6 +15,7 @@ namespace Wipcore.Enova.Api.WebApi
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterInstance(new MemoryCache("ApiCache")).AsSelf().As<ObjectCache>();
+            builder.RegisterType<EnovaApiControllerDependencies>().AsSelf();
 
             var mapperTypes = ReflectionHelper.GetAllAvailableTypes().Where(x => x.Name.EndsWith("Mapper"));
             foreach (var type in mapperTypes)

@@ -22,10 +22,10 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IObjectService _objectService;
         private readonly IPaymentService _paymentService;
 
-        public PaymentsController(IExceptionService exceptionService, IObjectService objectService, IPaymentService paymentService)
-            : base(exceptionService)
+        public PaymentsController(EnovaApiControllerDependencies dependencies, IPaymentService paymentService)
+            : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
             _paymentService = paymentService;
         }
 

@@ -25,7 +25,7 @@ namespace Wipcore.Enova.Api.OAuth
     {
         private readonly IAuthService _authService;
 
-        public AccountController(IAuthService authService, IExceptionService exceptionService) : base(exceptionService)
+        public AccountController(EnovaApiControllerDependencies dependencies, IAuthService authService) : base(dependencies)
         {
             _authService = authService;
         }

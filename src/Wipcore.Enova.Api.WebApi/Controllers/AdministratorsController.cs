@@ -13,6 +13,7 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
+using EnovaApiControllerDependencies = Wipcore.Enova.Api.Abstractions.Internal.EnovaApiControllerDependencies;
 
 namespace Wipcore.Enova.Api.WebApi.Controllers
 {
@@ -21,9 +22,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     {
         private readonly IObjectService _objectService;
 
-        public AdministratorsController(IExceptionService exceptionService, IObjectService objectService) : base(exceptionService)
+        public AdministratorsController(EnovaApiControllerDependencies dependencies) : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
         }
 
         [HttpHead("{identifier}")]

@@ -24,10 +24,10 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         private readonly IObjectService _objectService;
         private readonly ISectionService _sectionService;
 
-        public SectionsController(IExceptionService exceptionService, IObjectService objectService, ISectionService sectionService)
-            : base(exceptionService)
+        public SectionsController(EnovaApiControllerDependencies dependencies, ISectionService sectionService)
+            : base(dependencies)
         {
-            _objectService = objectService;
+            _objectService = dependencies.ObjectService;
             _sectionService = sectionService;
         }
 

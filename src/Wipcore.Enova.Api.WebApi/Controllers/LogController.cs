@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Wipcore.eNova.Api.WebApi.Services;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.OAuth;
 using Wipcore.Enova.Api.WebApi.Services;
 
@@ -16,7 +17,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     [Route("api/[controller]")]
     public class LogController : EnovaApiController
     {
-        public LogController(IExceptionService exceptionService) : base(exceptionService)
+        public LogController(EnovaApiControllerDependencies dependencies) : base(dependencies)
         {
         }
 
