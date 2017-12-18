@@ -161,13 +161,22 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             return delayedMappers;
         }
+
+        /// <summary>
+        /// Clear the cache of a property that has been removed.
+        /// </summary>
+        public void ClearSettablePropertyCache(Type type, string propertyName)
+        {
+            _settableEnovaProperties.TryRemove(type.FullName + propertyName, out _);
+        }
         
         private bool IsSettableEnovaProperty(Type type, string propertyName)
         {
             return _settableEnovaProperties.GetOrAdd(type.FullName + propertyName, k =>
             {
                 var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-                return property != null && property.CanWrite;
+                return property != null ? property.CanWrite : 
+                    _contextService.GetContext().GetAllPropertyNames(type, out _).Contains(propertyName, StringComparer.CurrentCultureIgnoreCase);//possible dynamic property
             });
         }
 

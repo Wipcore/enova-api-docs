@@ -283,6 +283,32 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return true;
         }
 
+        /// <summary>
+        /// Adds a dynamic property to a type.
+        /// </summary>
+        public void AddProperty<T>(string propertyName, BaseObject.PropertyType propertyType, bool languageDependent, int maxStringLength)
+        {
+            var context = _contextService.GetContext();
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
+
+            context.AddProperty(derivedType, propertyName, propertyType, maxStringLength, languageDependent);
+        }
+
+        /// <summary>
+        /// Removes a dynamic property from a type.
+        /// </summary>
+        public void RemoveProperty<T>(string propertyName)
+        {
+            var context = _contextService.GetContext();
+            var derivedType = typeof(T).GetMostDerivedEnovaType();
+
+            context.RemoveProperty(derivedType, propertyName);
+
+            _mappingToEnovaService.ClearSettablePropertyCache(derivedType, propertyName);
+        }
+
+
+
         private bool IsMemoryObject(Type derivedType)
         {
             var cmoClass = derivedType.GetCustomAttribute<CmoClassAttribute>()?.TryGetPropertyValue("CoreType",
