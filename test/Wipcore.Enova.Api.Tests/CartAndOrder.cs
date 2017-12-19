@@ -24,6 +24,7 @@ namespace Wipcore.Enova.Api.Tests
 
 
         [Theory]
+        [InlineData(new object[] { "", "", "unittestcartNoSave", "GF_GPU_880", null, null, null, null, false })]
         [InlineData(new object[] { "69990002", "password", "unittestcartNoSave", "GF_GPU_880", null, null, null, null, false })]
         [InlineData(new object[] { "69990002", "password", "unittestcartNoSave", "GF_GPU_880", "KarinkjolenArtikel", null, null, null, false })]
         [InlineData(new object[] { "69990002", "password", "unittestcartNoSave", "GF_GPU_880", "KarinkjolenArtikel", "kjol", null, null, false })]
@@ -38,7 +39,8 @@ namespace Wipcore.Enova.Api.Tests
             var product2Quantity = _random.Next(1, 10);
 
             //login
-            _testService.LoginCustomer(_client, customerAlias, customerPassword);
+            if(!String.IsNullOrEmpty(customerAlias))
+                _testService.LoginCustomer(_client, customerAlias, customerPassword);
 
             //get prices of the products directly
             var price1 = GetProductPrice(product1Identifier);
@@ -47,7 +49,7 @@ namespace Wipcore.Enova.Api.Tests
 
             //build and post cart 
             var cart = BuildCart(customerAlias, cartIdentifier, product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType);
-            var postedCart = PostCart(cart, saveCart);
+            var postedCart = PutCart(cart, saveCart);
 
             //verify cart
             
@@ -96,11 +98,11 @@ namespace Wipcore.Enova.Api.Tests
             
             //make sure it exists
             var cart = BuildCart(customerAlias, cartIdentifier, product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType);
-            PostCart(cart, true);
+            PutCart(cart, true);
 
             //then remove all its items
             var clearCart = BuildCart(customerAlias, cartIdentifier, product1Identifier, product2Identifier, product1Quantity, product2Quantity, promoPassword, shippingType, paymentType, true);
-            var clearedCart = PostCart(clearCart, true);
+            var clearedCart = PutCart(clearCart, true);
 
             Assert.Null(clearedCart["ShippingCartItem"]);
             Assert.Null(clearedCart["PaymentCartItem"]);
@@ -231,7 +233,7 @@ namespace Wipcore.Enova.Api.Tests
 
         }
 
-        private IDictionary<string, object> PostCart(Dictionary<string, object> cart, bool saveCart)
+        private IDictionary<string, object> PutCart(Dictionary<string, object> cart, bool saveCart)
         {
             var json = JsonConvert.SerializeObject(cart);
             var content = new StringContent(json, new UTF8Encoding(), "application/json");

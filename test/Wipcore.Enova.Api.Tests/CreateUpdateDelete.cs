@@ -63,6 +63,9 @@ namespace Wipcore.Enova.Api.Tests
         [Theory, MemberData(nameof(AllUpdateableResources))]
         public void CannotCrudResourceWithoutAuth(string resource, bool auth)
         {
+            if(resource == "carts")
+                return;//allowed to create this without logging in
+
             var identifier = resource + TestBaseIdentifier;
 
             DeleteResource(resource, identifier, _testService.AdminClient); //clear any existing
