@@ -147,7 +147,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Create or update a cart. Set calculateOnly to true to not save the cart.
         /// </summary>
         [HttpPut()]
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values, bool calculateOnly = false)
         {
@@ -161,7 +161,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Create an order from given cart information. Returns order id.
         /// </summary>
         [HttpPut("createorder")]
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
         public int PutOrder([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
