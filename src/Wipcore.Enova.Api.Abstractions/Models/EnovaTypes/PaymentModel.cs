@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 
-namespace Wipcore.Enova.Api.Abstractions.Models
+namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
 {
     /// <summary>
     /// Model for adding a payment to an order.

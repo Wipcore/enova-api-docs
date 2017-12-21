@@ -89,11 +89,6 @@
             Whether this property changes depending on the language.
             </summary>
         </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.EnovaApiController">
-            <summary>
-            Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
-            </summary>
-        </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Interfaces.IApiClient">
             <summary>
             Client for sending requests to an API.
@@ -721,6 +716,51 @@
             Whether to use cache as response.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.AccessModel">
+            <summary>
+            A model representing access rights on Enova objects.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Read">
+            <summary>
+            Read access.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Write">
+            <summary>
+            Write access, updating and creating.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Delete">
+            <summary>
+            Delete access.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Use">
+            <summary>
+            Use access. Set to give access to promos, pricelists etc.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.CreateLink">
+            <summary>
+            Permission to create links to other objects.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.UpdateLink">
+            <summary>
+            Permission to update links to other objects.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.DeleteLink">
+            <summary>
+            Permission to delete links to other objects.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.SetAccess">
+            <summary>
+            Permission to change other access rights.
+            </summary>
+        </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Market">
             <summary>
             Identifier of pre-defined market.
@@ -751,6 +791,21 @@
             Get the names of the properties that should be shown in the default 'all' tab in the admin.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.PaymentModel">
+            <summary>
+            Model for adding a payment to an order.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.PaymentModel.Order">
+            <summary>
+            Identifier of the order to connect the payment to.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.PaymentModel.Status">
+            <summary>
+            Status of the payment, a number that can have meaning outside the system.
+            </summary>
         </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Models.LoginModel">
             <summary>
@@ -790,21 +845,6 @@
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.LoginResponseModel.AccessToken">
             <summary>
             Bearer authentication access token.
-            </summary>
-        </member>
-        <member name="T:Wipcore.Enova.Api.Abstractions.Models.PaymentModel">
-            <summary>
-            Model for adding a payment to an order.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.PaymentModel.Order">
-            <summary>
-            Identifier of the order to connect the payment to.
-            </summary>
-        </member>
-        <member name="P:Wipcore.Enova.Api.Abstractions.Models.PaymentModel.Status">
-            <summary>
-            Status of the payment, a number that can have meaning outside the system.
             </summary>
         </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.QueryModel.Template">

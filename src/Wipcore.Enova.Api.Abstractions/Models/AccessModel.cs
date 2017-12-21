@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Wipcore.Enova.Api.Abstractions.Models
+{
+    /// <summary>
+    /// A model representing access rights on Enova objects.
+    /// </summary>
+    public class AccessModel
+    {
+        /// <summary>
+        /// Read access.
+        /// </summary>
+        public bool? Read { get; set; }
+
+        /// <summary>
+        /// Write access, updating and creating.
+        /// </summary>
+        public bool? Write { get; set; }
+
+        /// <summary>
+        /// Delete access.
+        /// </summary>
+        public bool? Delete { get; set; }
+
+        /// <summary>
+        /// Use access. Set to give access to promos, pricelists etc.
+        /// </summary>
+        public bool? Use { get; set; }
+
+        /// <summary>
+        /// Permission to create links to other objects.
+        /// </summary>
+        public bool? CreateLink { get; set; }
+
+        /// <summary>
+        /// Permission to update links to other objects.
+        /// </summary>
+        public bool? UpdateLink { get; set; }
+
+        /// <summary>
+        /// Permission to delete links to other objects.
+        /// </summary>
+        public bool? DeleteLink { get; set; }
+
+        /// <summary>
+        /// Permission to change other access rights.
+        /// </summary>
+        public bool? SetAccess { get; set; }
+
+
+        public override string ToString() => $"(Read: {Read}, Write: {Write}, Delete: {Delete}, Use: {Use}, CreateLink: {CreateLink}, " +
+                                             $"UpdateLink: {UpdateLink}, DeleteLink: {DeleteLink}, SetAccess: {SetAccess})";
+
+    }
+}

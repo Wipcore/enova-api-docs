@@ -11,7 +11,17 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 {
     public static class ReflectionHelper
     {
-        private static readonly ConcurrentDictionary<Type, Type> ResolvedDerivedTypes = new ConcurrentDictionary<Type, Type>(); 
+        private static readonly ConcurrentDictionary<Type, Type> ResolvedDerivedTypes = new ConcurrentDictionary<Type, Type>();
+        private static List<Type> _types = null;
+
+        /// <summary>
+        /// Get any loaded type by name.
+        /// </summary>
+        public static Type GetTypeByName(string name, bool nullIfNotExists = false)
+        {
+            return nullIfNotExists ? GetAllAvailableTypes().FirstOrDefault(x => String.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase))
+                : GetAllAvailableTypes().First(x => String.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase)); ;
+        }
 
         /// <summary>
         /// Returns the most derived type, if more then one type is found it will prioritize types found outside of enova-core.
@@ -48,7 +58,9 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         /// </summary>
         public static IEnumerable<Type> GetAllAvailableTypes()
         {
-            return AppDomain.CurrentDomain.GetAssembliesSafe().SelectMany(assembly => assembly.GetExportedTypes());
+            if (_types == null)
+                _types = AppDomain.CurrentDomain.GetAssembliesSafe().SelectMany(assembly => assembly.GetExportedTypes()).ToList();
+            return _types;
         }
 
         /// <summary>
@@ -111,7 +123,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
 
         private static readonly List<string> ExceptionDlls = new List<string>();
 
-        public static Assembly[] GetAssembliesSafe(this AppDomain domain, bool includeSystemDlls = false)
+        public static List<Assembly> GetAssembliesSafe(this AppDomain domain, bool includeSystemDlls = false)
         {
             return domain.GetAssemblies().Where(a =>
             {
@@ -138,7 +150,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
                 }
                 return false;
 
-            }).ToArray();
+            }).ToList();
         }
     }
     
