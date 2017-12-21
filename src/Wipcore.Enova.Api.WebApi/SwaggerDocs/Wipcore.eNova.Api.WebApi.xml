@@ -27,6 +27,147 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserTypeAccess(System.String)">
+            <summary>
+            Get access info on a type for the current logged in user.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserTypeAccess(System.String,System.String)">
+            <summary>
+            Get access to a type for a user.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="userIdentifier">Identifier of the user to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserTypeAccess(System.String,System.Int32)">
+            <summary>
+            Get access to a type for a user. 
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="userId">Id of the user to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.GroupTypeAccess(System.String,System.String)">
+            <summary>
+            Get access to a type for a group. 
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupIdentifier">Identifier of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.GroupTypeAccess(System.String,System.Int32)">
+            <summary>
+            Get access to a type for a group.  
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupId">Id of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserObjectAccess(System.Int32,System.String)">
+            <summary>
+            Get access info on an object for the current logged in user.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserObjectAccess(System.Int32,System.String,System.String)">
+            <summary>
+            Get access info on an object for a specific user.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="userIdentifier"></param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserObjectAccess(System.Int32,System.String,System.Int32)">
+            <summary>
+            Get access info on an object for a specific user. 
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="userId">Id of the user to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.GroupObjectAccess(System.Int32,System.String,System.String)">
+            <summary>
+            Get access info on an object for a specific group.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupIdentifier">Identifier of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.GroupObjectAccess(System.Int32,System.String,System.Int32)">
+            <summary>
+            Get access info on an object for a specific group.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupId">Id of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetTypeAccess(System.String,System.Int32,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set access for a group on a type.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupId">Id of the group to check.</param>
+            <param name="accessModel">The accessrights to set.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetTypeAccess(System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set access for a group on a type.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupIdentifier">Identifier of the group to check.</param>
+            <param name="accessModel">The accessrights to set.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetObjectAccess(System.Int32,System.String,System.Int32,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set access for a group on an object.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupId">Id of the group to check.</param>
+            <param name="accessModel">The accessrights to set.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetObjectAccess(System.Int32,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set access for a group on an object. 
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupIdentifier">Identifier of the group to check.</param>
+            <param name="accessModel">The accessrights to set.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.RemoveTypeAccess(System.String,System.String)">
+            <summary>
+            Remove access to a specific type for a group. This does not deny access, it only removes specific set rights so the system falls back on default rights.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupIdentifier">Identifier of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.RemoveTypeAccess(System.String,System.Int32)">
+            <summary>
+            Remove access to a specific type for a group. This does not deny access, it only removes specific set rights so the system falls back on default rights.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupId">Id of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.RemoveObjectAccess(System.Int32,System.String,System.Int32)">
+            <summary>
+            Remove access to a specific object for a group. This does not deny access, it only removes specific set rights so the system falls back on default rights.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupId">Id of the group to check.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.RemoveObjectAccess(System.Int32,System.String,System.String)">
+            <summary>
+            Remove access to a specific object for a group. This does not deny access, it only removes specific set rights so the system falls back on default rights.
+            </summary>
+            <param name="objectId">ID of the object to check access to.</param>
+            <param name="enovaType">The name of the enova type.</param>
+            <param name="groupIdentifier">Identifier of the group to check.</param>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of administrators.
@@ -697,7 +838,7 @@
             Get EnovaPayment specified by identifiers. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentsController.Post(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.PaymentModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.PaymentsController.Post(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.PaymentModel)">
             <summary>
             Add a payment to an order.
             </summary>
@@ -1519,6 +1660,11 @@
             A HttpException with statuscode and message.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetTypeByName(System.String,System.Boolean)">
+            <summary>
+            Get any loaded type by name.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetMostDerivedEnovaType(System.Type)">
             <summary>
             Returns the most derived type, if more then one type is found it will prioritize types found outside of enova-core.
@@ -1600,6 +1746,48 @@
         <member name="T:Wipcore.Enova.Api.WebApi.Mappers.Product.VariantModelMapper">
             <summary>
             Maps connection to a variant family for a product - if the product is an owner or has an owner.
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Services.AccessRightService">
+            <inheritdoc />
+            <summary>
+            CRUD upon enova access rights.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetAccessToType(System.String,Wipcore.Core.SessionObjects.BaseObject)">
+            <inheritdoc />
+            <summary>
+            Get effective access rights on a certain type for a group or a user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.BaseObject)">
+            <inheritdoc />
+            <summary>
+            Get effective access rights on a certain object for a group or a user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToType(System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <inheritdoc />
+            <summary>
+            Set access to a type for a certain group. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <inheritdoc />
+            <summary>
+            Set access to an object for a certain group.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.RemoveAccessToType(System.String,Wipcore.Core.SessionObjects.Group)">
+            <inheritdoc />
+            <summary>
+            Removes access to a type for a group. NOTE: removing is not the same as denying access.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.RemoveAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group)">
+            <inheritdoc />
+            <summary>
+            Removes access to an object for a group. NOTE: removing is not the same as denying access.
             </summary>
         </member>
         <member name="T:Wipcore.Enova.Api.WebApi.Services.ArrayNlogTarget">

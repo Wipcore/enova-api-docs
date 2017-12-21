@@ -4,6 +4,46 @@
         <name>Wipcore.Enova.Api.Abstractions.Internal</name>
     </assembly>
     <members>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.EnovaApiController">
+            <summary>
+            Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
+            </summary>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService">
+            <summary>
+            CRUD upon enova access rights.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.GetAccessToType(System.String,Wipcore.Core.SessionObjects.BaseObject)">
+            <summary>
+            Get effective access rights on a certain type for a group or a user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.GetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.BaseObject)">
+            <summary>
+            Get effective access rights on a certain object for a group or a user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.SetAccessToType(System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set access to a type for a certain group. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.SetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set access to an object for a certain group.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.RemoveAccessToType(System.String,Wipcore.Core.SessionObjects.Group)">
+            <summary>
+            Removes access to a type for a group. NOTE: removing is not the same as denying access.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.RemoveAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group)">
+            <summary>
+            Removes access to an object for a group. NOTE: removing is not the same as denying access.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAttributeService.GetAttributes``1(System.String)">
             <summary>
             Get attributes of the object with the given identifier.
@@ -208,6 +248,11 @@
             Maps given properties in dictionary to the given enova object. Returns mappers that must be set after object is saved.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IMappingToEnovaService.ClearSettablePropertyCache(System.Type,System.String)">
+            <summary>
+            Clear the cache of a property that has been removed.
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IObjectService">
             <summary>
             Service for getting, deleting and saving objects to Enova.
@@ -296,6 +341,16 @@
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.Delete``1(System.String)">
             <summary>
             Deletes an object of type T and given identifier from Enova. Returns true if successfull. False if the object did not exist.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.AddProperty``1(System.String,Wipcore.Core.SessionObjects.BaseObject.PropertyType,System.Boolean,System.Int32)">
+            <summary>
+            Adds a dynamic property to a type.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IObjectService.RemoveProperty``1(System.String)">
+            <summary>
+            Removes a dynamic property from a type.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IOrderService.GetOrdersByCustomer(System.Int32,System.String,System.String)">
