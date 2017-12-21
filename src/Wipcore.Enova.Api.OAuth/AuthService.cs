@@ -71,22 +71,31 @@ namespace Wipcore.Enova.Api.OAuth
             try
             {
                 var context = EnovaSystemFacade.Current.Connection.CreateContext();
-                var user = admin ? (User)context.Login(model.Alias, model.Password)
+                var user = admin
+                    ? (User) context.Login(model.Alias, model.Password)
                     : context.CustomerLogin(model.Alias, model.Password);
 
                 var claimsPrincipal = BuildClaimsPrincipal(user, admin, model.Password);
                 return claimsPrincipal;
             }
+            catch (UserNotFoundException e)
+            {
+                _log.LogDebug(e.ToString());
+            }
+            catch (IncorrectPasswordException e)
+            {
+                _log.LogDebug($"User: {model.Alias} {e}");
+            }
             catch (Exception e)
             {
                 _log.LogError($"Error at AuthService.Login using model: {model?.ToString() ?? "null"}. Admin: {admin}. Error: {e}");
-                return null;
             }
+            return null;
         }
 
         public ClaimsPrincipal LoginCustomerAsAdmin(ILoginCustomerWithAdminCredentialsModel model, out string errorMessage)
         {
-            errorMessage = String.Empty;
+            errorMessage = "Invalid username or password.";
             var context = EnovaSystemFacade.Current.Connection.CreateContext();
             try
             {
@@ -104,17 +113,24 @@ namespace Wipcore.Enova.Api.OAuth
 
                 return claimsPrincipal;
             }
+            catch (UserNotFoundException e)
+            {
+                _log.LogDebug(e.ToString());
+            }
+            catch (IncorrectPasswordException e)
+            {
+                _log.LogDebug($"User: {model.Alias} {e}");
+            }
             catch (Exception e)
             {
-                errorMessage = "Invalid username or password.";
                 _log.LogError($"Error at AuthService.LoginCustomerAsAdmin using model: {model?.ToString() ?? "null"}. Error: {e}");
-                return null;
             }
             finally
             {
                 if (context.IsLoggedIn())
                     context.Logout();
             }
+            return null;
         }
 
         public string BuildToken(ClaimsPrincipal claimsPrincipal)
