@@ -221,7 +221,11 @@ namespace Wipcore.Enova.Api.WebApi
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "eNOVA Web API"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "eNOVA Web API");
+                    c.DocExpansion("none");
+                });
             }
 
             new Task(() => MonitorEnovaShutdown(loggerFactory)).Start();
