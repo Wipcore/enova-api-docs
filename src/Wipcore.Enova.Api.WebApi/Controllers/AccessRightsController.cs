@@ -102,7 +102,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <param name="objectId">ID of the object to check access to.</param>
         /// <param name="enovaType">The name of the enova type.</param>
         [HttpGet("LoggedInUserObjectAccess")]
-        [Authorize(Roles = AuthService.AdminRole)]
+        [Authorize]
         public AccessModel UserObjectAccess(int objectId, string enovaType)
         {
             var userIdentifier = _authService.GetLoggedInIdentifier();
