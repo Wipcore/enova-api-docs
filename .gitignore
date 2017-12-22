@@ -15,6 +15,7 @@ TestResults
 *.sln.docstates
 localappsettings.json
 applicationhost.config
+localnlog.config
 
 # Build results
 [Dd]ebug/

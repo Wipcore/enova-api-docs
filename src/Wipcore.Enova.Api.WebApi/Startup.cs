@@ -209,7 +209,8 @@ namespace Wipcore.Enova.Api.WebApi
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
             
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            if(env.IsDevelopment())
+                loggerFactory.AddDebug();
             ConfigureNlog(env,loggerFactory);
 
             app.UseStaticFiles();
@@ -263,16 +264,20 @@ namespace Wipcore.Enova.Api.WebApi
         private void ConfigureNlog(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();
-            env.ConfigureNLog(Path.Combine(_configFolderPath, "NLog.config"));
-            
+            var nlogFilePath = Path.Combine(_configFolderPath, "LocalNLog.config");
+            if(!File.Exists(nlogFilePath))
+                nlogFilePath = Path.Combine(_configFolderPath, "NLog.config");
+
+            env.ConfigureNLog(nlogFilePath);
 
             //print some useful information, ensuring it's setup correctly
-            var logger = loggerFactory.CreateLogger("Startup folders");
+            var logger = loggerFactory.CreateLogger("Startup info");
             logger.LogInformation("Reading configuration files from: {0}", _configFolderPath);
             logger.LogInformation("Reading addin files from: {0}", _addInFolderPath);
             if (Configuration.GetValue<bool>("ApiSettings:UseSwagger", true))
                 logger.LogInformation("Reading swagger docs from: {0}", _swaggerDocsFolderPath);
             logger.LogInformation("Connecting to Enova with: {0}", EnovaSystemFacade.Current.Settings.DatabaseConnection);
+            logger.LogInformation("Logging Enova to: {0}", EnovaSystemFacade.Current.Settings.LogPath);
         }
 
         private void LoadAddinAssemblies(List<Assembly> assemblies, List<IEnovaApiModule> autofacModules)
