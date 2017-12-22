@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,12 +17,14 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         protected static ILogger Logger = null;
         private readonly IExceptionService _exceptionService;
         private readonly IAuthService _authService;
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         protected EnovaApiController(EnovaApiControllerDependencies dependencies)
         {
             _exceptionService = dependencies.ExceptionService;
             _authService = dependencies.AuthService;
             Logger = Logger ?? dependencies.LoggerFactory.CreateLogger(this.GetType());
+            _stopwatch.Start();
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -47,6 +50,8 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
             }
 
             base.OnActionExecuted(context);
+
+            Logger.LogTrace($"Finished executing {context.ActionDescriptor.DisplayName} in {_stopwatch.Elapsed}");
         }
     }
 }
