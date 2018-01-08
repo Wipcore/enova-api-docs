@@ -17,7 +17,7 @@ namespace Wipcore.Enova.Api.WebApi.Helpers
         /// <summary>
         /// Get any loaded type by name.
         /// </summary>
-        public static Type GetTypeByName(string name, bool nullIfNotExists = false)
+        public static Type GetTypeByName(string name, bool nullIfNotExists = true)
         {
             return nullIfNotExists ? GetAllAvailableTypes().FirstOrDefault(x => String.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase))
                 : GetAllAvailableTypes().First(x => String.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase)); ;

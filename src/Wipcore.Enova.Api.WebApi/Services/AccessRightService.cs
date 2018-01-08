@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Logging;
 using Wipcore.Core;
 using Wipcore.Core.SessionObjects;
@@ -35,6 +37,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public AccessModel GetAccessToType(string enovaTypeName, BaseObject groupOrUserToCheck)
         {
             var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            if (type == null)
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+
             var context = _contextService.GetContext();
             
             var access = groupOrUserToCheck == null ? context.GetActualAccess(type) : context.GetActualAccess(groupOrUserToCheck, type);
@@ -51,6 +56,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public AccessModel GetAccessToObject(int objectId, string enovaTypeName, BaseObject groupOrUserToCheck)
         {
             var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            if (type == null)
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+
             var context = _contextService.GetContext();
             var obj = context.FindObject(objectId, type);
             
@@ -68,6 +76,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public void SetAccessToType(string enovaTypeName, Group group, AccessModel accessModel)
         {
             var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            if (type == null)
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+
             var currentAccess = GetAccessToType(enovaTypeName, group);
             var accessMask = MapModelToAccessMask(accessModel, currentAccess);
 
@@ -84,6 +95,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public void SetAccessToObject(int objectId, string enovaTypeName, Group group, AccessModel accessModel)
         {
             var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            if (type == null)
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+
             var currentAccess = GetAccessToObject(objectId, enovaTypeName, group);
             var accessMask = MapModelToAccessMask(accessModel, currentAccess);
             var context = _contextService.GetContext();
@@ -101,6 +115,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public void RemoveAccessToType(string enovaTypeName, Group group)
         {
             var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            if (type == null)
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
 
             var context = _contextService.GetContext();
             context.RemoveDefaultAccess(group, type);
@@ -115,6 +131,9 @@ namespace Wipcore.Enova.Api.WebApi.Services
         public void RemoveAccessToObject(int objectId, string enovaTypeName, Group group)
         {
             var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            if (type == null)
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+
             var context = _contextService.GetContext();
 
             var obj = context.FindObject(objectId, type);
