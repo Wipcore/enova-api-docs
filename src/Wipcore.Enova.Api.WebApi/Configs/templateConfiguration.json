@@ -2,7 +2,7 @@
   //TODO make configurable from webadmin or similar
   "enovabaseproduct": {
     "default": {
-      "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
+      "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ID"
     },
     "price": {
       "properties": "Identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"
@@ -152,6 +152,11 @@
   "enovatextdocument": {
     "default": {
       "properties": "Identifier,Name,FileName,Description"
+    }
+  },
+  "enovaadministratorgroup": {
+    "default": {
+      "properties": "Identifier,Name"
     }
   }
 

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Wipcore.Enova.Api.Abstractions.Attributes;
-using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 
-namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
+namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator
 {
     [GroupPresentation("Administrator", new string[] { "Identifier", "Alias", "UserPassword", "FirstName", "LastName"}, sortOrder: 100)]
     [GroupPresentation("Address", new[] { "CoAddress", "Street", "PostalAddress", "PostalCode", "City", "Country", "Phone", "Email" }, sortOrder: 200)]

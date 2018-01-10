@@ -168,6 +168,46 @@
             <param name="enovaType">The name of the enova type.</param>
             <param name="groupIdentifier">Identifier of the group to check.</param>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
+            <summary>
+            Get a list of administrator groups.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get an administrator group specified by identifier. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.Int32)">
+            <summary>
+            Get an administrator group specified by id. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.GetManyIds(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get administrator group specified by ids. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.GetManyIdentifiers(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel,System.String)">
+            <summary>
+            Get administrator groups specified by identifiers. 
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Create or update an administrator group.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.Delete(System.Int32)">
+            <summary>
+            Delete an administrator group.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorGroupsController.Delete(System.String)">
+            <summary>
+            Delete an administrator group.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AdministratorsController.Get(Wipcore.Enova.Api.Abstractions.Models.ContextModel,Wipcore.Enova.Api.Abstractions.Models.QueryModel)">
             <summary>
             Get a list of administrators.

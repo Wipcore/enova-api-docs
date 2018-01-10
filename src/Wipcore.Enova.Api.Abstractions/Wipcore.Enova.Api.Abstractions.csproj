@@ -18,6 +18,7 @@
   <ItemGroup>
     <Compile Remove="EnovaApiController.cs" />
     <Compile Remove="EnovaApiControllerDependencies.cs" />
+    <Compile Remove="Models\EnovaTypes\Administrator\AdministratorGroupMiniModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
