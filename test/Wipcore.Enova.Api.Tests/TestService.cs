@@ -12,9 +12,16 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
 using Wipcore.Enova.Api.NetClient;
+using Wipcore.Enova.Api.NetClient.Administrator;
+using Wipcore.Enova.Api.NetClient.Cart;
+using Wipcore.Enova.Api.NetClient.Customer;
+using Wipcore.Enova.Api.NetClient.Order;
+using Wipcore.Enova.Api.NetClient.Product;
 using Wipcore.Enova.Api.WebApi;
 using Xunit;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
@@ -112,10 +119,12 @@ namespace Wipcore.Enova.Api.Tests
                 x.AddTransient(typeof(CartModel));
                 x.AddTransient(typeof(OrderModel));
                 x.AddTransient(typeof(ProductModel));
-                x.AddSingleton(typeof(UserRepository< CustomerModel, CartModel, OrderModel >));
+                x.AddSingleton(typeof(CustomerRepository< CustomerModel, CartModel, OrderModel>));
                 x.AddSingleton(typeof(CartRepository<CartModel, OrderModel>));
                 x.AddSingleton(typeof(OrderRepository<OrderModel>));
                 x.AddSingleton(typeof(ProductRepository<ProductModel>));
+                x.AddSingleton(typeof(AdministratorRepository<AdministratorModel>));
+                
             };
         }
 
@@ -178,6 +187,12 @@ namespace Wipcore.Enova.Api.Tests
             {
                 Assert.False(response.IsSuccessStatusCode);    
             }
+        }
+
+        internal void SetupHttpContext(HttpContext context)
+        {
+            var accessor = (IHttpContextAccessor)this.Server.Host.Services.GetService(typeof(IHttpContextAccessor));
+            accessor.HttpContext = context;
         }
     }
 }

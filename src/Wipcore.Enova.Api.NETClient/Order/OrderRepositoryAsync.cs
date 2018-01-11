@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 
-namespace Wipcore.Enova.Api.NetClient
+namespace Wipcore.Enova.Api.NetClient.Order
 {
     public class OrderRepositoryAsync<TOrderModel> where TOrderModel : OrderModel
     {

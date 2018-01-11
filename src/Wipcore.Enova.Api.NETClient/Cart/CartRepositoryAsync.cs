@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
@@ -10,7 +7,7 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
 
 
-namespace Wipcore.Enova.Api.NetClient
+namespace Wipcore.Enova.Api.NetClient.Cart
 {
     public class CartRepositoryAsync<TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel
     {

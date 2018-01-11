@@ -1,9 +1,15 @@
 ﻿using Autofac;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
+using Wipcore.Enova.Api.NetClient.Administrator;
+using Wipcore.Enova.Api.NetClient.Cart;
+using Wipcore.Enova.Api.NetClient.Customer;
+using Wipcore.Enova.Api.NetClient.Order;
+using Wipcore.Enova.Api.NetClient.Product;
 
 namespace Wipcore.Enova.Api.NetClient
 {
@@ -17,12 +23,14 @@ namespace Wipcore.Enova.Api.NetClient
             builder.RegisterType<ApiRepository>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<CartRepository<CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<CartRepositoryAsync<CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
-            builder.RegisterType<UserRepository<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
-            builder.RegisterType<UserRepositoryAsync<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<CustomerRepository<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<CustomerRepositoryAsync<CustomerModel, CartModel, OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ProductRepository<ProductModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ProductRepositoryAsync<ProductModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<OrderRepository<OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<OrderRepositoryAsync<OrderModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<AdministratorRepository<AdministratorModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<AdministratorRepositoryAsync<AdministratorModel>>().AsImplementedInterfaces().AsSelf().SingleInstance();
         }
 
         public int Priority => 0;

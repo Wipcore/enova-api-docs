@@ -10,6 +10,10 @@ using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Attribute;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product;
+using Wipcore.Enova.Api.NetClient.Cart;
+using Wipcore.Enova.Api.NetClient.Customer;
+using Wipcore.Enova.Api.NetClient.Order;
+using Wipcore.Enova.Api.NetClient.Product;
 using Xunit;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
 using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;
@@ -20,7 +24,7 @@ namespace Wipcore.Enova.Api.Tests
     public class Repositories : IClassFixture<TestService>
     {
         private readonly TestService _testService;
-        private readonly UserRepository<CustomerModel, CartModel, OrderModel> _userRepository;
+        private readonly CustomerRepository<CustomerModel, CartModel, OrderModel> _customerRepository;
         private readonly Random _random = new Random();
         private readonly CartRepository<CartModel, OrderModel> _cartRepository;
         private readonly OrderRepository<OrderModel> _orderRepository;
@@ -29,31 +33,25 @@ namespace Wipcore.Enova.Api.Tests
         public Repositories(TestService testService)
         {
             _testService = testService;
-            _userRepository = (UserRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(UserRepository<CustomerModel, CartModel, OrderModel>));
+            _customerRepository = (CustomerRepository<CustomerModel, CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CustomerRepository<CustomerModel, CartModel, OrderModel>));
             _cartRepository = (CartRepository<CartModel, OrderModel>)_testService.Server.Host.Services.GetService(typeof(CartRepository<CartModel, OrderModel>));
             _orderRepository = (OrderRepository<OrderModel>)_testService.Server.Host.Services.GetService(typeof(OrderRepository<OrderModel>));
             _productRepository = (ProductRepository<ProductModel>)_testService.Server.Host.Services.GetService(typeof(ProductRepository<ProductModel>));
         }
-
-        private void SetupHttpContext(HttpContext context)
-        {
-            var accessor = (IHttpContextAccessor)_testService.Server.Host.Services.GetService(typeof(IHttpContextAccessor));
-            accessor.HttpContext = context;
-        }
-
+        
         [Theory]
         [InlineData(new object[] { "69990002", "password" })]
         public void CanUpdateCustomerByRepo(string customerIdentifier, string password)
         {
-            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
+            _testService.SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
 
-            _userRepository.LoginCustomer(customerIdentifier, password);
+            _customerRepository.LoginCustomer(customerIdentifier, password);
 
             var newSortOrder = _random.Next(1000);
             var model = new CustomerModel() { Identifier = customerIdentifier, SortOrder = newSortOrder, Alias = customerIdentifier };
 
-            _userRepository.UpdateCustomer(model);
-            var savedModel = _userRepository.GetSavedCustomer(customerIdentifier);
+            _customerRepository.UpdateCustomer(model);
+            var savedModel = _customerRepository.GetSavedCustomer(customerIdentifier);
             Assert.Equal(newSortOrder, savedModel.SortOrder);
         }
 
@@ -61,13 +59,13 @@ namespace Wipcore.Enova.Api.Tests
         [InlineData(new object[] { "69990002", "password" })]
         public void CanGetCustomerCartsByRepo(string customerIdentifier, string password)
         {
-            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
+            _testService.SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
 
-            _userRepository.LoginCustomer(customerIdentifier, password);
-            var customer = _userRepository.GetSavedCustomer(customerIdentifier);
+            _customerRepository.LoginCustomer(customerIdentifier, password);
+            var customer = _customerRepository.GetSavedCustomer(customerIdentifier);
             
-            var cartsByIdentifier = _userRepository.GetCarts(customer.Identifier);
-            var cartsById = _userRepository.GetCarts(customer.ID);
+            var cartsByIdentifier = _customerRepository.GetCarts(customer.Identifier);
+            var cartsById = _customerRepository.GetCarts(customer.ID);
 
             Assert.NotEqual(cartsById.Count, 0);
             cartsById.ForEach(x => Assert.NotEqual(x.ID, 0));
@@ -82,14 +80,14 @@ namespace Wipcore.Enova.Api.Tests
         [InlineData(new object[] { "69990002", "password" })]
         public void CanGetCustomerOrdersByRepo(string customerIdentifier, string password)
         {
-            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
+            _testService.SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticDeltaIndexHttpContextIdentifier });
 
-            _userRepository.LoginCustomer(customerIdentifier, password);
-            var customer = _userRepository.GetSavedCustomer(customerIdentifier);
+            _customerRepository.LoginCustomer(customerIdentifier, password);
+            var customer = _customerRepository.GetSavedCustomer(customerIdentifier);
             
-            var ordersById = _userRepository.GetOrders(customer.ID);
-            var ordersByIdentifier = _userRepository.GetOrders(customer.Identifier);
-            var ordersWithStatus = _userRepository.GetOrders(customer.Identifier, shippingStatusIdentifier: "NEW_INTERNET");
+            var ordersById = _customerRepository.GetOrders(customer.ID);
+            var ordersByIdentifier = _customerRepository.GetOrders(customer.Identifier);
+            var ordersWithStatus = _customerRepository.GetOrders(customer.Identifier, shippingStatusIdentifier: "NEW_INTERNET");
 
             Assert.NotEqual(ordersById.Count, 0);
             ordersById.ForEach(x => Assert.NotEqual(x.ID, 0));
@@ -108,7 +106,7 @@ namespace Wipcore.Enova.Api.Tests
         public void CanUpdateAndCreateACartByRepo(string customerIdentifier, string productIdentifier1, string productIdentifier2)
         {
             var cartIdentifier = "unittestcartrep";
-            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
+            _testService.SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
 
             var client = (IApiClient)_testService.Server.Host.Services.GetService(typeof(IApiClient));
             client.LoginAdmin("wadmin", "wadmin");
@@ -144,7 +142,7 @@ namespace Wipcore.Enova.Api.Tests
         [InlineData(new object[] {"unittestrepoprod", "GF_GPU_880", "KarinkjolenArtikel" })]
         public void CanCrudProductsByRepo(string productIdentifier1, string productIdentifier2, string productIdentifier3)
         {
-            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
+            _testService.SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
 
             var client = (IApiClient)_testService.Server.Host.Services.GetService(typeof(IApiClient));
             client.LoginAdmin("wadmin", "wadmin");
@@ -169,7 +167,7 @@ namespace Wipcore.Enova.Api.Tests
         [Fact]
         public void CanPaginateByRepo()
         {
-            SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
+            _testService.SetupHttpContext(new DefaultHttpContext() { TraceIdentifier = WipConstants.ElasticIndexHttpContextIdentifier });
 
             var respondsHeaders = new ApiResponseHeadersModel();
             var query = new QueryModel() {Size = 5, Properties = "ID"};

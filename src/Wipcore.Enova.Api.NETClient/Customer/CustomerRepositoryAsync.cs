@@ -5,18 +5,20 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
 using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;
 
-namespace Wipcore.Enova.Api.NetClient
+namespace Wipcore.Enova.Api.NetClient.Customer
 {
-    public class UserRepositoryAsync<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
+    public class CustomerRepositoryAsync<TCustomerModel, TCartModel, TOrderModel> 
+        where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
     {
         private readonly IApiRepositoryAsync _apiRepository;
         private readonly Func<IApiClientAsync> _apiClient;
 
-        public UserRepositoryAsync(IApiRepositoryAsync apiRepository, Func<IApiClientAsync> apiClient)
+        public CustomerRepositoryAsync(IApiRepositoryAsync apiRepository, Func<IApiClientAsync> apiClient)
         {
             _apiRepository = apiRepository;
             _apiClient = apiClient;
@@ -102,5 +104,46 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<bool> DeleteCustomer(string customerIdentifier) => await _apiRepository.DeleteObjectAsync<TCustomerModel>(customerIdentifier);
 
         public async Task<bool> DeleteCustomer(int customerId) => await _apiRepository.DeleteObjectAsync<TCustomerModel>(customerId);
+
+        public async Task<List<CustomerGroupMiniModel>> GetGroupsForCustomer(string customerIdentifier, QueryModel queryModel = null, ContextModel contextModel = null)
+            => (await _apiRepository.GetObjectAsync<TCustomerModel>(customerIdentifier, queryModel, contextModel)).Groups;
+
+        public async Task<List<CustomerGroupMiniModel>> GetGroupsForCustomer(int customerId, QueryModel queryModel = null, ContextModel contextModel = null)
+            => (await _apiRepository.GetObjectAsync<TCustomerModel>(customerId, queryModel, contextModel)).Groups;
+
+        public async Task<List<CustomerMiniModel>> GetCustomersForGroup(string groupIdentifier, ContextModel contextModel = null)
+            => (await _apiRepository.GetObjectAsync<CustomerGroupModel>(groupIdentifier, null, contextModel)).Users;
+
+        public async Task<List<CustomerMiniModel>> GetCustomersForGroup(int groupId, ContextModel contextModel = null)
+            => (await _apiRepository.GetObjectAsync<CustomerGroupModel>(groupId, null, contextModel)).Users;
+
+        public async Task AddCustomerToGroup(string customerIdentifier, string groupIdentifier)
+        {
+            var customerGroup = new CustomerGroupModel() { Identifier = groupIdentifier, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { Identifier = customerIdentifier } } };
+            var json = JObject.FromObject(customerGroup);
+            await _apiRepository.SaveObjectAsync<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+        public async Task AddCustomerToGroup(int customerId, int groupId)
+        {
+            var customerGroup = new CustomerGroupModel() { ID = groupId, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { ID = customerId } } };
+            var json = JObject.FromObject(customerGroup);
+            await _apiRepository.SaveObjectAsync<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+        public async Task RemoveCustomerFromGroup(string customerIdentifier, string groupIdentifier)
+        {
+            var customerGroup = new CustomerGroupModel() { Identifier = groupIdentifier, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { Identifier = customerIdentifier, MarkForDelete = true } } };
+            var json = JObject.FromObject(customerGroup);
+            await _apiRepository.SaveObjectAsync<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+        public async Task RemoveCustomerFromGroup(int customerId, int groupId)
+        {
+            var customerGroup = new CustomerGroupModel() { ID = groupId, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { ID = customerId, MarkForDelete = true } } };
+            var json = JObject.FromObject(customerGroup);
+            await _apiRepository.SaveObjectAsync<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
     }
 }

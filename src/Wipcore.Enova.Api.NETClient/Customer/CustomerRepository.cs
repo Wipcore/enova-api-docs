@@ -5,18 +5,20 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
 using CartModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Cart.CartModel;
 using CustomerModel = Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer.CustomerModel;
 
-namespace Wipcore.Enova.Api.NetClient
+namespace Wipcore.Enova.Api.NetClient.Customer
 {
-    public class UserRepository<TCustomerModel, TCartModel, TOrderModel> where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
+    public class CustomerRepository<TCustomerModel, TCartModel, TOrderModel>
+        where TCartModel : CartModel where TOrderModel : OrderModel where TCustomerModel : CustomerModel
     {
         private readonly IApiRepository _apiRepository;
         private readonly Func<IApiClient> _apiClient;
 
-        public UserRepository(IApiRepository apiRepository, Func<IApiClient> apiClient)
+        public CustomerRepository(IApiRepository apiRepository, Func<IApiClient> apiClient)
         {
             _apiRepository = apiRepository;
             _apiClient = apiClient;
@@ -32,18 +34,8 @@ namespace Wipcore.Enova.Api.NetClient
         {
             var loggedInInfo = _apiClient.Invoke().GetLoggedInUserInfo();
             return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "customer";
-        }
-
-        public bool IsLoggedInAsAdmin()
-        {
-            var loggedInInfo = _apiClient.Invoke().GetLoggedInUserInfo();
-            return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "admin";
-        }
-
-        public IDictionary<string, string> GetLoggedInUserInfo() => _apiClient.Invoke().GetLoggedInUserInfo();
-        
-
-        public ILoginResponseModel LoginAdmin(string alias, string password) => _apiClient.Invoke().LoginAdmin(alias, password);
+        }       
+                
 
         public ILoginResponseModel LoginCustomer(string alias, string password) => _apiClient.Invoke().LoginCustomer(alias, password);
 
@@ -97,5 +89,48 @@ namespace Wipcore.Enova.Api.NetClient
         public bool DeleteCustomer(string customerIdentifier) => _apiRepository.DeleteObject<TCustomerModel>(customerIdentifier);
 
         public bool DeleteCustomer(int customerId) => _apiRepository.DeleteObject<TCustomerModel>(customerId);
+
+        public List<CustomerGroupMiniModel> GetGroupsForCustomer(string customerIdentifier, ContextModel contextModel = null)
+            => _apiRepository.GetObject<TCustomerModel>(customerIdentifier, null, contextModel)?.Groups;
+
+        public List<CustomerGroupMiniModel> GetGroupsForCustomer(int customerId, ContextModel contextModel = null)
+            => _apiRepository.GetObject<TCustomerModel>(customerId, null, contextModel)?.Groups;
+
+
+        public List<CustomerMiniModel> GetCustomersForGroup(string groupIdentifier, ContextModel contextModel = null)
+            => _apiRepository.GetObject<CustomerGroupModel>(groupIdentifier, null, contextModel)?.Users;
+
+        public List<CustomerMiniModel> GetCustomersForGroup(int groupId, ContextModel contextModel = null)
+            => _apiRepository.GetObject<CustomerGroupModel>(groupId, null, contextModel)?.Users;
+
+        public void AddCustomerToGroup(string customerIdentifier, string groupIdentifier)
+        {
+            var customerGroup = new CustomerGroupModel() {Identifier = groupIdentifier, Users = new List<CustomerMiniModel>() {new CustomerMiniModel() {Identifier = customerIdentifier}}};
+            var json = JObject.FromObject(customerGroup);
+            _apiRepository.SaveObject<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+        public void AddCustomerToGroup(int customerId, int groupId)
+        {
+            var customerGroup = new CustomerGroupModel() { ID = groupId, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { ID = customerId } } };
+            var json = JObject.FromObject(customerGroup);
+            _apiRepository.SaveObject<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+        public void RemoveCustomerFromGroup(string customerIdentifier, string groupIdentifier)
+        {
+            var customerGroup = new CustomerGroupModel() { Identifier = groupIdentifier, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { Identifier = customerIdentifier, MarkForDelete = true} } };
+            var json = JObject.FromObject(customerGroup);
+            _apiRepository.SaveObject<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+        public void RemoveCustomerFromGroup(int customerId, int groupId)
+        {
+            var customerGroup = new CustomerGroupModel() { ID = groupId, Users = new List<CustomerMiniModel>() { new CustomerMiniModel() { ID = customerId, MarkForDelete = true} } };
+            var json = JObject.FromObject(customerGroup);
+            _apiRepository.SaveObject<CustomerGroupModel>(json, verifyIdentifierNotTaken: false);
+        }
+
+
     }
 }
