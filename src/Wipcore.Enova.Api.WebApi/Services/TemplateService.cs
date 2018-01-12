@@ -113,8 +113,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 }
             }
 
-            //make sure they are unique
-            properties = properties.Distinct().ToList();
+            //make sure they are unique and not empty (like ignore/repeater mapper)
+            properties = properties.Distinct().Where(x => !String.IsNullOrEmpty(x)).ToList();
             
             var propertiesString = String.Join(",", properties);
             _cache.Set(key, propertiesString, DateTime.Now.AddDays(1));
