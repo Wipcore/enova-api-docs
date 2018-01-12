@@ -51,7 +51,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var objType = obj.GetType();
             var context = _contextService.GetContext();
             
-            foreach (var property in properties.Split(',').Distinct())
+            foreach (var property in properties.Split(',').Select(x => x.Trim()).Distinct())
             {
                 var mapper = GetMapper(objType, property, MapType.MapFromEnovaAllowed);
                 if (mapper == null)
