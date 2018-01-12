@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +31,7 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            Logger.LogTrace($"{_authService.LogUser()} executing {context.ActionDescriptor.DisplayName} with arguments ({String.Join(" / ", context.ActionArguments.Select(x => $"{x.Key}: {x.Value}"))})");
+            Logger.LogTrace($"{_authService.LogUser()} executing {context.ActionDescriptor.DisplayName} with arguments ({String.Join(" / ", ArgumentsToString(context.ActionArguments))})");
 
             base.OnActionExecuting(context);
 
@@ -52,6 +54,17 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
             base.OnActionExecuted(context);
 
             Logger.LogTrace($"Finished executing {context.ActionDescriptor.DisplayName} in {_stopwatch.Elapsed}");
+        }
+
+        private IEnumerable<string> ArgumentsToString(IDictionary<string, object> arguments)
+        {
+            foreach (var argument in arguments)
+            {
+                if (argument.Value is IDictionary<string, object> subArguments)
+                    yield return $"{argument.Key}: ({String.Join(", ", subArguments.Select(x => $"{x.Key}: {x.Value}"))})";
+                else
+                    yield return $"{argument.Key}: {argument.Value}";
+            }
         }
     }
 }
