@@ -21,6 +21,6 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator
 
         [IgnorePropertyOnIndex]
         [PropertyPresentation("AccessRights", null, isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 350)]
-        public IDictionary<string, AccessModel> AccessRights { get; set; }
+        public List<AccessModel> AccessRights { get; set; }
     }
 }
