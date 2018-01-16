@@ -1753,11 +1753,6 @@
             True if the request has parameters in query string.
             </summary>
         </member>
-        <member name="T:Wipcore.Enova.Api.WebApi.Mappers.AddressTypeMapper">
-            <summary>
-            Maps addresstype enum for a customer address.
-            </summary>
-        </member>
         <member name="T:Wipcore.Enova.Api.WebApi.Mappers.Product.ProductDiscountedMapper">
             <summary>
             This mapper maps list prices taken from default price list, and IsDiscounted property which is true if listprice is less than current price of product.
@@ -2113,6 +2108,11 @@
         <member name="M:Wipcore.eNova.Api.WebApi.Controllers.DocumentsController.RemoveProperty(System.String)">
             <summary>
             Remove a dynamic property from a document.
+            </summary>
+        </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.AccessMapper">
+            <summary>
+            This mapper is used to map access rights for some commonly used enova types.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Attribute.AttributeMapper">

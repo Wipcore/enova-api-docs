@@ -9,6 +9,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator
 {
     [GroupPresentation("Group info", new string[] { "Identifier", "Name" }, sortOrder: 100)]
     [GroupPresentation("Group members", new string[] { "Users" }, sortOrder: 200)]
+    [GroupPresentation("Access rights", new string[] { "AccessRights" }, sortOrder: 300)]
     [IndexModel]
     public class AdministratorGroupModel : BaseModel
     {
@@ -17,5 +18,9 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator
 
         [PropertyPresentation("GroupMembers", null, isEditable: true, isFilterable: false, isGridColumn: true, sortOrder: 300)]
         public List<AdministratorMiniModel> Users { get; set; }
+
+        [IgnorePropertyOnIndex]
+        [PropertyPresentation("AccessRights", null, isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 350)]
+        public IDictionary<string, AccessModel> AccessRights { get; set; }
     }
 }

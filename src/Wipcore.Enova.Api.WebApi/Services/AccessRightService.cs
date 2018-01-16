@@ -155,6 +155,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 UpdateLink = newAccess.UpdateLink ?? currentAccess.UpdateLink,
                 DeleteLink = newAccess.DeleteLink ?? currentAccess.DeleteLink,
                 SetAccess = newAccess.SetAccess ?? currentAccess.SetAccess,
+                ModifyDatabase = newAccess.ModifyDatabase ?? currentAccess.ModifyDatabase,
             };
 
             var accessMask = 0;
@@ -174,6 +175,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 accessMask += WipConstants.AccessDeleteLink;
             if (accessModel.SetAccess == true)
                 accessMask += WipConstants.AccessSetAccess;
+            if (accessModel.ModifyDatabase == true)
+                accessMask += WipConstants.AccessModifyDatabase;
 
             return accessMask;
         }
@@ -190,6 +193,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 UpdateLink = (access & WipConstants.AccessUpdateLink) == WipConstants.AccessUpdateLink,
                 DeleteLink = (access & WipConstants.AccessDeleteLink) == WipConstants.AccessDeleteLink,
                 SetAccess = (access & WipConstants.AccessSetAccess) == WipConstants.AccessSetAccess,
+                ModifyDatabase = (access & WipConstants.AccessModifyDatabase) == WipConstants.AccessModifyDatabase,
             };
             return accessModel;
         }

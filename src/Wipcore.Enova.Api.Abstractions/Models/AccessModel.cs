@@ -51,9 +51,14 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// </summary>
         public bool? SetAccess { get; set; }
 
+        /// <summary>
+        /// Permission to add and remove properties from a type.
+        /// </summary>
+        public bool? ModifyDatabase { get; set; }
+
 
         public override string ToString() => $"(Read: {Read}, Write: {Write}, Delete: {Delete}, Use: {Use}, CreateLink: {CreateLink}, " +
-                                             $"UpdateLink: {UpdateLink}, DeleteLink: {DeleteLink}, SetAccess: {SetAccess})";
+                                             $"UpdateLink: {UpdateLink}, DeleteLink: {DeleteLink}, SetAccess: {SetAccess}, ModifyDatabase {ModifyDatabase})";
 
     }
 }

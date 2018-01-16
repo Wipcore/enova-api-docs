@@ -761,6 +761,11 @@
             Permission to change other access rights.
             </summary>
         </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.ModifyDatabase">
+            <summary>
+            Permission to add and remove properties from a type.
+            </summary>
+        </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Market">
             <summary>
             Identifier of pre-defined market.

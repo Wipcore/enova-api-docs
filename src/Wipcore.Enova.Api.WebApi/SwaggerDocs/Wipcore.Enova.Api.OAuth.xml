@@ -47,9 +47,14 @@
             This services handles logging in and the setting and getting of claims.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.OAuth.AuthService.BuildClaimsPrincipal(Wipcore.Core.SessionObjects.User,System.Boolean,System.String)">
+        <member name="M:Wipcore.Enova.Api.OAuth.AuthService.BuildClaimsPrincipal(Wipcore.Core.SessionObjects.User,System.Boolean)">
             <summary>
             Save claims (attributes) on the logged in user.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.OAuth.AuthService.GetLoggedInAt">
+            <summary>
+            Get the time when the user was logged in.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.OAuth.AuthService.AuthorizeAccess(System.String)">
