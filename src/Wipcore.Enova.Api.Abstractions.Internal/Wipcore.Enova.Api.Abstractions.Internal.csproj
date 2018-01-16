@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Wipcore.Enova.Core" Version="6.5.0.26" />
+    <PackageReference Include="Wipcore.Enova.Core" Version="6.5.0.30-dev" NoWarn="NU1603"/>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
