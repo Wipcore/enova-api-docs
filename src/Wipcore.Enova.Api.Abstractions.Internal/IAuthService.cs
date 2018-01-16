@@ -65,6 +65,11 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         string GetLoggedInRole();
 
         /// <summary>
+        /// Get the time when the user was logged in.
+        /// </summary>
+        DateTime GetLoggedInAt();
+
+        /// <summary>
         /// Returns true if the logged in user is an admin.
         /// </summary>
         /// <returns></returns>
@@ -80,13 +85,7 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         /// Get a claim on the logged in user by name.
         /// </summary>
         string GetClaim(string claimName);
-
-        /// <summary>
-        /// Get hashed value of logged in user.
-        /// </summary>
-        /// <returns></returns>
-        string GetPasswordHash();
-
+        
         /// <summary>
         /// Returns a user friendly logging message for the logged in user.. 
         /// </summary>

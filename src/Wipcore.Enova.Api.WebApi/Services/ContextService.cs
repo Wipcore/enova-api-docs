@@ -20,7 +20,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IConfigurationRoot _configuration;
         private readonly IAuthService _authService;
-        private readonly MethodInfo _loginMethod = typeof(CmoContext).GetMethod("AdministratorLogin", BindingFlags.NonPublic | BindingFlags.Instance);
+        private readonly FieldInfo _adminField = typeof(CmoContext).GetField("m_administrator", BindingFlags.NonPublic | BindingFlags.Instance);
+        private readonly FieldInfo _adminLoggedinField = typeof(CmoContext).GetField("m_administratorLoggedInAt", BindingFlags.NonPublic | BindingFlags.Instance);
 
 
         public ContextService(IHttpContextAccessor httpAccessor, IConfigurationRoot configuration, IAuthService authService)
@@ -67,10 +68,14 @@ namespace Wipcore.Enova.Api.WebApi.Services
             //then login admin or customer
             if (_authService.IsLoggedInAsAdmin())
             {
-                var alias = _authService.GetLoggedInAlias();
-                var hash = _authService.GetPasswordHash();
-                var cmoAdmin = _loginMethod.Invoke(enovaContext.GetCmoContext(), new object[]{alias, hash, null, CmoAdministrator.AdministratorRole.Any, null, null, false});
-                var admin = EnovaObjectCreationHelper.CreateNew<EnovaAdministrator>(enovaContext, cmoAdmin);
+                var adminIdentifier = _authService.GetLoggedInIdentifier();
+                var loggedInAt = _authService.GetLoggedInAt();
+                var admin = EnovaAdministrator.Find(enovaContext, adminIdentifier);
+                var cmoAdmin = admin.ActiveCmoObject;
+
+                _adminField.SetValue(enovaContext.GetCmoContext(), cmoAdmin);
+                _adminLoggedinField.SetValue(enovaContext.GetCmoContext(), loggedInAt);
+
                 ClearSpecifiedContextValues(enovaContext, admin);//if the admin has specified values, clear other values
             }
             else if (_authService.IsLoggedInAsCustomer())

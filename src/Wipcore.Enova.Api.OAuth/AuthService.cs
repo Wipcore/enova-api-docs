@@ -26,7 +26,6 @@ namespace Wipcore.Enova.Api.OAuth
         public const string CustomerRole = "customer";
         public const string IdentifierClaim = "identifier";
         public const string IdClaim = "id";
-        public const string HashClaim = "hash";
         public const string SubjectClaim = "subject";
         public const string NameClaim = "name";
         public const string RoleClaim = "role";
@@ -75,7 +74,7 @@ namespace Wipcore.Enova.Api.OAuth
                     ? (User) context.Login(model.Alias, model.Password)
                     : context.CustomerLogin(model.Alias, model.Password);
 
-                var claimsPrincipal = BuildClaimsPrincipal(user, admin, model.Password);
+                var claimsPrincipal = BuildClaimsPrincipal(user, admin);
                 return claimsPrincipal;
             }
             catch (UserNotFoundException e)
@@ -151,7 +150,7 @@ namespace Wipcore.Enova.Api.OAuth
         /// <summary>
         /// Save claims (attributes) on the logged in user.
         /// </summary>
-        private ClaimsPrincipal BuildClaimsPrincipal(User user, bool admin, string password = null)
+        private ClaimsPrincipal BuildClaimsPrincipal(User user, bool admin)
         {
             var claims = new List<Claim>
             {
@@ -164,10 +163,7 @@ namespace Wipcore.Enova.Api.OAuth
                 new Claim(DefaultCurrencyClaim, user.Currency?.Identifier ?? ""),
                 new Claim(DefaultLanguageClaim, user.Language?.Identifier ?? "")
             };
-
-            if (admin)
-                claims.Add(new Claim(HashClaim, WipUtils.CreateHashString(password)));
-
+            
             var claimsIdentity = new ClaimsIdentity(claims, "password", NameClaim, RoleClaim);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             return claimsPrincipal;
@@ -185,6 +181,11 @@ namespace Wipcore.Enova.Api.OAuth
 
         public string GetLoggedInDefaultLanguage() => GetClaim(DefaultLanguageClaim);
 
+        /// <summary>
+        /// Get the time when the user was logged in.
+        /// </summary>
+        public DateTime GetLoggedInAt() => DateTime.Parse(GetClaim("auth_time"));
+
         public string GetLoggedInRole()
         {
             var role = GetClaim(RoleClaim);
@@ -197,9 +198,7 @@ namespace Wipcore.Enova.Api.OAuth
         public bool IsLoggedInAsAdmin() => GetLoggedInRole() == AdminRole;
 
         public bool IsLoggedInAsCustomer() => GetLoggedInRole() == CustomerRole;
-
-        public string GetPasswordHash() => GetClaim(HashClaim);
-
+        
         public string GetClaim(string claimName)
         {
             var user = _httpAccessor.HttpContext.User;
