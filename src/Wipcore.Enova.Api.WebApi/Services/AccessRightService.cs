@@ -44,7 +44,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             
             var access = groupOrUserToCheck == null ? context.GetActualAccess(type) : context.GetActualAccess(groupOrUserToCheck, type);
 
-            var accessModel = MapAccessMaskToModel(access);
+            var accessModel = MapAccessMaskToModel(access, enovaTypeName);
 
             return accessModel;
         }
@@ -64,7 +64,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             
             var access = obj.GetSpecificAccess(groupOrUserToCheck);
 
-            var accessModel = MapAccessMaskToModel(access);
+            var accessModel = MapAccessMaskToModel(access, enovaTypeName);
 
             return accessModel;
         }
@@ -73,39 +73,39 @@ namespace Wipcore.Enova.Api.WebApi.Services
         /// <summary>
         /// Set access to a type for a certain group. 
         /// </summary>
-        public void SetAccessToType(string enovaTypeName, Group group, AccessModel accessModel)
+        public void SetAccessToType(Group group, AccessModel accessModel)
         {
-            var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            var type = ReflectionHelper.GetTypeByName(accessModel.EnovaType);
             if (type == null)
-                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {accessModel.EnovaType}");
 
-            var currentAccess = GetAccessToType(enovaTypeName, group);
+            var currentAccess = GetAccessToType(accessModel.EnovaType, group);
             var accessMask = MapModelToAccessMask(accessModel, currentAccess);
 
             var context = _contextService.GetContext();
             context.SetDefaultAccess(group, accessMask, type);
 
-            _logger.LogInformation($"Set access to {accessModel} on type {enovaTypeName} for group with id {group.ID} and identifier {group.Identifier}");
+            _logger.LogInformation($"Set access to {accessModel} on type {accessModel.EnovaType} for group with id {group.ID} and identifier {group.Identifier}");
         }
 
         /// <inheritdoc />
         /// <summary>
         /// Set access to an object for a certain group.
         /// </summary>
-        public void SetAccessToObject(int objectId, string enovaTypeName, Group group, AccessModel accessModel)
+        public void SetAccessToObject(int objectId, Group group, AccessModel accessModel)
         {
-            var type = ReflectionHelper.GetTypeByName(enovaTypeName);
+            var type = ReflectionHelper.GetTypeByName(accessModel.EnovaType);
             if (type == null)
-                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {enovaTypeName}");
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot find enovaType {accessModel.EnovaType}");
 
-            var currentAccess = GetAccessToObject(objectId, enovaTypeName, group);
+            var currentAccess = GetAccessToObject(objectId, accessModel.EnovaType, group);
             var accessMask = MapModelToAccessMask(accessModel, currentAccess);
             var context = _contextService.GetContext();
 
             var obj = context.FindObject(objectId, type);
             obj.SetSpecificAccess(obj, accessMask);
 
-            _logger.LogInformation($"Set access to {accessModel} on object of type {enovaTypeName} with id {objectId} for group with id {group.ID} and identifier {group.Identifier}");
+            _logger.LogInformation($"Set access to {accessModel} on object of type {accessModel.EnovaType} with id {objectId} for group with id {group.ID} and identifier {group.Identifier}");
         }
 
         /// <inheritdoc />
@@ -181,7 +181,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             return accessMask;
         }
         
-        private static AccessModel MapAccessMaskToModel(int access)
+        private static AccessModel MapAccessMaskToModel(int access, string enovaType)
         {
             var accessModel = new AccessModel
             {
@@ -194,6 +194,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 DeleteLink = (access & WipConstants.AccessDeleteLink) == WipConstants.AccessDeleteLink,
                 SetAccess = (access & WipConstants.AccessSetAccess) == WipConstants.AccessSetAccess,
                 ModifyDatabase = (access & WipConstants.AccessModifyDatabase) == WipConstants.AccessModifyDatabase,
+                EnovaType = enovaType
             };
             return accessModel;
         }

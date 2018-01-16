@@ -40,24 +40,18 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
             var userGroup = (UserGroup) obj;
-            var accessRights = new Dictionary<string, AccessModel>();
-            foreach (var typeName in _typeNames)
-            {
-                var accessRight = _accessRightService.GetAccessToType(typeName, userGroup);
-                accessRights.Add(typeName, accessRight);
-            }
 
-            return accessRights;
+            return _typeNames.Select(typeName => _accessRightService.GetAccessToType(typeName, userGroup)).ToList();
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
             var userGroup = (UserGroup)obj;
-            var accessRights = (Dictionary<string, AccessModel>) value;
+            var accessRights = (List<AccessModel>) value;
 
             foreach (var accessRight in accessRights)
             {
-                _accessRightService.SetAccessToType(accessRight.Key, userGroup, accessRight.Value);
+                _accessRightService.SetAccessToType(userGroup, accessRight);
             }
         }
     }

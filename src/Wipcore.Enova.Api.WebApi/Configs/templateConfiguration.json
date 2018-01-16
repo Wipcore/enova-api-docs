@@ -2,7 +2,7 @@
   //TODO make configurable from webadmin or similar
   "enovabaseproduct": {
     "default": {
-      "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ID"
+      "properties": "Identifier,Name,DescriptionShort,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax"
     },
     "price": {
       "properties": "Identifier,PriceExclTax,PriceInclTax,IsDiscounted,ListPriceInclTax,ListPriceExclTax"

@@ -27,13 +27,13 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         /// <summary>
         /// Set access to a type for a certain group. 
         /// </summary>
-        void SetAccessToType(string enovaTypeName, Group group, AccessModel accessModel);
+        void SetAccessToType(Group group, AccessModel accessModel);
 
 
         /// <summary>
         /// Set access to an object for a certain group.
         /// </summary>
-        void SetAccessToObject(int objectId, string enovaTypeName, Group group, AccessModel accessModel);
+        void SetAccessToObject(int objectId, Group group, AccessModel accessModel);
 
         /// <summary>
         /// Removes access to a type for a group. NOTE: removing is not the same as denying access.

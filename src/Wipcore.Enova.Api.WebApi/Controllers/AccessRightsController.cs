@@ -171,67 +171,63 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <summary>
         /// Set access for a group on a type.
         /// </summary>
-        /// <param name="enovaType">The name of the enova type.</param>
         /// <param name="groupId">Id of the group to check.</param>
         /// <param name="accessModel">The accessrights to set.</param>
         /// <returns></returns>
         [HttpPut("TypeAccess/id-{groupId}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public AccessModel SetTypeAccess(string enovaType, int groupId, AccessModel accessModel)
+        public AccessModel SetTypeAccess(int groupId, AccessModel accessModel)
         {
             var group = _contextService.GetContext().FindObject(groupId, typeof(Group)) as Group;
-            _accessRightService.SetAccessToType(enovaType, group, accessModel);
-            return _accessRightService.GetAccessToType(enovaType, group);
+            _accessRightService.SetAccessToType(group, accessModel);
+            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
         }
 
         /// <summary>
         /// Set access for a group on a type.
         /// </summary>
-        /// <param name="enovaType">The name of the enova type.</param>
         /// <param name="groupIdentifier">Identifier of the group to check.</param>
         /// <param name="accessModel">The accessrights to set.</param>
         /// <returns></returns>
         [HttpPut("TypeAccess/{groupIdentifier}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public AccessModel SetTypeAccess(string enovaType, string groupIdentifier, AccessModel accessModel)
+        public AccessModel SetTypeAccess(string groupIdentifier, AccessModel accessModel)
         {
             var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group)) as Group;
-            _accessRightService.SetAccessToType(enovaType, group, accessModel);
-            return _accessRightService.GetAccessToType(enovaType, group);
+            _accessRightService.SetAccessToType(group, accessModel);
+            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
         }
 
         /// <summary>
         /// Set access for a group on an object.
         /// </summary>
         /// <param name="objectId">ID of the object to check access to.</param>
-        /// <param name="enovaType">The name of the enova type.</param>
         /// <param name="groupId">Id of the group to check.</param>
         /// <param name="accessModel">The accessrights to set.</param>
         /// <returns></returns>
         [HttpPut("ObjectAccess/id-{groupId}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public AccessModel SetObjectAccess(int objectId, string enovaType, int groupId, AccessModel accessModel)
+        public AccessModel SetObjectAccess(int objectId, int groupId, AccessModel accessModel)
         {
             var group = _contextService.GetContext().FindObject(groupId, typeof(Group)) as Group;
-            _accessRightService.SetAccessToObject(objectId, enovaType, group, accessModel);
-            return _accessRightService.GetAccessToType(enovaType, group);
+            _accessRightService.SetAccessToObject(objectId, group, accessModel);
+            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
         }
 
         /// <summary>
         /// Set access for a group on an object. 
         /// </summary>
         /// <param name="objectId">ID of the object to check access to.</param>
-        /// <param name="enovaType">The name of the enova type.</param>
         /// <param name="groupIdentifier">Identifier of the group to check.</param>
         /// <param name="accessModel">The accessrights to set.</param>
         /// <returns></returns>
         [HttpPut("ObjectAccess/{groupIdentifier}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public AccessModel SetObjectAccess(int objectId, string enovaType, string groupIdentifier, AccessModel accessModel)
+        public AccessModel SetObjectAccess(int objectId, string groupIdentifier, AccessModel accessModel)
         {
             var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group)) as Group;
-            _accessRightService.SetAccessToObject(objectId, enovaType, group, accessModel);
-            return _accessRightService.GetAccessToType(enovaType, group);
+            _accessRightService.SetAccessToObject(objectId, group, accessModel);
+            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
         }
 
         #endregion

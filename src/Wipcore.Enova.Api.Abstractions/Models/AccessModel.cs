@@ -56,8 +56,13 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// </summary>
         public bool? ModifyDatabase { get; set; }
 
+        /// <summary>
+        /// The type the permissions apply to. 
+        /// </summary>
+        public string EnovaType { get; set; }
 
-        public override string ToString() => $"(Read: {Read}, Write: {Write}, Delete: {Delete}, Use: {Use}, CreateLink: {CreateLink}, " +
+
+        public override string ToString() => $"(EnovaType: {EnovaType}, Read: {Read}, Write: {Write}, Delete: {Delete}, Use: {Use}, CreateLink: {CreateLink}, " +
                                              $"UpdateLink: {UpdateLink}, DeleteLink: {DeleteLink}, SetAccess: {SetAccess}, ModifyDatabase {ModifyDatabase})";
 
     }
