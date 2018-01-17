@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\EnovaApiControllerDependencies.cs" />
+    <Compile Remove="Mappers\AccessMapper.cs" />
   </ItemGroup>
 
   <ItemGroup>

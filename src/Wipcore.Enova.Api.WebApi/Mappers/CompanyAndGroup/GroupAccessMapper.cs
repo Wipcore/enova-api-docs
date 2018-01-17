@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
@@ -15,12 +16,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
     /// <summary>
     /// This mapper is used to map access rights for some commonly used enova types.
     /// </summary>
-    public class AccessMapper : IPropertyMapper
+    public class GroupAccessMapper : IPropertyMapper
     {
         private readonly IAccessRightService _accessRightService;
         private readonly List<string> _typeNames;
 
-        public AccessMapper(IConfigurationRoot configurationRoot, IAccessRightService accessRightService)
+        public GroupAccessMapper(IConfigurationRoot configurationRoot, IAccessRightService accessRightService)
         {
             _accessRightService = accessRightService;
             var setting = configurationRoot["ApiSettings:AccessRightsTypesToMap"] ?? "EnovaAdministrator,EnovaAdministratorGroup,EnovaAttributeType,EnovaCart,EnovaCompany," +
@@ -39,15 +40,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
-            var userGroup = (UserGroup) obj;
-
-            return _typeNames.Select(typeName => _accessRightService.GetAccessToType(typeName, userGroup)).ToList();
+            return _typeNames.Select(typeName => _accessRightService.GetAccessToType(typeName, obj)).ToList();
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
         {
+            if(value == null)
+                return;
+
             var userGroup = (UserGroup)obj;
-            var accessRights = (List<AccessModel>) value;
+            var accessRights = JsonConvert.DeserializeObject<List<AccessModel>>(value.ToString());
 
             foreach (var accessRight in accessRights)
             {
