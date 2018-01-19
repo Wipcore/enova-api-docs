@@ -25,7 +25,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
-    <PackageReference Include="Wipcore.Enova.Connectivity" Version="6.5.0.9-dev" NoWarn="NU1603" />
+    <PackageReference Include="Wipcore.Enova.Connectivity" Version="6.5.0.23-dev" NoWarn="NU1603" />
+    <PackageReference Include="Wipcore.Enova.Core" Version="6.5.0.30-dev" NoWarn="NU1603" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
