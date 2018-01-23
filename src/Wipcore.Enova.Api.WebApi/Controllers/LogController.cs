@@ -17,7 +17,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
     [Route("api/[controller]")]
     public class LogController : EnovaApiController
     {
-        public LogController(EnovaApiControllerDependencies dependencies) : base(dependencies)
+        public LogController(EnovaApiControllerDependencies dependencies) : base(dependencies, false)
         {
         }
 

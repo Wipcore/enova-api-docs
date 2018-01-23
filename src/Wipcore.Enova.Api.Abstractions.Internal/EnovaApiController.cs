@@ -16,13 +16,15 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
     /// </summary>
     public abstract class EnovaApiController : Controller
     {
+        private readonly bool _autoLogControllerActions;
         protected static ILogger Logger = null;
         private readonly IExceptionService _exceptionService;
         private readonly IAuthService _authService;
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
-        protected EnovaApiController(EnovaApiControllerDependencies dependencies)
+        protected EnovaApiController(EnovaApiControllerDependencies dependencies, bool autoLogControllerActions = true)
         {
+            _autoLogControllerActions = autoLogControllerActions;
             _exceptionService = dependencies.ExceptionService;
             _authService = dependencies.AuthService;
             Logger = Logger ?? dependencies.LoggerFactory.CreateLogger(this.GetType());
@@ -31,7 +33,8 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            Logger.LogTrace($"{_authService.LogUser()} executing {context.ActionDescriptor.DisplayName} with arguments ({String.Join(" / ", ArgumentsToString(context.ActionArguments))})");
+            if(_autoLogControllerActions)
+                Logger.LogTrace($"{_authService.LogUser()} executing {context.ActionDescriptor.DisplayName} with arguments ({String.Join(" / ", ArgumentsToString(context.ActionArguments))})");
 
             base.OnActionExecuting(context);
 
@@ -53,7 +56,8 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
 
             base.OnActionExecuted(context);
 
-            Logger.LogTrace($"Finished executing {context.ActionDescriptor.DisplayName} in {_stopwatch.Elapsed}");
+            if(_autoLogControllerActions)
+                Logger.LogTrace($"Finished executing {context.ActionDescriptor.DisplayName} in {_stopwatch.Elapsed}");
         }
 
         private IEnumerable<string> ArgumentsToString(IDictionary<string, object> arguments)
