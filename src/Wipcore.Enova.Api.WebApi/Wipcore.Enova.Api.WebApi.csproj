@@ -49,8 +49,8 @@
     <PackageReference Include="NLog" Version="4.4.12" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-alpha4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
-    <PackageReference Include="Wipcore.Enova.Connectivity" Version="6.5.0.23-dev" NoWarn="NU1603" />
-    <PackageReference Include="Wipcore.Enova.Core" Version="6.5.0.30-dev" NoWarn="NU1603" />
+    <PackageReference Include="Wipcore.Enova.Connectivity" Version="7.0.0.1-dev" NoWarn="NU1603" />
+    <PackageReference Include="Wipcore.Enova.Core" Version="7.0.0.1-dev" NoWarn="NU1603" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
