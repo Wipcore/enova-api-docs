@@ -139,9 +139,11 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     }
                     else //otherwise set up the attribute type
                     {
-                        //var attributeType = EnovaAttributeType.Find(context, Convert.ToInt32(attribute.AttributeType.ID));
                         attributeType.AddValue(enovaAttribute);
-                        obj.AddAttributeValue(enovaAttribute, attribute.ValueContext);
+                        if (attribute.ValueContext != null)
+                            obj.AddAttributeValue(enovaAttribute, 0, attribute.ValueContext);
+                        else
+                            obj.AddAttributeValue(enovaAttribute);
                     }
                 }
                 else //if not contineous then add the new attribute and remove the old
@@ -152,16 +154,16 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     if (!requestedNewValue.Equals(currentValue) || newValueContext) //if the value or valuecontext is changed
                     {
                         //then find the correct attribute
-                        //var attributeType = (EnovaAttributeType)(context.FindObject(Convert.ToInt32(attribute.AttributeType.ID), typeof(EnovaAttributeType), false) ??
-                        //    context.FindObject(attribute.AttributeType.Identifier, typeof(EnovaAttributeType), true));
-
                         var newAttributeValue = attributeType.Values.OfType<EnovaAttributeValue>().
                             First(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
 
                         if (enovaAttribute != null)
                             obj.RemoveAttributeValue(enovaAttribute);
 
-                        obj.AddAttributeValue(newAttributeValue, 0, attribute.ValueContext);
+                        if(attribute.ValueContext != null)
+                            obj.AddAttributeValue(newAttributeValue, 0, attribute.ValueContext);
+                        else
+                            obj.AddAttributeValue(newAttributeValue);
                     }
                 }
             }
