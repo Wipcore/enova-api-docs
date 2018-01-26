@@ -21,6 +21,6 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product
         [PropertyPresentation("Currency", "Pricelist currency", isEditable: false, isFilterable: true, isGridColumn: false, sortOrder: 15200)]
         public string Currency { get; set; }
 
-        public List<CustomerGroupMiniModel> GroupsWithAccessToPrice { get; set; }
+        public List<GroupMiniModel> GroupsWithAccessToPrice { get; set; }
     }
 }

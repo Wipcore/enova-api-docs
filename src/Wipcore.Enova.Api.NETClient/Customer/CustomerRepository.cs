@@ -90,10 +90,10 @@ namespace Wipcore.Enova.Api.NetClient.Customer
 
         public bool DeleteCustomer(int customerId) => _apiRepository.DeleteObject<TCustomerModel>(customerId);
 
-        public List<CustomerGroupMiniModel> GetGroupsForCustomer(string customerIdentifier, ContextModel contextModel = null)
+        public List<GroupMiniModel> GetGroupsForCustomer(string customerIdentifier, ContextModel contextModel = null)
             => _apiRepository.GetObject<TCustomerModel>(customerIdentifier, null, contextModel)?.Groups;
 
-        public List<CustomerGroupMiniModel> GetGroupsForCustomer(int customerId, ContextModel contextModel = null)
+        public List<GroupMiniModel> GetGroupsForCustomer(int customerId, ContextModel contextModel = null)
             => _apiRepository.GetObject<TCustomerModel>(customerId, null, contextModel)?.Groups;
 
 

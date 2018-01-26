@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using Wipcore.Enova.Api.Abstractions.Attributes;
+using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer;
 
 namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator
 {
     [GroupPresentation("Administrator", new string[] { "Identifier", "Alias", "UserPassword", "FirstName", "LastName"}, sortOrder: 100)]
     [GroupPresentation("Address", new[] { "CoAddress", "Street", "PostalAddress", "PostalCode", "City", "Country", "Phone", "Email" }, sortOrder: 200)]
-    [GroupPresentation("Currency", new[] {"Currency" }, sortOrder: 300)]
+    [GroupPresentation("Administrator groups", new[] { "Groups" }, sortOrder: 300)]
+    [GroupPresentation("Currency", new[] {"Currency" }, sortOrder: 400)]
     [IndexModel]
     public class AdministratorModel : BaseModel
     {
@@ -47,6 +49,9 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator
        
         [PropertyPresentation("Currency", "Currency", isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 200)]
         public string Currency { get; set; }
+
+        [PropertyPresentation("AdminGroups", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 200)]
+        public List<GroupMiniModel> Groups { get; set; }
 
         public override List<string> GetDefaultPropertiesInGrid()
         {
