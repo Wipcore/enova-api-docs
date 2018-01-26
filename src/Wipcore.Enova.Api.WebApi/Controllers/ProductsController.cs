@@ -60,7 +60,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(IEnumerable<ProductModel>), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaBaseProduct>(requestContext, query);
@@ -93,7 +93,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(IEnumerable<ProductModel>), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -105,7 +105,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(IEnumerable<ProductModel>), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct().Distinct();
@@ -117,7 +117,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}/variants")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(IEnumerable<ProductModel>), (int)HttpStatusCode.Accepted)]
         public IEnumerable<IDictionary<string, object>> GetVariants(ContextModel requestContext, QueryModel query, string identifier)
         {
             var members = _productService.GetVariants(identifier);
