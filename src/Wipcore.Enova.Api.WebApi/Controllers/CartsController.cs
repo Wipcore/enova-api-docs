@@ -59,7 +59,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaCart>(requestContext, query);
@@ -70,7 +70,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}")]
         [Authorize]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, string identifier)
         {
             var cart = _objectService.Get<EnovaCart>(requestContext, query, identifier);
@@ -85,7 +85,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("id-{id}")]
         [Authorize]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IDictionary<string, object> Get(ContextModel requestContext, QueryModel query, int id)
         {
             var cart = _objectService.Get<EnovaCart>(requestContext, query, id);
@@ -100,7 +100,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -112,7 +112,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();
@@ -124,7 +124,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ofcustomer-{identifier}")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetCustomersCartsByIdentifier([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifier)
         {
             var carts = _cartService.GetCartsByCustomer(identifier);
@@ -136,7 +136,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ofcustomerid-{id}")]
         [Authorize(Policy = CustomerUrlIdPolicy.Name)]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetCustomersCartsById([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]int id)
         {
             var carts = _cartService.GetCartsByCustomer(null, id);
@@ -148,7 +148,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpPut()]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values, bool calculateOnly = false)
         {
             if (!_authService.AuthorizeAccess<EnovaCart>(_contextService.GetContext(), values, x => x.Customer?.ID))
@@ -162,7 +162,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpPut("createorder")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.Accepted)]
+        [ProducesResponseType(typeof(CartModel), (int)HttpStatusCode.OK)]
         public int PutOrder([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
         {
             if (!_authService.AuthorizeAccess<EnovaCart>(_contextService.GetContext(), values, x => x.Customer?.ID))
