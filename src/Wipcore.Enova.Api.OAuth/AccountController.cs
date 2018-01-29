@@ -90,28 +90,24 @@ namespace Wipcore.Enova.Api.OAuth
         /// </summary>
         [HttpPost("LoginCustomer")]
         [AllowAnonymous]
-        public async Task<ILoginResponseModel> LoginCustomer([FromBody]LoginModel model)
+        [ProducesResponseType(typeof(ILoginResponseModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ILoginResponseModel), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return new LoginResponseModel("Alias and password required.");
-            }
+                return BadRequest(new LoginResponseModel("Alias and password required."));
 
             var claimsPrincipal = _authService.Login(model, admin: false);
             if (claimsPrincipal == null)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return new LoginResponseModel("Invalid alias or password.");
-            }
+                return BadRequest(new LoginResponseModel("Invalid alias or password."));
                 
             await HttpContext.SignInAsync(claimsPrincipal);
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
             var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
 
-            return new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
-                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel);
+            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
+                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
         }
 
         /// <summary>
