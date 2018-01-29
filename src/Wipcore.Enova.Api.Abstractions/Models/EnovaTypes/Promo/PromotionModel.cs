@@ -42,7 +42,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Promo
         public PromoResultModel Results { get; set; } = new PromoResultModel();
 
         [PropertyPresentation("CustomerGroups", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
-        public List<CustomerGroupMiniModel> Groups { get; set; } = new List<CustomerGroupMiniModel>();
+        public List<GroupMiniModel> Groups { get; set; } = new List<GroupMiniModel>();
 
         public override List<string> GetDefaultPropertiesInGrid() => new List<string>() { "Identifier", "Name", "StartAt", "EndAt", "Password" };
         

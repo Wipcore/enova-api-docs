@@ -105,10 +105,10 @@ namespace Wipcore.Enova.Api.NetClient.Customer
 
         public async Task<bool> DeleteCustomer(int customerId) => await _apiRepository.DeleteObjectAsync<TCustomerModel>(customerId);
 
-        public async Task<List<CustomerGroupMiniModel>> GetGroupsForCustomer(string customerIdentifier, QueryModel queryModel = null, ContextModel contextModel = null)
+        public async Task<List<GroupMiniModel>> GetGroupsForCustomer(string customerIdentifier, QueryModel queryModel = null, ContextModel contextModel = null)
             => (await _apiRepository.GetObjectAsync<TCustomerModel>(customerIdentifier, queryModel, contextModel)).Groups;
 
-        public async Task<List<CustomerGroupMiniModel>> GetGroupsForCustomer(int customerId, QueryModel queryModel = null, ContextModel contextModel = null)
+        public async Task<List<GroupMiniModel>> GetGroupsForCustomer(int customerId, QueryModel queryModel = null, ContextModel contextModel = null)
             => (await _apiRepository.GetObjectAsync<TCustomerModel>(customerId, queryModel, contextModel)).Groups;
 
         public async Task<List<CustomerMiniModel>> GetCustomersForGroup(string groupIdentifier, ContextModel contextModel = null)

@@ -2,7 +2,7 @@
 
 namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer
 {
-    public class CustomerGroupMiniModel
+    public class GroupMiniModel
     {
         [PropertyPresentation("NumberString", "Group Id", isEditable: false, isFilterable: true, isGridColumn: true, sortOrder: 5000)]
         public int ID { get; set; }

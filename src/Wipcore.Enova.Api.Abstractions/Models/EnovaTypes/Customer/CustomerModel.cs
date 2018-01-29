@@ -71,7 +71,7 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Customer
         public string Note { get; set; }
 
         [PropertyPresentation("CustomerGroups", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 200)]
-        public List<CustomerGroupMiniModel> Groups { get; set; }
+        public List<GroupMiniModel> Groups { get; set; }
 
         public override List<string> GetDefaultPropertiesInGrid()
         {
