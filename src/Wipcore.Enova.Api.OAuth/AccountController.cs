@@ -105,14 +105,13 @@ namespace Wipcore.Enova.Api.OAuth
                 return new LoginResponseModel("Invalid alias or password.");
             }
                 
-
             await HttpContext.SignInAsync(claimsPrincipal);
 
             var bearerToken = _authService.BuildToken(claimsPrincipal);
             var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
 
-            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
-                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
+            return new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
+                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel);
         }
 
         /// <summary>
