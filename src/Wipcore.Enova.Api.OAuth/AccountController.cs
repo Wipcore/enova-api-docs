@@ -90,15 +90,21 @@ namespace Wipcore.Enova.Api.OAuth
         /// </summary>
         [HttpPost("LoginCustomer")]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
+        public async Task<ILoginResponseModel> LoginCustomer([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
-                return (BadRequest(new LoginResponseModel("Alias and password required.")));
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new LoginResponseModel("Alias and password required.");
+            }
 
             var claimsPrincipal = _authService.Login(model, admin: false);
-
             if (claimsPrincipal == null)
-                return BadRequest(new LoginResponseModel("Invalid alias or password."));
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return new LoginResponseModel("Invalid alias or password.");
+            }
+                
 
             await HttpContext.SignInAsync(claimsPrincipal);
 
