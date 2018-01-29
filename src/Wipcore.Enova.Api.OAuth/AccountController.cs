@@ -90,8 +90,8 @@ namespace Wipcore.Enova.Api.OAuth
         /// </summary>
         [HttpPost("LoginCustomer")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ILoginResponseModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ILoginResponseModel), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(LoginResponseModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(LoginResponseModel), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> LoginCustomer([FromBody]LoginModel model)
         {
             if (!ModelState.IsValid)
