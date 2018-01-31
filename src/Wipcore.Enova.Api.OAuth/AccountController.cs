@@ -110,6 +110,28 @@ namespace Wipcore.Enova.Api.OAuth
                 Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
         }
 
+        [HttpPost("LoginCustomerAlex")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(LoginResponseModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(LoginResponseModel), (int)HttpStatusCode.BadRequest)]
+        public IActionResult LoginCustomerAlex([FromBody]LoginModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new LoginResponseModel("Alias and password required."));
+
+            var claimsPrincipal = _authService.Login(model, admin: false);
+            if (claimsPrincipal == null)
+                return BadRequest(new LoginResponseModel("Invalid alias or password."));
+
+            HttpContext.SignInAsync(claimsPrincipal).GetAwaiter().GetResult();
+
+            var bearerToken = _authService.BuildToken(claimsPrincipal);
+            var contextModel = new ContextModel() { Currency = claimsPrincipal.FindFirst("currency")?.Value, Language = claimsPrincipal.FindFirst("language")?.Value };
+
+            return Ok(new LoginResponseModel("Successful login.", claimsPrincipal.FindFirst(AuthService.IdentifierClaim).Value,
+                Convert.ToInt32(claimsPrincipal.FindFirst(AuthService.IdClaim).Value), bearerToken, contextModel));
+        }
+
         /// <summary>
         /// Error message redirect when unauthorized. Don't call directly.
         /// </summary>
