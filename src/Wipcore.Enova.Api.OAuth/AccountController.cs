@@ -116,6 +116,7 @@ namespace Wipcore.Enova.Api.OAuth
         [ProducesResponseType(typeof(LoginResponseModel), (int)HttpStatusCode.BadRequest)]
         public IActionResult LoginCustomerAlex([FromBody]LoginModel model)
         {
+            var change = "";
             if (!ModelState.IsValid)
                 return BadRequest(new LoginResponseModel("Alias and password required."));
 
