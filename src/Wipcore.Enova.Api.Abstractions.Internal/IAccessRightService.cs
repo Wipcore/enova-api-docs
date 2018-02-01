@@ -14,9 +14,15 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
     public interface IAccessRightService
     {
         /// <summary>
-        /// Get effective access rights on a certain type for a group or a user.
+        /// Get effective access rights on a certain type for a group.
         /// </summary>
-        AccessModel GetAccessToType(string enovaTypeName, BaseObject groupOrUserToCheck);
+        AccessModel GetGroupAccessToType(string enovaTypeName, UserGroup group, bool includeEveryonesRights = true);
+
+
+        /// <summary>
+        /// Get effective access rights on a certain type for a user.
+        /// </summary>
+        AccessModel GetUserAccessToType(string enovaTypeName, User user, bool includeEveryonesRights = true);
 
         /// <summary>
         /// Get effective access rights on a certain object for a group or a user.
@@ -27,23 +33,23 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         /// <summary>
         /// Set access to a type for a certain group. 
         /// </summary>
-        void SetAccessToType(Group group, AccessModel accessModel);
+        void SetAccessToType(UserGroup group, AccessModel accessModel);
 
 
         /// <summary>
         /// Set access to an object for a certain group.
         /// </summary>
-        void SetAccessToObject(int objectId, Group group, AccessModel accessModel);
+        void SetAccessToObject(int objectId, UserGroup group, AccessModel accessModel);
 
         /// <summary>
         /// Removes access to a type for a group. NOTE: removing is not the same as denying access.
         /// </summary>
-        void RemoveAccessToType(string enovaTypeName, Group group);
+        void RemoveAccessToType(string enovaTypeName, UserGroup group);
 
         /// <summary>
         /// Removes access to an object for a group. NOTE: removing is not the same as denying access.
         /// </summary>
-        void RemoveAccessToObject(int objectId, string enovaTypeName, Group group);
+        void RemoveAccessToObject(int objectId, string enovaTypeName, UserGroup group);
 
     }
 }

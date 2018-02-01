@@ -728,7 +728,12 @@
         </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Write">
             <summary>
-            Write access, updating and creating.
+            Write access.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Create">
+            <summary>
+            Create access.
             </summary>
         </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.Delete">
@@ -764,6 +769,16 @@
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.ModifyDatabase">
             <summary>
             Permission to add and remove properties from a type.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.NoAccess">
+            <summary>
+            Denied access.
+            </summary>
+        </member>
+        <member name="P:Wipcore.Enova.Api.Abstractions.Models.AccessModel.EnovaType">
+            <summary>
+            The type the permissions apply to. 
             </summary>
         </member>
         <member name="P:Wipcore.Enova.Api.Abstractions.Models.ContextModel.Market">

@@ -17,9 +17,14 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         public bool? Read { get; set; }
 
         /// <summary>
-        /// Write access, updating and creating.
+        /// Write access.
         /// </summary>
         public bool? Write { get; set; }
+
+        /// <summary>
+        /// Create access.
+        /// </summary>
+        public bool? Create { get; set; }
 
         /// <summary>
         /// Delete access.
@@ -55,6 +60,11 @@ namespace Wipcore.Enova.Api.Abstractions.Models
         /// Permission to add and remove properties from a type.
         /// </summary>
         public bool? ModifyDatabase { get; set; }
+
+        /// <summary>
+        /// Denied access.
+        /// </summary>
+        public bool? NoAccess { get; set; }
 
         /// <summary>
         /// The type the permissions apply to. 

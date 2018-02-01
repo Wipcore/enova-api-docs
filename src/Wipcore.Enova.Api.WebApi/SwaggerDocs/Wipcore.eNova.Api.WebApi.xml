@@ -100,40 +100,36 @@
             <param name="enovaType">The name of the enova type.</param>
             <param name="groupId">Id of the group to check.</param>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetTypeAccess(System.String,System.Int32,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetTypeAccess(System.Int32,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <summary>
             Set access for a group on a type.
             </summary>
-            <param name="enovaType">The name of the enova type.</param>
             <param name="groupId">Id of the group to check.</param>
             <param name="accessModel">The accessrights to set.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetTypeAccess(System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetTypeAccess(System.String,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <summary>
             Set access for a group on a type.
             </summary>
-            <param name="enovaType">The name of the enova type.</param>
             <param name="groupIdentifier">Identifier of the group to check.</param>
             <param name="accessModel">The accessrights to set.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetObjectAccess(System.Int32,System.String,System.Int32,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetObjectAccess(System.Int32,System.Int32,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <summary>
             Set access for a group on an object.
             </summary>
             <param name="objectId">ID of the object to check access to.</param>
-            <param name="enovaType">The name of the enova type.</param>
             <param name="groupId">Id of the group to check.</param>
             <param name="accessModel">The accessrights to set.</param>
             <returns></returns>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetObjectAccess(System.Int32,System.String,System.String,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.SetObjectAccess(System.Int32,System.String,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <summary>
             Set access for a group on an object. 
             </summary>
             <param name="objectId">ID of the object to check access to.</param>
-            <param name="enovaType">The name of the enova type.</param>
             <param name="groupIdentifier">Identifier of the group to check.</param>
             <param name="accessModel">The accessrights to set.</param>
             <returns></returns>
@@ -1753,6 +1749,11 @@
             True if the request has parameters in query string.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Mappers.Customer.UserAccessMapper">
+            <summary>
+            This mapper is used to map access rights for some commonly used enova types.
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.WebApi.Mappers.Product.ProductDiscountedMapper">
             <summary>
             This mapper maps list prices taken from default price list, and IsDiscounted property which is true if listprice is less than current price of product.
@@ -1789,10 +1790,16 @@
             CRUD upon enova access rights.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetAccessToType(System.String,Wipcore.Core.SessionObjects.BaseObject)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetGroupAccessToType(System.String,Wipcore.Core.SessionObjects.UserGroup,System.Boolean)">
             <inheritdoc />
             <summary>
-            Get effective access rights on a certain type for a group or a user.
+            Get effective access rights on a certain type for a group.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetUserAccessToType(System.String,Wipcore.Core.SessionObjects.User,System.Boolean)">
+            <inheritdoc />
+            <summary>
+            Get effective access rights on a certain type for a user.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.BaseObject)">
@@ -1801,25 +1808,25 @@
             Get effective access rights on a certain object for a group or a user.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToType(System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToType(Wipcore.Core.SessionObjects.UserGroup,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <inheritdoc />
             <summary>
             Set access to a type for a certain group. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToObject(System.Int32,Wipcore.Core.SessionObjects.UserGroup,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <inheritdoc />
             <summary>
             Set access to an object for a certain group.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.RemoveAccessToType(System.String,Wipcore.Core.SessionObjects.Group)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.RemoveAccessToType(System.String,Wipcore.Core.SessionObjects.UserGroup)">
             <inheritdoc />
             <summary>
             Removes access to a type for a group. NOTE: removing is not the same as denying access.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.RemoveAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group)">
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.RemoveAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.UserGroup)">
             <inheritdoc />
             <summary>
             Removes access to an object for a group. NOTE: removing is not the same as denying access.
@@ -2110,11 +2117,6 @@
             Remove a dynamic property from a document.
             </summary>
         </member>
-        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.AccessMapper">
-            <summary>
-            This mapper is used to map access rights for some commonly used enova types.
-            </summary>
-        </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Attribute.AttributeMapper">
             <summary>
             Maps attributes belonging to any Enova object.
@@ -2123,6 +2125,11 @@
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Cart.CartSumMapper">
             <summary>
             Maps the cart sum for a cart, with and without tax.
+            </summary>
+        </member>
+        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.GroupAccessMapper">
+            <summary>
+            This mapper is used to map access rights for some commonly used enova types.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Customer.CustomerAddressTypeMapper">

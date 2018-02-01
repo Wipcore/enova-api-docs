@@ -16,20 +16,23 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Customer
     /// </summary>
     public class UserAccessMapper : IPropertyMapper
     {
+        public const string DefaultAccessTypesToMap =
+            "EnovaAdministrator,EnovaAdministratorGroup,EnovaAttributeType,EnovaCart,EnovaCompany," +
+            "EnovaCustomer,EnovaCustomerGroup,EnovaTextDocument,EnovaManufacturer,EnovaOrder,EnovaPriceList,EnovaBaseProduct,EnovaPromo,EnovaBaseProductSection," +
+            "EnovaShippingStatus,EnovaGlobalSystemSettings,EnovaSystemText";
+
         private readonly IAccessRightService _accessRightService;
         private readonly List<string> _typeNames;
 
         public UserAccessMapper(IConfigurationRoot configurationRoot, IAccessRightService accessRightService)
         {
             _accessRightService = accessRightService;
-            var setting = configurationRoot["ApiSettings:AccessRightsTypesToMap"] ?? "EnovaAdministrator,EnovaAdministratorGroup,EnovaAttributeType,EnovaCart,EnovaCompany," +
-                          "EnovaCustomer,EnovaCustomerGroup,EnovaTextDocument,EnovaManufacturer,EnovaOrder,EnovaPriceList,EnovaBaseProduct,EnovaPromo,EnovaBaseProductSection," +
-                          "EnovaShippingStatus,EnovaGlobalSystemSettings,EnovaSystemText";
+            var setting = configurationRoot["ApiSettings:AccessRightsTypesToMap"] ?? DefaultAccessTypesToMap;
             _typeNames = setting.Split(',').Select(x => x.Trim()).Distinct().ToList();
         }
 
         public bool PostSaveSet => true;
-        public List<string> Names { get; } = new List<string>() { "AccessRights" };
+        public List<string> Names { get; } = new List<string>() { "AccessRights", "ExplicitAccessRights" };
         public Type Type => typeof(User);
         public bool InheritMapper => true;
         public int Priority => 0;
@@ -38,7 +41,10 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Customer
 
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
-            return _typeNames.Select(typeName => _accessRightService.GetAccessToType(typeName, obj)).ToList();
+            var includeEveryonesRights = String.Equals(propertyName, "AccessRights", StringComparison.InvariantCultureIgnoreCase);
+            var user = (User) obj;
+            
+            return _typeNames.Select(typeName => _accessRightService.GetUserAccessToType(typeName, user, includeEveryonesRights));
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)

@@ -14,9 +14,14 @@
             CRUD upon enova access rights.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.GetAccessToType(System.String,Wipcore.Core.SessionObjects.BaseObject)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.GetGroupAccessToType(System.String,Wipcore.Core.SessionObjects.UserGroup,System.Boolean)">
             <summary>
-            Get effective access rights on a certain type for a group or a user.
+            Get effective access rights on a certain type for a group.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.GetUserAccessToType(System.String,Wipcore.Core.SessionObjects.User,System.Boolean)">
+            <summary>
+            Get effective access rights on a certain type for a user.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.GetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.BaseObject)">
@@ -24,22 +29,22 @@
             Get effective access rights on a certain object for a group or a user.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.SetAccessToType(System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.SetAccessToType(Wipcore.Core.SessionObjects.UserGroup,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <summary>
             Set access to a type for a certain group. 
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.SetAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.SetAccessToObject(System.Int32,Wipcore.Core.SessionObjects.UserGroup,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <summary>
             Set access to an object for a certain group.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.RemoveAccessToType(System.String,Wipcore.Core.SessionObjects.Group)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.RemoveAccessToType(System.String,Wipcore.Core.SessionObjects.UserGroup)">
             <summary>
             Removes access to a type for a group. NOTE: removing is not the same as denying access.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.RemoveAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.Group)">
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService.RemoveAccessToObject(System.Int32,System.String,Wipcore.Core.SessionObjects.UserGroup)">
             <summary>
             Removes access to an object for a group. NOTE: removing is not the same as denying access.
             </summary>

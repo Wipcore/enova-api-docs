@@ -37,8 +37,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         public AccessModel UserTypeAccess(string enovaType)
         {
             var userIdentifier = _authService.GetLoggedInIdentifier();
-            var user = _contextService.GetContext().FindObject(userIdentifier, typeof(User));
-            return _accessRightService.GetAccessToType(enovaType, user);
+            var user = (User)_contextService.GetContext().FindObject(userIdentifier, typeof(User));
+            return _accessRightService.GetUserAccessToType(enovaType, user);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel UserTypeAccess(string enovaType, string userIdentifier)
         {
-            var user = _contextService.GetContext().FindObject(userIdentifier, typeof(User));
-            return _accessRightService.GetAccessToType(enovaType, user);
+            var user = (User)_contextService.GetContext().FindObject(userIdentifier, typeof(User));
+            return _accessRightService.GetUserAccessToType(enovaType, user);
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel UserTypeAccess(string enovaType, int userId)
         {
-            var user = _contextService.GetContext().FindObject(userId, typeof(User));
-            return _accessRightService.GetAccessToType(enovaType, user);
+            var user = (User)_contextService.GetContext().FindObject(userId, typeof(User));
+            return _accessRightService.GetUserAccessToType(enovaType, user);
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel GroupTypeAccess(string enovaType, string groupIdentifier)
         {
-            var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group));
-            return _accessRightService.GetAccessToType(enovaType, group);
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupIdentifier, typeof(UserGroup));
+            return _accessRightService.GetGroupAccessToType(enovaType, group);
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel GroupTypeAccess(string enovaType, int groupId)
         {
-            var group = _contextService.GetContext().FindObject(groupId, typeof(Group));
-            return _accessRightService.GetAccessToType(enovaType, group);
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupId, typeof(UserGroup));
+            return _accessRightService.GetGroupAccessToType(enovaType, group);
         }
         #endregion
 
@@ -178,9 +178,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel SetTypeAccess(int groupId, AccessModel accessModel)
         {
-            var group = _contextService.GetContext().FindObject(groupId, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupId, typeof(UserGroup));
             _accessRightService.SetAccessToType(group, accessModel);
-            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
+            return _accessRightService.GetGroupAccessToType(accessModel.EnovaType, group);
         }
 
         /// <summary>
@@ -193,9 +193,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel SetTypeAccess(string groupIdentifier, AccessModel accessModel)
         {
-            var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupIdentifier, typeof(UserGroup));
             _accessRightService.SetAccessToType(group, accessModel);
-            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
+            return _accessRightService.GetGroupAccessToType(accessModel.EnovaType, group);
         }
 
         /// <summary>
@@ -209,9 +209,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel SetObjectAccess(int objectId, int groupId, AccessModel accessModel)
         {
-            var group = _contextService.GetContext().FindObject(groupId, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupId, typeof(UserGroup));
             _accessRightService.SetAccessToObject(objectId, group, accessModel);
-            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
+            return _accessRightService.GetGroupAccessToType(accessModel.EnovaType, group);
         }
 
         /// <summary>
@@ -225,9 +225,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel SetObjectAccess(int objectId, string groupIdentifier, AccessModel accessModel)
         {
-            var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupIdentifier, typeof(UserGroup));
             _accessRightService.SetAccessToObject(objectId, group, accessModel);
-            return _accessRightService.GetAccessToType(accessModel.EnovaType, group);
+            return _accessRightService.GetGroupAccessToType(accessModel.EnovaType, group);
         }
 
         #endregion
@@ -240,11 +240,11 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <param name="groupIdentifier">Identifier of the group to check.</param>
         [HttpDelete("TypeAccess/{groupIdentifier}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public ActionResult RemoveTypeAccess(string enovaType, string groupIdentifier)
+        public AccessModel RemoveTypeAccess(string enovaType, string groupIdentifier)
         {
-            var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupIdentifier, typeof(UserGroup));
             _accessRightService.RemoveAccessToType(enovaType, group);
-            return Ok();
+            return _accessRightService.GetGroupAccessToType(enovaType, group);
         }
 
         /// <summary>
@@ -254,11 +254,11 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// <param name="groupId">Id of the group to check.</param>
         [HttpDelete("TypeAccess/{groupId}")]
         [Authorize(Roles = AuthService.AdminRole)]
-        public ActionResult RemoveTypeAccess(string enovaType, int groupId)
+        public AccessModel RemoveTypeAccess(string enovaType, int groupId)
         {
-            var group = _contextService.GetContext().FindObject(groupId, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupId, typeof(UserGroup));
             _accessRightService.RemoveAccessToType(enovaType, group);
-            return Ok();
+            return _accessRightService.GetGroupAccessToType(enovaType, group);
         }
 
         /// <summary>
@@ -271,9 +271,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel RemoveObjectAccess(int objectId, string enovaType, int groupId)
         {
-            var group = _contextService.GetContext().FindObject(groupId, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupId, typeof(UserGroup));
             _accessRightService.RemoveAccessToObject(objectId, enovaType, group);
-            return _accessRightService.GetAccessToType(enovaType, group);
+            return _accessRightService.GetGroupAccessToType(enovaType, group);
         }
 
         /// <summary>
@@ -286,9 +286,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         [Authorize(Roles = AuthService.AdminRole)]
         public AccessModel RemoveObjectAccess(int objectId, string enovaType, string groupIdentifier)
         {
-            var group = _contextService.GetContext().FindObject(groupIdentifier, typeof(Group)) as Group;
+            var group = (UserGroup)_contextService.GetContext().FindObject(groupIdentifier, typeof(UserGroup));
             _accessRightService.RemoveAccessToObject(objectId, enovaType, group);
-            return _accessRightService.GetAccessToType(enovaType, group);
+            return _accessRightService.GetGroupAccessToType(enovaType, group);
         }
 
         #endregion

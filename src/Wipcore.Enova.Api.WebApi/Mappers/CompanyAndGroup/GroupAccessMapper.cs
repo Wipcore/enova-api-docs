@@ -9,6 +9,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
+using Wipcore.Enova.Api.WebApi.Mappers.Customer;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers
@@ -24,14 +25,12 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         public GroupAccessMapper(IConfigurationRoot configurationRoot, IAccessRightService accessRightService)
         {
             _accessRightService = accessRightService;
-            var setting = configurationRoot["ApiSettings:AccessRightsTypesToMap"] ?? "EnovaAdministrator,EnovaAdministratorGroup,EnovaAttributeType,EnovaCart,EnovaCompany," +
-                          "EnovaCustomer,EnovaCustomerGroup,EnovaTextDocument,EnovaManufacturer,EnovaOrder,EnovaPriceList,EnovaBaseProduct,EnovaPromo,EnovaBaseProductSection," +
-                          "EnovaShippingStatus,EnovaGlobalSystemSettings,EnovaSystemText";
+            var setting = configurationRoot["ApiSettings:AccessRightsTypesToMap"] ?? UserAccessMapper.DefaultAccessTypesToMap;
             _typeNames = setting.Split(',').Select(x => x.Trim()).Distinct().ToList();
         }
 
         public bool PostSaveSet => true;
-        public List<string> Names { get; } = new List<string>() { "AccessRights" };
+        public List<string> Names { get; } = new List<string>() { "AccessRights", "ExplicitAccessRights" };
         public Type Type => typeof(UserGroup);
         public bool InheritMapper => true;
         public int Priority => 0;
@@ -40,7 +39,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
         
         public object GetEnovaProperty(BaseObject obj, string propertyName, List<EnovaLanguage> mappingLanguages)
         {
-            return _typeNames.Select(typeName => _accessRightService.GetAccessToType(typeName, obj)).ToList();
+            var includeEveryonesRights = String.Equals(propertyName, "AccessRights", StringComparison.InvariantCultureIgnoreCase);
+            var group = (UserGroup)obj;
+
+            return _typeNames.Select(typeName => _accessRightService.GetGroupAccessToType(typeName, group, includeEveryonesRights));
         }
 
         public void SetEnovaProperty(BaseObject obj, string propertyName, object value, IDictionary<string, object> otherValues)
