@@ -21,16 +21,18 @@ namespace Wipcore.Enova.Api.NetClient
     public class ApiClientAsync : IApiClientAsync
     {
         public const string TokenKey = "ApiToken";
+        private readonly IConfigurationRoot _configuration;
         private readonly IHttpContextAccessor _httpAccessor;
 
         private readonly IDataProtector _protector;
         private readonly ILogger _log;
 
-        public ApiClientAsync(IConfigurationRoot root, IHttpContextAccessor httpAccessor, IDataProtectionProvider protectionProvider, ILoggerFactory loggerFactory)
+        public ApiClientAsync(IConfigurationRoot configuration, IHttpContextAccessor httpAccessor, IDataProtectionProvider protectionProvider, ILoggerFactory loggerFactory)
         {
+            _configuration = configuration;
             _httpAccessor = httpAccessor;
             _protector = protectionProvider.CreateProtector("CookieEncrypter");
-            InternalHttpClient = new HttpClient { BaseAddress = new Uri(root["API:Url"] ?? "http://localhost:5000/api/") };
+            InternalHttpClient = new HttpClient { BaseAddress = new Uri(configuration["API:Url"] ?? "http://localhost:5000/api/") };
             _log = loggerFactory.CreateLogger(GetType().Namespace);
 
             //if the end user has a token cookie, then place the token in the header for requests made by this client
@@ -441,7 +443,8 @@ namespace Wipcore.Enova.Api.NetClient
             {
                 //add the id of the user in another cookie. Useful for getting the current users data (like filters) without querying api every time.
                 var protectedId = _protector.Protect(loginModel.UserId.Value.ToString());
-                httpContext.Response.Cookies.Append(WipConstants.UserIdCookieIdentifier, protectedId);
+                var expireTime = DateTime.Now.AddMinutes( _configuration.GetValue("Auth:ExpireTimeMinutes", 120));
+                httpContext.Response.Cookies.Append(WipConstants.UserIdCookieIdentifier, protectedId, new CookieOptions() {Expires = expireTime });
             }
 
             return loginModel;
