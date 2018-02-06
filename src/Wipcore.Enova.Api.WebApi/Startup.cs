@@ -291,20 +291,13 @@ namespace Wipcore.Enova.Api.WebApi
             {
                 try
                 {
-                    /* Load by byte assembly since load by name might not work if
-                           the assembly has been loaded before */
-                    using (Stream stream = File.OpenRead(dllFile))
-                    {
-                        var assemblyData = new Byte[stream.Length];
-                        stream.Read(assemblyData, 0, assemblyData.Length);
-                        var assembly = Assembly.Load(assemblyData);
-                        assemblies.Add(assembly);
+                    var assembly = Assembly.LoadFile(dllFile);
+                    assemblies.Add(assembly);
 
-                        //extract module types and add them to be registered
-                        var moduleTypes = assembly.GetTypes().Where(x => typeof(IEnovaApiModule).IsAssignableFrom(x)).ToList();
-                        moduleTypes.ForEach(x => Console.WriteLine("Found addin IEnovaApiModule module in assembly: " + x.Assembly.FullName));
-                        autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule)x.CreateInstance()));
-                    }
+                    //extract module types and add them to be registered
+                    var moduleTypes = assembly.GetTypes().Where(x => typeof(IEnovaApiModule).IsAssignableFrom(x)).ToList();
+                    moduleTypes.ForEach(x => Console.WriteLine("Found addin IEnovaApiModule module in assembly: " + x.Assembly.FullName));
+                    autofacModules.AddRange(moduleTypes.Select(x => (IEnovaApiModule)x.CreateInstance()));
                 }
                 catch (ReflectionTypeLoadException e)
                 {
