@@ -98,6 +98,16 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         }
 
         /// <summary>
+        /// Create or update a supplier.
+        /// </summary>
+        [HttpPut()]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public IDictionary<string, object> Put([FromUri]ContextModel requestContext, [FromBody] Dictionary<string, object> values)
+        {
+            return _objectService.Save<EnovaSupplier>(requestContext, values);
+        }
+
+        /// <summary>
         /// Delete a supplier.
         /// </summary>
         [HttpDelete("id-{id}")]
