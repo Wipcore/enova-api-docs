@@ -169,7 +169,7 @@ namespace Wipcore.Enova.Api.WebApi
             
             var jwtOptions = new Action<JwtBearerOptions>(options => {
                 options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
+                options.RequireHttpsMetadata = Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", false);
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
@@ -180,7 +180,7 @@ namespace Wipcore.Enova.Api.WebApi
                     ValidAudience = Configuration.GetValue<string>("Auth:ValidAudience", "http://localhost:5000/"),
                     ValidateLifetime = Configuration.GetValue<bool>("Auth:ValidateLifetime", true),
                     ClockSkew = TimeSpan.Zero,
-                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme,                    
+                    AuthenticationType = JwtBearerDefaults.AuthenticationScheme,      
                 };
                 if (Configuration.GetValue<bool>("Auth:UseAuthTimeValidation", true))
                     options.TokenValidationParameters.LifetimeValidator = Container.Resolve<IAuthService>().ExpireValidator;                
