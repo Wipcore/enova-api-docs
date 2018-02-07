@@ -51,7 +51,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ManufacturerModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<ManufacturerModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaManufacturer>(requestContext, query);
@@ -84,7 +84,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ManufacturerModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<ManufacturerModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -96,7 +96,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ManufacturerModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<ManufacturerModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();

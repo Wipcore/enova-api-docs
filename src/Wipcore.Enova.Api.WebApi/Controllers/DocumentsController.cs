@@ -51,7 +51,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(DocumentModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<DocumentModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaTextDocument>(requestContext, query);
@@ -84,7 +84,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(DocumentModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<DocumentModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -96,7 +96,7 @@ namespace Wipcore.eNova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(DocumentModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<DocumentModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();

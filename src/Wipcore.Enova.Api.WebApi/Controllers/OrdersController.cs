@@ -58,7 +58,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<OrderModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaOrder>(requestContext, query);
@@ -101,7 +101,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<OrderModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -113,7 +113,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [Authorize(Roles = AuthService.AdminRole)]
-        [ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<OrderModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();
@@ -125,7 +125,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ofcustomer-{identifier}")]
         [Authorize(Policy = CustomerUrlIdentifierPolicy.Name)]
-        [ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<OrderModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetCustomersCartsByIdentifier([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]string identifier, [FromUri]string shippingStatus)
         {
             var orders = _orderService.GetOrdersByCustomer(0, identifier, shippingStatus);
@@ -137,7 +137,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ofcustomerid-{id}")]
         [Authorize(Policy = CustomerUrlIdPolicy.Name)]
-        [ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<OrderModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetCustomersCartsById([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromUri]int id, [FromUri]string shippingStatus)
         {
             var orders = _orderService.GetOrdersByCustomer(id, null, shippingStatus);

@@ -54,7 +54,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet()]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<SectionModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> Get([FromUri] ContextModel requestContext, [FromUri] QueryModel query)
         {
             return _objectService.GetMany<EnovaBaseProductSection>(requestContext, query);
@@ -87,7 +87,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("ids")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<SectionModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIds([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string ids)
         {
             var listIds = ids.Split(',').Select(x => Convert.ToInt32(x.Trim())).Distinct();
@@ -99,7 +99,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("identifiers")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<SectionModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetManyIdentifiers([FromUri]ContextModel requestContext, [FromUri]QueryModel query, [FromQuery]string identifiers)
         {
             var listIdentifiers = identifiers.Split(',').Select(x => x.Trim()).Distinct();
@@ -111,7 +111,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}/children")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(SectionModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<SectionModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetSubSections(ContextModel requestContext, QueryModel query, string identifier)
         {
             var children = _sectionService.GetSubSections(identifier);
@@ -124,7 +124,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// </summary>
         [HttpGet("{identifier}/products")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<ProductModel>), (int)HttpStatusCode.OK)]
         public IEnumerable<IDictionary<string, object>> GetProducts(ContextModel requestContext, QueryModel query, string identifier)
         {
             var items = _sectionService.GetProducts(identifier);
