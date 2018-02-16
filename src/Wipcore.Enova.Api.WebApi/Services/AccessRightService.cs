@@ -12,6 +12,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Helpers;
+using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
 namespace Wipcore.Enova.Api.WebApi.Services
@@ -137,7 +138,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var context = _contextService.GetContext();
 
             var obj = context.FindObject(objectId, type);
-            obj.SetSpecificAccess(obj, accessMask);
+            obj.SetSpecificAccess(group, accessMask);
 
             _logger.LogInformation($"Set access to {accessModel} on object of type {accessModel.EnovaType} with id {objectId} for group with id {group.ID} and identifier {group.Identifier}");
         }
@@ -171,11 +172,11 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var context = _contextService.GetContext();
 
             var obj = context.FindObject(objectId, type);
-            obj.RemoveSpecificAccess(obj);
+            obj.RemoveSpecificAccess(group);
 
             _logger.LogInformation($"Removed specific access on object of type {enovaTypeName} and id {objectId} for group with id {group.ID} and identifier {group.Identifier}");
         }
-
+        
         private static int MapModelToAccessMask(AccessModel newAccess, AccessModel currentAccess)
         {
             //build a model where rights on new are taken if they exists, otherwise it defaults to current
