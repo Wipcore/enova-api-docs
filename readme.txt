@@ -8,6 +8,9 @@ Api: http://api.wipcore.se , D:\Sites\EnovaAPI
 Webadmin: http://webadmin2.wipcore.se , D:\Sites\webadmin without kooboo
 Databas: EnovaWebadminDevALotOfData på wipsql06
 
+Nuget feed för dev-paket:
+https://teamcity2.wipcore.se/guestAuth/app/nuget/v1/FeedService.svc/
+
 Adresserna måste läggas till i hostfil för att nås, i vanlig ordning.
 
 --------------------------
