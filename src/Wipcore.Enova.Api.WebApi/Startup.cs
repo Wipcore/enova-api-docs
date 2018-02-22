@@ -199,6 +199,10 @@ namespace Wipcore.Enova.Api.WebApi
             var cmoProperties = Container.Resolve<IEnumerable<ICmoProperty>>();
             EnovaSystemFacade.Current.Connection.Kernel.AddCmoProperties(cmoProperties);
 
+            // run enova init
+            var initService = Container.Resolve<IInitializeEnovaService>();
+            initService.InitializeEnova();
+
             return Container.Resolve<IServiceProvider>();
         }
         
