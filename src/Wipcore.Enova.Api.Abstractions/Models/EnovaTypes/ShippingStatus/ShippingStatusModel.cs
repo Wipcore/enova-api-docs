@@ -4,7 +4,8 @@ using Wipcore.Enova.Api.Abstractions.Attributes;
 namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.ShippingStatus
 {
     [GroupPresentation("Shipping status info", new string[] { "Identifier", "Name", "InactiveOrder", "IsScrapStatus"}, sortOrder: 100)]
-    [GroupPresentation("Status connections", new string[] { "ArrivalStatuses", "DestinationStatuses" }, sortOrder: 200)]
+    [GroupPresentation("Source connections", new string[] { "ArrivalStatuses" }, sortOrder: 200)]
+    [GroupPresentation("Destination connections", new string[] { "DestinationStatuses" }, sortOrder: 300)]
     [IndexModel]
     public class ShippingStatusModel : BaseModel
     {

@@ -5,7 +5,7 @@ using Wipcore.Enova.Api.Abstractions.Attributes;
 namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes
 {
     [GroupPresentation("Setting info", new[] { "Identifier" }, sortOrder: 200)]
-    [GroupPresentation("Values", new[] { "Value", "ValueString", "ValueInteger", "ValueDateTime", "ValueFloat", "ValueMoney" }, sortOrder: 300)]
+    [GroupPresentation("Values", new[] { "Value", "ValueString", "ValueInteger", "ValueBoolean", "ValueDateTime", "ValueFloat", "ValueMoney" }, sortOrder: 300)]
     [IndexModel]
     public class SystemSettingModel : BaseModel
     {
