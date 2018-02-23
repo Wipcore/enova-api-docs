@@ -198,7 +198,7 @@ namespace Wipcore.Enova.Api.WebApi
             // add cmo properties
             var cmoProperties = Container.Resolve<IEnumerable<ICmoProperty>>();
             EnovaSystemFacade.Current.Connection.Kernel.AddCmoProperties(cmoProperties);
-
+            
             return Container.Resolve<IServiceProvider>();
         }
         
@@ -212,6 +212,10 @@ namespace Wipcore.Enova.Api.WebApi
             if(env.IsDevelopment())
                 loggerFactory.AddDebug();
             ConfigureNlog(env,loggerFactory);
+
+            // run enova init
+            var initService = Container.Resolve<IInitializeEnovaService>();
+            initService.InitializeEnova();
 
             app.UseStaticFiles();
             app.UseStatusCodePages();
