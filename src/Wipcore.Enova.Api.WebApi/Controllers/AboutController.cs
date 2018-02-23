@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NLog;
@@ -36,15 +39,29 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             var baseurl = HttpContext.Request.Host;
             var sb = new StringBuilder();
-            
-            sb.AppendLine("Welcome to Enova API. Version " + Startup.ApiVersion);
-            sb.AppendLine("Enova is: " + (IsEnovaAlive() ? "Online" : "Offline"));
-            sb.AppendLine();
-            sb.AppendLine("API documentation: " + baseurl + "/swagger/");
-            
 
-            return Content(sb.ToString());
+            var online = IsEnovaAlive();
+            var color = online ? "green" : "red";
+            var msg = online ? "Online" : "Offline";
+            var url = baseurl + "/swagger/";
+
+            sb.AppendLine("<html>");
+            sb.AppendLine($"<h3>Welcome to Enova API. Version {Startup.ApiVersion}</h3>");
+            sb.AppendLine($"<p>Enova is: <span style='color:{color}'>{msg}</span></p>");
+            sb.AppendLine($"<p>API documentation: <a href='http://{url}'>{url}</a></p>");
+            sb.AppendLine("</html>");
+          
+            return new ContentResult() {Content = sb.ToString(), ContentType = "text/html"};
         }
+
+        /// <summary>
+        /// API version.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/version")]
+        [AllowAnonymous]
+        public ContentResult Version() => Content(Startup.ApiVersion);
+        
 
         /// <summary>
         /// Returns true if Enova is running.
