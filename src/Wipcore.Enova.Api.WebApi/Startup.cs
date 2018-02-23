@@ -40,7 +40,7 @@ namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
-        public static readonly string ApiVersion = Assembly.GetEntryAssembly().GetName().Version.ToString(2);
+        public static readonly string ApiVersion = Assembly.GetAssembly(typeof(Startup)).GetName().Version.ToString(2);
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
