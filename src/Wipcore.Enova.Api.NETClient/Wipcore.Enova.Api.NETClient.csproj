@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Wipcore.Enova.Api.NetClient Class Library</Description>
-    <VersionPrefix>6.4.0.215</VersionPrefix>
+    <VersionPrefix>7.0.0-dev</VersionPrefix>
     <Authors>fredrik.astrand</Authors>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Wipcore.Enova.Api.NetClient</AssemblyName>

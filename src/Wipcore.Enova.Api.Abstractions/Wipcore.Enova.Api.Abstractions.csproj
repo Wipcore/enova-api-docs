@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Wipcore.Enova.Api.Abstractions Class Library</Description>
-    <VersionPrefix>6.4.0.215-dev</VersionPrefix>
+    <VersionPrefix>7.0.0-dev</VersionPrefix>
     <Authors>henrik.eliasson</Authors>
     <TargetFramework>net461</TargetFramework>
     <NoWarn>$(NoWarn);1591</NoWarn>
