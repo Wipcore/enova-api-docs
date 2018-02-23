@@ -40,7 +40,7 @@ namespace Wipcore.Enova.Api.WebApi
 {
     public class Startup
     {
-        public const string ApiVersion = "1.0"; //TODO might specify somewhere else.
+        public const string ApiVersion = "7.0"; //TODO might specify somewhere else.
         private readonly string _configFolderPath;
         private readonly string _addInFolderPath;
         private string _swaggerDocsFolderPath;
