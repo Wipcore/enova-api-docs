@@ -1,17 +1,17 @@
 Test enviroment:
 
-Finns på webdev16, är kombinerat med var som tidigare bara var webadmin.
+Finns pÃ¥ webdev16, Ã¤r kombinerat med var som tidigare bara var webadmin.
 
-BusniessServer: ”Enova Webadmin BS Dev”,  D:\EnovaWebadminDev\BS
+BusniessServer: â€Enova Webadmin BS Devâ€,  D:\EnovaWebadminDev\BS
 BackOffice: D:\EnovaWebadminDev\BackOffice 
-Api: http://api.wipcore.se , D:\Sites\EnovaAPI
-Webadmin: http://webadmin2.wipcore.se , D:\Sites\webadmin without kooboo
-Databas: EnovaWebadminDevALotOfData på wipsql06
+Api: http://webapi.wipcore.se/api/ , D:\Sites\webapi.wipcore.se
+Webadmin: http://webadmin.wipcore.se , D:\Sites\webadmin.wipcore.se
+Databas: EnovaWebadminDevALotOfData pÃ¥ wipsql06
 
-Nuget feed för dev-paket:
+Nuget feed fÃ¶r dev-paket:
 https://teamcity2.wipcore.se/guestAuth/app/nuget/v1/FeedService.svc/
 
-Adresserna måste läggas till i hostfil för att nås, i vanlig ordning.
+Adresserna mÃ¥ste lÃ¤ggas till i hostfil fÃ¶r att nÃ¥s, i vanlig ordning.
 
 --------------------------
 
