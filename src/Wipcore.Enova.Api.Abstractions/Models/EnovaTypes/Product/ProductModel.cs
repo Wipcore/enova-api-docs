@@ -39,7 +39,6 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product
 
         public int? VariantOwnerId { get; set; }
         
-
         [PropertyPresentation("ProductVariants", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
         public List<VariantModel> Variants { get; set; }
         
