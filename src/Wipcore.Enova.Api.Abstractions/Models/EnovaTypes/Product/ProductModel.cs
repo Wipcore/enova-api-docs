@@ -30,15 +30,20 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Product
 
         [PropertyPresentation("String", "Url", isEditable: true, isFilterable: true, isGridColumn: true, sortOrder: 300)]
         public string URL { get; set; }
-        
-        [PropertyPresentation("ProductVariantOwner", "", isEditable: false, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
-        public VariantOwnerModel VariantOwner { get; set; }
 
         [PropertyPresentation("PricesOnProduct", "", isEditable: false, isFilterable: false, isGridColumn: false, sortOrder: 300)]
         public List<ProductPriceModel> Prices { get; set; }
 
+        [PropertyPresentation("ProductVariantOwner", "", isEditable: false, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
+        public VariantOwnerModel VariantOwner { get; set; }
+
+        public int? VariantOwnerId { get; set; }
+        
+
         [PropertyPresentation("ProductVariants", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
         public List<VariantModel> Variants { get; set; }
+        
+        public List<int> VariantIds { get; set; }
 
         [PropertyPresentation("AttributesOnObject", "", isEditable: true, isFilterable: false, isGridColumn: false, languageDependant: true, sortOrder: 300)]
         public List<AttributeValueModel> Attributes { get; set; }
