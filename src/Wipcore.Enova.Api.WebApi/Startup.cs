@@ -33,6 +33,7 @@ using EnumerableExtensions = Wipcore.Library.EnumerableExtensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.FileProviders;
 using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.WebApi.Services;
 
@@ -50,6 +51,8 @@ namespace Wipcore.Enova.Api.WebApi
         private IContainer Container { get; set; }
 
         private static IWebHost _webhost;
+
+
 
 
         public Startup(IHostingEnvironment env)
@@ -234,6 +237,7 @@ namespace Wipcore.Enova.Api.WebApi
             }
 
             new Task(() => MonitorEnovaShutdown(loggerFactory)).Start();
+            new Task(MonitorConfigFiles).Start();
         }
         
         private void ConfigureSwagger(IServiceCollection services)
@@ -346,6 +350,40 @@ namespace Wipcore.Enova.Api.WebApi
                     log.LogCritical($"Heartbeat is {heartbeat}. Enova is no longer responding. Shutting down process.");
                     _webhost.StopAsync();
                     break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This thread monitors appsettings for changes. Currently only concerned with enova logging changes.
+        /// </summary>
+        private async void MonitorConfigFiles()
+        {
+            var fileProvider = new PhysicalFileProvider(_configFolderPath);
+           
+            while (true)
+            {
+                var token = fileProvider.Watch("*appsettings.json");
+                var source = new TaskCompletionSource<object>();
+                token.RegisterChangeCallback(state => ((TaskCompletionSource<object>)state).TrySetResult(null), source);
+
+                await source.Task.ConfigureAwait(false);
+                Thread.Sleep(5000);//wait for configuration to be reloaded
+
+                //only really intrested in changes to logging at this time
+                var newlogpath = Path.Combine(Configuration["Enova:LogPath"], EnovaSystemFacade.Current.Settings.CertificateKey);
+                if (EnovaSystemFacade.Current.Connection.Kernel.LogPath != newlogpath)
+                {
+                    Console.WriteLine($"Enova LogPath changed from {EnovaSystemFacade.Current.Connection.Kernel.LogPath} to {newlogpath}");
+                    EnovaSystemFacade.Current.Connection.Kernel.LogPath = newlogpath;
+                }
+
+                var newloglevel = Convert.ToInt32(Configuration["Enova:LogLevel"]);
+                if (EnovaSystemFacade.Current.Connection.Kernel.LogLevel != newloglevel)
+                {
+
+                    Console.WriteLine($"Enova LogLevel changed from {EnovaSystemFacade.Current.Connection.Kernel.LogLevel} to {newloglevel}");
+                    EnovaSystemFacade.Current.Connection.Kernel.LogLevel = newloglevel;
                 }
             }
         }
