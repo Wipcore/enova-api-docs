@@ -163,8 +163,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var objectList = candidates ?? (memoryObject ? context.GetAllObjects(derivedType) :
                              context.Search(query.Filter ?? "ID > 0", derivedType, null, 0, null, false));
 
-            objectList = _sortService.Sort(objectList, query.Sort);
             objectList = _filterService.Filter(objectList, query.Filter);
+            objectList = _sortService.Sort(objectList, query.Sort);
             objectList = _pagingService.Page(objectList, query.Page.Value, query.Size.Value);
             var objects = _mappingFromEnovaService.MapFromEnovaObject(objectList, query.Properties).ToList();
 
