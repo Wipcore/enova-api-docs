@@ -21,6 +21,8 @@ namespace Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Attribute
         [IgnorePropertyOnIndex]
         public bool LanguageDependant { get; set; }
 
+        public bool IsContinuous { get; set; }
+
         [PropertyPresentation("AttributeValues", "", languageDependant: true, isEditable: true, isFilterable: false, isGridColumn: false, sortOrder: 300)]
         public List<AttributeValueModel> Values { get; set; }
 
