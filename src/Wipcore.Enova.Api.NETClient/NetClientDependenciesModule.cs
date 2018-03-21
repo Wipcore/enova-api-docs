@@ -24,7 +24,7 @@ namespace Wipcore.Enova.Api.NetClient
         protected override void Load(ContainerBuilder builder)
         {
             var configBuilder = new ConfigurationBuilder();
-            configBuilder.AddJsonFile("netclient.json");
+            configBuilder.AddJsonFile("netclient.json", optional:true);
             var configRoot = configBuilder.Build();
 
             var servicecollection = new ServiceCollection();
