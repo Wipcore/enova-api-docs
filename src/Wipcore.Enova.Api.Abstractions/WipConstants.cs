@@ -17,5 +17,7 @@ namespace Wipcore.Enova.Api.Abstractions
 
         public const string ContextModelKey = "requestContext";
         public const string EnovaContextKey = "enovaContext";
+
+        public const bool ContinueOnCapturedContext = false;
     }
 }

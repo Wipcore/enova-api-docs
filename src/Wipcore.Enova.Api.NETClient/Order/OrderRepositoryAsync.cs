@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Order;
@@ -17,27 +18,27 @@ namespace Wipcore.Enova.Api.NetClient.Order
 
         public async Task<TOrderModel> GetSavedOrderAsync(int id, QueryModel queryModel = null, ContextModel contextModel = null)
         {
-            return await _apiRepository.GetObjectAsync<TOrderModel>(id, queryModel, contextModel);
+            return await _apiRepository.GetObjectAsync<TOrderModel>(id, queryModel, contextModel).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
         }
 
         public async Task<TOrderModel> GetSavedOrderAsync(string identifier, QueryModel queryModel = null, ContextModel contextModel = null)
         {
-            return await _apiRepository.GetObjectAsync<TOrderModel>(identifier, queryModel, contextModel);
+            return await _apiRepository.GetObjectAsync<TOrderModel>(identifier, queryModel, contextModel).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
         }
 
         public async Task<TOrderModel> CreateOrderAsync(TOrderModel order, ContextModel contextModel = null)
         {
-            return (TOrderModel)await _apiRepository.SaveObjectAsync<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: false);
+            return (TOrderModel)await _apiRepository.SaveObjectAsync<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: false).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
         }
 
         public async Task<TOrderModel> UpdateOrderAsync(TOrderModel order, ContextModel contextModel = null)
         {
-            return (TOrderModel) await _apiRepository.SaveObjectAsync<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: true);
+            return (TOrderModel) await _apiRepository.SaveObjectAsync<TOrderModel>(JObject.FromObject(order), contextModel: contextModel, verifyIdentifierNotTaken: true).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
         }
 
-        public async Task<bool> DeleteOrderAsync(string orderIdentifier) => await _apiRepository.DeleteObjectAsync<TOrderModel>(orderIdentifier);
+        public async Task<bool> DeleteOrderAsync(string orderIdentifier) => await _apiRepository.DeleteObjectAsync<TOrderModel>(orderIdentifier).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
 
-        public async Task<bool> DeleteOrderAsync(int orderId) => await _apiRepository.DeleteObjectAsync<TOrderModel>(orderId);
+        public async Task<bool> DeleteOrderAsync(int orderId) => await _apiRepository.DeleteObjectAsync<TOrderModel>(orderId).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
 
     }
 }
