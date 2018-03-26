@@ -412,7 +412,7 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<ILoginResponseModel> LoginCustomerAsAdminAsync(string customerAlias, string adminAlias, string adminPassword)
         {
-            return await LoginAsync(new LoginCustomerWithAdminCredentialsModel() { Alias = customerAlias, Password = adminPassword, CustomerIdentifier = customerAlias }, 
+            return await LoginAsync(new LoginCustomerWithAdminCredentialsModel() { Alias = adminAlias, Password = adminPassword, CustomerIdentifier = customerAlias }, 
                 "/Account/LoginCustomerWithAdminCredentials").ConfigureAwait(ContinueOnCapturedContext);
         }
         
