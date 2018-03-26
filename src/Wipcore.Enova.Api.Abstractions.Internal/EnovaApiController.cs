@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
@@ -37,7 +38,7 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
                 Logger.LogTrace($"{_authService.LogUser()} executing {context.ActionDescriptor.DisplayName} with arguments ({String.Join(" / ", ArgumentsToString(context.ActionArguments))})");
 
             base.OnActionExecuting(context);
-
+            
             //put any avaliable requestContext in cache for the request, so it can be retrived from anywhere
             context.ActionArguments.TryGetValue("requestContext", out var requestContext);
 
@@ -49,6 +50,16 @@ namespace Wipcore.Enova.Api.Abstractions.Internal
         
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+            if (!ModelState.IsValid)//output any model state errors as a bad request
+            {
+                var modelErrorMsgs = Environment.NewLine;
+                if(ModelState.Root.Errors?.Any() == true)
+                    modelErrorMsgs += String.Join(Environment.NewLine, ModelState.Root.Errors.Select(e => e.Exception?.Message ?? e.ErrorMessage));
+                if(ModelState.Root.Children?.Any() == true)
+                    modelErrorMsgs += String.Join(Environment.NewLine, ModelState.Root.Children.SelectMany(x => x.Errors.Select(e => e.Exception?.Message ?? e.ErrorMessage)));
+                context.Exception = new HttpException(HttpStatusCode.BadRequest, modelErrorMsgs);
+            }
+
             if (context.Exception != null)//handle any exception caused by action executed
             {
                 _exceptionService.HandleControllerException(context);

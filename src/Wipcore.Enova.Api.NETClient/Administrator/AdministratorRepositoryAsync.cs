@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wipcore.Enova.Api.Abstractions;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Models.EnovaTypes.Administrator;
 
@@ -22,23 +23,23 @@ namespace Wipcore.Enova.Api.NetClient.Administrator
 
         public async Task<bool> IsLoggedIn()
         {
-            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync().ConfigureAwait(WipConstants.ContinueOnCapturedContext);
             return Convert.ToBoolean(loggedInInfo["LoggedIn"]);
         }
         
         public async Task<bool> IsLoggedInAsAdmin()
         {
-            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+            var loggedInInfo = await _apiClient.Invoke().GetLoggedInUserInfoAsync().ConfigureAwait(WipConstants.ContinueOnCapturedContext);
             return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "admin";
         }
 
         public async Task<IDictionary<string, string>> GetLoggedInUserInfo()
         {
-            return await _apiClient.Invoke().GetLoggedInUserInfoAsync();
+            return await _apiClient.Invoke().GetLoggedInUserInfoAsync().ConfigureAwait(WipConstants.ContinueOnCapturedContext);
         }
 
         public async Task<ILoginResponseModel> LoginAdmin(string alias, string password) =>
-            await _apiClient.Invoke().LoginAdminAsync(alias, password);
+            await _apiClient.Invoke().LoginAdminAsync(alias, password).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
 
 
 

@@ -25,6 +25,7 @@ namespace Wipcore.Enova.Api.NetClient
     /// </summary>
     public class ApiRepositoryAsync : IApiRepositoryAsync
     {
+        private const bool ContinueOnCapturedContext = false;
         private readonly Func<IApiClientAsync> _apiClientMaker;
         private readonly IConfigurationRoot _configuration;
         private readonly IServiceProvider _serviceProvider;
@@ -43,13 +44,13 @@ namespace Wipcore.Enova.Api.NetClient
         /// <summary>
         /// Check if object with given identifier exists.
         /// </summary>
-        public async Task<bool> ObjectExistsAsync<TModel>(string identifier) where TModel : BaseModel => await ObjectExistsAsync<TModel>(identifier, 0);
+        public async Task<bool> ObjectExistsAsync<TModel>(string identifier) where TModel : BaseModel => await ObjectExistsAsync<TModel>(identifier, 0).ConfigureAwait(ContinueOnCapturedContext);
 
 
         /// <summary>
         /// Check if object with given id exists.
         /// </summary>
-        public async Task<bool> ObjectExistsAsync<TModel>(int id) where TModel : BaseModel => await ObjectExistsAsync<TModel>(null, id);
+        public async Task<bool> ObjectExistsAsync<TModel>(int id) where TModel : BaseModel => await ObjectExistsAsync<TModel>(null, id).ConfigureAwait(ContinueOnCapturedContext);
 
 
         private async Task<bool> ObjectExistsAsync<TModel>(string identifier, int id) where TModel : BaseModel
@@ -67,7 +68,7 @@ namespace Wipcore.Enova.Api.NetClient
                 return false;
 
             var resource = model.GetResourceName();
-            return id != 0 ? await apiClient.ObjectExistsAsync(resource, id) : await apiClient.ObjectExistsAsync(resource, identifier);
+            return id != 0 ? await apiClient.ObjectExistsAsync(resource, id).ConfigureAwait(ContinueOnCapturedContext) : await apiClient.ObjectExistsAsync(resource, identifier).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -75,14 +76,14 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<TModel> GetObjectAsync<TModel>(int id, QueryModel queryModel = null, ContextModel contextModel = null,
             string action = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel
-            => await GetObjectAsync<TModel>(null, id, queryModel, contextModel, action, extraParameters);
+            => await GetObjectAsync<TModel>(null, id, queryModel, contextModel, action, extraParameters).ConfigureAwait(ContinueOnCapturedContext);
 
         /// <summary>
         /// Get an object by identifier, seralized into TModel. 
         /// </summary>
         public async Task<TModel> GetObjectAsync<TModel>(string identifier, QueryModel queryModel = null, ContextModel contextModel = null,
             string action = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel
-            => await GetObjectAsync<TModel>(identifier, 0, queryModel, contextModel, action, extraParameters);
+            => await GetObjectAsync<TModel>(identifier, 0, queryModel, contextModel, action, extraParameters).ConfigureAwait(ContinueOnCapturedContext);
 
         private async Task<TModel> GetObjectAsync<TModel>(string identifier, int id, QueryModel queryModel = null, ContextModel contextModel = null, string action = null, IDictionary<string, object> extraParameters = null) where TModel : BaseModel
         {
@@ -103,8 +104,8 @@ namespace Wipcore.Enova.Api.NetClient
             var resource = model.GetResourceName();
             SetupQueryModel(ref queryModel, modelType, null);
 
-            var obj = id != 0 ? await apiClient.GetOneAsync(modelType, resource, id, queryModel: queryModel, contextModel: contextModel, extraParameters: extraParameters, action: action) :
-                await apiClient.GetOneAsync(modelType, resource, identifier, queryModel: queryModel, contextModel: contextModel, extraParameters: extraParameters, action: action);
+            var obj = id != 0 ? await apiClient.GetOneAsync(modelType, resource, id, queryModel: queryModel, contextModel: contextModel, extraParameters: extraParameters, action: action).ConfigureAwait(ContinueOnCapturedContext) :
+                await apiClient.GetOneAsync(modelType, resource, identifier, queryModel: queryModel, contextModel: contextModel, extraParameters: extraParameters, action: action).ConfigureAwait(ContinueOnCapturedContext);
             return (TModel)obj;
         }
 
@@ -116,7 +117,7 @@ namespace Wipcore.Enova.Api.NetClient
         {
             var (apiClient, resource) = GetManyInit(typeof(TModel), ref queryModel, languages);
 
-            var objects = await apiClient.GetManyAsync<TModel>(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters: extraParameters, action: action);
+            var objects = await apiClient.GetManyAsync<TModel>(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters: extraParameters, action: action).ConfigureAwait(ContinueOnCapturedContext);
             return objects;
         }
 
@@ -128,7 +129,7 @@ namespace Wipcore.Enova.Api.NetClient
         {
             var (apiClient, resource) = GetManyInit(modelType, ref queryModel, languages);
 
-            var objects = await apiClient.GetManyAsync(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters: extraParameters, action: action);
+            var objects = await apiClient.GetManyAsync(resource, queryModel, headers: headers, contextModel: contextModel, extraParameters: extraParameters, action: action).ConfigureAwait(ContinueOnCapturedContext);
             return objects;
         }
 
@@ -154,32 +155,32 @@ namespace Wipcore.Enova.Api.NetClient
         /// Get the next page of items from a previous request.
         /// </summary>
         public async Task<IEnumerable<TModel>> GetNextPageAsync<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
-            => await _apiClientMaker.Invoke().GetNextPageAsync<TModel>(headersOfPreviousRequest);
+            => await _apiClientMaker.Invoke().GetNextPageAsync<TModel>(headersOfPreviousRequest).ConfigureAwait(ContinueOnCapturedContext);
 
         /// <summary>
         /// Get the previous page of items from a previous request.
         /// </summary>
         public async Task<IEnumerable<TModel>> GetPreviousPageAsync<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
-            => await _apiClientMaker.Invoke().GetPreviousPageAsync<TModel>(headersOfPreviousRequest);
+            => await _apiClientMaker.Invoke().GetPreviousPageAsync<TModel>(headersOfPreviousRequest).ConfigureAwait(ContinueOnCapturedContext);
 
         /// <summary>
         /// Deletes an object by id.
         /// </summary>
         public async Task<bool> DeleteObjectAsync<TModel>(int id) where TModel : BaseModel
-            => await DeleteObjectAsync<TModel>(id, null);
+            => await DeleteObjectAsync<TModel>(id, null).ConfigureAwait(ContinueOnCapturedContext);
 
         /// <summary>
         /// Deletes an object by identifier.
         /// </summary>
         public async Task<bool> DeleteObjectAsync<TModel>(string identifier) where TModel : BaseModel
-            => await DeleteObjectAsync<TModel>(0, identifier);
+            => await DeleteObjectAsync<TModel>(0, identifier).ConfigureAwait(ContinueOnCapturedContext);
 
         private async Task<bool> DeleteObjectAsync<TModel>(int id, string identifier) where TModel : BaseModel
         {
             var apiClient = _apiClientMaker.Invoke();
             var resource = ((TModel)_serviceProvider.GetService(typeof(TModel))).GetResourceName();
 
-            var success = id != 0 ? await apiClient.DeleteOneAsync(resource, id) : await apiClient.DeleteOneAsync(resource, identifier);
+            var success = id != 0 ? await apiClient.DeleteOneAsync(resource, id).ConfigureAwait(ContinueOnCapturedContext) : await apiClient.DeleteOneAsync(resource, identifier).ConfigureAwait(ContinueOnCapturedContext);
             return success;
         }
 
@@ -202,10 +203,10 @@ namespace Wipcore.Enova.Api.NetClient
             var resource = model.GetResourceName();
 
             if (verifyIdentifierNotTaken)
-                await VerifyIdentifierNotTaken<TModel>(jsonItem, resource);
+                await VerifyIdentifierNotTaken<TModel>(jsonItem, resource).ConfigureAwait(ContinueOnCapturedContext);
 
             var stringItem = JsonConvert.SerializeObject(jsonItem);
-            var obj = await apiClient.SaveOneAsync(resource, stringItem, responseType ?? registeredModelType, action, contextModel, extraParameters);
+            var obj = await apiClient.SaveOneAsync(resource, stringItem, responseType ?? registeredModelType, action, contextModel, extraParameters).ConfigureAwait(ContinueOnCapturedContext);
 
             return obj;
         }
@@ -222,7 +223,7 @@ namespace Wipcore.Enova.Api.NetClient
                 return; //if no identifier, then fine
 
             var identifier = identifierToken.ToString();
-            if (await ObjectExistsAsync<TModel>(identifier))
+            if (await ObjectExistsAsync<TModel>(identifier).ConfigureAwait(ContinueOnCapturedContext))
             {
                 throw new HttpResponseException(new HttpResponseMessage
                 {

@@ -20,6 +20,7 @@ namespace Wipcore.Enova.Api.NetClient
 {
     public class ApiClientAsync : IApiClientAsync
     {
+        private const bool ContinueOnCapturedContext = false;
         public const string TokenKey = "ApiToken";
         private readonly IConfigurationRoot _configuration;
         private readonly IHttpContextAccessor _httpAccessor;
@@ -55,8 +56,8 @@ namespace Wipcore.Enova.Api.NetClient
         {
             identifier = identifier ?? String.Empty;
             var url = $"{controller}/{identifier}";
-            var response = await InternalHttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, url));
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -75,7 +76,7 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         /// <param name="controller">The controller path of the the request, i.e. "products" in /api/products/</param>
         /// <param name="id">ID of the object to check.</param>
-        public async Task<bool> ObjectExistsAsync(string controller, int id) => await ObjectExistsAsync(controller, "id-" + id);
+        public async Task<bool> ObjectExistsAsync(string controller, int id) => await ObjectExistsAsync(controller, "id-" + id).ConfigureAwait(ContinueOnCapturedContext);
 
         /// <summary>
         /// Get one object, untyped.
@@ -92,7 +93,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<object> GetOneAsync(Type resonseType, string controller, int id, string action = null, QueryModel queryModel = null,
             IContextModel contextModel = null, IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false)
         {
-            return await GetOneAsync(resonseType, controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound);
+            return await GetOneAsync(resonseType, controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound).ConfigureAwait(ContinueOnCapturedContext);
         }
         
         /// <summary>
@@ -109,7 +110,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<TModel> GetOneAsync<TModel>(string controller, string identifier = null, string action = null, QueryModel queryModel = null, IContextModel contextModel = null, 
             IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null, bool throwIfNotFound = false) where TModel : class
         {
-            return (TModel) await GetOneAsync(typeof(TModel), controller, identifier, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound);
+            return (TModel) await GetOneAsync(typeof(TModel), controller, identifier, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace Wipcore.Enova.Api.NetClient
             IContextModel contextModel = null, IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null,
             bool throwIfNotFound = false) where TModel : class
         {
-            return (TModel) await GetOneAsync(typeof(TModel), controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound);
+            return (TModel) await GetOneAsync(typeof(TModel), controller, "id-" + id, action, queryModel, contextModel, extraParameters, headers, throwIfNotFound).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -148,8 +149,8 @@ namespace Wipcore.Enova.Api.NetClient
             action = action == null ? string.Empty : "/" + action;
             identifier = identifier ?? String.Empty;
             var url = $"{controller}/{identifier}{action}{BuildParameters(contextModel, queryModel, extraParameters)}";
-            var response = await InternalHttpClient.GetAsync(url);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.GetAsync(url).ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!throwIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
                 return null;
@@ -178,7 +179,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<IEnumerable<object>> GetManyAsync(string controller, IQueryModel queryModel = null, IContextModel contextModel = null,
             string action = null, IDictionary<string, object> extraParameters = null, ApiResponseHeadersModel headers = null)
         {
-            return await GetManyAsync<object>(controller, queryModel, contextModel, action, extraParameters, headers);
+            return await GetManyAsync<object>(controller, queryModel, contextModel, action, extraParameters, headers).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -196,7 +197,7 @@ namespace Wipcore.Enova.Api.NetClient
         {
             action = action == null ? string.Empty : "/" + action;
             var url = $"{controller}{action}{BuildParameters(contextModel, queryModel, extraParameters)}";
-            return await GetManyRequestAsync<TModel>(headers, url);
+            return await GetManyRequestAsync<TModel>(headers, url).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -207,7 +208,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<IEnumerable<TModel>> GetNextPageAsync<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
         {
             var url = headersOfPreviousRequest.NextPageLink;
-            return await GetManyRequestAsync<TModel>(headersOfPreviousRequest, url);
+            return await GetManyRequestAsync<TModel>(headersOfPreviousRequest, url).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -218,7 +219,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<IEnumerable<TModel>> GetPreviousPageAsync<TModel>(ApiResponseHeadersModel headersOfPreviousRequest)
         {
             var url = headersOfPreviousRequest.PreviousPageLink;
-            return await GetManyRequestAsync<TModel>(headersOfPreviousRequest, url);
+            return await GetManyRequestAsync<TModel>(headersOfPreviousRequest, url).ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -230,7 +231,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<bool> DeleteOneAsync(string controller, int id, bool throwIfNotFound = false)
         {
             var url = $"{controller}/id-{id}";
-            var response = await InternalHttpClient.DeleteAsync(url);
+            var response = await InternalHttpClient.DeleteAsync(url).ConfigureAwait(ContinueOnCapturedContext);
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -238,7 +239,7 @@ namespace Wipcore.Enova.Api.NetClient
             if (!throwIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
                 return false;
 
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
             throw new HttpResponseException(new HttpResponseMessage()
             {
                 StatusCode = response.StatusCode,
@@ -255,7 +256,7 @@ namespace Wipcore.Enova.Api.NetClient
         public async Task<bool> DeleteOneAsync(string controller, string identifier, bool throwIfNotFound = false)
         {
             var url = $"{controller}/{identifier}";
-            var response = await InternalHttpClient.DeleteAsync(url);
+            var response = await InternalHttpClient.DeleteAsync(url).ConfigureAwait(ContinueOnCapturedContext);
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -263,7 +264,7 @@ namespace Wipcore.Enova.Api.NetClient
             if (!throwIfNotFound && response.StatusCode == HttpStatusCode.NotFound)
                 return false;
 
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
             throw new HttpResponseException(new HttpResponseMessage()
             {
                 StatusCode = response.StatusCode,
@@ -287,8 +288,8 @@ namespace Wipcore.Enova.Api.NetClient
             action = action == null ? string.Empty : action + "/";
             var url = $"{controller}/{action}{BuildParameters(contextModel, null, extraParameters)}";
             var stringContent = new StringContent(item, Encoding.UTF8, "application/json");
-            var response = put ? await InternalHttpClient.PutAsync(url, stringContent) : await InternalHttpClient.PostAsync(url, stringContent);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = put ? await InternalHttpClient.PutAsync(url, stringContent).ConfigureAwait(ContinueOnCapturedContext) : await InternalHttpClient.PostAsync(url, stringContent).ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
@@ -308,8 +309,8 @@ namespace Wipcore.Enova.Api.NetClient
         {
             try
             {
-                var response = await InternalHttpClient.GetAsync("/IsEnovaAlive");
-                return Convert.ToBoolean(await response.Content.ReadAsStringAsync());
+                var response = await InternalHttpClient.GetAsync("/IsEnovaAlive").ConfigureAwait(ContinueOnCapturedContext);
+                return Convert.ToBoolean(await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext));
             }
             catch (Exception e)
             {
@@ -323,7 +324,7 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<bool> IsLoggedInAsync()
         {
-            var dictionary = await GetLoggedInUserInfoAsync();
+            var dictionary = await GetLoggedInUserInfoAsync().ConfigureAwait(ContinueOnCapturedContext);
             return Convert.ToBoolean(dictionary["LoggedIn"]);
         }
 
@@ -332,8 +333,8 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<IDictionary<string, string>> GetLoggedInUserInfoAsync()
         {
-            var response = await InternalHttpClient.GetAsync("/Account/LoggedInAs");
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.GetAsync("/Account/LoggedInAs").ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
@@ -351,8 +352,8 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<IDictionary<string, string>> GetEnovaNodeInfoAsync()
         {
-            var response = await InternalHttpClient.GetAsync("/NodeInfo");
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.GetAsync("/NodeInfo").ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
@@ -370,8 +371,8 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<bool> LogoutAsync()
         {
-            var response = await InternalHttpClient.PostAsync("/Account/Logout", null);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.PostAsync("/Account/Logout", null).ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
                 {
@@ -395,7 +396,7 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<ILoginResponseModel> LoginAdminAsync(string alias, string password)
         {
-            return await LoginAsync(new LoginModel() { Alias = alias, Password = password }, "/Account/LoginAdmin");
+            return await LoginAsync(new LoginModel() { Alias = alias, Password = password }, "/Account/LoginAdmin").ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -403,7 +404,7 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<ILoginResponseModel> LoginCustomerAsync(string alias, string password)
         {
-            return await LoginAsync(new LoginModel() { Alias = alias, Password = password }, "/Account/LoginCustomer");
+            return await LoginAsync(new LoginModel() { Alias = alias, Password = password }, "/Account/LoginCustomer").ConfigureAwait(ContinueOnCapturedContext);
         }
 
         /// <summary>
@@ -411,7 +412,8 @@ namespace Wipcore.Enova.Api.NetClient
         /// </summary>
         public async Task<ILoginResponseModel> LoginCustomerAsAdminAsync(string customerAlias, string adminAlias, string adminPassword)
         {
-            return await LoginAsync(new LoginCustomerWithAdminCredentialsModel() { Alias = customerAlias, Password = adminPassword, CustomerIdentifier = customerAlias }, "/Account/LoginCustomerWithAdminCredentials");
+            return await LoginAsync(new LoginCustomerWithAdminCredentialsModel() { Alias = customerAlias, Password = adminPassword, CustomerIdentifier = customerAlias }, 
+                "/Account/LoginCustomerWithAdminCredentials").ConfigureAwait(ContinueOnCapturedContext);
         }
         
 
@@ -420,8 +422,8 @@ namespace Wipcore.Enova.Api.NetClient
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, new UTF8Encoding(), "application/json");
 
-            var response = await InternalHttpClient.PostAsync(url, content);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.PostAsync(url, content).ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
@@ -452,8 +454,8 @@ namespace Wipcore.Enova.Api.NetClient
 
         private async Task<IEnumerable<TModel>> GetManyRequestAsync<TModel>(ApiResponseHeadersModel headers, string url)
         {
-            var response = await InternalHttpClient.GetAsync(url);
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var response = await InternalHttpClient.GetAsync(url).ConfigureAwait(ContinueOnCapturedContext);
+            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpResponseException(new HttpResponseMessage()
