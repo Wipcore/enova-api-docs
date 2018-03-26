@@ -43,7 +43,7 @@ namespace Wipcore.Enova.Api.NetClient.Customer
 
         public ILoginResponseModel LoginCustomer(string alias, string password) => _apiClient.Invoke().LoginCustomer(alias, password);
 
-        public ILoginResponseModel LoginCustomerAsAdmin(string customerAlias, string adminAlias, string adminPassword) => _apiClient.Invoke().LoginCustomerAsAdmin(customerAlias, adminAlias, adminPassword);
+        public ILoginResponseModel LoginCustomerAsAdmin(string customerIdentifier, string adminAlias, string adminPassword) => _apiClient.Invoke().LoginCustomerAsAdmin(customerIdentifier, adminAlias, adminPassword);
 
 
         public TCustomerModel GetSavedCustomer(int id, QueryModel queryModel = null, ContextModel contextModel = null)

@@ -54,8 +54,8 @@ namespace Wipcore.Enova.Api.NetClient.Customer
         public async Task<ILoginResponseModel> LoginCustomer(string alias, string password) => 
             await _apiClient.Invoke().LoginCustomerAsync(alias, password).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
 
-        public async Task<ILoginResponseModel> LoginCustomerAsAdmin(string customerAlias, string adminAlias, string adminPassword) => 
-            await _apiClient.Invoke().LoginCustomerAsAdminAsync(customerAlias, adminAlias, adminPassword).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
+        public async Task<ILoginResponseModel> LoginCustomerAsAdmin(string customerIdentifier, string adminAlias, string adminPassword) => 
+            await _apiClient.Invoke().LoginCustomerAsAdminAsync(customerIdentifier, adminAlias, adminPassword).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
 
 
         public async Task<TCustomerModel> GetSavedCustomer(int id, QueryModel queryModel = null, ContextModel contextModel = null)

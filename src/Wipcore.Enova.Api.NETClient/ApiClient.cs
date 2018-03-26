@@ -259,9 +259,9 @@ namespace Wipcore.Enova.Api.NetClient
         /// <summary>
         /// Login a customer as admin
         /// </summary>
-        public ILoginResponseModel LoginCustomerAsAdmin(string customerAlias, string adminAlias, string adminPassword)
+        public ILoginResponseModel LoginCustomerAsAdmin(string customerIdentifier, string adminAlias, string adminPassword)
         {
-            return _apiClientAsync.LoginCustomerAsAdminAsync(customerAlias, adminAlias, adminPassword).Result;
+            return _apiClientAsync.LoginCustomerAsAdminAsync(customerIdentifier, adminAlias, adminPassword).Result;
         }
     }
 }

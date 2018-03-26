@@ -188,7 +188,7 @@ namespace Wipcore.Enova.Api.Abstractions.Interfaces
         /// <summary>
         /// Login a customer as admin
         /// </summary>
-        ILoginResponseModel LoginCustomerAsAdmin(string customerAlias, string adminAlias, string adminPassword);
+        ILoginResponseModel LoginCustomerAsAdmin(string customerIdentifier, string adminAlias, string adminPassword);
 
         /// <summary>
         /// Logout the user.
