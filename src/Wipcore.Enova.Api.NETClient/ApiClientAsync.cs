@@ -435,7 +435,7 @@ namespace Wipcore.Enova.Api.NetClient
             if (!String.IsNullOrEmpty(loginModel.AccessToken))
             {
                 //if elastic thread, then this context is internal within the app, thus set directly on next request. Otherwise send to client as a response
-                if (httpContext.TraceIdentifier == WipConstants.ElasticIndexHttpContextIdentifier || httpContext.TraceIdentifier == WipConstants.ElasticDeltaIndexHttpContextIdentifier)
+                if (httpContext.TraceIdentifier == WipConstants.ElasticIndexHttpContextIdentifier || httpContext.TraceIdentifier == WipConstants.ElasticDeltaIndexHttpContextIdentifier || httpContext.TraceIdentifier == WipConstants.InternalHttpContextIdentifier)
                     httpContext.Request.Cookies = new RequestCookieCollection(new Dictionary<string, string>() { { TokenKey, loginModel.AccessToken } });
                 else
                     httpContext.Response.Cookies.Append(TokenKey, loginModel.AccessToken);

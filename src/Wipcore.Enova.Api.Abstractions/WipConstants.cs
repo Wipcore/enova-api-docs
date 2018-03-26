@@ -12,6 +12,7 @@ namespace Wipcore.Enova.Api.Abstractions
 
         public const string ElasticIndexHttpContextIdentifier = "elastic_context";
         public const string ElasticDeltaIndexHttpContextIdentifier = "elastic_delta_context";
+        public const string InternalHttpContextIdentifier = "internal_context";
 
         public const string UserIdCookieIdentifier = "WebadminUserKey";
 
