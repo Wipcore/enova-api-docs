@@ -34,8 +34,12 @@ namespace Wipcore.Enova.Api.NetClient.Customer
         {
             var loggedInInfo = _apiClient.Invoke().GetLoggedInUserInfo();
             return Convert.ToBoolean(loggedInInfo["LoggedIn"]) && loggedInInfo["Role"] == "customer";
-        }       
-                
+        }
+
+        public IDictionary<string, string> GetLoggedInUserInfo()
+        {
+            return _apiClient.Invoke().GetLoggedInUserInfo();
+        }
 
         public ILoginResponseModel LoginCustomer(string alias, string password) => _apiClient.Invoke().LoginCustomer(alias, password);
 
