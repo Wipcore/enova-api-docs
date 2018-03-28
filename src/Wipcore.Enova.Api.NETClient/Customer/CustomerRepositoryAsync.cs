@@ -58,6 +58,27 @@ namespace Wipcore.Enova.Api.NetClient.Customer
             await _apiClient.Invoke().LoginCustomerAsAdminAsync(customerIdentifier, adminAlias, adminPassword).ConfigureAwait(WipConstants.ContinueOnCapturedContext);
 
 
+        public async Task<List<TCustomerModel>> GetCustomers(IEnumerable<int> ids, QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null)
+        {
+            var idsString = String.Join(",", ids);
+            const string action = "ids";
+            var extraParameters = new Dictionary<string, object>() { { "ids", idsString } };
+            return (await _apiRepository.GetManyAsync<TCustomerModel>(queryModel, headers, contextModel, action, extraParameters: extraParameters).ConfigureAwait(WipConstants.ContinueOnCapturedContext)).ToList();
+        }
+
+        public async Task<List<TCustomerModel>> GetCustomers(IEnumerable<string> identifiers, QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null)
+        {
+            var idsString = String.Join(",", identifiers);
+            const string action = "identifiers";
+            var extraParameters = new Dictionary<string, object>() { { "identifiers", idsString } };
+            return (await _apiRepository.GetManyAsync<TCustomerModel>(queryModel, headers, contextModel, action, extraParameters: extraParameters).ConfigureAwait(WipConstants.ContinueOnCapturedContext)).ToList();
+        }
+
+        public async Task<List<TCustomerModel>> GetCustomers(QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null) =>
+            (await _apiRepository.GetManyAsync<TCustomerModel>(queryModel, headers, contextModel).ConfigureAwait(WipConstants.ContinueOnCapturedContext)).ToList();
+
+
+
         public async Task<TCustomerModel> GetSavedCustomer(int id, QueryModel queryModel = null, ContextModel contextModel = null)
         {
             return await _apiRepository.GetObjectAsync<TCustomerModel>(id, queryModel, contextModel).ConfigureAwait(WipConstants.ContinueOnCapturedContext);

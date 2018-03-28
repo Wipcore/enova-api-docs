@@ -46,6 +46,26 @@ namespace Wipcore.Enova.Api.NetClient.Customer
         public ILoginResponseModel LoginCustomerAsAdmin(string customerIdentifier, string adminAlias, string adminPassword) => _apiClient.Invoke().LoginCustomerAsAdmin(customerIdentifier, adminAlias, adminPassword);
 
 
+        public List<TCustomerModel> GetCustomers(IEnumerable<int> ids, QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null)
+        {
+            var idsString = String.Join(",", ids);
+            const string action = "ids";
+            var extraParameters = new Dictionary<string, object>() { { "ids", idsString } };
+            return _apiRepository.GetMany<TCustomerModel>(queryModel, headers, contextModel, action, extraParameters: extraParameters).ToList();
+        }
+
+        public List<TCustomerModel> GetCustomers(IEnumerable<string> identifiers, QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null)
+        {
+            var idsString = String.Join(",", identifiers);
+            const string action = "identifiers";
+            var extraParameters = new Dictionary<string, object>() { { "identifiers", idsString } };
+            return _apiRepository.GetMany<TCustomerModel>(queryModel, headers, contextModel, action, extraParameters: extraParameters).ToList();
+        }
+
+        public List<TCustomerModel> GetCustomers(QueryModel queryModel = null, ContextModel contextModel = null, ApiResponseHeadersModel headers = null) =>
+            _apiRepository.GetMany<TCustomerModel>(queryModel, headers, contextModel).ToList();
+
+
         public TCustomerModel GetSavedCustomer(int id, QueryModel queryModel = null, ContextModel contextModel = null)
         {
             return _apiRepository.GetObject<TCustomerModel>(id, queryModel, contextModel);
