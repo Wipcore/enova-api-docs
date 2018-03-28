@@ -487,6 +487,9 @@ namespace Wipcore.Enova.Api.NetClient
                 headers.PreviousPageLink = values.First();
             if (response.Headers.TryGetValues("X-Paging-NextPage", out values))
                 headers.NextPageLink = values.First();
+            if (response.Headers.TryGetValues("x-cache", out values) && Enum.TryParse(values.First(), true, out CacheStatus status))
+                headers.CacheStatus = status;
+                
         }
 
         private string BuildParameters(IContextModel context, IQueryModel queryModel, IDictionary<string, object> extraParameters)

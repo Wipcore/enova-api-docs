@@ -13,5 +13,14 @@
         public string PreviousPageLink { get; set; }
 
         public string NextPageLink { get; set; }
+
+        public CacheStatus CacheStatus { get; set; }
+    }
+
+    public enum CacheStatus
+    {
+        Miss,
+        Hit,
+        Bypass
     }
 }
