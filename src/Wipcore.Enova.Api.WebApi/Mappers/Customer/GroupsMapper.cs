@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers.Customer
@@ -51,7 +52,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Customer
             foreach (var group in value as dynamic)
             {
                 var groupModel = JsonConvert.DeserializeAnonymousType(group.ToString(), new { ID = 0, Identifier = String.Empty, MarkForDelete = false });
-                var enovaGroup = (UserGroup)(context.FindObject(groupModel.ID, typeof(UserGroup), false) ?? context.FindObject(groupModel.Identifier, typeof(UserGroup), true));
+                var enovaGroup = EnovaObjectMakerHelper.Find<UserGroup>(context, groupModel.ID, groupModel.Identifier, true);
 
                 if (groupModel.MarkForDelete)
                     enovaGroup.RemoveUser(user);

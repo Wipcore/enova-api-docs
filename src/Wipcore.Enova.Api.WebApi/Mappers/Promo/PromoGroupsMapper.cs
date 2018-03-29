@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
@@ -50,7 +51,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             var groups = JsonConvert.DeserializeAnonymousType(value.ToString(), new [] { new {ID = 0, Identifier = "", Type = "", MarkForDelete = false } });
             foreach (var group in groups)
             {
-                var customerGroup = (CustomerGroup)(context.FindObject(group.ID, typeof(CustomerGroup), false) ?? context.FindObject(group.Identifier, typeof(CustomerGroup), true));
+                var customerGroup = context.Find<CustomerGroup>(group.ID, group.Identifier, true);
                 if (group.MarkForDelete == true)
                 {
                     promo.RemoveSpecificAccess(customerGroup);

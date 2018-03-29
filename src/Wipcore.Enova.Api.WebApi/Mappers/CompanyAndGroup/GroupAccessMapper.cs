@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
-using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
 using Wipcore.Enova.Api.Abstractions.Models;
 using Wipcore.Enova.Api.WebApi.Mappers.Customer;
 using Wipcore.Enova.Core;
 
-namespace Wipcore.eNova.Api.WebApi.Mappers
+namespace Wipcore.Enova.Api.WebApi.Mappers.CompanyAndGroup
 {
     /// <summary>
     /// This mapper is used to map access rights for some commonly used enova types.

@@ -34,7 +34,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         public IPaymentModel SavePayment(IPaymentModel payment)
         {
             var context = _contextService.GetContext();
-            var enovaPayment = context.FindObject<EnovaPayment>(payment.Identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaPayment>(context);
+            var enovaPayment = context.FindObject<EnovaPayment>(payment.Identifier) ?? EnovaObjectMakerHelper.CreateNew<EnovaPayment>(context);
 
             var specifiedOrder = context.FindObject<EnovaOrder>(String.IsNullOrEmpty(payment.Order) ? null : payment.Order);
             var orderOnPayment = context.FindObject<EnovaOrder>(String.IsNullOrEmpty(enovaPayment.RelatedOrderIdentifier) ? null : enovaPayment.RelatedOrderIdentifier);
@@ -112,7 +112,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
                 //if no paymentorderitem with this payment, create
                 if (specifiedOrder.GetOrderItems<EnovaPaymentTypeOrderItem>().All(x => x.PaymentId != enovaPayment.ID))
                 {
-                    var paymentOrderItem = EnovaObjectCreationHelper.CreateNew<EnovaPaymentTypeOrderItem>(context);
+                    var paymentOrderItem = EnovaObjectMakerHelper.CreateNew<EnovaPaymentTypeOrderItem>(context);
                     paymentOrderItem.PaymentId = enovaPayment.ID;
                     specifiedOrder.AddOrderItem(paymentOrderItem);
                 }

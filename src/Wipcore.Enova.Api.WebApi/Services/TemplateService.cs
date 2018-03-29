@@ -97,7 +97,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
                 //then get any basic enova properties
                 string tableName;
                 var propertyNames = _contextService.GetContext().GetAllPropertyNames(type, out tableName);
-                var dummy = (BaseObject)EnovaObjectCreationHelper.CreateNew(type, _contextService.GetContext());
+                var dummy = (BaseObject)EnovaObjectMakerHelper.CreateNew(type, _contextService.GetContext());
 
                 foreach (var propertyName in propertyNames)
                 {

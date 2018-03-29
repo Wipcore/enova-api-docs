@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.Section
@@ -34,11 +35,11 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
 
             var section = (EnovaBaseProductSection)obj;
 
-            var productModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { Identifier = "", MarkForDelete = false } });
+            var productModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new[] { new { ID = 0, Identifier = "", MarkForDelete = false } });
 
             foreach (var productModel in productModels)
             {
-                var product = EnovaBaseProduct.Find(section.GetContext(), productModel.Identifier);
+                var product = section.GetContext().Find<EnovaBaseProduct>(productModel.ID, productModel.Identifier, true);
                 if (productModel.MarkForDelete)
                 {
 

@@ -81,8 +81,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
                     if(variantModel.MarkForDelete)
                         continue;
 
-                    var variant = context.FindObject(variantModel.ID, typeof(EnovaBaseProduct), false) ??
-                                  context.FindObject(variantModel.Identifier, typeof(EnovaBaseProduct), true);
+                    var variant = EnovaObjectMakerHelper.Find<EnovaBaseProduct>(context, variantModel.ID, variantModel.Identifier, true);
                     variants.Add((EnovaBaseProduct)variant);
                 }
 

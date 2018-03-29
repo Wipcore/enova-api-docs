@@ -135,7 +135,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (orderDiscountResult == null)
                 {
-                    orderDiscountResult = EnovaObjectCreationHelper.CreateNew<EnovaOrderDiscountPromoResult>(context);
+                    orderDiscountResult = EnovaObjectMakerHelper.CreateNew<EnovaOrderDiscountPromoResult>(context);
                     promo.AddResult(orderDiscountResult);
                 }
 
@@ -154,7 +154,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (freeShippingResult == null)
                 {
-                    freeShippingResult = EnovaObjectCreationHelper.CreateNew<EnovaFreeShippingPromoResult>(context);
+                    freeShippingResult = EnovaObjectMakerHelper.CreateNew<EnovaFreeShippingPromoResult>(context);
                     promo.AddResult(freeShippingResult);
                 }
             }
@@ -166,7 +166,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (productQuantityResult == null)
                 {
-                    productQuantityResult = EnovaObjectCreationHelper.CreateNew<EnovaProductQuantityPromoResult>(context);
+                    productQuantityResult = EnovaObjectMakerHelper.CreateNew<EnovaProductQuantityPromoResult>(context);
                     promo.AddResult(productQuantityResult);
                 }
                 productQuantityResult.Quantity = resultsModel.AdditionalFreeProductQuantity;
@@ -179,7 +179,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (freeProductResult == null)
                 {
-                    freeProductResult = EnovaObjectCreationHelper.CreateNew<EnovaFreeProductPromoResult>(context);
+                    freeProductResult = EnovaObjectMakerHelper.CreateNew<EnovaFreeProductPromoResult>(context);
                     promo.AddResult(freeProductResult);
                 }
                 freeProductResult.Quantity = resultsModel.FreeProductQuantity;
@@ -193,7 +193,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (productDiscountResult == null)
                 {
-                    productDiscountResult = EnovaObjectCreationHelper.CreateNew<EnovaDiscountedProductPromoResult>(context);
+                    productDiscountResult = EnovaObjectMakerHelper.CreateNew<EnovaDiscountedProductPromoResult>(context);
                     promo.AddResult(productDiscountResult);
                 }
                 productDiscountResult.MaxQuantity = resultsModel.ProductDiscountQuantity;
@@ -211,7 +211,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (fixedPriceResult == null)
                 {
-                    fixedPriceResult = EnovaObjectCreationHelper.CreateNew<EnovaFixedPricePromoResult>(context);
+                    fixedPriceResult = EnovaObjectMakerHelper.CreateNew<EnovaFixedPricePromoResult>(context);
                     promo.AddResult(fixedPriceResult);
                 }
                 fixedPriceResult.TaxIncluded = resultsModel.FixedPriceIncludeTax;
@@ -228,7 +228,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (sectionDiscount == null)
                 {
-                    sectionDiscount = EnovaObjectCreationHelper.CreateNew<EnovaSectionDiscountPromoResult>(context);
+                    sectionDiscount = EnovaObjectMakerHelper.CreateNew<EnovaSectionDiscountPromoResult>(context);
                     promo.AddResult(sectionDiscount);
                 }
                 sectionDiscount.Percent = resultsModel.SectionDiscountPercent;

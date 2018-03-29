@@ -101,7 +101,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (amountCondition == null)
                 {
-                    amountCondition = EnovaObjectCreationHelper.CreateNew<EnovaOrderAmountPromoCondition>(context);
+                    amountCondition = EnovaObjectMakerHelper.CreateNew<EnovaOrderAmountPromoCondition>(context);
                     promo.AddCondition(amountCondition);
                 }
                 
@@ -119,7 +119,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (productCondition == null)
                 {
-                    productCondition = EnovaObjectCreationHelper.CreateNew<EnovaProductQuantityPromoCondition>(context);
+                    productCondition = EnovaObjectMakerHelper.CreateNew<EnovaProductQuantityPromoCondition>(context);
                     promo.AddCondition(productCondition);
                 }
 
@@ -134,7 +134,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (amountCategoryCondition == null)
                 {
-                    amountCategoryCondition = EnovaObjectCreationHelper.CreateNew<EnovaSectionAmountPromoCondition>(context);
+                    amountCategoryCondition = EnovaObjectMakerHelper.CreateNew<EnovaSectionAmountPromoCondition>(context);
                     promo.AddCondition(amountCategoryCondition);
                 }
 
@@ -155,7 +155,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Promo
             {
                 if (categoryCondition == null)
                 {
-                    categoryCondition = EnovaObjectCreationHelper.CreateNew<EnovaSectionQuantityPromoCondition>(context);
+                    categoryCondition = EnovaObjectMakerHelper.CreateNew<EnovaSectionQuantityPromoCondition>(context);
                     promo.AddCondition(categoryCondition);
                 }
 

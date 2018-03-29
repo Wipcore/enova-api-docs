@@ -48,12 +48,12 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
             if (identifier == String.Empty)
                 identifier = null;
 
-            var cart = context.FindObject<EnovaCart>(id) ?? context.FindObject<EnovaCart>(identifier) ?? EnovaObjectCreationHelper.CreateNew<EnovaCart>(context);
+            var cart = context.Find<EnovaCart>(id, identifier) ?? EnovaObjectMakerHelper.CreateNew<EnovaCart>(context);
             cart.Edit();
 
             _mappingToEnovaService.MapToEnovaObject(cart, values);
 
-            var order = EnovaObjectCreationHelper.CreateNew<EnovaOrder>(context, cart);
+            var order = EnovaObjectMakerHelper.CreateNew<EnovaOrder>(context, cart);
             order.Identifier = EnovaCommonFunctions.GetSequenceNumber(context, SystemRunningMode.Remote, SequenceType.OrderIdentifier);
 
             var newShippingIdentifier = _configuration["EnovaSettings:NewShippingStatus"] ?? "NEW_INTERNET";

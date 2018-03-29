@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -43,7 +44,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Section
             }
 
             var parentModel = JsonConvert.DeserializeAnonymousType(value.ToString(), new { Identifier  = "", ID = 0});
-            var parent = context.FindObject<EnovaBaseProductSection>(parentModel.Identifier);
+            var parent = context.Find<EnovaBaseProductSection>(parentModel.ID, parentModel.Identifier);
             section.Parent = parent;
         }
 

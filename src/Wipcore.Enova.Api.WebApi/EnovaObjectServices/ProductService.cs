@@ -3,6 +3,7 @@ using System.Linq;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -37,12 +38,7 @@ namespace Wipcore.Enova.Api.WebApi.EnovaObjectServices
         public void SetProductAsVariant(EnovaBaseProduct product, int ownerId = 0, string ownerIdentifier = null)
         {
             var context = _contextService.GetContext();
-            var owner = context.FindObject<EnovaBaseProduct>(ownerId) ??
-                        context.FindObject<EnovaBaseProduct>(ownerIdentifier);
-
-            //if owner null, mabe throw exception TODO
-            if(owner == null)
-                return;
+            var owner = context.Find<EnovaBaseProduct>(ownerId, ownerIdentifier, true);
 
             var ownerFamily = GetOrCreateVariantFamily(owner);
             ownerFamily.AddObject(product);

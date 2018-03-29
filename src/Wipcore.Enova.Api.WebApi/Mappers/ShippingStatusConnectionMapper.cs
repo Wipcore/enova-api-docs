@@ -44,13 +44,13 @@ namespace Wipcore.eNova.Api.WebApi.Mappers
             if (String.Equals(propertyName, "ArrivalStatuses", StringComparison.InvariantCultureIgnoreCase))
                 return; //can't be modified directly
 
-            var statusModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new []{ new { ID = 0, MarkForDelete = false} });
+            var statusModels = JsonConvert.DeserializeAnonymousType(value.ToString(), new []{ new { ID = 0, Identifier = String.Empty, MarkForDelete = false} });
 
             foreach (var statusModel in statusModels)
             {
-                var destinationStatus = EnovaShippingStatus.Find(context, statusModel.ID);
+                var destinationStatus = context.Find<EnovaShippingStatus>(statusModel.ID, statusModel.Identifier, true);
                 var rule = context.FindObject<EnovaConfigShippingStatusRule>($"{status.Identifier}:{destinationStatus.Identifier}") ?? 
-                    EnovaObjectCreationHelper.CreateNew<EnovaConfigShippingStatusRule>(context);
+                    EnovaObjectMakerHelper.CreateNew<EnovaConfigShippingStatusRule>(context);
 
                 if (rule.ID == 0)
                 {

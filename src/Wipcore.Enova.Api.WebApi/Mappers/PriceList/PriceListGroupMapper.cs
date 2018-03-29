@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 using Wipcore.Enova.Generics;
 
@@ -52,7 +53,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
             foreach (var i in value as dynamic)
             {
                 var item = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, Identifier = String.Empty, MarkForDelete = false});
-                var customerGroup = (CustomerGroup) (context.FindObject(item.ID, typeof(CustomerGroup), false) ?? context.FindObject(item.Identifier, typeof(CustomerGroup), true));
+                var customerGroup = EnovaObjectMakerHelper.Find<CustomerGroup>(context, item.ID, item.Identifier, true);
                 if (item.MarkForDelete == true)
                 {
                     priceList.RemoveSpecificAccess(customerGroup);

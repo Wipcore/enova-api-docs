@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using NLog.Internal;
 using Wipcore.eNova.Api.WebApi.Mappers;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 
 namespace Wipcore.Enova.Api.WebApi.Mappers.Product
 {
@@ -64,7 +65,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Product
             foreach (var i in value as dynamic)
             {
                 var imageModel = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, Identifier = String.Empty, MarkForDelete = false, Name = String.Empty, Path = String.Empty });
-                var pictureObj = context.FindObject(imageModel.ID, typeof(EnovaPictureLinkObject), false) ?? context.FindObject(imageModel.Identifier, typeof(EnovaPictureLinkObject), false);
+                var pictureObj = EnovaObjectMakerHelper.Find<EnovaPictureLinkObject>(context, imageModel.ID, imageModel.Identifier);
 
                 if (pictureObj == null)
                 {

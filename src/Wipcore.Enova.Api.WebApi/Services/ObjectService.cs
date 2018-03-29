@@ -194,7 +194,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             if (obj == null)
             {
-                obj = EnovaObjectCreationHelper.CreateNew<T>(context);
+                obj = EnovaObjectMakerHelper.CreateNew<T>(context);
                 newObject = true;
 
                 var product = obj as EnovaBaseProduct;
@@ -235,7 +235,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var obj = id != 0 ? context.FindObject<T>(id) : context.FindObject<T>(identifier);
 
             if (obj == null)
-                obj = EnovaObjectCreationHelper.CreateNew<T>(context);
+                obj = EnovaObjectMakerHelper.CreateNew<T>(context);
             else
                 obj.Edit();
 

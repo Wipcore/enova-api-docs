@@ -83,7 +83,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Cart
 
             if (cartItem == null)
             {
-                cartItem = EnovaObjectCreationHelper.CreateNew<EnovaPaymentTypeCartItem>(context);
+                cartItem = EnovaObjectMakerHelper.CreateNew<EnovaPaymentTypeCartItem>(context);
                 cart.AddCartItem(cartItem);
             }
 

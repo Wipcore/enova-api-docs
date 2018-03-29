@@ -6,6 +6,7 @@ using Wipcore.Core.SessionObjects;
 using Wipcore.eNova.Api.WebApi.Helpers;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
 using Wipcore.Enova.Api.Abstractions.Internal;
+using Wipcore.Enova.Api.WebApi.Helpers;
 using Wipcore.Enova.Core;
 
 namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
@@ -64,10 +65,9 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.PriceList
             {
                 foreach (var i in value as dynamic)
                 {
-                    var item = JsonConvert.DeserializeAnonymousType(i.ToString(), new { Identifier = "", PriceExclTax = 0m, MarkForDelete = false });
-                    var productIdentifier = item.Identifier;
+                    var item = JsonConvert.DeserializeAnonymousType(i.ToString(), new { ID = 0, Identifier = "", PriceExclTax = 0m, MarkForDelete = false });
                     var price = item.PriceExclTax;
-                    var product = EnovaBaseProduct.Find(context, productIdentifier);
+                    var product = EnovaObjectMakerHelper.Find<EnovaBaseProduct>(context, item.ID, item.Identifier, true);
 
                     if (item.MarkForDelete)
                         pricelist.RemoveProduct(product);

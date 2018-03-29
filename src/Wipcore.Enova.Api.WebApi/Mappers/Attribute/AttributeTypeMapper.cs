@@ -71,18 +71,20 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
             foreach (var v in (IEnumerable) value)
             {
                 var item = JsonConvert.DeserializeAnonymousType(v.ToString(), new { ID = 0, Identifier = "", MarkForDelete = false, Value = "", ObjectCount = 0});
+                
                 //find first by id, then identifier, then create if nothing found
-                var attributeValue = (EnovaAttributeValue)(context.FindObject(item.ID, typeof(EnovaAttributeValue), false) ??
-                    context.FindObject(item.Identifier ?? String.Empty, typeof(EnovaAttributeValue), false)) ??
-                    EnovaObjectCreationHelper.CreateNew<EnovaAttributeValue>(context);
-
+                var attributeValue = context.Find<EnovaAttributeValue>(item.ID, item.Identifier) ??
+                                     EnovaObjectMakerHelper.CreateNew<EnovaAttributeValue>(context);
+                
                 if (item.MarkForDelete)
                 {
                     type.DeleteValue(attributeValue);
                     continue;
                 }
+
                 attributeValue.Edit();
                 attributeValue.Identifier = item.Identifier ?? String.Empty;
+
                 if (languageDependant)
                     attributeValue.Name = item.Value;
                 else

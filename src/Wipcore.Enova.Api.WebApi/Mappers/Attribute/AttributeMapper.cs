@@ -100,7 +100,8 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     }
                 });
 
-                var enovaAttribute = context.FindObject(Convert.ToInt32(attribute.ID), typeof(EnovaAttributeValue), false) as EnovaAttributeValue;
+                
+                var enovaAttribute = EnovaObjectMakerHelper.Find<EnovaAttributeValue>(context, attribute.ID, attribute.Identifier);
                 var isNew = enovaAttribute == null;
 
                 if (attribute.MarkForDelete)
@@ -111,15 +112,15 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     obj.RemoveAttributeValue(enovaAttribute);
                     continue;
                 }
+                
+                var attributeType = (EnovaAttributeType)EnovaObjectMakerHelper.Find<EnovaAttributeType>(context, Convert.ToInt32(attribute.AttributeType.ID), attribute.AttributeType.Identifier, true);
 
-                var attributeType = (EnovaAttributeType)(context.FindObject(Convert.ToInt32(attribute.AttributeType.ID), typeof(EnovaAttributeType), false) ??
-                                                         context.FindObject(attribute.AttributeType.Identifier, typeof(EnovaAttributeType), true));
                 var newValueContext = attribute.ValueContext != null && !obj.HasAttributeType(attributeType, attribute.ValueContext);
 
                 if (attribute.AttributeType?.IsContinuous == true) //if contineous then just add whatever value it is
                 {
                     if (isNew)
-                        enovaAttribute = EnovaObjectCreationHelper.CreateNew<EnovaAttributeValue>(context);
+                        enovaAttribute = EnovaObjectMakerHelper.CreateNew<EnovaAttributeValue>(context);
                     else
                         enovaAttribute.Edit();
 
