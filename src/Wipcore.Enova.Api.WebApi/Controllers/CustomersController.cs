@@ -82,7 +82,7 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         /// Get a customer specified by id.
         /// </summary>
         [HttpGet("id-{id}")]
-        [Authorize(Roles = AuthService.AdminRole)]
+        [Authorize(Policy = CustomerUrlIdPolicy.Name)]
         [ProducesResponseType(typeof(CustomerModel), (int)HttpStatusCode.OK)]
         public IDictionary<string, object> Get([FromUri]ContextModel requestContext, [FromUri] QueryModel query, int id)
         {
