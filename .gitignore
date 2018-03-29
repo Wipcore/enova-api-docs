@@ -102,6 +102,9 @@ csx
 # Windows Store app package directory
 AppPackages/
 
+# MacOS files
+.DS_Store
+
 # Others
 sql
 TestResults

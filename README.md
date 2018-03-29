@@ -1,19 +1,18 @@
 # Enova API
 
 ## Test enviroment
-Finns på webdev16, är kombinerat med var som tidigare bara var webadmin.
+The test environment is installed on wipdev16
 
 - BusniessServer: ”Enova Webadmin BS Dev”,  D:\EnovaWebadminDev\BS
 - BackOffice: D:\EnovaWebadminDev\BackOffice 
 - Api: http://webapi.wipcore.se/api/ , D:\Sites\webapi.wipcore.se
 - Webadmin: http://webadmin.wipcore.se , D:\Sites\webadmin.wipcore.se
-- Databas: EnovaWebadminDevALotOfData på wipsql06
+- Databas: EnovaWebadminDevALotOfData on wipsql06
 
 Nuget feed för dev-paket:
 https://teamcity2.wipcore.se/guestAuth/app/nuget/v1/FeedService.svc/
 
-Adresserna måste läggas till i hostfil för att nås, i vanlig ordning.
+You need to add the domains in you host file to be able to work with them.
 
 --------------------------
-
-See [docs](./docs) folder for more information.
+All documentation for the API is done in the [wiki](https://github.com/Wipcore/enova-api/wiki)
