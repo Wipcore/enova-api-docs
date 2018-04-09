@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Newtonsoft.Json;
 using Wipcore.Core.SessionObjects;
 using Wipcore.Enova.Api.Abstractions.Interfaces;
@@ -155,8 +156,10 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     if (!requestedNewValue.Equals(currentValue) || newValueContext) //if the value or valuecontext is changed
                     {
                         //then find the correct attribute
-                        var newAttributeValue = attributeType.Values.OfType<EnovaAttributeValue>().
-                            First(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
+                        var newAttributeValue = attributeType.Values.OfType<EnovaAttributeValue>().FirstOrDefault(x => x.ValueCode == requestedNewValue || x.Name == requestedNewValue);
+
+                        if(newAttributeValue == null)
+                            throw new HttpException(HttpStatusCode.NotFound, $"Cannot find attributeValue: {requestedNewValue}");
 
                         if (enovaAttribute != null)
                             obj.RemoveAttributeValue(enovaAttribute);
