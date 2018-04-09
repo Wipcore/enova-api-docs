@@ -95,8 +95,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
                     AttributeType = new
                     {
                         ID = 0,
-                        Identifier = "",
-                        IsContinuous = false
+                        Identifier = ""
                     }
                 });
 
@@ -117,7 +116,7 @@ namespace Wipcore.eNova.Api.WebApi.Mappers.Attribute
 
                 var newValueContext = attribute.ValueContext != null && !obj.HasAttributeType(attributeType, attribute.ValueContext);
 
-                if (attribute.AttributeType?.IsContinuous == true) //if contineous then just add whatever value it is
+                if (attributeType?.IsContinuous == true) //if contineous then just add whatever value it is
                 {
                     if (isNew)
                         enovaAttribute = EnovaObjectMakerHelper.CreateNew<EnovaAttributeValue>(context);
