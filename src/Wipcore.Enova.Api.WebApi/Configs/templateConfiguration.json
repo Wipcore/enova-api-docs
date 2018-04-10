@@ -19,7 +19,7 @@
       "properties": "Identifier,FirstName,LastName,Alias,City,CountryName,Street,Email"
     },
     "fulldeclaration": {
-      "properties": "Identifier,Note,Alias,FirstName,LastName,Street,PostalAddress,PostalCode,City,Phone,Email,RegistrationNumber,CoAddress,CompanyName,Orders,CustomerAddresses,CustomerCarts,OrderCount,Taxrule,Currency,Country"
+      "properties": "Identifier,Note,Alias,FirstName,LastName,Street,PostalAddress,PostalCode,City,Phone,Email,RegistrationNumber,CoAddress,CompanyName,Orders,Addresses,Carts,OrderCount,Taxrule,Currency,Country"
     }
   },
   "enovaadministrator": {
