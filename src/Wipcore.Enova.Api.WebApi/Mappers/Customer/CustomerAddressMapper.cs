@@ -9,7 +9,7 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Customer
 {
     public class CustomerAddressMapper : IPropertyMapper
     {
-        public List<string> Names => new List<string>() { "CustomerAddresses" };
+        public List<string> Names => new List<string>() { "Addresses" };
         public Type Type => typeof(EnovaCustomer);
         public bool InheritMapper => true;
         public int Priority => 0;
