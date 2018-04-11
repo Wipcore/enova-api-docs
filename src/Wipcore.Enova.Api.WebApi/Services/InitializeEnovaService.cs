@@ -482,6 +482,8 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
             context.SetDefaultAccess(defaultAccess, typeof(EnovaCart));
             context.SetDefaultAccess(defaultAccess, typeof(CartItem));
+
+            context.SetDefaultAccess(defaultAccess, typeof(EnovaCustomerAddress));
         }
         
     }
