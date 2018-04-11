@@ -9,6 +9,11 @@
             Base controller for the Enova Api. Derive from to create new controllers with similar behaviour as standard controllers. 
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.HttpException">
+            <summary>
+            A HttpException with statuscode and message.
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IAccessRightService">
             <summary>
             CRUD upon enova access rights.
@@ -236,6 +241,16 @@
             <param name="objects"></param>
             <param name="filter">I.E: Name=myfinename</param>
             <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.Abstractions.Internal.IInitializeEnovaService">
+            <summary>
+            This service seeds default Enova data into a new database.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IInitializeEnovaService.InitializeEnova(Wipcore.Core.SessionObjects.Context,System.Boolean)">
+            <summary>
+            Run Enova initializer. If no context given, a new one will be created on the systemfacade. If forcerun is true it will bypass settings to turn it off.
+            </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.Abstractions.Internal.IMappingFromEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
             <summary>

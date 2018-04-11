@@ -10,6 +10,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AboutController.Version">
+            <summary>
+            API version.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AboutController.IsEnovaAlive">
             <summary>
             Returns true if Enova is running.
@@ -32,6 +38,18 @@
             Get access info on a type for the current logged in user.
             </summary>
             <param name="enovaType">The name of the enova type.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.DefaultTypeAccess(System.String)">
+            <summary>
+            Get default access in the system for an enova type.
+            </summary>
+            <param name="enovaType">The name of the enova type.</param>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.DefaultTypeAccess(Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
+            <summary>
+            Set default access in the system for an enova type.
+            </summary>
+            <param name="accessModel">The accessrights to set.</param>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.AccessRightsController.UserTypeAccess(System.String,System.String)">
             <summary>
@@ -1349,6 +1367,11 @@
             Get EnovaSupplier specified by identifiers. 
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SuppliersController.Put(Wipcore.Enova.Api.Abstractions.Models.ContextModel,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Create or update a supplier.
+            </summary>
+        </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Controllers.SuppliersController.Delete(System.Int32)">
             <summary>
             Delete a supplier.
@@ -1681,19 +1704,19 @@
             True if the given value is an 'additionalvalue', which means it's a subdictionary.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.EnovaObjectCreationHelper.CreateNew``1(Wipcore.Core.SessionObjects.Context,System.Object[])">
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.EnovaObjectMakerHelper.CreateNew``1(Wipcore.Core.SessionObjects.Context,System.Object[])">
             <summary>
             Create a new Enova object of most derived type of T, with given arguments.
             </summary>
         </member>
-        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.EnovaObjectCreationHelper.CreateNew(System.Type,Wipcore.Core.SessionObjects.Context,System.Object[])">
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.EnovaObjectMakerHelper.CreateNew(System.Type,Wipcore.Core.SessionObjects.Context,System.Object[])">
             <summary>
             Create a new Enova object of most derived type of t, with given arguments.
             </summary>
         </member>
-        <member name="T:Wipcore.Enova.Api.WebApi.Helpers.HttpException">
+        <member name="M:Wipcore.Enova.Api.WebApi.Helpers.EnovaObjectMakerHelper.Find``1(Wipcore.Core.SessionObjects.Context,System.Int32,System.String,System.Boolean)">
             <summary>
-            A HttpException with statuscode and message.
+            Find an Enova item, first by id then by identifier.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Helpers.ReflectionHelper.GetTypeByName(System.String,System.Boolean)">
@@ -1749,6 +1772,11 @@
             True if the request has parameters in query string.
             </summary>
         </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Mappers.CompanyAndGroup.GroupAccessMapper">
+            <summary>
+            This mapper is used to map access rights for some commonly used enova types.
+            </summary>
+        </member>
         <member name="T:Wipcore.Enova.Api.WebApi.Mappers.Customer.UserAccessMapper">
             <summary>
             This mapper is used to map access rights for some commonly used enova types.
@@ -1793,7 +1821,7 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetGroupAccessToType(System.String,Wipcore.Core.SessionObjects.UserGroup,System.Boolean)">
             <inheritdoc />
             <summary>
-            Get effective access rights on a certain type for a group.
+            Get effective access rights on a certain type for a group. If group is null, then get systemdefault accessrights.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.GetUserAccessToType(System.String,Wipcore.Core.SessionObjects.User,System.Boolean)">
@@ -1811,7 +1839,7 @@
         <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToType(Wipcore.Core.SessionObjects.UserGroup,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
             <inheritdoc />
             <summary>
-            Set access to a type for a certain group. 
+            Set access to a type for a certain group. If group is null, it's set as default system wide access.
             </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.AccessRightService.SetAccessToObject(System.Int32,Wipcore.Core.SessionObjects.UserGroup,Wipcore.Enova.Api.Abstractions.Models.AccessModel)">
@@ -1859,6 +1887,16 @@
             <param name="objects"></param>
             <param name="filter">I.E: Name=myfinename</param>
             <returns></returns>
+        </member>
+        <member name="T:Wipcore.Enova.Api.WebApi.Services.InitializeEnovaService">
+            <summary>
+            This service seeds default Enova data into a new database.
+            </summary>
+        </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Services.InitializeEnovaService.InitializeEnova(Wipcore.Core.SessionObjects.Context,System.Boolean)">
+            <summary>
+            Run Enova initializer. If no context given, a new one will be created on the systemfacade. If forcerun is true it will bypass settings to turn it off.
+            </summary>
         </member>
         <member name="M:Wipcore.Enova.Api.WebApi.Services.MappingEnovaService.MapFromEnovaObject(Wipcore.Core.SessionObjects.BaseObjectList,System.String)">
             <summary>
@@ -2044,6 +2082,11 @@
             This thread monitors Enovas heartbeat and shuts down the webhost if the heartbeat is dead.
             </summary>
         </member>
+        <member name="M:Wipcore.Enova.Api.WebApi.Startup.MonitorConfigFiles">
+            <summary>
+            This thread monitors appsettings for changes. Currently only concerned with enova logging changes.
+            </summary>
+        </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Controllers.CacheController">
             <summary>
             This controller is used to view and remove cache entries.
@@ -2125,11 +2168,6 @@
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Cart.CartSumMapper">
             <summary>
             Maps the cart sum for a cart, with and without tax.
-            </summary>
-        </member>
-        <member name="T:Wipcore.eNova.Api.WebApi.Mappers.GroupAccessMapper">
-            <summary>
-            This mapper is used to map access rights for some commonly used enova types.
             </summary>
         </member>
         <member name="T:Wipcore.eNova.Api.WebApi.Mappers.Customer.CustomerAddressTypeMapper">

@@ -41,6 +41,31 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
             return _accessRightService.GetUserAccessToType(enovaType, user);
         }
 
+
+        /// <summary>
+        /// Get default access in the system for an enova type.
+        /// </summary>
+        /// <param name="enovaType">The name of the enova type.</param>
+        [HttpGet("DefaultTypeAccess")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public AccessModel DefaultTypeAccess(string enovaType)
+        {
+            return _accessRightService.GetGroupAccessToType(enovaType, null);
+        }
+
+
+        /// <summary>
+        /// Set default access in the system for an enova type.
+        /// </summary>
+        /// <param name="accessModel">The accessrights to set.</param>
+        [HttpPut("DefaultTypeAccess")]
+        [Authorize(Roles = AuthService.AdminRole)]
+        public AccessModel DefaultTypeAccess(AccessModel accessModel)
+        {
+            _accessRightService.SetAccessToType(null, accessModel);
+            return _accessRightService.GetGroupAccessToType(accessModel.EnovaType, null);
+        }
+
         /// <summary>
         /// Get access to a type for a user.
         /// </summary>

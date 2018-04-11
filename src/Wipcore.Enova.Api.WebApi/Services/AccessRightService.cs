@@ -34,7 +34,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
         
         /// <inheritdoc />
         /// <summary>
-        /// Get effective access rights on a certain type for a group.
+        /// Get effective access rights on a certain type for a group. If group is null, then get systemdefault accessrights.
         /// </summary>
         public AccessModel GetGroupAccessToType(string enovaTypeName, UserGroup group, bool includeEveryonesRights = true)
         {
@@ -106,7 +106,7 @@ namespace Wipcore.Enova.Api.WebApi.Services
 
         /// <inheritdoc />
         /// <summary>
-        /// Set access to a type for a certain group. 
+        /// Set access to a type for a certain group. If group is null, it's set as default system wide access.
         /// </summary>
         public void SetAccessToType(UserGroup group, AccessModel accessModel)
         {
@@ -118,9 +118,17 @@ namespace Wipcore.Enova.Api.WebApi.Services
             var accessMask = MapModelToAccessMask(accessModel, currentAccess);
 
             var context = _contextService.GetContext();
-            context.SetDefaultAccess(group, accessMask, type);
 
-            _logger.LogInformation($"Set access to {accessModel} on type {accessModel.EnovaType} for group with id {group.ID} and identifier {group.Identifier}");
+            if (group == null)
+            {
+                context.SetDefaultAccess(accessMask, type);
+                _logger.LogInformation($"Set default access to {accessModel} on type {accessModel.EnovaType}");
+            }
+            else
+            {
+                context.SetDefaultAccess(group, accessMask, type);
+                _logger.LogInformation($"Set access to {accessModel} on type {accessModel.EnovaType} for group with id {group.ID} and identifier {group.Identifier}");
+            }
         }
 
         /// <inheritdoc />
