@@ -23,17 +23,21 @@ namespace Wipcore.Enova.Api.WebApi.Mappers.Customer
             var customer = (EnovaCustomer)obj;
             var carts = new List<object>();
 
-            foreach (var cart in customer.GetCarts(typeof(EnovaCart)).Cast<EnovaCart>()) 
+            foreach (var cart in customer.GetCarts(typeof(EnovaCart)).Cast<EnovaCart>())
             {
                 var cartProducts = new List<object>();
-                foreach (var product in cart.GetCartItems<EnovaProductCartItem>())
+                foreach (var cartItem in cart.GetCartItems<EnovaProductCartItem>())
                 {
                     var miniCartProduct = new Dictionary<string, object>
                     {
-                        { "ID", product.ID },
-                        { "Identifier", product.Product.Identifier },
-                        { "Name", product.Product.Name },
-                        { "Price", product.Product.MainPrice }
+                        { "ID", cartItem.ID },
+                        { "ProductId", cartItem.Product?.ID ?? 0},
+                        { "ProductIdentifier", cartItem.ProductIdentifier },
+                        { "Name", cartItem.Name },
+                        { "PriceInclTax", cartItem.GetPriceInclTax() },
+                        { "PriceExclTax", cartItem.GetPriceExclTax() },
+                        { "Comment", cartItem.Comment },
+                        { "Quantity", cartItem.Quantity }
                     };
                     cartProducts.Add(miniCartProduct);
                 }
