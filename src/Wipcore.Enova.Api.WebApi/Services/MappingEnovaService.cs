@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using Fasterflect;
 using Microsoft.Extensions.Configuration;
@@ -156,10 +157,29 @@ namespace Wipcore.Enova.Api.WebApi.Services
             }
 
             //orders and carts might need to be recalculated if their rows have changed
-            (obj as EnovaCart)?.Recalculate();
+            if(obj is EnovaCart cart)
+                Recalculate(cart);
             (obj as EnovaOrder)?.Recalculate();
 
             return delayedMappers;
+        }
+
+        private void Recalculate(EnovaCart cart)
+        {
+            try
+            {
+                cart.Recalculate();
+            }
+            catch (NullReferenceException)
+            {
+                //if null reference error, it might be a deleted product
+                var deletedProductRow = cart.GetCartItems<EnovaProductCartItem>().FirstOrDefault(x => x.Product == null);
+
+                if (deletedProductRow == null)
+                    throw;
+
+                throw new HttpException(HttpStatusCode.BadRequest, $"Cannot recalculate cart {cart.ID}. It has a product with identifier {deletedProductRow.ProductIdentifier} that has been deleted.");
+            }
         }
 
         /// <summary>
