@@ -225,11 +225,12 @@ namespace Wipcore.Enova.Api.NetClient
             var identifier = identifierToken.ToString();
             if (await ObjectExistsAsync<TModel>(identifier).ConfigureAwait(ContinueOnCapturedContext))
             {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ReasonPhrase = $"A {resource} with identifier {identifier} already exists."
-                });
+                //throw new HttpResponseException(new HttpResponseMessage
+                //{
+                //    StatusCode = HttpStatusCode.BadRequest,
+                //    ReasonPhrase = $"A {resource} with identifier {identifier} already exists."
+                //});
+                throw new Exception($"A {resource} with identifier {identifier} already exists.");
             }
                 
         }

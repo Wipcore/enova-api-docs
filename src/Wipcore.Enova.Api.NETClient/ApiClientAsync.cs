@@ -64,11 +64,12 @@ namespace Wipcore.Enova.Api.NetClient
             if (response.StatusCode == HttpStatusCode.NotFound)
                 return false;
 
-            throw new HttpResponseException(new HttpResponseMessage()
-            {
-                StatusCode = response.StatusCode,
-                ReasonPhrase = $"Head url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
-            });
+            //throw new HttpResponseException(new HttpResponseMessage()
+            //{
+            //    StatusCode = response.StatusCode,
+            //    ReasonPhrase = $"Head url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
+            //});
+            throw new Exception($"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}");
         }
 
         /// <summary>
@@ -156,11 +157,14 @@ namespace Wipcore.Enova.Api.NetClient
                 return null;
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                {
-                    StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
-                });
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{
+                //    StatusCode = response.StatusCode,
+                //    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                //});
+            {
+                throw new Exception($"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}");
+            }
 
             SetResponseHeaders(response, headers);
             var model = JsonConvert.DeserializeObject(responseContent, resonseType);
@@ -240,11 +244,12 @@ namespace Wipcore.Enova.Api.NetClient
                 return false;
 
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
-            throw new HttpResponseException(new HttpResponseMessage()
-            {
-                StatusCode = response.StatusCode,
-                ReasonPhrase = $"Delete url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
-            });
+            //throw new HttpResponseException(new HttpResponseMessage()
+            //{
+            //    StatusCode = response.StatusCode,
+            //    ReasonPhrase = $"Delete url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
+            //});
+            throw new Exception($"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}");
         }
 
         /// <summary>
@@ -265,11 +270,12 @@ namespace Wipcore.Enova.Api.NetClient
                 return false;
 
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
-            throw new HttpResponseException(new HttpResponseMessage()
-            {
-                StatusCode = response.StatusCode,
-                ReasonPhrase = $"Delete url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
-            });
+            //throw new HttpResponseException(new HttpResponseMessage()
+            //{
+            //    StatusCode = response.StatusCode,
+            //    ReasonPhrase = $"Delete url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}"
+            //});
+            throw new Exception($"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}");
         }
 
         /// <summary>
@@ -292,12 +298,13 @@ namespace Wipcore.Enova.Api.NetClient
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                {
-                    StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Save url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
-                });
-            
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{
+                //    StatusCode = response.StatusCode,
+                //    ReasonPhrase = $"Save url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                //});
+                throw new Exception($"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}");
+
             var model = JsonConvert.DeserializeObject(responseContent, responseType);
             return model;
         }
@@ -337,11 +344,12 @@ namespace Wipcore.Enova.Api.NetClient
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                {
-                    StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}/Account/LoggedInAs gave error: {response.ReasonPhrase}. Details: {responseContent}"
-                });
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{
+                //    StatusCode = response.StatusCode,
+                //    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}/Account/LoggedInAs gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                //});
+                throw new Exception($"Get url {InternalHttpClient.BaseAddress}/Account/LoggedInAs gave error: {response.ReasonPhrase}. Details: {responseContent}");
 
             var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(responseContent);
             return dictionary;
@@ -356,11 +364,12 @@ namespace Wipcore.Enova.Api.NetClient
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                {
-                    StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}/NodeInfo gave error: {response.ReasonPhrase}. Details: {responseContent}"
-                });
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{
+                //    StatusCode = response.StatusCode,
+                //    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}/NodeInfo gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                //});
+                throw new Exception($"Get url {InternalHttpClient.BaseAddress}/NodeInfo gave error: {response.ReasonPhrase}. Details: {responseContent}");
 
             var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(responseContent);
             return dictionary;
@@ -374,11 +383,12 @@ namespace Wipcore.Enova.Api.NetClient
             var response = await InternalHttpClient.PostAsync("/Account/Logout", null).ConfigureAwait(ContinueOnCapturedContext);
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                {
-                    StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Post url {InternalHttpClient.BaseAddress}/Account/Logout gave error: {response.ReasonPhrase}. Details: {responseContent}"
-                });
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{
+                //    StatusCode = response.StatusCode,
+                //    ReasonPhrase = $"Post url {InternalHttpClient.BaseAddress}/Account/Logout gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                //});
+                throw new Exception($"Post url {InternalHttpClient.BaseAddress}/Account/Logout gave error: {response.ReasonPhrase}. Details: {responseContent}");
 
             //clean up cookies
             var tokenCookie = _httpAccessor.HttpContext?.Request.Cookies[TokenKey];
@@ -426,8 +436,9 @@ namespace Wipcore.Enova.Api.NetClient
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                { StatusCode = response.StatusCode, ReasonPhrase = $"Login gave error {response.ReasonPhrase} for user {model?.Alias ?? "null"} . Details: {responseContent}. Url: {url}" });
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{ StatusCode = response.StatusCode, ReasonPhrase = $"Login gave error {response.ReasonPhrase} for user {model?.Alias ?? "null"} . Details: {responseContent}. Url: {url}" });
+                throw new Exception($"Login gave error {response.ReasonPhrase} for user {model?.Alias ?? "null"} . Details: {responseContent}. Url: {url}");
 
             var loginModel = JsonConvert.DeserializeObject<LoginResponseModel>(responseContent);
 
@@ -458,11 +469,12 @@ namespace Wipcore.Enova.Api.NetClient
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(ContinueOnCapturedContext);
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpResponseException(new HttpResponseMessage()
-                {
-                    StatusCode = response.StatusCode,
-                    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
-                });
+                //throw new HttpResponseException(new HttpResponseMessage()
+                //{
+                //    StatusCode = response.StatusCode,
+                //    ReasonPhrase = $"Get url {InternalHttpClient.BaseAddress}{url}  gave error: {response.ReasonPhrase}. Details: {responseContent}"
+                //});
+                throw new Exception($"Get url {InternalHttpClient.BaseAddress}{url} gave error: {response.ReasonPhrase}. Details: {responseContent}");
 
             SetResponseHeaders(response, headers);
             var models = JsonConvert.DeserializeObject<IEnumerable<TModel>>(responseContent);
