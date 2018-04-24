@@ -232,7 +232,7 @@ namespace Wipcore.Enova.Api.WebApi
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "eNOVA Web API");
-                    c.DocExpansion("none");
+                    c.DocExpansion(DocExpansion.None);
                 });
             }
 

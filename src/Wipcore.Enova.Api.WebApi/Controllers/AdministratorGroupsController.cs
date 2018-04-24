@@ -26,7 +26,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
         {
             _objectService = dependencies.ObjectService;
         }
-
+        /// <summary>
+        /// Check if an administrator group exists by identifier
+        /// </summary>
         [HttpHead("{identifier}")]
         [Authorize(Roles = AuthService.AdminRole)]
         public void Head([FromUri]string identifier)
@@ -36,6 +38,9 @@ namespace Wipcore.Enova.Api.WebApi.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
         }
 
+        /// <summary>
+        /// Check if an administrator group exists by id
+        /// </summary>
         [HttpHead("id-{id}")]
         [Authorize(Roles = AuthService.AdminRole)]
         public void Head([FromUri]int id)
